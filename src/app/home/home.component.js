@@ -25,15 +25,6 @@ function HomeController($scope, $mdSidenav, $rootScope, $state, LoginService, Se
     // get the status of the toggle nav
     vm.lockLeft = SettingService.getSideNavStatus(vm.currentUser.Id);
 
-    // vm.$doCheck = function $doCheck() {
-    //    const routerName = $state.current.name;
-    //    if (routerName !== 'patientList' && routerName !== 'myPatient') {
-    //        vm.hideSidenav = true;
-    //    } else {
-    //        vm.hideSidenav = false;
-    //    }
-    // };
-
     // listen for emit from child
     $scope.$on('toggleNav', (event, args) => {
         // get the status of the toggle nav
