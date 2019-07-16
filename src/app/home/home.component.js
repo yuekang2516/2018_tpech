@@ -105,7 +105,6 @@ function HomeController($scope, $mdSidenav, $rootScope, $state, LoginService, Se
             // vm.notificationCount = q.data.Count;
             // $rootScope.notificationCount = q.data.Count;
         });
-        // roProcessService.getPendingCount();
     }
 
     vm.isBrowser = cordova.platformId === 'browser';
