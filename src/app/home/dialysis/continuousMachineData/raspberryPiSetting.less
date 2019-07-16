@@ -1,0 +1,60 @@
+.pi {
+
+    /*pi*/
+    color: #000;
+    .pibuttonselect{ border:#717171 solid 1px; border-radius: 3px; display: inline-block; padding:0px 4px; font-size: 13px; background: #f7f7f7  }.buttonselect:active{background: #ccc}
+    .piselected{ background: #2e7d32!important; border:#fff solid 1px; color: #fff!important  }
+    .piselected span{ background: #2e7d32!important; color: #fff!important  }
+    .md-button[disabled] {
+        background: #e2e2e2 !important;
+        border: 1px solid #e2e2e2 !important;
+    }
+
+    // frequency
+    .frequency{text-align: center; }
+    .frequency p{font-size: 20px}
+    .frequency input{ outline:none; line-height: 40px; font-size: 36px; color: #3952cf; background-color: initial !important}
+    // .frequency input::before{ content: "每"; font-size: 20px; font-weight: normal; color: #747474!important }
+    // .frequency input::after{ content: "秒鐘"; font-size: 20px; font-weight: normal; color: #747474!important}
+    .inputboxflex{ -webkit-flex: 1; flex: 1;}
+    p{margin:0;border:0;outline:0; padding: 0; font-family:'微軟正黑體',Arial, Helvetica, sans-serif; font-size:20px; color:#747474;}
+
+    .removeMdErr {
+        .md-errors-spacer { display: none;}
+    }
+
+    .setting {
+        margin-top: 20px;
+        margin-left: 6px;
+    }
+
+    .info {
+        color: #1565c0;
+        font-size: 0.9rem;
+        padding: 10px;
+        font-weight: bold;
+
+        i {
+            color: #ff6d00; 
+            font-size: 1rem;
+        }
+    }
+
+    .warning {
+        color: red;
+        margin: 0;
+    }
+
+    md-input-container {
+        box-sizing: border-box;
+        min-width: 134px;
+        margin: 0;
+        &.bottom-btn {
+            margin-top: 20px;
+            margin-bottom: 0;
+        }
+        .md-input[disabled] {
+            color: #000;
+        }
+    }
+}

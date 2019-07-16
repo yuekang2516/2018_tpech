@@ -1,0 +1,88 @@
+<div layout="column" layout-fill ui-view>
+    <md-toolbar hide-gt-sm>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="$ctrl.back();">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <div layout="row">
+                {{!$ctrl.loading ? $ctrl.patient.Name + '(' + $ctrl.patient.MedicalId + ')' : null }} {{'nursingProblem.nursingProblemList.nursingProblemRecord' | translate}}
+            </div>
+            <span flex></span>
+        </div>
+    </md-toolbar>
+    <div class="list-header" ng-show="!$ctrl.loading" layout="row" layout-align="center center">
+        <md-switch ng-model="$ctrl.showDeleted" aria-label="Switch data">
+            <h6 translate>{{'nursingProblem.nursingProblemList.showDeleted'}}
+                <!-- ({{$ctrl.deletedItemsLength}}筆) -->
+            </h6>
+        </md-switch>
+        <span flex></span>
+        <!-- <h6>共 {{$ctrl.serviceData.Total}} 筆</h6> -->
+        <h6 translate="nursingProblem.nursingProblemList.totalRecord" translate-values='{Total: $ctrl.serviceData.Total}'></h6>
+        <span flex></span>
+        <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+    </div>
+    <md-content layout="column" flex>
+        <loading ng-show="$ctrl.loading"></loading>
+        <div infinite-scroll="$ctrl.loadMore()" infinite-scroll-disabled='$ctrl.loading' infinite-scroll-distance='2' infinite-scroll-parent>
+            <md-list>
+                <md-list-item class="md-2-line" ng-class="{deleted: item.Status == 'Deleted'}" ng-repeat="item in $ctrl.serviceData.Records" ng-click="$ctrl.goto(item.Id)"
+                    ng-show="item.Status !== 'Deleted' || $ctrl.showDeleted">
+                    <div class="md-list-item-text" layout="column">
+                        <h3>
+                            {{item.StartDate | moment:'YYYY/MM/DD (dd)'}}
+                            <span ng-if="item.ResolveDate && item.ResolveDate != 'Invalid Date'"> - {{item.ResolveDate | moment:'YYYY/MM/DD (dd)'}}</span>
+                        </h3>
+                        <p>
+                            {{item.ItemName}}
+                            <seal ng-if="item.ResolveDate && item.ResolveDate != 'Invalid Date'" created="none" modified="none" label="已解決"></seal>
+                        </p>
+                        <seal model="item" modified="hideIfSame" fixed="true"></seal>
+                    </div>
+                    <md-icon class="md-secondary" ng-show="item.Status !== 'Deleted'" ng-click="$ctrl.showDialog($event, item)" md-svg-icon="static/img/svg/ic_delete_black_24px.svg"></md-icon>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-list-item>
+            </md-list>
+        </div>
+        <div flex ng-show="!$ctrl.loading && !$ctrl.serviceData.Records.length && !$ctrl.isError" layout="column" layout-fill layout-align="center center">
+            <h1 translate>{{'nursingProblem.nursingProblemList.noData'}}</h1>
+        </div>
+        <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate>{{'nursingProblem.nursingProblemList.serverError'}}</h3>
+        </div>
+        <md-button class="md-fab md-fab-bottom-right" style="position: fixed;" ng-click="$ctrl.goto('create')">
+            <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+        </md-button>
+    </md-content>
+</div>
+
+<script type="text/ng-template" id="dialog.html">
+    <md-dialog aria-label="刪除確認">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2 translate>{{'nursingProblem.nursingProblemList.confirmDelete'}}</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="vm.cancel()">
+                        <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content" translate>
+                    {{'nursingProblem.nursingProblemList.deleteRecord'}}
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+                <md-button ng-click="vm.cancel()">
+                    {{'nursingProblem.nursingProblemList.cancel' | translate}}
+                </md-button>
+                <md-button ng-click="vm.ok()">
+                    {{'nursingProblem.nursingProblemList.delete' | translate}}
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>

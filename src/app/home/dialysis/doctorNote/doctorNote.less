@@ -1,0 +1,63 @@
+doctor-note {
+    height: 100%;
+    .seal {
+        .fixed,
+        .fixedMiddle {
+            right: 110px;
+        }
+    }
+    .md-icon-button+.md-icon-button {
+        margin: 0;
+    }
+    #vertical-container,
+    #truevertical-container {
+        height: 100%;
+        &.lower {
+            height: calc(~"100% - 60px"); // 扣掉 loading 的高度
+        }
+    }
+    md-progress-circular {
+        // infinite scroll 在 load 下一個 page 時，顯示的 loading
+        &.loadmore {
+            height: 58px !important;
+            svg {
+                top: 10px;
+            }
+        }
+    }
+    .layoutRow {
+        width: 80%;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical
+    }
+    @media only screen and (max-width: 460px) {
+        .layoutRow {
+            width: 50%;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical
+        }
+    }
+    @media only screen and (min-width: 460px) and (max-width:750px) {
+        .layoutRow {
+            width: 65%;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical
+        }
+    }
+}
+
+doctor-note-detail {
+    height: 100%;
+}

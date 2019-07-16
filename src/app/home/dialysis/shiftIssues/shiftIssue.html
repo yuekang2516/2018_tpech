@@ -1,0 +1,78 @@
+<div style="position: relative;" flex layout="column" layout-fill>
+    <summary-toolbar toolbar-title="$ctrl.title" cancel="$ctrl.goback()"></summary-toolbar>
+
+    <!-- <md-toolbar hide-gt-sm layout="row">
+        <div class="md-toolbar-tools">
+            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.goback()" aria-label="call">
+                <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+            </md-button>
+            <h3>
+                <span ng-show="!$ctrl.Id" translate>{{'shiftIssues.shiftIssue.createShiftIssue'}}</span>
+                <span ng-show="$ctrl.Id && $ctrl.shiftIssueForm.Status !== 'Deleted'" translate>{{'shiftIssues.shiftIssue.editShiftIssue'}}</span>
+                <span ng-show="$ctrl.shiftIssueForm.Status === 'Deleted'" translate>{{'shiftIssues.shiftIssue.showDeleted'}}</span>
+            </h3>
+        </div>
+    </md-toolbar>
+    <div hide-xs hide-sm ng-show="!$ctrl.loading">
+        <h3 style="float: left; padding-left: 10px">
+            <span ng-show="!$ctrl.Id" translate>{{'shiftIssues.shiftIssue.createShiftIssue'}}</span>
+            <span ng-show="$ctrl.Id && $ctrl.shiftIssueForm.Status !== 'Deleted'" translate>{{'shiftIssues.shiftIssue.editShiftIssue'}}</span>
+            <span ng-show="$ctrl.shiftIssueForm.Status === 'Deleted'" translate>{{'shiftIssues.shiftIssue.showDeleted'}}</span>
+        </h3>
+        <md-button style="float:right; margin-top: 8px" class="md-secondary md-icon-button" ng-click="$ctrl.goback()" aria-label="call">
+            <i class="material-icons">cancel</i>
+        </md-button>
+    </div> -->
+
+    <!-- <patient-name hide-gt-sm ng-show="!$ctrl.loading" name="$ctrl.patient.Name" medical-id="$ctrl.patient.MedicalId"></patient-name> -->
+    <span ng-if="!$ctrl.canAccess" class="readonly-text" title="{{ 'customMessage.readonlyTitle' | translate }}" translate>{{ 'customMessage.readonly' }}</span>
+
+    <md-content flex layout-fill style="padding:10px 10px 0 10px">
+        <loading ng-show="$ctrl.loading"></loading>
+        <div flex ng-show="$ctrl.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate>{{'shiftIssues.shiftIssues.serverError'}}</h3>
+        </div>
+        <div class="inner">
+            <div class="readonly-inner" ng-if="!$ctrl.canAccess"></div>
+            <form ng-show="!$ctrl.loading && !$ctrl.isError" layout="column" name="form">
+                <div layout="row">
+                    <div layout="column" flex layout="column" style="margin-right: 5px">
+                        <label translate>{{'shiftIssues.shiftIssue.date'}}</label>
+                        <input type="date" ng-model="$ctrl.shiftIssueForm.RecordTime" ng-disabled="true" />
+                    </div>
+                    <div layout="column" flex>
+                        <label translate>{{'shiftIssues.shiftIssue.time'}}</label>
+                        <input type="time" ng-model="$ctrl.shiftIssueForm.RecordTime" required />
+                    </div>
+                </div>
+                <md-input-container>
+                    <label translate>{{'shiftIssues.shiftIssue.content'}}</label>
+                    <textarea id="content" name="Content" ng-model="$ctrl.shiftIssueForm.Content" ng-disabled="$ctrl.shiftIssueForm.Status === 'Deleted'" ng-model-options="{ allowInvalid: true }" rows="5" md-maxlength="5000" md-detect-hidden="true" required md-select-on-focus></textarea>
+                    <div ng-messages="form.Content.$error" ng-if="!showHints">
+                        <div ng-message="md-maxlength" translate>{{'shiftIssues.shiftIssue.contentMax'}}</div>
+                    </div>
+                </md-input-container>
+                <md-button ng-click="$ctrl.isOpenRight()" class="md-primary" ng-show="$ctrl.shiftIssueForm.Status !== 'Deleted'">
+                    <span translate>{{'shiftIssues.shiftIssue.insertPhrase'}}</span>
+                </md-button>
+                <div layout="row" layout-wrap>
+                    <div flex="50" flex-xs="100" ng-show="$ctrl.shiftIssueForm.CreatedUserName">
+                        <span translate="shiftIssues.shiftIssue.createdTime" translate-values='{CreatedTime: $ctrl.shiftIssueForm.CreatedTime}'></span>
+                        <seal model="$ctrl.shiftIssueForm" modified="none"></seal>
+                    </div>
+                    <div flex="50" flex-xs="100" ng-show="$ctrl.shiftIssueForm.ModifiedTime != null">
+                        <span translate="shiftIssues.shiftIssue.editedTime" translate-values='{ModifiedTime: $ctrl.shiftIssueForm.ModifiedTime}'></span>
+                        <seal model="$ctrl.shiftIssueForm" created="none"></seal>
+                    </div>
+                </div>
+                <div layout="row" layout-margin layout-align="start center">
+                    <md-button ng-click="$ctrl.submit($event)" ng-if="$ctrl.canAccess"  class="md-raised md-primary" ng-disabled="form.$invalid || $ctrl.isSaving">
+                        {{'shiftIssues.shiftIssue.save' | translate}}
+                    </md-button>
+                    <md-progress-circular md-diameter="20px" md-mode="indeterminate" ng-show="$ctrl.isSaving"></md-progress-circular>
+                </div>
+            </form>
+        </div>
+    </md-content>
+    <phrase id="phrase" callback="$ctrl.phraseInsertCallback(word)" layout-padding></phrase>
+</div>

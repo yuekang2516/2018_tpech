@@ -1,0 +1,80 @@
+<style>
+    complication {
+        height: 100%;
+    }
+    @media print{
+        .md-dialog-container {
+            display: inline-table;
+        }
+        @page{
+            size: A4 portrait;
+            margin: 0.5cm;
+            orphans:4;
+            widows:2;
+        }
+        div,input,table,select,md-select{
+            page-break-inside :avoid;
+            page-break-after: avoid;
+        }
+    }
+</style>
+<md-content layout="column" layout-fill>
+        <loading ng-show="$ctrl.loading && $ctrl.compList.length == 0"></loading>
+        <div class="list-header" ng-show="!$ctrl.loading && $ctrl.compList.length > 0"  layout="row" layout-align="center center">
+            <md-switch ng-model="$ctrl.showDeleted" aria-label="Switch data">
+                <span translate="highRiskFaller.Records.showDeleted" translate-values='{deletedItemsLength: $ctrl.deletedItemsLength}'></span>
+            </md-switch>
+            <span flex></span>
+            <h6 translate="highRiskFaller.Records.totalRecord" translate-values='{totalCnt: $ctrl.totalCnt}'></h6>
+            <span flex></span>
+            <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+            <md-button class="btnSearch md-button md-primary md-raised" type="button" ng-click="$ctrl.exportExcel($event, ei)">
+                <span>轉Excel</span>
+            </md-button>
+        </div>
+        <div layout="column" ng-show="!$ctrl.loading" style="position: relative;" layout-fill flex>
+            <md-content layout="column" flex>
+                <div ng-show="$ctrl.compList.length > 0" infinite-scroll-disabled='$ctrl.loading' infinite-scroll-distance='2'
+                    infinite-scroll-parent>
+                    <md-content>
+                        <md-list><!-- | orderBy:['-Record_Date', '-CreatedTime']-->
+                            <md-list-item class="md-2-line" ng-class="{deleted: item.Status == 'Deleted'}" ng-repeat="item in $ctrl.compList" ng-click="$ctrl.openEditDialog(item)" ng-show="item.Status !== 'Deleted' || $ctrl.showDeleted">
+                                <div class="md-list-item-text" layout="column">
+                                    <h3 ng-bind="item.Record_Date | moment:'YYYY/MM/DD (dd) HH:mm'"></h3>                                    
+                                    <seal model="item" modified="hideIfSame" fixed="true"></seal>
+                                </div>
+                                <div  style="position: absolute; right: 6px; top: 20px">
+                                    <md-button  class="md-icon-button" ng-click="$ctrl.deleteOne($event,item)" ng-hide="item.Status == 'Deleted'">
+                                        <i class="material-icons">delete</i>
+                                        <md-tooltip style="margin-top: -5px;">
+                                            刪除
+                                        </md-tooltip>
+                                    </md-button>
+                                </div>
+                            </md-list-item>
+                        </md-list>
+                    </md-content>
+                </div>
+                <!-- <div flex ng-show="!$ctrl.loading && $ctrl.compList.length === 0" layout="column" layout-fill layout-align="top center">
+                    <h2>{{'complication.component.noData' | translate}}</h2>
+                </div>  -->
+                <!-- <div flex ng-show="$ctrl.loading && $ctrl.compList.length == 0 && $ctrl.isError" layout="column" layout-fill
+                    layout-align="center center">
+                    <h1 translate>尚無併發症記錄</h1>
+                </div> -->
+                <md-progress-circular ng-show="$ctrl.loadingMore" class="loadmore" md-diameter="40" md-mode="indeterminate">
+                </md-progress-circular>
+                <div flex ng-show="!$ctrl.loading && $ctrl.compList.length == 0 " layout="column" layout-fill
+                    layout-align="center center">
+                    <h1 translate>{{'complication.component.noData'}}</h1>
+                </div>
+            </md-content>
+            <md-button class="no-print md-fab md-fab-bottom-right" style="position: fixed;" ng-click="$ctrl.openCreateDialog()">
+                <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+            </md-button>
+        </div>
+</md-content>
+
+
+<!-- 專門 for Excel 的 Div, 不呈現 -->
+<div id="excelDiv"></div>

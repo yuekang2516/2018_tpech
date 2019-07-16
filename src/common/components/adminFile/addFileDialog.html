@@ -1,0 +1,70 @@
+<md-dialog>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>
+                <span translate>
+                    檔案上傳
+                </span>
+            </h2>
+            <span flex></span>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <form id='editfile' method='post' name="editfileForm" enctype='multipart/form-data'>
+            <div class="add-file-dialog">
+                <div layout="column" style="margin-bottom:0rem;">
+                    <div style="margin: 0px 0px 0px 10px;" layout="row" layout-align="start center">
+                        <span>類別名稱：</span>
+                        <div class="classButton-div">
+                            <md-button class="md-list-item-content" ng-click="dialog.addNewAlbum()">
+                                <md-icon ng-if="!dialog.showAddNewClass" style="color:#4CAF50;">add_box</md-icon>
+                                <span ng-if="!dialog.showAddNewClass" class="button-label button-label-green">新增類別</span>
+                                <md-icon ng-if="dialog.showAddNewClass" style="color:red;">cancel</md-icon>
+                                <span ng-if="dialog.showAddNewClass" class="button-label button-label-red">取消新增</span>
+                            </md-button>
+                        </div>
+                    </div>
+                    <div ng-if="dialog.showAddNewClass">
+                        <input type="text" class="file-input" placeholder="請輸入類別名稱" name="fileClass" ng-model="dialog.selectedClass" ng-required="dialog.showAddNewClass" />
+                    </div>
+
+                    <div ng-if="!dialog.showAddNewClass">
+                        <md-select ng-model="dialog.selectedClass" ng-change="dialog.changeFileClass()" style="margin: 0px 0px 10px 10px; width: 90%;" ng-required="!dialog.showAddNewClass">
+                            <md-option ng-value="null">請選擇</md-option>
+                            <md-option ng-repeat="item in dialog.classList" ng-value="item"> {{::item}} </md-option>
+                        </md-select>
+                    </div>
+
+                    <!-- <div style="margin: 10px;" layout="column">
+                        檔案名稱：
+                    </div>
+                    <div>
+                        <input type="text" class="file-input" placeholder="請輸入檔案名稱" name="fileName" ng-model="dialog.fileName" required />
+                    </div> -->
+                    <div style="margin: 10px;">
+                        選擇檔案：
+                    </div>
+                    <div>
+                        <input id="upfile" type="file" ngf-change="dialog.changeFile()" ngf-select name="upfile" class="file-input" />
+                    </div>
+                </div>
+                <md-dialog-actions layout="row" layout-align="end center">
+                    <md-button class="md-raised" ng-click="dialog.cancel()">
+                        取消
+                    </md-button>
+                    <!-- editfileForm.$invalid || dialog.selectedClass == null -->
+                    <md-button class="md-raised md-primary md-btn-white-text" ng-disabled="editfileForm.$invalid || dialog.selectedClass == null || dialog.upoladFile == null || dialog.isSaving" ng-click="dialog.ok()">
+                        上傳
+                    </md-button>
+                    <md-progress-circular md-diameter="20px" md-mode="indeterminate" ng-show="dialog.isSaving" style="margin: 0; margin-left: 10px;" ></md-progress-circular>
+                    <!-- <md-button ng-if="dialog.editNameTag === 'addNewFolderName'" class="md-raised md-primary md-btn-white-text" ng-click="dialog.ok()">
+                        建立
+                    </md-button>
+                    <md-button ng-if="dialog.editNameTag !== 'addNewFolderName' && dialog.editNameTag !== 'addNewFileName'" class="md-raised md-primary md-btn-white-text" ng-click="dialog.ok()">
+                        確定
+                    </md-button> -->
+                </md-dialog-actions>
+            </div>
+        </form>
+    </md-dialog-content>
+</md-dialog>

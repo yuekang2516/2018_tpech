@@ -1,0 +1,67 @@
+<md-dialog>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>
+                <span ng-if="dialog.editNameTag === 'dotEditFolderName'" translate>
+                    重新命名資料夾
+                </span>
+                <span ng-if="dialog.editNameTag === 'dotEditFileName'" translate>
+                    重新命名檔案
+                </span>
+                <span ng-if="dialog.editNameTag === 'addNewFileName'" translate>
+                    檔案上傳
+                </span>
+                <span ng-if="dialog.editNameTag === 'addNewFolderName'" translate>
+                    新增資料夾
+                </span>
+            </h2>
+            <span flex></span>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <form id='editfile' method='post'  enctype='multipart/form-data'>
+        <div class="new-folder-dialog">
+            <div layout="column" style="margin-bottom:0rem;">
+                <div ng-if="dialog.editNameTag === 'dotEditFolderName' || dialog.editNameTag === 'addNewFolderName'" style="margin: 10px;" translate>
+                    資料夾名稱
+                </div>
+                <div ng-if="dialog.editNameTag === 'dotEditFileName'" style="margin: 10px;" translate>
+                    檔案名稱
+                </div>
+                <div ng-if="dialog.editNameTag === 'addNewFileName'" style="margin: 10px;" translate>
+                    選擇檔案：
+                </div>
+                <div ng-if="dialog.editNameTag !== 'addNewFileName'">
+                    <input type="text"
+                    style=
+                        "margin: 0px 0px 10px 10px; 
+                        width:90%; 
+                        background: white!important; 
+                        border-bottom: 1px solid black!important;
+                        border-top: 0px!important;
+                        border-right: 0px!important;
+                        border-left: 0px!important;"
+                        class="input-folder-name" placeholder="未命名" name="fileFolderName" ng-model="dialog.fileFolderName" />
+                </div>
+                <div ng-if="dialog.editNameTag === 'addNewFileName'">
+                    <input type="file" name="upfile" id="upfile" />
+                </div>
+            </div>
+            <md-dialog-actions layout="row" layout-align="end center">
+                <md-button class="md-raised" ng-click="dialog.cancel()">
+                    取消
+                </md-button>
+                <md-button ng-if="dialog.editNameTag === 'addNewFileName'" class="md-raised md-primary md-btn-white-text" ng-click="dialog.ok()">
+                    上傳
+                </md-button>
+                <md-button ng-if="dialog.editNameTag === 'addNewFolderName'" class="md-raised md-primary md-btn-white-text" ng-click="dialog.ok()">
+                    建立
+                </md-button>
+                <md-button ng-if="dialog.editNameTag !== 'addNewFolderName' && dialog.editNameTag !== 'addNewFileName'" class="md-raised md-primary md-btn-white-text" ng-click="dialog.ok()">
+                    確定
+                </md-button>
+            </md-dialog-actions>
+        </div>
+    </form>
+    </md-dialog-content>
+</md-dialog>

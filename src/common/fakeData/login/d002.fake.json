@@ -1,0 +1,226 @@
+{
+    "Result": true,
+    "Message": null,
+    "UserInfo": {
+        "DateTimestamp": "2019-03-20T11:58:11.5510737+08:00",
+        "EmployeeId": "D002",
+        "Account": "D002",
+        "Password": "81dc9bdb52d04dc20036dbd8313ed055",
+        "Name": "楊昌宏",
+        "BarCode": null,
+        "RFID": null,
+        "Gender": 1,
+        "PhoneNumber": null,
+        "MobilePhoneNumber": null,
+        "Email": null,
+        "Access": 1,
+        "Photo": null,
+        "Ward": {
+            "598952092345941e60ae88e0": "泉新"
+        },
+        "Modules": [
+            "dialysis"
+        ],
+        "LastLoginTime": "2019-03-20T11:58:11.5510737+08:00",
+        "LastLoginIP": "220.132.125.219",
+        "Level": null,
+        "Role": "doctor",
+        "HospitalId": "56fcc5dd4ead7870942f61c3",
+        "Revision": 1,
+        "HistoryId": null,
+        "Status": "Normal",
+        "CreatedUserId": "570600fdd53d3c61d6794f95",
+        "CreatedUserName": "Admin",
+        "CreatedTime": "2019-03-18T08:53:50.218Z",
+        "ModifiedUserId": "570600fdd53d3c61d6794f95",
+        "ModifiedUserName": "Admin",
+        "ModifiedTime": "2019-03-20T11:58:11.5510737+08:00",
+        "Id": "5c8f5c9e98584d53f044eac8",
+        "CreatedOn": "2019-03-18T08:53:50Z",
+        "ModifiedOn": "0001-01-01T00:00:00Z",
+        "ObjectId": {
+            "Timestamp": 1552899230,
+            "Machine": 9984077,
+            "Pid": 21488,
+            "Increment": 4516552,
+            "CreationTime": "2019-03-18T08:53:50Z"
+        }
+    },
+    "HospitalInfo": {
+        "Tags": [],
+        "HospitalName": "Yuekang test Hospital",
+        "HostName": [
+            "172.30.1.101",
+            "172.30.1.177",
+            "172.30.1.104",
+            "localhost",
+            "dialysissystem.azurewebsites.net",
+            "disexcelsiormedical.azurewebsites.net"
+        ],
+        "Details": null,
+        "Modules": [
+            "dialysis",
+            "respiration",
+            "vitalsign"
+        ],
+        "DBVersion": null,
+        "HospitalDataSyncUrl": null,
+        "SystemCode": "Yuekang",
+        "Status": null,
+        "CreatedUserId": null,
+        "CreatedUserName": null,
+        "CreatedDatetime": "2015-03-31T00:18:28.168Z",
+        "ModifiedUserId": "570600fdd53d3c61d6794f95",
+        "ModifiedUserName": "Admin",
+        "ModifiedTime": "2019-03-14T06:40:56.306Z",
+        "Logo": "data:image/jpeg;base64,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",
+        "FormTitle": "悅康醫院透析表單",
+        "SheetTemplate": "chutung",
+        "MachineType": "0",
+        "Version": null,
+        "ModuleFunctions": {
+            "MachineType": "1",
+            "BloodTransfusion": "1",
+            "Charge": "1",
+            "Scheduling": "1",
+            "SettingBed": "1",
+            "ElectronicBoard": "1",
+            "Epo": "1",
+            "PostAssessment": "1",
+            "Assessment": "1",
+            "BloodPressure": "0",
+            "HealthEducation": "0",
+            "ROAlert": "1",
+            "PatientYearPlan": "0"
+        },
+        "DemoDataTime": null,
+        "Id": "56fcc5dd4ead7870942f61c3",
+        "CreatedOn": "2016-03-31T06:38:21Z",
+        "ModifiedOn": "0001-01-01T00:00:00Z",
+        "ObjectId": {
+            "Timestamp": 1459406301,
+            "Machine": 5156216,
+            "Pid": 28820,
+            "Increment": 3105219,
+            "CreationTime": "2016-03-31T06:38:21Z"
+        }
+    },
+    "HospitalSettings": {
+        "DialysisSetting": {
+            "CatheterHospitals": [
+                "測試用",
+                "台大醫院",
+                "馬偕醫院",
+                "不明醫院",
+                "Hospital AAA",
+                "長庚",
+                "台大",
+                "愛的醫院",
+                "雲基",
+                "關渡醫院",
+                "台北榮總",
+                "桃園敏盛",
+                "振興醫院",
+                "陽明醫院",
+                "恩主公醫院",
+                "23232",
+                "測使用",
+                "hhh",
+                "123",
+                "9999",
+                "AA醫院",
+                "全新"
+            ],
+            "ArtificialKidneys": [
+                "F7HPS",
+                "F8HPS",
+                "F10HPS",
+                "FX80",
+                "65-K2",
+                "AK-11",
+                "AK-47",
+                "Fx-60",
+                "Fx-86"
+            ],
+            "Dialysates": [
+                "2.5/1.0",
+                "3.0/1.0",
+                "3.5/1.0",
+                "2.5/2.0",
+                "3.0/2.0",
+                "3.5/2.0"
+            ],
+            "PrescriptionModes": [
+                "HD",
+                "HDF",
+                "HF",
+                "UF",
+                "CVVH",
+                "CVVHD",
+                "SCUF"
+            ],
+            "Anticoagulants": [
+                "Heparin",
+                "Non-Heparin ",
+                "Heparin Free",
+                "Innohep",
+                "Fragmin",
+                "外循環量"
+            ],
+            "Frequencies": [
+                "Tiw",
+                "Biw",
+                "Qw"
+            ],
+            "DialysateFlowRates": [
+                "300",
+                "500",
+                "800"
+            ],
+            "NeedleArteries": [
+                "15",
+                "16",
+                "17"
+            ],
+            "NeedleVeins": [
+                "15",
+                "16",
+                "17"
+            ],
+            "Routes": [
+                "Fistular L",
+                "Fistular R",
+                "D.L R`t",
+                "D.L L`t",
+                "Perm-cath R",
+                "Perm-cath L"
+            ]
+        },
+        "BloodSetting": {
+            "PlasmaComponents": {
+                "100": "AAAAA",
+                "120": "血小板",
+                "123": "test123",
+                "132": "血型陰性",
+                "135": "紅血球",
+                "146": "全血",
+                "182": "血漿",
+                "225": "顆粒球",
+                "043": "紅血球濃液體"
+            }
+        },
+        "DeathReasonSetting": {
+            "PlasmaComponents": {
+                "100": "AAAAA",
+                "120": "血小板",
+                "123": "test123",
+                "132": "血型陰性",
+                "135": "紅血球",
+                "146": "全血",
+                "182": "血漿",
+                "225": "顆粒球",
+                "043": "紅血球濃液體"
+            }
+        }
+    }
+}

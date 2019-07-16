@@ -1,0 +1,39 @@
+<!--Display both date & time  -->
+<div ng-form name="myForm" layout="column">
+    <md-input-container style="width:100%">
+        <label translate="dateTimePickerStandard.date" translate-values='{dateText: vm.text}'></label> 
+        <input name="Date"
+                date="true" 
+                time="false"
+                type="date"
+                format="YYYY-MM-DD"
+                ng-model="vm.myModel"
+                max-date="vm.max"
+                min-date="vm.min"
+                lang="zh-Tw"
+                ng-required="vm.required",
+                ng-change="vm.dateChange()"
+                >
+        <div ng-messages="myForm.Date.$error" role="alert">
+            <div ng-message="required" translate="dateTimePickerStandard.dateRequired" translate-values='{text: vm.text}'></div>
+        </div>       
+    </md-input-container>
+    <md-input-container style="width:100%">
+        <label translate="dateTimePickerStandard.time" translate-values='{timeText: vm.text}'></label> 
+        <input  name="Time"
+                date="false" 
+                time="true" 
+                type="time"
+                format="HH:mm" 
+                ng-model="vm.myModel"
+                max-date="vm.max"
+                min-date="vm.min"
+                lang="zh-Tw"
+                ng-required="vm.required",
+                ng-change="vm.dateChange()"
+                >
+          <div ng-messages="myForm.Time.$error" role="alert">
+            <div ng-message="required" translate="dateTimePickerStandard.timeRequired" translate-values='{text: vm.text}'></div>
+          </div>        
+    </md-input-container>
+</div>

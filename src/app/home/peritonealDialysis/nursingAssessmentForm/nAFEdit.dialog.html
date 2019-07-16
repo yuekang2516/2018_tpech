@@ -1,0 +1,728 @@
+<style>
+pre {
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+.inputbox .inputBoxTit{width:100px;}
+    input{width:100%;}
+textarea{
+    width: 100%;
+}
+.btn1 {
+    color :#ffffff;
+    background-color: #006ACB;
+    /*border-radius: 10px 0 0 10px;*/
+    font-size: 16px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26)
+}
+.btn1:not([disabled]):hover {
+    background-color: #006ACB;
+    color :#ffffff;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26)
+}
+
+@media print{
+        * {
+            -webkit-print-color-adjust: exact !important;
+        }
+        .peritonealDialysisTabView{
+            display: inline-table; /* Not really needed in all cases */
+        }
+        md-dialog{
+            box-shadow: none;
+            width:100%;
+        }
+        div,input,table,select,md-select{
+            page-break-inside :avoid;
+            page-break-after: avoid;
+        }
+    }
+    .patient_name{
+        position: absolute;
+        left: 255px;
+        top: 13px;
+    }
+</style>
+<md-dialog class="peritonealDialysisTabView" style="width:100%">
+    <form name="editForm" novalidate ng-cloak>
+        <md-toolbar hide-gt-xs>
+            <div class="md-toolbar-tools">
+                <md-button class="circular md-button ng-scope md-ink-ripple" aria-label="Settings" ng-click="$ctrl.cancel()">
+                    <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+                </md-button>
+                <h3>
+                    <span ng-if="$ctrl.nAFDataObj.isCreate || $ctrl.nAFDataObj.isCopy">{{'nursingAssessmentForm.dialog.createTitle' | translate}}</span>
+                    <span ng-if="!$ctrl.nAFDataObj.isCreate && !$ctrl.nAFDataObj.isCopy">{{'nursingAssessmentForm.dialog.editTitle' | translate}}</span>
+                </h3>
+                <div
+                    class="{{'patient_name ' + (($ctrl.currentPatient.Gender|gender) == '男' ? 'male ' : '') + (($ctrl.currentPatient.Gender|gender) == '女' ? 'female' : '') }}">
+                    {{ $ctrl.currentPatient.MedicalId + ' - ' + $ctrl.currentPatient.Name }}
+                </div>
+                <span flex></span>
+                <span style="font-size:16px;" ng-show="$ctrl.nAFDataObj.Status == 'Deleted'" class="readonly-text" title="{{ 'customMessage.readonlyTitle' | translate }}" translate>{{ 'customMessage.readonly' }}</span>
+            </div>
+        </md-toolbar>
+        <summary-toolbar ng-if="$ctrl.nAFDataObj.isCreate || $ctrl.nAFDataObj.isCopy" ng-click="$ctrl.cancel()" toolbar-title="'nursingAssessmentForm.dialog.createTitle' | translate"></summary-toolbar>
+        <summary-toolbar ng-if="!$ctrl.nAFDataObj.isCreate && !$ctrl.nAFDataObj.isCopy" ng-click="$ctrl.cancel()" toolbar-title="'nursingAssessmentForm.dialog.editTitle' | translate"></summary-toolbar>
+        <div
+            class="{{'patient_name ' + (($ctrl.currentPatient.Gender|gender) == '男' ? 'male ' : '') + (($ctrl.currentPatient.Gender|gender) == '女' ? 'female' : '') }}">
+            {{ $ctrl.currentPatient.MedicalId + ' - ' + $ctrl.currentPatient.Name }}
+        </div>
+        <span ng-show="$ctrl.nAFDataObj.Status == 'Deleted'" class="readonly-text" title="{{ 'customMessage.readonlyTitle' | translate }}" translate>{{ 'customMessage.readonly' }}</span>
+        <!-- <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 ng-if="$ctrl.nAFDataObj.isCreate" translate="nursingAssessmentForm.dialog.createTitle"></h2>
+                <h2 ng-if="!$ctrl.nAFDataObj.isCreate" translate="nursingAssessmentForm.dialog.editTitle"></h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+                    <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar> -->
+        <md-dialog-content>
+            <div class="dialogBoxData">
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem lightblue">
+                        <label translate>*記錄日期</label>
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <input class="inputTxt"  min="1900-01-01" max="2999-12-31" ng-model="$ctrl.nAFDataObj.Record_Date" type="date" ng-disabled="$ctrl.Record_Date_disabled"
+                            required>
+                        <div ng-messages="editForm.Record_Date.$error" ng-show="editForm.Record_Date.$dirty">
+                            <div ng-message="required" class="clrRequired">必填選項</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem" >
+                        <label translate>體重</label>
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <input ng-model="$ctrl.nAFDataObj.Body_Weight" style="margin-bottom: 5px;" ng-change="$ctrl.Calculation_Net_Body_Weight()">kg<br />
+                        -<input placeholder="透析液" ng-model="$ctrl.nAFDataObj.Dialysate_Weight" ng-change="$ctrl.Calculation_Net_Body_Weight()" style="width:80px;">kg
+                        -<input placeholder="衣服" ng-model="$ctrl.nAFDataObj.Clothes_Weight" ng-change="$ctrl.Calculation_Net_Body_Weight()" style="width:80px;">kg
+                        -<input placeholder="輪椅" ng-model="$ctrl.nAFDataObj.Wheelchair_Weight" ng-change="$ctrl.Calculation_Net_Body_Weight()" style="width:80px;">kg
+                        =<input placeholder="淨體重" disabled ng-model="$ctrl.nAFDataObj.Net_Body_Weight">kg
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>血壓</label>
+                    </div>
+                    <div layout="row" layout-sm="column" layout-xs="column" layout-align="center center" ng-repeat="item in $ctrl.nAFDataObj.PostVitalSign track by $index" style="width:250px;">
+                        <div layout="column"  class="vital-block">
+                            <div layout="row" flex>
+                                <div layout="row" class="vital-input-div" flex>
+                                    <label translate>{{'nursingAssessmentForm.vitalSignDate'}}</label>
+                                    <input type="date" min="1900-01-01" max="2999-12-31" ng-model="item.RecordTime" />
+                                </div>
+                            </div>
+                            <div layout="row" flex>
+                                <div layout="row" class="vital-input-div" flex>
+                                    <label translate>{{'nursingAssessmentForm.vitalSignTime'}}</label>
+                                    <input type="time" ng-model="item.RecordTime" />
+                                </div>
+                            </div>
+                            <div layout="row">
+                                <div layout="row" class="vital-input-div" flex>
+                                    <label translate>{{'nursingAssessmentForm.BPS'}}</label>
+                                    <input type="tel" ng-model="item.BPS" ng-pattern="/^\d+$/" ng-keypress="$event.which === 46" />
+                                </div>
+                                <div layout="row" class="vital-input-div" flex>
+                                    <label translate>{{'nursingAssessmentForm.BPD'}}</label>
+                                    <input type="tel" ng-model="item.BPD" ng-pattern="/^\d+$/" ng-keypress="$event.which === 46" />
+                                </div>
+                                <div layout="row" class="vital-input-div" flex>
+                                    <md-select ng-model="item.BloodPressurePosture" placeholder="{{'nursingAssessmentForm.posture' | translate}}">
+                                        <md-option value="" translate>{{'nursingAssessmentForm.choosePosture'}}</md-option>
+                                        <md-option value="臥" translate>{{'nursingAssessmentForm.lie'}}</md-option>
+                                        <md-option value="坐" translate>{{'nursingAssessmentForm.sit'}}</md-option>
+                                        <md-option value="立" translate>{{'nursingAssessmentForm.stand'}}</md-option>
+                                    </md-select>
+                                </div>
+                            </div>
+                            <div layout="row">
+                                <div layout="row" class="vital-input-div" flex>
+                                    <label translate>{{'nursingAssessmentForm.Temperature'}}</label>
+                                    <input type="tel" ng-model="item.Temperature">
+                                </div>
+                                <div layout="row" class="vital-input-div" flex>
+                                    <label translate>{{'nursingAssessmentForm.Pulse'}}</label>
+                                    <input type="tel" ng-model="item.Pulse">
+                                </div>
+                                <div layout="row" class="vital-input-div" flex>
+                                    <label translate>{{'nursingAssessmentForm.Respiration'}}</label>
+                                    <input type="tel" ng-model="item.Respiration">
+                                </div>
+                            </div>
+                        </div>
+                        <i class="material-icons delete-btn" ng-click="$ctrl.deletePostVitalSign($index)" ng-if="$ctrl.nAFDataObj.PostVitalSign.length !== 1">clear</i>
+                    </div>
+                    <div layout="row" layout-align="end center">
+                        <md-button class="md-primary" ng-click="$ctrl.addPostVitalSign()" ng-hide="$ctrl.nAFDataObj.PostVitalSign.length === 3">{{'overview.addOneData' | translate}}</md-button>
+                    </div>
+                    <!-- <div class="inputboxflex itemList">
+                        <input placeholder="" ng-model="$ctrl.nAFDataObj.Blood_Pressure">
+                    </div> -->
+                </div>
+                <h3 translate>導管出口評估</h3>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>導管出口</label>
+                    </div> 
+                    <div class="inputboxflex itemList">
+                        <md-checkbox ng-repeat="si in $ctrl.CatheterEvaluates" ng-checked="si.Check"
+                            ng-click="$ctrl.OneSelect_All_disabled_Check('CatheterEvaluates', $index)" ng-disabled="si.disabled">
+                            {{si.Text}}
+                        </md-checkbox>
+                        <div class="inputboxflex autoWidth" ng-show="$ctrl.CatheterEvaluates[4].Check == true">
+                            第<input ng-model="$ctrl.Catheter_Outlet_Times" ng-disabled="$ctrl.Catheter_Outlet_Times_disabled" class="txtSS">次
+                        </div>
+                        <div class="inputboxflex autoWidth">
+                            <md-checkbox ng-model="$ctrl.CatheterEvaluates_Other" aria-label="其他">
+                                其他
+                            </md-checkbox>
+                            <input type="text" ng-if="$ctrl.CatheterEvaluates_Other" ng-model="$ctrl.nAFDataObj.Catheter_Evaluate_Other">
+                        </div>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>分泌物</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-radio-group class="radioGroup" ng-model="$ctrl.nAFDataObj.Secretion_Yn">
+                            <md-radio-button value="N">無分泌物</md-radio-button>
+                            <md-radio-button value="Y">有分泌物</md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+                <div class="inputbox" ng-if="$ctrl.nAFDataObj.Secretion_Yn == 'Y'">
+                    <div class="inputBoxTit titItem">
+                        <label translate>性狀</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-input-container-flat class="md-block" >
+                            <md-checkbox ng-repeat="si in $ctrl.SecretionVolume" ng-checked="si.Check"
+                                ng-click="$ctrl.checkTheBox('SecretionVolume', $index)">
+                                {{si.Text}}
+                            </md-checkbox>
+                            <md-checkbox ng-repeat="si in $ctrl.SecretionTrait" ng-checked="si.Check"
+                                ng-click="$ctrl.checkTheBox('SecretionTrait', $index)">
+                                {{si.Text}}
+                            </md-checkbox>
+                            <div class="inputboxflex autoWidth">
+                                <md-checkbox ng-model="$ctrl.Secretion_Y_Other" aria-label="其他">
+                                    其他
+                                </md-checkbox>
+                                <input type="text" ng-if="$ctrl.Secretion_Y_Other" ng-model="$ctrl.nAFDataObj.Secretion_Y_Other">
+                            </div>
+                        </md-input-container-flat>
+                    </div>
+                </div>
+                <div class="inputbox" ng-if="$ctrl.nAFDataObj.Secretion_Yn == 'Y'">
+                    <div class="inputBoxTit titItem">
+                        <label translate>顏色</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-checkbox ng-repeat="si in $ctrl.SecretionColor" ng-checked="si.Check" ng-disabled="si.disabled"
+                            ng-click="$ctrl.OneSelect_All_disabled_Check('SecretionColor', $index)">
+                            {{si.Text}}
+                        </md-checkbox>
+                        <div class="inputboxflex autoWidth">
+                            <md-checkbox ng-model="$ctrl.Secretion_Color_Other_Chk" aria-label="其他">
+                                其他
+                            </md-checkbox>
+                            <input type="text" ng-if="$ctrl.Secretion_Color_Other_Chk" ng-model="$ctrl.nAFDataObj.Secretion_Color_Other">
+                        </div>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>感染狀態描述</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-checkbox ng-repeat="si in $ctrl.DescriptionInfectionStatus" ng-checked="si.Check"
+                            ng-click="$ctrl.checkTheBox('DescriptionInfectionStatus', $index)">
+                            {{si.Text}}
+                        </md-checkbox>
+                        <div class="inputboxflex autoWidth">
+                            <md-checkbox ng-model="$ctrl.Description_Infection_Status_Othe_Chk" aria-label="其他">
+                                其他
+                            </md-checkbox>
+                            <input type="text" ng-if="$ctrl.Description_Infection_Status_Othe_Chk" ng-model="$ctrl.nAFDataObj.Description_Infection_Other">
+                        </div>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>其他</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input type="text"  ng-model="$ctrl.nAFDataObj.Symptoms_Other">
+                    </div>
+                </div>
+                <h3 translate>透析液評估</h3>                
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>性質</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <div>
+                            <md-checkbox ng-repeat="FEP in $ctrl.FluidEvalProperties1" ng-checked="FEP.Check"
+                                ng-click="$ctrl.checkTheBox('FluidEvalProperties1', $index)">
+                                {{FEP.Text}}
+                            </md-checkbox>
+                            <div class="inputboxflex autoWidth" ng-if="$ctrl.FluidEvalProperties1[3].Check">
+                                <input ng-model="$ctrl.nAFDataObj.Fluid_Eval_Avg_Dehydrate">mL
+                            </div>                        
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <md-checkbox ng-repeat="FEP in $ctrl.FluidEvalProperties2" ng-checked="FEP.Check"
+                                ng-click="$ctrl.checkTheBox('FluidEvalProperties2', $index)">
+                                {{FEP.Text}}
+                            </md-checkbox>
+                            <div class="inputboxflex autoWidth" ng-if="$ctrl.FluidEvalProperties2[3].Check">
+                                第<input ng-model="$ctrl.nAFDataObj.Fluid_Eval_Times"  class="txtSS">次
+                            </div>  
+                        </div>
+                        <!-- <md-select ng-model="$ctrl.nAFDataObj.Fluid_Eval_Properties">
+                        <md-option ng-repeat="FEP in $ctrl.FluidEvalProperties" value="{{FEP}}">{{FEP}}</md-option>
+                    </md-select> -->
+                        <!--<div style="display:inline-block">
+                            <input ng-model="$ctrl.nAFDataObj.Fluid_Eval_Avg_Dehydrate">mL
+                        </div>
+                        <div ng-if="!$ctrl.CheckShowDiv('FluidEvalProperties','腹膜炎感染')"
+                            style="display:inline-block">
+                            第<input ng-model="$ctrl.nAFDataObj.Fluid_Eval_Times">次<br />
+                        </div>-->
+                    </div>
+                </div>              
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>顏色</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-input-container-flat class="md-block">
+                            <md-checkbox ng-repeat="FEC in $ctrl.FluidEvalColor" ng-checked="FEC.Check"
+                                ng-click="$ctrl.checkTheBox('FluidEvalColor', $index)">
+                                {{FEC.Text}}
+                            </md-checkbox>
+                            <div class="inputboxflex autoWidth">
+                                <md-checkbox ng-model="$ctrl.Fluid_Eval_Color_Other_Chk" aria-label="Checkbox 1">
+                                    其他
+                                </md-checkbox>
+                                <input type="text" ng-if="$ctrl.Fluid_Eval_Color_Other_Chk" ng-model="$ctrl.nAFDataObj.Fluid_Eval_Color_Other">
+                            </div>
+                        </md-input-container-flat>
+                    </div>
+                </div>
+                <h3 translate>身體評估-水腫評估</h3>                
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>程度</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        {{self.nAFDataObj.Edema_Eval_Degree}}
+                        <md-input-container-flat class="md-block">
+                            <md-radio-group class="radioGroup" ng-model="$ctrl.nAFDataObj.Edema_Eval_Degree" >
+                                <md-radio-button ng-repeat="EED in $ctrl.EdemaEvalDegree" value="{{EED.Text}}">{{EED.Text}}</md-radio-button>
+                            </md-radio-group>
+                        </md-input-container-flat>
+                        <!-- <md-select ng-model="$ctrl.nAFDataObj.Edema_Eval_Degree">
+                        <md-option ng-repeat="EED in $ctrl.EdemaEvalDegree" value="{{EED}}">{{EED}}</md-option>
+                    </md-select> -->
+                    </div>
+                </div>              
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>部位</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-input-container-flat class="md-block">
+                            <md-checkbox ng-repeat="EES in $ctrl.EdemaEvalSite" ng-checked="EES.Check"
+                                ng-click="$ctrl.checkTheBox('EdemaEvalSite', $index)">
+                                {{EES.Text}}
+                            </md-checkbox>
+                        </md-input-container-flat>
+                        <!-- <md-select ng-model="$ctrl.nAFDataObj.Edema_Eval_Site">
+                        <md-option ng-repeat="EES in $ctrl.EdemaEvalSite" value="{{EES}}">{{EES}}</md-option>
+                    </md-select> -->
+                    </div>
+                </div>
+                <h3 translate>身體評估-呼吸狀況評估</h3> 
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>評估</label>
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <div class="inputBg">
+                            <md-input-container-flat class="md-block">
+                                <md-checkbox ng-repeat="RSE in $ctrl.RespiratoryStatusEvaluate" ng-checked="RSE.Check" ng-disabled="RSE.disabled" 
+                                    ng-click="$ctrl.OneSelect_All_disabled_Check('RespiratoryStatusEvaluate', $index)">
+                                    {{RSE.Text}}
+                                </md-checkbox>
+                            </md-input-container-flat>
+                            <!-- <md-select ng-model="$ctrl.nAFDataObj.Respiratory_Status_Evaluate">
+                            <md-option ng-repeat="RSE in $ctrl.RespiratoryStatusEvaluate" value="{{RSE}}">{{RSE}}</md-option>
+                        </md-select> -->
+                        </div>
+                    </div>
+                </div>
+                <h3 translate>身體評估-皮膚狀況評估</h3>  
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>外觀</label>
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <md-input-container-flat class="md-block">
+                            <md-checkbox ng-repeat="skinEA in $ctrl.SkinEvalAppearance" ng-checked="skinEA.Check" ng-disabled="skinEA.disabled"
+                                ng-click="$ctrl.OneSelect_All_disabled_Check('SkinEvalAppearance', $index)">
+                                {{skinEA.Text}}
+                            </md-checkbox>
+                        </md-input-container-flat>
+                        <!-- <md-select ng-model="$ctrl.nAFDataObj.Skin_Eval_Appearance">
+                        <md-option ng-repeat="skinEA in $ctrl.SkinEvalAppearance" value="{{skinEA}}">{{skinEA}}</md-option>
+                    </md-select> -->
+                    </div>
+                </div> 
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>顏色</label>
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <md-input-container-flat class="md-block">
+                            <md-checkbox ng-repeat="skinEColor in $ctrl.SkinEvalColor" ng-checked="skinEColor.Check"
+                                ng-click="$ctrl.checkTheBox('SkinEvalColor', $index)">
+                                {{skinEColor.Text}}
+                            </md-checkbox>
+                        </md-input-container-flat>
+                        <!-- <md-select ng-model="$ctrl.nAFDataObj.Skin_Eval_Color">
+                        <md-option ng-repeat="skinEColor in $ctrl.SkinEvalColor" value="{{skinEColor}}">{{skinEColor}}</md-option>
+                    </md-select> -->
+                    </div>
+                </div> 
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>完整</label>
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <md-radio-group class="radioGroup" ng-model="$ctrl.nAFDataObj.Skin_Eval_Complete">
+                            <md-radio-button value="Y">是</md-radio-button>
+                            <md-radio-button value="N">否</md-radio-button>
+                        </md-radio-group>
+                        <md-input-container-flat class="md-block" ng-if="$ctrl.nAFDataObj.Skin_Eval_Complete == 'N'">
+                            <md-checkbox ng-repeat="skinEC in $ctrl.SkinEvalCompleteness" ng-checked="skinEC.Check"
+                                ng-click="$ctrl.checkTheBox('SkinEvalCompleteness', $index)">
+                                {{skinEC.Text}}
+                            </md-checkbox>
+                            <div class="inputboxflex autoWidth">
+                                <md-checkbox ng-model="$ctrl.Skin_Eval_Complete_Other" aria-label="其他">
+                                    其他
+                                </md-checkbox>
+                                <input type="text" ng-if="$ctrl.Skin_Eval_Complete_Other" ng-model="$ctrl.nAFDataObj.Skin_Eval_Complete_Other">
+                            </div>
+                        </md-input-container-flat>
+                        <!-- <md-select ng-if="$ctrl.nAFDataObj.Skin_Eval_Complete == 'Yes'" ng-model="$ctrl.nAFDataObj.Skin_Eval_Completeness">
+                        <md-option ng-repeat="skinEC in $ctrl.SkinEvalComplete" value="{{skinEC}}">{{skinEC}}</md-option>
+                    </md-select> -->
+                    </div>
+                </div> 
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>受損部位</label>
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <md-input-container-flat class="md-block">
+                            <md-checkbox ng-repeat="skinEDS in $ctrl.SkinEvalDamagedSite" ng-checked="skinEDS.Check"
+                                ng-click="$ctrl.checkTheBox('SkinEvalDamagedSite', $index)">
+                                {{skinEDS.Text}}
+                            </md-checkbox>
+                        </md-input-container-flat>
+                        <!-- <md-select ng-model="$ctrl.nAFDataObj.Skin_Eval_Damaged_Site">
+                        <md-option ng-repeat="skinEDS in $ctrl.SkinEvalDamagedSite" value="{{skinEDS}}">{{skinEDS}}</md-option>
+                    </md-select> -->
+                    </div>
+                </div>             
+                <h3>身體評估-腸胃道評估</h3>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>食慾</label>
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <md-input-container-flat class="md-block">
+                            <md-checkbox ng-repeat="giEA in $ctrl.GiEvalAppetite" ng-checked="giEA.Check" ng-disabled="giEA.disabled"
+                                ng-click="$ctrl.OneSelect_All_disabled_Check('GiEvalAppetite', $index)">
+                                {{giEA.Text}}
+                            </md-checkbox>
+                        </md-input-container-flat>
+                        <!-- <md-select ng-model="$ctrl.nAFDataObj.Gi_Eval_Appetite">
+                        <md-option ng-repeat="giEA in $ctrl.GiEvalAppetite" value="{{giEA}}">{{giEA}}</md-option>
+                    </md-select> -->
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>排泄</label>
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <md-input-container-flat class="md-block">
+                            <md-checkbox ng-repeat="giEE in $ctrl.GiEvalExcretion" ng-checked="giEE.Check" ng-disabled="giEE.disabled"
+                                ng-click="$ctrl.OneSelect_All_disabled_Check('GiEvalExcretion', $index)">
+                                {{giEE.Text}}
+                            </md-checkbox>
+                        </md-input-container-flat>
+                        <!-- <md-select ng-model="$ctrl.nAFDataObj.Gi_Eval_Excretion">
+                        <md-option ng-repeat="giEE in $ctrl.GiEvalExcretion" value="{{giEE}}">{{giEE}}</md-option>
+                    </md-select> -->
+                    </div>
+                </div>
+                <h3>跌倒評估</h3>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>總分</label>
+                    </div>
+                    <div class="inputboxflex itemList autoWidth" >
+                        <input style="width:80px;" ng-model="$ctrl.nAFDataObj.High_Risk_Fall_Eval_Score" readonly>分
+                        <div class="inputboxflex autoWidth">
+                            <input placeholder="跌倒評估日期" min="1900-01-01" max="2999-12-31" ng-model="$ctrl.nAFDataObj.High_Risk_Fall_Eval_Date" type="date" readonly>
+                        </div>
+                    </div>
+                </div>
+                <h3>護理指導</h3>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>指導對象</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-checkbox ng-repeat="si in $ctrl.Targetpersontype" ng-checked="si.Check" ng-disabled="si.disabled"
+                            ng-click="$ctrl.checkTheBox('Targetpersontype', $index)">
+                            {{si.Text}}
+                        </md-checkbox>
+                        <div class="inputboxflex autoWidth" style="margin-left:13px;">
+                            <md-checkbox ng-model="$ctrl.Targetpersontype_Chk" aria-label="其他">
+                                其他
+                            </md-checkbox>
+                            <input type="text" ng-if="$ctrl.Targetpersontype_Chk" ng-model="$ctrl.nAFDataObj.Targetpersontype_Other">
+                        </div>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>指導方式</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-checkbox ng-repeat="si in $ctrl.Guideways" ng-checked="si.Check" ng-disabled="si.disabled"
+                            ng-click="$ctrl.checkTheBox('Guideways', $index)">
+                            {{si.Text}}
+                        </md-checkbox>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>評值結果</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-checkbox ng-repeat="si in $ctrl.Answers" ng-checked="si.Check" ng-disabled="si.disabled"
+                            ng-click="$ctrl.checkTheBox('Answers', $index)">
+                            {{si.Text}}
+                        </md-checkbox>
+                    </div>
+                </div>           
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>導管出口照護</label>
+                        <!-- <md-checkbox ng-model="$ctrl.Self_Guid_Catheter_Yn" aria-label="導管出口照護">導管出口照護
+                        </md-checkbox> -->
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <md-checkbox ng-repeat="selfGC in $ctrl.SelfGuidCatheter" ng-checked="selfGC.Check"
+                            ng-click="$ctrl.checkTheBox('SelfGuidCatheter', $index)">
+                            {{selfGC.Text}}
+                        </md-checkbox>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>透析液加Heparin</label>
+                        <!-- <md-checkbox ng-model="$ctrl.Self_Guid_Fluid_Check_Yn" aria-label="透析液檢查">透析液檢查
+                        </md-checkbox> -->
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <md-radio-group class="radioGroup" ng-model="$ctrl.nAFDataObj.Self_Guid_Fluid_Heparin_Yn">
+                            <md-radio-button value="Y">是</md-radio-button>
+                            <md-radio-button value="N">否</md-radio-button>
+                        </md-radio-group>
+                        <div class="inputboxflex autoWidth" ng-show="$ctrl.nAFDataObj.Self_Guid_Fluid_Heparin_Yn == 'Y'" >
+                            <input placeholder=""
+                            ng-model="$ctrl.Self_Guid_Fluid_Heparin" >IU
+                                處方日期:<input placeholder="CAPD RDER DATE" ng-model="$ctrl.Capd_Rder_Date" type="date" min="1900-01-01" max="2999-12-31">
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        
+                    </div>
+                    <div class="inputboxflex itemList autoWidth" >
+                        <md-checkbox ng-model="$ctrl.Self_Guid_Fluid_Heparin_Yn" aria-label="透析液加heparin">透析液加heparin
+                            </md-checkbox>
+                        <div class="inputboxflex autoWidth" ng-show="$ctrl.Self_Guid_Fluid_Heparin_Yn" >
+                            <input placeholder="透析液加heparin_____IU"
+                            ng-model="$ctrl.nAFDataObj.Self_Guid_Fluid_Heparin" >IU
+                                處方日期:<input placeholder="CAPD RDER DATE" ng-model="$ctrl.nAFDataObj.Capd_Rder_Date" type="date">
+                        </div>
+                    </div>
+                </div> -->
+                <!-- <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <md-checkbox ng-model="$ctrl.Self_Guid_Water_Ctrl_Yn" aria-label="水分攝取控制">水分攝取控制
+                            </md-checkbox>
+                        <div class="inputboxflex autoWidth" ng-show="$ctrl.Self_Guid_Water_Ctrl_Yn" >
+                            限水<input ng-model="$ctrl.nAFDataObj.Self_Guid_Water_Ctrl">ml/day
+                        </div>
+                    </div>
+                </div> -->
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>飲食</label>
+                        <!-- <md-checkbox ng-model="$ctrl.Self_Guid_Diet_Yn" aria-label="飲食">飲食</md-checkbox> -->
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <md-checkbox ng-repeat="selfGD in $ctrl.SelfGuidDiet" ng-checked="selfGD.Check"
+                            ng-click="$ctrl.checkTheBox('SelfGuidDiet', $index)">
+                            {{selfGD.Text}}
+                        </md-checkbox>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>日常生活</label>
+                        <!-- <md-checkbox ng-model="$ctrl.Self_Guid_Dailylife_Yn" aria-label="日常生活">日常生活
+                            </!-->
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <md-checkbox ng-repeat="selfGDlife in $ctrl.SelfGuidDailylife" ng-checked="selfGDlife.Check"
+                            ng-click="$ctrl.checkTheBox('SelfGuidDailylife', $index)">
+                            {{selfGDlife.Text}}
+                        </md-checkbox>
+                        <div class="inputboxflex autoWidth" ng-show="$ctrl.SelfGuidDailylife[6].Check" >
+                            限水<input ng-model="$ctrl.nAFDataObj.Self_Guid_Water_Ctrl">ml/day
+                        </div>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>透析記錄本評值</label>
+                        <!-- <md-checkbox ng-model="$ctrl.Self_Guid_Record_Book_Eval_Yn" aria-label="透析記錄本評值">
+                                透析記錄本評值</md-checkbox> -->
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <md-radio-group class="radioGroup" ng-model="$ctrl.nAFDataObj.Self_Guid_Record_Book_Eval_Yn">
+                            <md-radio-button value="Y">有</md-radio-button>
+                            <md-radio-button value="N">無</md-radio-button>
+                        </md-radio-group>
+                        <md-checkbox ng-show="$ctrl.nAFDataObj.Self_Guid_Record_Book_Eval_Yn == 'N'" ng-repeat="selfGRB in $ctrl.SelfGuidRecordBookEval" ng-checked="selfGRB.Check"
+                            ng-click="$ctrl.checkTheBox('SelfGuidRecordBookEval', $index)">
+                            {{selfGRB.Text}}
+                        </md-checkbox>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>需立即就醫情況</label>
+                        <!-- <md-checkbox ng-model="$ctrl.Self_Guid_Immediate_Treatment" aria-label="需立即就醫情況">
+                                需立即就醫情況</md-checkbox> -->
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <md-radio-group class="radioGroup" ng-model="$ctrl.nAFDataObj.Self_Guid_Immediate_Treatment">
+                            <md-radio-button value="Y">是</md-radio-button>
+                            <md-radio-button value="N">否</md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+                <!-- <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate></label>
+                        <md-checkbox ng-model="$ctrl.Self_Guid_Other_Yn" aria-label="其他">其他
+                            </md-checkbox>
+                    </div>
+                    <div class="inputboxflex itemList autoWidth" ng-if="$ctrl.Self_Guid_Other_Yn">
+                        <input placeholder="" ng-model="$ctrl.nAFDataObj.Self_Guid_Other">
+                    </div>
+                </div> -->
+                <h3>護理記錄</h3>
+                <md-input-container-flat class="md-block">
+                    <textarea id="Content" name="Content" ng-model="$ctrl.nAFDataObj.Nursing_Records"
+                    style="min-height: 80px; width: 100%;" rows="7" placeholder="請填寫護理紀錄" >
+                    </textarea>
+                </md-input-container-flat>
+                <md-button ng-click="$ctrl.isOpenRight()" class="md-primary">
+                    {{'allNursingRecord.nursingRecord.insertPhrase' | translate}}
+                </md-button>
+                <md-button class="md-button md-ink-ripple ng-empty ng-valid" ngf-select="$ctrl.uploadImage()" ng-model="$ctrl.data.Photo" name="photo" accept="image/*" ngf-fix-orientation="true" ngf-multiple="true" ngf-resize="{centerCrop: true}}">
+                    <md-icon style="color: rgba(0,0,0,0.54);" class="material-icons">camera_alt</md-icon>
+                </md-button>
+                <div layout-gt-sm="column" layout-margin>
+                    <img ng-show="$ctrl.loadingPicture" height="16px" width="16px" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                    <div id="divData" style="position:relative; display:flex; flex-wrap:wrap" ng-if="$ctrl.imagesData.length > 0">
+                        <div ng-repeat="imageDate in $ctrl.imagesData" style="position: relative; padding-bottom: 15px; flex: 5%">
+                                <!--ng-src="{{$ctrl.Url}}/Upload/GetImage/{{imageDate.Image}}_small"-->
+                                <!-- <img id="img" ng-src="imageDate" hm-tap="$ctrl.openImage(imageDate.Image);" hm-press="$ctrl.deleteImage($event, $index)" style="width: 200px; height: 200px; border-style: solid; border-width: 1px;" /> -->
+                                <img id="img" ng-src="{{imageDate.Image}}"  style="width: 200px; height: 200px; border-style: solid; border-width: 1px;" />                
+                                <i class="material-icons delete-btn" ng-click="$ctrl.deleteImage($index)">clear</i>
+                        <!-- <div ng-class="photo_{{imageDate.Id}}">{{imageDate.UploadDate}}</div> -->
+                        </div>
+                    </div>
+                </div>
+                <div  row-warp layout="row" layout-sm="column" layout-xs="column">
+                    <div flex="30" flex-xs="100"  ng-show="$ctrl.nAFDataObj.CreatedUserName">
+                        <!-- <span>建立: {{ $ctrl.regForm.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                        <span translate="nursingAssessmentForm.createdTime"
+                                translate-values='{CreatedTime: $ctrl.nAFDataObj.CreatedTime}'></span>
+                        <seal model="$ctrl.nAFDataObj" modified="none"></seal>
+                    </div>
+                    <div flex="30" flex-xs="100" ng-show="$ctrl.nAFDataObj.ModifiedTime != null">
+                        <!-- <span>修改: {{ $ctrl.regForm.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                        <span translate="nursingAssessmentForm.editedTime"
+                                translate-values='{ModifiedTime: $ctrl.nAFDataObj.ModifiedTime}'></span>
+                        <seal model="$ctrl.nAFDataObj" created="none"></seal>
+                    </div>
+                    <div flex="40" flex-xs="100" ng-show="$ctrl.nAFDataObj.Emr_Modify_Time_Nurse != null">
+                        <span translate="nursingAssessmentForm.exportEMRTime"
+                                translate-values='{ExportEMRTime: $ctrl.nAFDataObj.Emr_Modify_Time_Nurse}'></span>
+                        <seal created="none" modified="hideIfSame"
+                        label="{{$ctrl.nAFDataObj.Emr_Modify_Userid_Nurse}}"></seal>
+                    </div>
+                </div>
+                <!-- <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate></label>
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <input placeholder="常用片語帶入" ng-model="$ctrl.nAFDataObj.Nursing_Records">
+                    </div>
+                </div> -->
+                <!--<pre>
+                    {{$ctrl.nAFDataObj}}
+                </pre>-->
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions row-warp layout="row" ng-hide="$ctrl.nAFDataObj.Status == 'Deleted'" class="no-print">
+            <div layout="row" layout-align="end center">
+                <md-button class="btn1" ng-show="!$ctrl.nAFDataObj.isCreate && !$ctrl.nAFDataObj.isCopy" ng-click="$ctrl.exportEMR($event,'UTF8')" >
+                    {{'nursingAssessmentForm.dialog.exportEMR' | translate}}
+                </md-button>
+                <md-button class="md-raised" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.cancel()">
+                    {{'nursingAssessmentForm.dialog.cancel' | translate}}
+                </md-button>
+                <md-button class="md-raised md-primary" ng-click="$ctrl.ok()" >
+                    {{$ctrl.nAFDataObj.isCreate ? 'nursingAssessmentForm.dialog.create' : 'nursingAssessmentForm.dialog.edit' | translate}}
+                </md-button>
+            </div>
+        </md-dialog-actions>
+    </form>
+    <phrase id="phrase" callback="$ctrl.phraseInsertCallback(word)"></phrase>
+</md-dialog>

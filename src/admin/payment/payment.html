@@ -1,0 +1,69 @@
+<style scoped>
+    payment {
+        height: 100%;
+    }
+
+    div.deleted {
+        background-color: rgba(10, 10, 10, 0.2);
+        position: absolute;
+        height: 100%;
+        width: 100%;
+    }
+</style>
+<md-content layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.openLeftMenu()" hide-gt-sm>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <h3 translate="payment.pageTitle"></h3>
+        </div>
+    </md-toolbar>
+    <div class="list-header" ng-show="!vm.loading && !vm.isError">
+        <span translate="payment.totalRecord" translate-values='{total: vm.payments.length}'></span>
+        <span flex></span>
+        <!--共 {{(vm.payments|filter:vm.search).length}} 筆
+        <input type="text" ng-model="vm.search" ng-show="false" />
+        <md-switch ng-model="vm.showDelete" ng-change="vm.changeSearch()" aria-label="show deleted">
+            顯示已刪除項目
+        </md-switch>
+        <md-icon>
+            <i class="material-icons">search</i>
+        </md-icon>
+        <input type="text" ng-model="search" placeholder="搜尋使用者" />-->
+    </div>
+    <md-content layout-fill flex>
+        <loading ng-show="vm.loading"></loading>
+        <div flex ng-show="vm.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate="customMessage.serverError"></h3>
+        </div>
+        <div ng-show="!vm.loading && !vm.isError">
+            <div ng-show="vm.payments && vm.payments.length == 0" layout="column" layout-fill layout-align="center center" flex>
+                <i class="fa fa-file-o"></i>
+                <h3 translate="customMessage.noData"></h3>
+            </div>
+            <md-list ng-show="vm.payments && vm.payments.length > 0">
+                <md-list-item>
+                    <div layout="row" layout-fill>
+                        <span flex=25 translate="payment.name"></span>
+                        <span flex=15 translate="payment.pricingMethod"></span>
+                        <span flex=15 translate="payment.totalAmount"></span>
+                        <span flex=25 translate="payment.startend"></span>
+                        <span flex=15 translate="payment.state"></span>
+                    </div>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-list-item>
+                <md-list-item ng-repeat="u in vm.payments | orderBy:'-StartDate'" ng-click="vm.gotoPaymentDetail(u.Id)">
+                    <div layout="row" layout-fill>
+                        <span flex=25>{{u.Name}}</span>
+                        <span flex=15>{{vm.showMethod(u.PricingMethod)}}</span>
+                        <span flex=15>{{u.TotalAmount}}</span>
+                        <span flex=25>{{u.StartDate | date:'yyyy/MM/dd'}}~{{u.EndDate | date:'yyyy/MM/dd'}}</span>
+                        <span flex=15>{{u.State}}</span>
+                    </div>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-list-item>
+            </md-list>
+        </div>
+    </md-content>
+</md-content>

@@ -1,0 +1,125 @@
+<style scoped>
+    phrase-detail {
+        height: 100%;
+    }
+
+    .ellipsis {
+        text-overflow : ellipsis;
+        width : 200px;
+    }
+
+    i {
+        padding-right: 20px;
+    }
+
+    span:hover {
+        cursor: pointer;
+    }
+</style>
+
+<md-content layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h3 ng-repeat="b in vm.breadcrumb">
+                <span ng-click="vm.changeState(b.Url)">
+                    <md-icon md-svg-src="static/img/svg/tabs-arrow.svg" aria-label="Close dialog"></md-icon>
+                    {{ vm.showBreadcrumb(b.Name) }}
+                </span>
+            </h3>
+        </div>
+    </md-toolbar>
+    <md-content layout-fill flex>
+        <div layout="row">
+            <div>
+                <md-button class="md-raised md-primary" ng-click="vm.showCategoryDialog($event, 'add')"><span translate>{{'phrase.addCatalogbutton'}}</span></md-button>
+                <md-button class="md-raised md-primary" ng-click="vm.showPhraseDialog($event, 'add')"><span translate>{{'phrase.addPhrasebutton'}}</span></md-button>
+            </div>
+            <span flex></span>
+            <div>
+                <md-switch ng-model="vm.showDelete" aria-label="show deleted">
+                    <span translate="phrase.showDelete"></span>
+                </md-switch>
+            </div>
+        </div>
+        <loading ng-show="vm.loading"></loading>
+        <div flex ng-show="vm.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate="customMessage.serverError"></h3>
+        </div>
+        <div ng-show="!vm.loading && !vm.isError">
+            <div ng-show="((vm.phrase.phrase.length === 0 && vm.phrase.category.length === 0) || (vm.deletedPhraseCount === vm.phrase.phrase.length && vm.deletedCategoryCount === vm.phrase.category.length && !vm.showDelete))" layout="column" layout-fill layout-align="center center" flex>
+                <i class="fa fa-file-o"></i>
+                <h3 translate="customMessage.noData"></h3>
+            </div>
+            <md-list>
+                <div ng-repeat="c in vm.phrase.category">
+                    <md-list-item ng-click="vm.gotoPhrase(c.WardId, c.Id)" ng-show="c.Status === 'Normal'">
+                        <div layout="row" layout-fill>
+                            <div flex=5><i class="material-icons">folder</i></div>
+                            <div flex=15><span translate="phrase.kind"></span> : <span translate="phrase.catalog"></div>
+                            <div flex=65 class="ellipsis"><span translate="phrase.name"></span>: {{ c.Name }}</div>
+                            <div flex=15>
+	                            <md-button class="md-raised md-primary" ng-click="vm.showCategoryDialog($event, c)"><span translate>{{'phrase.editbutton'}}</span></md-button>
+	                            <md-button class="md-raised md-warn" ng-click="vm.showDeleteDialog($event, 'PhraseCategory', c)"><span translate>{{'phrase.deletebutton'}}</span></md-button>
+                            </div>
+                        </div>
+                        <md-divider></md-divider>
+                    </md-list-item>
+                </div>
+                <div ng-repeat="p in vm.phrase.phrase">
+                    <md-list-item ng-click="vm.gotoPhrase(c.WardId, c.Id)" ng-disabled="true" ng-show="p.Status === 'Normal'">
+                        <div layout="row" layout-fill>
+                            <div flex=5><i class="material-icons">event_note</i></div>
+                            <div flex=15><span translate="phrase.kind"></span>: <span translate="phrase.phrase"></span></div>
+                            <div flex=20 class="ellipsis"><span translate="phrase.name"></span>: {{ p.Title }}</div>
+                            <div flex=45 class="ellipsis"><span translate="phrase.cont"></span>: {{ p.Content }}</div>
+                            <div flex=15>
+	                            <md-button class="md-raised md-primary" ng-click="vm.showPhraseDialog($event, p)"><span translate>{{'phrase.editbutton'}}</span></md-button>
+        	                    <md-button class="md-raised md-warn" ng-click="vm.showDeleteDialog($event, 'Phrase', p)"><span translate>{{'phrase.deletebutton'}}</span></md-button>
+                            </div>
+                        </div>
+                        <md-divider></md-divider>
+                    </md-list-item>
+                </div>
+                <div ng-repeat="c in vm.phrase.category">
+                    <md-list-item class="md-2-line" ng-click="true" ng-disabled="true" ng-show="c.Status === 'Deleted' && vm.showDelete">
+                        <div layout="row" layout-fill>
+                            <div flex=5><i class="material-icons">folder</i></div>
+                            <div flex=15><span translate="phrase.kind"></span>: <span translate="phrase.catalog"></div>
+                            <div flex=65 class="ellipsis"><span translate="phrase.name"></span>: {{ c.Name }}</div>
+                            <div flex=15>
+	                            <md-button class="md-raised md-warn" ng-click="vm.revert($event, 'PhraseCategory', c)"><span translate>{{'phrase.recoverbutton'}}</span></md-button>
+                            </div>
+                        </div>
+                        <md-divider></md-divider>
+                    </md-list-item>
+                </div>
+                <div ng-repeat="p in vm.phrase.phrase">
+                    <md-list-item class="md-2-line" ng-click="true" ng-disabled="true" ng-show="p.Status === 'Deleted' && vm.showDelete">
+                        <div layout="row" layout-fill>
+                            <div flex=5><i class="material-icons">event_note</i></div>
+                            <div flex=15><span translate="phrase.kind"></span>: <span translate="phrase.phrase"></span></div>
+                            <div flex=20 class="ellipsis"><span translate="phrase.name"></span>: {{ p.Title }}</div>
+                            <div flex=45 class="ellipsis"><span translate="phrase.cont"></span>: {{ p.Content }}</div>
+                            <div flex=15>
+                                <md-button class="md-raised md-warn" ng-click="vm.revert($event, 'Phrase', p)"><span translate>{{'phrase.recoverbutton'}}</span></md-button>
+                            </div>
+                        </div>
+                        <md-divider></md-divider>
+                    </md-list-item>
+                </div>
+            </md-list>
+        </div>
+        <div layout="row">
+            <div>
+                <md-button class="md-raised md-primary" ng-click="vm.showCategoryDialog($event, 'add')"><span translate>{{'phrase.addCatalogbutton'}}</span></md-button>
+                <md-button class="md-raised md-primary" ng-click="vm.showPhraseDialog($event, 'add')"><span translate>{{'phrase.addPhrasebutton'}}</span></md-button>
+            </div>
+            <span flex></span>
+            <div>
+                <md-switch ng-model="vm.showDelete" aria-label="show deleted">
+                    <span translate="phrase.showDelete"></span>
+                </md-switch>
+            </div>
+        </div>
+    </md-content>
+</md-content>

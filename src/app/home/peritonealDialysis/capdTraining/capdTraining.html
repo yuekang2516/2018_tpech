@@ -1,0 +1,108 @@
+<md-content layout="column" layout-fill flex>
+    <loading ng-show="$ctrl.loading"></loading>
+    <div ng-show="$ctrl.isError" layout="column" layout-fill layout-align="center center">
+        <h3 translate="customMessage.serverError"></h3>
+    </div>
+    <div class="contentDetail">
+        <form name="editForm">
+            <div class="dataList formApd">
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>{{'capdTraining.BloodPressureCtrl' | translate}}</label>
+                        <!--血壓控制-->
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <textarea ng-model="$ctrl.capdDataObj.Blood_Pressure_Ctrl" name="BloodPressureCtrl"
+                            required>{{'$ctrl.capdDataObj.Blood_Pressure_Ctrl'}}</textarea>
+                        <div ng-messages="editForm.BloodPressureCtrl.$error"
+                            ng-show="editForm.BloodPressureCtrl.$dirty">
+                            <div ng-message="required" class="clrRequired">必填選項</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>{{'capdTraining.CAPDPrinciple' | translate}}</label>
+                        <!--CAPD原理-->
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <textarea ng-model="$ctrl.capdDataObj.CAPD_Principle"
+                            name="CAPDPrinciple">{{'$ctrl.capdDataObj.CAPD_Principle'}}</textarea>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>{{'capdTraining.TreatmentComplications' | translate}}</label>
+                        <!--合併症處理方法-->
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <textarea ng-model="$ctrl.capdDataObj.Treatment_Complications"
+                            name="TreatmentComplications">{{'$ctrl.capdDataObj.Treatment_Complications'}}</textarea>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>{{'capdTraining.WeightMeas' | translate}}</label>
+                        <!--體重測量-->
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <textarea ng-model="$ctrl.capdDataObj.Weight_Meas"
+                            name="WeightMeas">{{'$ctrl.capdDataObj.Weight_Meas'}}</textarea>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>{{'capdTraining.BloodPressureMeas' | translate}}</label>
+                        <!--血壓測量-->
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <textarea ng-model="$ctrl.capdDataObj.Blood_Pressure_Meas"
+                            name="BloodPressureMeas">{{'$ctrl.capdDataObj.Blood_Pressure_Meas'}}</textarea>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>{{'capdTraining.LiquidExchange' | translate}}</label>
+                        <!--換液操作-->
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <textarea ng-model="$ctrl.capdDataObj.Liquid_Exchange"
+                            name="LiquidExchange">{{'$ctrl.capdDataObj.Liquid_Exchange'}}</textarea>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>{{'capdTraining.CatheterHandling' | translate}}</label>
+                        <!--導管處理-->
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <textarea ng-model="$ctrl.capdDataObj.Catheter_Handling"
+                            name="CatheterHandling">{{'$ctrl.capdDataObj.Catheter_Handling'}}</textarea>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>{{'capdTraining.PointsAttention' | translate}}</label>
+                        <!--注意事項-->
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <textarea ng-model="$ctrl.capdDataObj.Points_Attention"
+                            name="PointsAttention">{{'$ctrl.capdDataObj.Points_Attention'}}</textarea>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit">
+                    </div>
+                    <div class="inputboxflex">
+                        <div class="btnBox">
+                            <md-button type="submit" ng-click="$ctrl.saveData()" class="md-raised md-primary">
+                                <!-- ng-disabled="editForm.$invalid"-->
+                                {{'capdTraining.ok' | translate}}
+                            </md-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</md-content>

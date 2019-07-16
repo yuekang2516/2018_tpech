@@ -1,0 +1,137 @@
+<style scoped>
+    h1 {
+        text-align: center;
+        overflow: hidden;
+    }
+</style>
+
+<md-dialog aria-label="紀錄單修改" class="charge-container">
+    <!--<div ng-cloak class="width">-->
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 ng-show="dvm.isEditable">{{ dvm.item.ItemName }} - {{ dvm.action }}{{'charge.chargePSWEditDialog.editCharge' | translate}}</h2>
+            <h2 ng-show="!dvm.isEditable">{{ dvm.item.ItemName }} - {{ dvm.action }}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-show="!dvm.isLoading" ng-click="dvm.cancel()">
+                <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <patient-name hide-gt-sm name="dvm.patient.Name" medical-id="dvm.patient.MedicalId"></patient-name>
+    <md-dialog-content>
+        <div class="md-dialog-content" flex>
+            <form name="editForm">
+                <div layout="row">
+                    <div flex ng-click="dvm.minus()">
+                        <h1>-</h1>
+                    </div>
+                    <div flex>
+                        <h1>{{dvm.item.Withdraw}}</h1>
+                    </div>
+                    <div flex ng-click="dvm.plus()">
+                        <h1>+</h1>
+                    </div>
+                </div>
+                <md-input-container class="md-block" ng-show="!dvm.isEditable">
+                    <label translate>{{'charge.chargePSWEditDialog.use'}}</label>
+                    <input type="text" name="use" value='{{"charge.chargePSWEditDialog.value" | translate}}' readonly/>
+                </md-input-container>
+               
+                <div layout="row" layout-sm="column" ng-show="!dvm.isEditable">
+                    <md-input-container class="md-block" flex>
+                        <label translate>{{'charge.chargePSWEditDialog.Stock'}}</label>
+                        <input type="text" name="Stock" ng-model="dvm.item.Stock" readonly/>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex>
+                        <label translate>{{'charge.chargePSWEditDialog.SafetyStock'}}</label>
+                        <input type="text" name="SafetyStock" ng-model="dvm.item.SafetyStock" readonly/>
+                    </md-input-container>
+                </div>
+
+                <md-input-container class="md-block">
+                    <!-- <label>數量({{ dvm.action }})</label> -->
+                    <label translate="charge.chargePSWEditDialog.Withdraw" translate-values='{action: dvm.action}'></label>
+                    <input ng-model="dvm.item.Withdraw" ng-change="dvm.qtyChange()" type="number" name="Qty" min="1" autocomplete="off" required>
+                    <div ng-messages="editForm.Qty.$error" multiple md-auto-hide="false">
+                        <div ng-message="required" translate>{{'charge.chargePSWEditDialog.WithdrawRequired'}}</div>
+                        <div ng-message="min" translate>{{'charge.chargePSWEditDialog.WithdrawMin'}}</div>
+                    </div>
+                </md-input-container>
+
+                <div layout="row" layout-sm="column" ng-show="dvm.isEditable">
+                    <div class="noErrBlock" flex>
+                        <md-input-container class="md-block" flex>
+                            <!-- <label>{{ dvm.action }}前庫存</label> -->
+                            <label translate="charge.chargePSWEditDialog.oldStockText" translate-values='{action: dvm.action}'></label>
+                            <input type="text" name="oldStock" ng-model="dvm.oldStockText" readonly/>
+                        </md-input-container>
+                        <md-input-container class="md-block" flex>
+                            <!-- <label>修改前{{ dvm.action }}數量</label> -->
+                            <label translate="charge.chargePSWEditDialog.oldQtyText" translate-values='{action: dvm.action}'></label>
+                            <input type="text" name="oldQty" ng-model="dvm.oldQtyText" readonly/>
+                        </md-input-container>
+                        <md-input-container class="md-block" flex>
+                            <!-- <label>修改後{{ dvm.action }}數量</label> -->
+                            <label translate="charge.chargePSWEditDialog.QtyText" translate-values='{action: dvm.action}'></label>
+                            <input type="text" name="Qty" ng-model="dvm.QtyText" readonly/>
+                        </md-input-container>
+                    </div>
+
+                    <div flex>
+                        <md-input-container class="md-block" flex>
+                            <label translate>{{'charge.chargePSWEditDialog.SafetyStockText'}}</label>
+                            <input type="text" name="SafetyStock" ng-model="dvm.SafetyStockText" readonly/>
+                        </md-input-container>
+                        <md-input-container class="md-block" flex>
+                            <label translate>{{'charge.chargePSWEditDialog.StockText'}}</label>
+                            <input type="text" name="Stock" ng-model="dvm.StockText" readonly/>
+                        </md-input-container>
+                        <md-input-container class="md-block" flex>
+                            <label translate>{{'charge.chargePSWEditDialog.newStockText'}}</label>
+                            <input type="text" name="newStock" ng-model="dvm.newStockText" readonly/>
+                            <span ng-if="dvm.notSafety" translate>{{'charge.chargePSWEditDialog.notSafety'}}</span>
+                            <span ng-if="dvm.notEnough" translate>{{'charge.chargePSWEditDialog.notEnough'}}</span>
+                        </md-input-container>
+                    </div>
+                </div>
+
+                <md-input-container class="md-block" flex ng-show="!dvm.isEditable">
+                    <!-- <label>{{ dvm.action }}後庫存</label> -->
+                    <label translate="charge.chargePSWEditDialog.stockAfter" translate-values='{action: dvm.action}'></label>
+                    <input type="text" name="newStockText" ng-model="dvm.newStockText" readonly/>
+                    <span ng-if="dvm.notSafety" translate>{{'charge.chargePSWEditDialog.notSafety'}}</span>
+                    <span ng-if="dvm.notEnough" translate>{{'charge.chargePSWEditDialog.notEnough'}}</span>
+                </md-input-container>
+
+                <div layout="row" layout-sm="column">
+                    <md-input-container class="md-block" flex>
+                        <label translate>{{'charge.chargePSWEditDialog.Price'}}</label>
+                        <input type="text" name="Price" ng-model="dvm.item.Price" readonly/>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex>
+                        <label translate>{{'charge.chargePSWEditDialog.TotalPrice'}}</label>
+                        <input type="text" name="TotalPrice" ng-model="dvm.TotalPrice" readonly/>
+                    </md-input-container>
+                </div>
+
+                <md-input-container class="md-block" flex>
+                    <label translate>{{'charge.chargePSWEditDialog.Memo'}}</label>
+                    <input type="text" name="Memo" ng-model="dvm.item.Memo" />
+                </md-input-container>
+                <!--<md-input-container class="md-block" flex>
+                    <label>本次修改時間</label>
+                    <input type="text" name="CreatedTime" ng-model="dvm.CreatedTime" readonly/>
+                </md-input-container>-->
+                <div flex="100" flex-gt-sm="50" layout="column">
+                    <date-time-picker-standard my-model="dvm.item.RecordDateTime" text="'charge.chargePSWEditDialog.action' | translate" required="true" />
+                </div>
+            </form>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row" layout-align="start center">
+        <md-button type="submit" class="md-raised md-primary" ng-disabled="dvm.isDeleted || dvm.isLoading" ng-click="dvm.save()">{{'charge.chargePSWEditDialog.save' | translate}}</md-button>
+        <md-button class="md-raised" ng-click="dvm.cancel()" ng-disabled="dvm.isLoading">{{'charge.chargePSWEditDialog.cancel' | translate}}</md-button>
+        <md-progress-circular md-diameter="20px" md-mode="indeterminate" ng-show="dvm.isLoading"></md-progress-circular>
+    </md-dialog-actions>
+    <!--</div>-->
+</md-dialog>

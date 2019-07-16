@@ -1,0 +1,167 @@
+<md-card>
+    <md-card-content>
+        <h3 translate>{{'overview.weightAndWater'}}</h3>
+        <md-input-container-flat class="md-block">
+            <label translate>{{'overview.checkInDate'}}</label>
+            <input type="date" min="1900-01-01" max="2999-12-31" ng-model="$ctrl.data.CheckInTime" />
+        </md-input-container-flat>
+        <md-input-container-flat class="md-block">
+            <label translate>{{'overview.checkInTime'}}</label>
+            <input type="time" ng-model="$ctrl.data.CheckInTime" />
+        </md-input-container-flat>
+        <md-input-container-flat class="md-block">
+            <label translate>{{'overview.TotalWeightPredialysis'}}</label>
+            <input type="number" ng-model="$ctrl.data.TotalWeightPredialysis" ng-change="$ctrl.countWeightAndDehydration()" onkeypress="if(/\.\d\d$/.test(value))event.returnValue=false"
+                min="0" step="0.01" />
+        </md-input-container-flat>
+        <md-input-container-flat class="md-block">
+            <label translate>{{'overview.WheelchairWeight'}}</label>
+            <input type="number" ng-model="$ctrl.data.WheelchairWeight" ng-change="$ctrl.countWeightAndDehydration()" onkeypress="if(/\.\d\d$/.test(value))event.returnValue=false"
+                min="0" step="0.01" />
+        </md-input-container-flat>
+        <md-input-container-flat class="md-block">
+            <label translate>{{'overview.NoClothingWeight'}}</label>
+            <input type="number" ng-model="$ctrl.data.NoClothingWeight" ng-change="$ctrl.countWeightAndDehydration()" onkeypress="if(/\.\d\d$/.test(value))event.returnValue=false"
+                min="0" step="0.01" />
+        </md-input-container-flat>
+        <md-input-container-flat class="md-block">
+            <label title="{{'overview.PredialysisWeightTitle' | translate}}" translate>
+                {{'overview.PredialysisWeight'}}
+            </label>
+            <div>
+                <span>{{$ctrl.data.PredialysisWeight || ''}}</span>
+            </div>
+        </md-input-container-flat>
+        <div class="warning" ng-show="$ctrl.showWeightDiffWarning" translate="overview.WeightDiffWarning", translate-values='{lastTimeWeight: $ctrl.data.LastPredialysisWeight}'>
+        </div>
+        <div class="weight-hint" ng-if="$ctrl.data.TotalWeightPredialysis">
+            <span>{{$ctrl.data.PredialysisWeight}}</span> =
+            <span>{{$ctrl.data.TotalWeightPredialysis}}</span> -
+            <span>{{$ctrl.data.WheelchairWeight || 0}}</span> -
+            <span>{{$ctrl.data.NoClothingWeight || 0}}</span>
+        </div>
+        <md-input-container-flat class="md-block">
+            <label translate>
+                {{'overview.expectedWeight'}}
+            </label>
+            <div>
+                {{$ctrl.data.Prescription.StandardWeight}}
+            </div>
+            <div style="color : red" ng-if="$ctrl.prescriptionLength === 0  && $ctrl.data.Prescription.StandardWeight === null">
+                <h4 translate>{{'overview.expectedWeight'}}</h4>
+            </div>
+        </md-input-container-flat>
+        <md-input-container-flat class="md-block" ng-if="$ctrl.prescriptionLength > 0">
+            <label title="{{'overview.DehydrationTargetTitle' | translate}}" translate>
+                {{'overview.DehydrationTarget'}}
+            </label>
+            <div>
+                <span>{{$ctrl.data.DehydrationTarget}}</span>
+            </div>
+        </md-input-container-flat>
+        <div class="weight-hint" ng-if="$ctrl.data.TotalWeightPredialysis">
+            <span>{{$ctrl.data.DehydrationTarget}}</span> =
+            <span>{{$ctrl.data.TotalWeightPredialysis}}</span> -
+            <span>{{$ctrl.data.Prescription.StandardWeight || 0}}</span> -
+            <span>{{$ctrl.data.WheelchairWeight || 0}}</span> -
+            <span>{{$ctrl.data.NoClothingWeight || 0}}</span>
+        </div>
+        <div class="md-block" style="color: red" ng-if="$ctrl.prescriptionLength === 0  || (!$ctrl.data.Prescription.StandardWeight && !$ctrl.data.DehydrationTarget)">
+            <h4 translate>{{'overview.DehydrationTargetError'}}</h4>
+        </div>
+        <md-input-container-flat class="md-block">
+            <label translate>{{'overview.FoodWeight'}}</label>
+            <input type="number" ng-model="$ctrl.data.FoodWeight" ng-change="$ctrl.estimatedDehydration()" onkeypress="if(/\.\d\d$/.test(value))event.returnValue=false"
+                min="0" step="0.01" />
+        </md-input-container-flat>
+        <md-input-container-flat class="md-block">
+            <label translate>{{'overview.Flush'}}</label>
+            <input type="number" ng-model="$ctrl.data.Flush" ng-change="$ctrl.estimatedDehydration()" onkeypress="if(/\.\d\d$/.test(value))event.returnValue=false"
+                min="0" step="0.01" />
+        </md-input-container-flat>
+        <md-input-container-flat class="md-block" ng-if="$ctrl.prescriptionLength > 0">
+            <label title="{{'overview.EstimatedDehydrationTitle' | translate}}" translate>
+                {{'overview.EstimatedDehydration'}}
+            </label>
+            <div>
+                <span>{{$ctrl.data.EstimatedDehydration}}</span>
+            </div>
+        </md-input-container-flat>
+        <div class="weight-hint" ng-if="$ctrl.data.TotalWeightPredialysis">
+            <span>{{$ctrl.data.EstimatedDehydration}}</span> =
+            <span>{{$ctrl.data.DehydrationTarget}}</span> +
+            <span>{{$ctrl.data.FoodWeight || 0}}</span> +
+            <span>{{$ctrl.data.Flush || 0}}</span>
+        </div>
+        <div class="md-block" style="color: red" ng-if="$ctrl.prescriptionLength === 0  || (!$ctrl.data.Prescription.StandardWeight && !$ctrl.data.DehydrationTarget)">
+            <h4 translate>{{'overview.EstimatedDehydrationError'}}</h4>
+        </div>
+        <md-input-container-flat class="md-block">
+            <label translate>{{'overview.DehydrationSetting'}}</label>
+            <input type="number" ng-model="$ctrl.data.DehydrationSetting" ng-change="$ctrl.countDeviation()" onkeypress="if(/\.\d\d$/.test(value))event.returnValue=false"
+                min="0" step="0.01" />
+        </md-input-container-flat>
+        <md-input-container-flat class="md-block">
+            <label translate>{{'overview.TotalWeightAfterDialysis'}}</label>
+            <input type="number" ng-model="$ctrl.data.TotalWeightAfterDialysis" ng-change="$ctrl.weightAfterDialysis()" onkeypress="if(/\.\d\d$/.test(value))event.returnValue=false"
+                min="0" step="0.01" />
+        </md-input-container-flat>
+        <md-input-container-flat class="md-block">
+            <label title="{{'overview.WeightAfterDialysisTitle' | translate}}" translate>
+                {{'overview.WeightAfterDialysis'}}
+            </label>
+            <div>
+                <span>{{$ctrl.data.WeightAfterDialysis}}</span>
+            </div>
+        </md-input-container-flat>
+        <div class="weight-hint" ng-if="$ctrl.data.TotalWeightAfterDialysis">
+            <span>{{$ctrl.data.WeightAfterDialysis}}</span> =
+            <span>{{$ctrl.data.TotalWeightAfterDialysis}}</span> -
+            <span>{{$ctrl.data.WheelchairWeight || 0}}</span> -
+            <span>{{$ctrl.data.NoClothingWeight || 0}}</span>
+        </div>
+        <md-input-container-flat class="md-block">
+            <label title="{{'overview.ActualDehydrationTitle' | translate}}" translate>{{'overview.ActualDehydration'}}</label>
+            <div>
+                <span>{{$ctrl.data.Dehydration}}</span>
+            </div>
+        </md-input-container-flat>
+        <div class="weight-hint" ng-if="$ctrl.data.WeightAfterDialysis && $ctrl.data.PredialysisWeight">
+            <span>{{$ctrl.data.Dehydration}}</span> =
+            <span>{{$ctrl.data.PredialysisWeight}}</span> -
+            <span>{{$ctrl.data.WeightAfterDialysis || 0}}</span>
+        </div>
+
+        <md-input-container-flat class="md-block">
+            <label>偏差</label>
+            <div>
+                <span>{{$ctrl.data.Deviation}}</span>
+            </div>
+        </md-input-container-flat>
+        <div class="weight-hint" ng-if="$ctrl.data.Dehydration && $ctrl.data.DehydrationSetting">
+            <span>{{$ctrl.data.Deviation}}</span> =
+            <span>{{$ctrl.data.Dehydration}}</span> -
+            <span>{{$ctrl.data.DehydrationSetting || 0}}</span>
+        </div>
+
+
+        <md-input-container-flat class="md-block">
+            <label translate>{{'overview.abnormalWeight'}}</label>
+            <md-checkbox ng-model="$ctrl.data.AbnormalWeight" aria-label="Finished?">
+                {{'overview.abnormalWeightTrue' | translate}}
+            </md-checkbox>
+        </md-input-container-flat>
+
+        <md-input-container class="md-block">
+            <div ng-show="$ctrl.data.AbnormalWeight">
+                <label translate>{{'overview.AbnormalWeightReason'}}</label>
+                <textarea rows="3" ng-model="$ctrl.data.AbnormalWeightReason" md-maxlength="5000" md-detect-hidden="true"></textarea>
+            </div>
+        </md-input-container>
+
+
+       
+
+
+    </md-card-content>
+</md-card>

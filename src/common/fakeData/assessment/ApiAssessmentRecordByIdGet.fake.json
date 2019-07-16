@@ -1,0 +1,46 @@
+{
+    "DateTimestamp": "2019-03-19T18:14:56.3156932+08:00",
+    "PatientId": "5c8f61ae98584d53f0458527",
+    "DialysisId": "5c8f6a2a98584d53f046ca4b",
+    "Type": "pre",
+    "RecordTime": "2019-03-19T09:54:00Z",
+    "Items": {
+      "意識": [
+        "清醒"
+      ],
+      "呼吸": [
+        "正常"
+      ],
+      "皮膚顏色": [
+        "正常"
+      ],
+      "活動力": [
+        "軟弱"
+      ],
+      "身體狀況": [
+        "頭痛"
+      ]
+    },
+    "Version": "262",
+    "Description": null,
+    "HospitalId": "56fcc5dd4ead7870942f61c3",
+    "Revision": 1,
+    "HistoryId": null,
+    "Status": "Normal",
+    "CreatedUserId": "5c8f5c9e98584d53f044eac8",
+    "CreatedUserName": "楊昌宏",
+    "CreatedTime": "2019-03-19T09:54:53.214Z",
+    "ModifiedUserId": null,
+    "ModifiedUserName": null,
+    "ModifiedTime": null,
+    "Id": "5c90bc6d20c32b17a4c700bf",
+    "CreatedOn": "2019-03-19T09:54:53Z",
+    "ModifiedOn": "0001-01-01T00:00:00Z",
+    "ObjectId": {
+      "Timestamp": 1552989293,
+      "Machine": 2147115,
+      "Pid": 6052,
+      "Increment": 13041855,
+      "CreationTime": "2019-03-19T09:54:53Z"
+    }
+  }

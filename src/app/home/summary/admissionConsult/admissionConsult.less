@@ -1,0 +1,59 @@
+admission-consult {
+    height: 100%;
+    position: relative;
+
+    // header
+    .list-header {
+        h5, h6 {
+            margin: 0;
+        }
+
+        .md-button.md-icon-button {
+            margin: 0;
+        }
+        min-height: 2.8em;
+        height: initial;
+    }
+
+    // ag-grid
+    .ag-theme-blue {
+        .ag-header {
+            color: #000;
+            font-weight: bold;
+            background-color: #e3f2fd;
+        }
+        .ag-full-width-container {
+            border-bottom: 1px solid #9bc2e6;
+        }
+        .ag-row {
+            border-bottom-width: 0;
+        }
+        .ag-row-odd {
+            background-color: #f3f3f3;
+        }
+        .ag-header-cell-label {
+            .ag-header-cell-text {
+                margin: 0 auto;
+            }
+        }
+        .cell {
+            i {
+                font-size: 16px;
+                cursor: pointer;
+            }
+        }
+        .ag-ltr {
+            .ag-cell {
+                text-align: center;
+            }
+        }
+        .ag-body-viewport {
+            padding-bottom: 60px; // 多留一個空間避免新增按鈕擋到
+        }
+        .isAbnormal {
+            background-color: #ffe6e6;
+            color: #d92018;
+            font-weight: bold;
+        }
+    }
+}

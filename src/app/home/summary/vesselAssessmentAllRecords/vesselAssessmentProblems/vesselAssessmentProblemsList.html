@@ -1,0 +1,89 @@
+<div layout="column" layout-fill ui-view flex>
+        <!-- <md-toolbar>
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" ng-click="$ctrl.goback();">
+                    <i class="material-icons">keyboard_backspace</i>
+                </md-button> -->
+    <!-- <div layout="row">
+        {{!$ctrl.loading ? $ctrl.patient.Name + '(' + $ctrl.patient.MedicalId + ')' : null }} 歷次血管通路問題記錄
+    </div> -->
+        <!-- <span flex></span>
+            </div>
+        </md-toolbar> -->
+        <div ng-show="!$ctrl.loading" class="list-header" layout="row" layout-align="center center">
+            <md-switch ng-model="$ctrl.showDeleted" aria-label="Switch data">
+                <!-- 顯示已刪除 ({{$ctrl.deletedItemsLength}}筆) -->
+                <span translate="vesselAssessmentProblems.problemsList.showDeleted" translate-values='{deletedItemsLength: $ctrl.deletedItemsLength}'></span>
+            </md-switch>
+            <span flex></span>
+            <!-- <h6>共 {{$ctrl.serviceData.length}} 筆</h6> -->
+            <h6 translate="vesselAssessmentProblems.problemsList.totalRecord" translate-values='{length: $ctrl.serviceData.length}'></h6>
+            <span flex></span>
+            <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+            <!-- <h6>{{$ctrl.lastRefreshTitle}}</h6>
+            <md-button class="md-icon-button" ng-click="$ctrl.refresh();">
+                <i class="material-icons">refresh</i>
+            </md-button> -->
+        </div>
+        <md-content layout-fill flex>
+            <loading ng-show="$ctrl.loading"> </loading>
+            <div ng-show="!$ctrl.loading && $ctrl.serviceData.length > 0">
+                
+                <md-list>
+                    <md-list-item class="md-2-line" ng-class="{deleted: item.Status == 'Deleted'}" ng-repeat="item in $ctrl.serviceData | orderBy: $ctrl.sortRecord : true"
+                        ng-click="$ctrl.goto(item.Id)" ng-show="item.Status !== 'Deleted' || $ctrl.showDeleted">
+                        <div class="md-list-item-text" layout="column">
+                            <h3 ng-bind="item.RecordDate | moment:'YYYY/MM/DD (dd) HH:mm'"></h3>
+                            <p ng-bind="item.BloodFlow" />
+                            <seal model="item" modified="hideIfSame" fixed="true"></seal>
+                        </div>
+                        <md-icon class="md-secondary" ng-show="item.Status !== 'Deleted'" ng-click="$ctrl.showDialog($event, item)" md-svg-icon="static/img/svg/ic_delete_black_24px.svg"></md-icon>
+                        <md-divider ng-if="!$last"></md-divider>
+                    </md-list-item>
+                </md-list>
+            </div>
+    
+            <div flex ng-show="!$ctrl.loading && !$ctrl.serviceData.length && !$ctrl.isError" layout="column" layout-fill layout-align="center center">
+                <h1 translate>{{'vesselAssessmentProblems.problemsList.noData'}}</h1>
+                <h4 translate>{{'vesselAssessmentProblems.problemsList.clickBottomRight'}}</h4>
+            </div>
+            <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+                <h3 translate>{{'vesselAssessmentProblems.problemsList.serverError'}}</h3>
+            </div>
+        </md-content>
+        <md-button class="md-fab md-fab-bottom-right" ng-click="$ctrl.goto()">
+            <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+        </md-button>
+       
+    </div>
+    
+    <script type="text/ng-template" id="dialog.html">
+        <md-dialog aria-label="刪除確認">
+            <form ng-cloak>
+                <md-toolbar>
+                    <div class="md-toolbar-tools">
+                        <h2 translate>{{'vesselAssessmentProblems.problemsList.confirmDelete'}}</h2>
+                        <span flex></span>
+                        <md-button class="md-icon-button" ng-click="vm.cancel()">
+                            <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                        </md-button>
+                    </div>
+                </md-toolbar>
+    
+                <md-dialog-content>
+                    <div class="md-dialog-content" translate>
+                        {{'vesselAssessmentProblems.problemsList.deleteRecord'}}
+                    </div>
+                </md-dialog-content>
+    
+                <md-dialog-actions layout="row">
+                    <md-button ng-click="vm.cancel()">
+                        {{'vesselAssessmentProblems.problemsList.cancel' | translate}}
+                    </md-button>
+                    <md-button ng-click="vm.ok()">
+                        {{'vesselAssessmentProblems.problemsList.delete' | translate}}
+                    </md-button>
+                </md-dialog-actions>
+            </form>
+        </md-dialog>
+    </script>

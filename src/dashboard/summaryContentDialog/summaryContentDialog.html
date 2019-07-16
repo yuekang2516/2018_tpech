@@ -1,0 +1,20 @@
+<md-dialog class="summary-content-dialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2><span translate="summaryContentDialog.header" translate-values="{name: $ctrl.currentPatient.Name, medicalId: $ctrl.currentPatient.MedicalId}"></span></h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+                <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <md-progress-circular ng-show="$ctrl.loading" layout-align="center" md-mode="indeterminate"></md-progress-circular>
+        <div class="readonly-container">
+            <div class="readonly"></div>
+            <div class="md-padding">
+                <tpech-report ng-if="$ctrl.currentPatient && $ctrl.headerId" header-id="$ctrl.headerId" patient="$ctrl.currentPatient"></tpech-report>
+            </div>
+        </div>
+    </md-dialog-content>
+</md-dialog>

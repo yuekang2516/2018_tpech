@@ -1,0 +1,14 @@
+<!-- <div class="ui-grid-cell-contents" ng-if="row.entity.Id" layout="row">
+    <div class="action" ng-click="grid.appScope.edit(row.entity)" layout="row" layout-align="start center">
+        <i class="material-icons">edit</i>
+    </div>
+    <div class="action" ng-if="row.entity.Source === 'manual'" ng-click="grid.appScope.del(row.entity)" layout="row" layout-align="start center">
+        <i class="material-icons">delete</i>
+    </div>
+</div> -->
+
+<div class="ui-grid-cell-contents" ng-if="row.entity.Id" ng-click="grid.appScope.edit(row.entity)" hm-press="$event.preventDefault(); grid.appScope.del(row.entity)" layout="row">
+    <span ng-if="col.field === 'AbnormalTime' || col.field === 'ResolvedTime'">{{COL_FIELD |  moment:'YYYY-MM-DD HH:mm'}}</span>
+    <span ng-if="col.field === 'Source'">{{ COL_FIELD | ROSource }}</span>
+    <span ng-if="col.field !== 'AbnormalTime' && col.field !== 'ResolvedTime' && col.field !== 'Source'">{{ COL_FIELD }}</span>
+</div>

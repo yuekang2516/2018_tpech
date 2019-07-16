@@ -1,0 +1,30 @@
+<md-dialog>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>
+                <span ng-if="dialog.eventType === 'patient'">刪除記事</span>
+                <span ng-if="dialog.eventType === 'year'">刪除年度計畫</span>
+            </h2>
+            <span flex></span>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div>
+            <div layout="column" style="margin-bottom:0rem;">
+                <div style="margin: 10px; line-height:40px;">
+                    <span ng-if="dialog.eventType === 'patient'">您即將要刪除 "{{dialog.title}}" 的記事？</span>
+                    <span ng-if="dialog.eventType === 'year'">您即將要刪除 "{{dialog.title}}" 的年度計畫？</span>
+                </div>
+            </div>
+            <md-dialog-actions layout="row" layout-align="end center">
+                <md-button class="md-raised" ng-click="dialog.cancel()">
+                    取消
+                </md-button>
+                <md-button class="md-raised md-warn md-btn-white-text" ng-click="dialog.delete()">
+                    刪除
+                </md-button>
+            </md-dialog-actions>
+        </div>
+    </md-dialog-content>
+</md-dialog>

@@ -1,0 +1,114 @@
+<loading ng-show="$ctrl.loading"></loading>
+<div layout="column" layout-fill flex>
+    <md-content ng-show="!$ctrl.loading && $ctrl.serviceData.length > 0" flex>
+        <div infinite-scroll="$ctrl.nextPage()"
+             infinite-scroll-disabled='$ctrl.loading'
+             infinite-scroll-distance='2'
+             infinite-scroll-parent>
+            <div class="container" ng-repeat="re in $ctrl.albums">
+                <div style="text-align: center;" ng-show="$index === 0 && $ctrl.delPhoto.length > 0">
+                    <b>{{'album.photoList.selected' | translate}}<span>{{$ctrl.delPhoto.length}}</span>{{'album.photoList.hasPicture' | translate}}</b>
+                </div>
+                <input type="checkbox" name="" value="" class="checkbox" ng-model="re.selected"
+                       ng-click="$ctrl.checkTimeGroup($event, re)">
+                <span class="f18">{{re.time}}</span>
+                <div class="photobox" >
+                    <div class="photo" ng-repeat="p in re.items" ng-hide="p.Status === 'Deleted'" layout="column">
+                        <input type="checkbox"
+                               name=""
+                               value=""
+                               class="checkbox lefttop"
+                               ng-model="p.selected"
+                               ng-click="$ctrl.checkPictureBox($event, p)"
+                        />
+                        <div class="photo_in"
+                             ng-style="{'background-image':'url({{$ctrl.Url}}/Upload/GetImage/{{p.ThumbnailFileName}})'}"
+                             ng-click="$ctrl.getPicture($event, p)">
+                        </div>
+                        <div ng-if="p.PhotoName" class="memo-text background-whiteFA">{{p.PhotoName}}</div>
+                        <div ng-if="!p.PhotoName" class="memo-text-null background-whiteFA">&nbsp;</div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </md-content>
+    <md-content ng-show="!$ctrl.loading && !$ctrl.serviceData && !$ctrl.isError" layout="column" layout-fill layout-align="center center">
+        <div layout-align="center center">
+            <h3 translate="album.photoList.noPicture"></h3>
+            <br/>
+            <h3 translate="album.photoList.addPicture"></h3>
+        </div>
+    </md-content>
+    <md-content flex ng-show="!$ctrl.loading && $ctrl.isError" layout-fill layout-align="center center">
+        <div layout="row" layout-align="center center" flex>
+            <h3 translate="album.photoList.pictureError"></h3>
+        </div>
+    </md-content>
+</div>
+
+
+<md-button class="md-fab md-fab-bottom-right"
+           ng-click="$ctrl.delPicture()"
+           ng-show="$ctrl.delPhoto.length > 0"
+           style="position:fixed; z-index: 21;">
+    <md-icon class="material-icons">delete</md-icon>
+</md-button>
+
+<script type="text/ng-template" id="getPicture.html">
+    <md-dialog class="addAlbum" aria-label="修改照片"
+               style="max-width: 100% !important;
+                    max-height: 100% !important;
+                    width: 100% !important;
+                    height: auto !important;
+                    border-radius: 0 !important;">
+        <form name="dform" ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2 translate="album.photoList.modifyContent"></h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="vm.cancel()">
+                        <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <loading ng-show="vm.loading"></loading>
+            <md-dialog-content>
+                <div class="center">
+                    <img ng-src="{{vm.Url}}/Upload/GetImage/{{vm.data.FileName}}" alt="" ng-style="{'width': {{vm.innerWidth}}}">
+                </div>
+                <input list="browsers" name="browser" ng-model="vm.data.AlbumName" placeholder="{{'album.photoList.plsSelect' | translate}}"
+                       style="width: 100%; margin-top: 15px;">
+                <datalist id="browsers">
+                    <option ng-repeat="item in vm.defaultGroup" ng-value="item.AlbumName">
+                </datalist>
+                <div class="fw100" ng-if="vm.data.AlbumName === vm.other">
+                    <p translate="album.showPhoto.addAlbumDo"></p>
+                    <input type="text" ng-model="vm.newAlbum" name="browser" placeholder="{{'album.showPhoto.addAlbum' | translate}}">
+                </div>
+                <textarea style="width: 100%" ng-model="vm.data.Description" cols="30" rows="10" placeholder="{{'album.photoList.photoDescription' | translate}}">
+                </textarea>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+                <md-button ng-click="vm.ok()">
+                    {{'album.photoList.modifyOk' | translate}}
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>
+
+<script type="text/ng-template" id="delPicture.html">
+    <md-dialog aria-label="刪除照片" style="height:auto">
+        <h2 translate="album.photoList.deletePhoto" translate-values='{Piclength: vm.Piclength}'></h2>
+        <md-dialog-actions layout="row">
+            <md-button ng-click="vm.cancel()">
+                {{'album.photoList.cancel' | translate}}
+            </md-button>
+            <md-button ng-click="vm.ok()">
+                {{'album.photoList.toTrash' | translate}}
+            </md-button>
+        </md-dialog-actions>
+    </md-dialog>
+</script>

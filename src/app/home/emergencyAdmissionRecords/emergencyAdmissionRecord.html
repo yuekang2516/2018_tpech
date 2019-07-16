@@ -1,0 +1,33 @@
+<div flex layout="column" layout-fill>
+    <md-toolbar class="no-print">
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="$ctrl.openLeftMenu()" hide-gt-md>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <md-button style="margin-left: -8px" class="md-icon-button" aria-label="Settings" ng-click="$ctrl.toggleSideNav()" hide-md hide-sm hide-xs show-gt-md>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <div layout="row" translate>
+                急診住院狀態查詢
+            </div>
+            <!-- <span flex></span> -->
+        </div>
+    </md-toolbar>
+
+    <div layout="row" class="list-header" layout-align="center">
+        <span>{{::$ctrl.today}}</span>
+        <span flex></span>
+        病歷號：
+        <form name="admissionForm" novalidate>
+            <input id="medicalSearch" type="text" placeholder="請輸入病歷號" ng-model="$ctrl.currentMedicalId" required/>
+            <button type="submit" ng-disabled="admissionForm.$invalid" ng-click="$ctrl.search()">查詢</button>
+        </form>
+    </div>
+    <md-content layout="column" flex>
+        <div ag-grid="$ctrl.gridOptions" ng-show="!$ctrl.loading && $ctrl.serviceData.length > 0 " class="ag-theme-blue" style="height:100%"></div>
+        <loading ng-show="$ctrl.loading">{{'bads.loadingWard' | translate}}</loading>
+        <server-error-page flex ng-show="!$ctrl.loading && $ctrl.isError" msg="伺服器錯誤，請重新查詢" hide-refresh="true"></server-error-page>
+        <nodata-page flex ng-show="!$ctrl.loading && $ctrl.serviceData.length == 0 && !$ctrl.isError" nodata-title="{{$ctrl.msg}}"></nodata-page>
+
+    </md-content>
+</div>

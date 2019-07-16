@@ -1,0 +1,59 @@
+<div flex layout="column" layout-fill>
+    <loading ng-show="$ctrl.loading"></loading>
+    <div ng-show="!$ctrl.loading && $ctrl.serviceData.length > 0">
+        <div class="list-header" layout="row" layout-align="center center">
+            <!-- <span flex></span> -->
+            <!-- <h6>共 {{$ctrl.serviceData.length}} 筆</h6> -->
+            <h6 translate="executionRecord.executionRecord.totalRecord" translate-values='{length: $ctrl.serviceData.length}'></h6>
+            <span flex></span>
+            <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+            <!-- <h6>{{$ctrl.lastRefreshTitle}}</h6>
+            <md-button class="md-icon-button" ng-click="$ctrl.refresh();">
+                <i class="material-icons">refresh</i>
+            </md-button> -->
+        </div>
+        <md-content flex layout="column">
+            <md-list>
+                <md-list-item class="md-2-line" ng-repeat="item in $ctrl.serviceData | orderBy:'-CreatedTime'" ng-click="$ctrl.submit(item.OrderMode, item.Id)">
+                    <div class="md-list-item-text" layout="column">
+                        <div layout="row">
+                            <div>
+                                {{::item.StartTime | date: 'MM/dd' }} {{::item.Name }}
+                            </div>
+                            <span flex></span>
+                            <div>
+                                {{::item.OrderMode === 'Performed' ? item.ActualQuantity : '-' }} / {{ ::item.Quantity }} {{::item.QuantityUnit}} {{::item.Route}}
+                                {{::item.Frequency }}
+                            </div>
+                            <!--<p>{{ ::item.DoctorMemo }}</p>-->
+                        </div>
+                        <div layout="row">
+                            <span ng-if="item.ProcessTime">
+                            {{ :: item.ProcessTime | date: 'HH:mm'}}
+                            {{ ::item.OrderMode === 'Performed' ? 'executionRecord.executionRecord.execute' : item.OrderMode === 'Neglect' ? 'executionRecord.executionRecord.dontExecute' : 'executionRecord.executionRecord.unexecuted' | translate}}
+                        </span>
+                            <!-- <span ng-if="item.Memo.length > 0">{{ ::item.Mode === 'Neglect' ? '原因:': '備註:'}}{{ ::item.Memo }}</span> -->
+                            <span ng-if="item.Memo.length > 0" translate="executionRecord.executionRecord.reasonMemo" translate-values='{OrderMode: item.OrderMode, Memo: item.Memo}'></span>
+                            <seal model="item" created="none" modified="always"></seal>
+                            <md-button ng-if="!item.ProcessTime" class="md-raised md-primary" ng-click="$ctrl.submit('Performed', item.Id)">{{'executionRecord.executionRecord.execute' | translate}}</md-button>
+                            <md-button ng-if="!item.ProcessTime" class="md-raised md-warn" ng-click="$ctrl.submit('Neglect', item.Id)">{{'executionRecord.executionRecord.dontExecute' | translate}}</md-button>
+                            <span flex></span>
+                            <seal model="item" modified="none" fixed="true"></seal>
+                            <!--<div class="seal" ng-if="item.ModifiedUserName">{{::item.ModifiedUserName}}</div>-->
+                        </div>
+                    </div>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </div>
+
+    <div flex ng-show="!$ctrl.loading && $ctrl.serviceData.length === 0 && !$ctrl.isError" layout="column" layout-fill layout-align="center center">
+        <h1 translate>{{'executionRecord.executionRecord.noData'}}</h1>
+        <h4 translate>{{'executionRecord.executionRecord.createPrescription'}}</h4>
+    </div>
+    <server-error-page ng-show="!$ctrl.loading && $ctrl.isError"  refresh="$ctrl.refresh()"></server-error-page>
+    <!-- <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+        <h3 translate>{{'executionRecord.executionRecord.serverError'}}</h3>
+    </div> -->
+</div>

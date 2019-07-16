@@ -1,0 +1,883 @@
+<style>
+    /* This prevents the row from moving to the next line on safari.
+        Rows needs to be wrapped according to their percentage.
+    */
+
+    .layout-column .layout-wrap>* {
+        -webkit-flex: 1 1 auto;
+        /* flex: 1 1 50%; */
+    }
+
+    .layout-gt-xs-row>.flex {
+        min-width: 0;
+
+        width: 100%;
+    }
+
+    @media (max-width: 599px) {
+
+        .layout-row>.flex-xs-100 {
+            -webkit-flex: 1 1 100%;
+            flex: 1 1 100%;
+        }
+    }
+
+    .wf-container {
+        margin: 0 auto;
+    }
+
+    .wf-container:before,
+    .wf-container:after {
+        content: '';
+        display: table;
+    }
+
+    .wf-container:after {
+        clear: both;
+    }
+
+    .wf-box {
+        /* margin: 10px; */
+    }
+
+    .wf-box img {
+        display: block;
+        width: 100%;
+    }
+
+    .wf-box .content {
+        border: 1px solid #ccc;
+        border-top-width: 0;
+        padding: 5px 8px;
+    }
+
+    .wf-column {
+        float: left;
+    }
+</style>
+
+<loading ng-show="$ctrl.loading"></loading>
+
+
+<div flex layout-fill layout="column" ng-show="!$ctrl.loading">
+    <summary-toolbar toolbar-title="'dialysisTabView.overview' | translate" cancel="$ctrl.goback()"></summary-toolbar>
+    <md-content flex>
+        <div id="anchorBasic" class="notification layout-padding" layout="row" layout-align="start center" ng-if="$ctrl.dialysisHeader.Id">
+            <h3 translate>{{'overview.notification'}}</h3>
+            <md-button ng-click="$ctrl.handleNotificationisDataShow()" translate="overview.notificationDataShow" translate-values='{length: $ctrl.notifications.length, notificationunread: $ctrl.notificationunread}'>
+                <!-- 共 {{$ctrl.notifications.length}} 則，未讀 {{$ctrl.notificationunread}} 則。 -->
+                <span ng-if="!!$ctrl.notifications.length" translate>{{'overview.notificationDetail'}}</span>
+            </md-button>
+        </div>
+        <div class="layout-padding" ng-if="!!$ctrl.notifications.length && $ctrl.notificationisDataShow">
+            <div ng-repeat="notification in $ctrl.notifications track by $index">
+                <div>
+                    <span ng-bind="notification.CreatedTime  | date:'HH:mm'"></span>
+                    <span>&nbsp;&nbsp;</span>
+                    <span ng-bind="notification.Content"></span>
+                </div>
+                <md-divider ng-if="!$last"></md-divider>
+            </div>
+            <div layout="row">
+                <md-button class="right md-warn" ng-if="!!$ctrl.notificationunread" ng-click="$ctrl.handleNotificationisDataSetRead()"> {{'overview.notificationRead' | translate}}
+                </md-button>
+                <md-button class="right md-primary" ng-click="$ctrl.handleNotificationisDataShow()">
+                    {{'overview.notificationClose' | translate}}</md-button>
+            </div>
+        </div>
+
+        <div class="wf-container">
+            <div class="wf-box">
+                <md-card class="feature-area">
+                    <md-card-content>
+                        <h3 translate>{{'overview.basicInfo'}}</h3>
+                        <md-input-container-flat class="md-block">
+                            <label translate>{{'overview.ward'}}</label>
+                            <input ng-if="$ctrl.keys.length == 1" ng-model="$ctrl.wards[$ctrl.dialysisHeader.WardId]" readonly />
+                            <md-select required ng-if="$ctrl.keys.length > 1" ng-change="$ctrl.changeWard($ctrl.dialysisHeader.WardId)" ng-model="$ctrl.dialysisHeader.WardId" name="Ward">
+                                <md-option ng-repeat="(k, v) in $ctrl.wards" value="{{k}}">{{v}}</md-option>
+                            </md-select>
+                        </md-input-container-flat>
+                        <md-input-container-flat class="md-block">
+                            <label htmlFor="location" translate>{{'overview.location'}}</label>
+                            <input type="text" name="location" ng-model="$ctrl.dialysisHeader.Location" />
+                        </md-input-container-flat>
+                        <md-input-container-flat class="md-block">
+                            <label htmlFor="pateintSource" translate>{{'overview.pateintSource'}}</label>
+                            <md-select name="pateintSource" ng-model="$ctrl.patientSource" ng-change="$ctrl.patientSourceChange($ctrl.patientSource)">
+                                <md-option ng-repeat="patientSource in $ctrl.patientSourceOptions" ng-value="patientSource">{{patientSource}}</md-option>
+                            </md-select>
+                        </md-input-container-flat>
+
+                        <md-input-container-flat class="md-block" layout="column" ng-if="$ctrl.patientSource === $ctrl.emergency || $ctrl.patientSource === $ctrl.hospitalized">
+                            <div layout="row" ng-if="$ctrl.patientSource === $ctrl.emergency">
+                                <label translate>ESI</label>
+                                <md-select ng-model="$ctrl.dialysisHeader.ESItriage">
+                                    <md-option ng-value="0">無</md-option>
+                                    <md-option ng-value="1">1</md-option>
+                                    <md-option ng-value="2">2</md-option>
+                                    <md-option ng-value="3">3</md-option>
+                                    <md-option ng-value="4">4</md-option>
+                                    <md-option ng-value="5">5</md-option>
+                                </md-select>
+                            </div>
+                            <div layout="row" ng-if="$ctrl.patientSource === $ctrl.hospitalized">
+                                <label translate>{{'overview.component.admissionNumber'}}</label>
+                                <input type="text" ng-model="$ctrl.dialysisHeader.AdmissionNumber" />
+                            </div>
+                        </md-input-container-flat>
+
+                        <md-input-container-flat class="md-block">
+                            <label htmlFor="bedNo" translate>{{'overview.bedNo'}}</label>
+                            <md-select ng-model="$ctrl.dialysisHeader.BedNo" ng-class="{'notExistBedNo': $ctrl.dialysisHeader.BedNo === $ctrl.notExistBedNo}" ng-disabled="$ctrl.bedNoMsg">
+                                <md-option value=""></md-option>
+                                <md-optgroup label="{{bedNos.Name}}" ng-repeat="(bedGroup, bedNos) in $ctrl.bedGroups">
+                                    <md-option ng-style="bedNo === $ctrl.notExistBedNo ? {'color': 'red'} : {'color': 'initial'}" ng-value="bedNo" ng-repeat="bedNo in bedNos.BedNos">
+                                        {{bedNo}}
+                                    </md-option>
+                                </md-optgroup>
+                            </md-select>
+                            <!-- <input type="text" name="bedNo" ng-model="$ctrl.dialysisHeader.BedNo" /> -->
+                        </md-input-container-flat>
+                        <div class="warning" ng-show="$ctrl.bedNoMsg">
+                            {{$ctrl.bedNoMsg}}
+                            <md-button class="md-icon-button" ng-show="$ctrl.bedNoMsg !== '取得床位資料中...'" ng-click="$ctrl.changeWard($ctrl.dialysisHeader.WardId);">
+                                <i class="material-icons">refresh</i>
+                            </md-button>
+                        </div>
+                        <div class="warning" ng-show="$ctrl.dialysisHeader.BedNo && $ctrl.dialysisHeader.BedNo === $ctrl.notExistBedNo">
+                            此床號已不存在設定裡
+                        </div>
+
+                        <md-input-container-flat class="md-block">
+                            <label htmlFor="inBedNo" translate>{{'overview.inBedNo'}}</label>
+                            <input type="text" name="inBedNo" ng-model="$ctrl.dialysisHeader.SourceBedNo" />
+                        </md-input-container-flat>
+                        <md-input-container-flat class="md-block">
+                            <label htmlFor="number" translate>{{'overview.number'}}</label>
+                            <input type="tel" name="number" ng-model="$ctrl.dialysisHeader.Numbers.month" required />
+                        </md-input-container-flat>
+                        <md-input-container-flat class="md-block" ng-if="$ctrl.prescriptionLength > 0">
+                            <label htmlFor="number" translate="overview.modeNumber" translate-values='{mode: $ctrl.dialysisHeader.Prescription.DialysisMode.Name}'></label>
+
+                            <input type="tel" name="number" ng-model="$ctrl.modeTimes" />
+                        </md-input-container-flat>
+                        <md-input-container-flat class="md-block">
+                            <label translate>{{'overview.DialysisDataFirstTime'}}</label>
+                            <input type="date" placeholder="" ng-model="$ctrl.dialysisHeader.DialysisDataFirstTime" />
+                        </md-input-container-flat>
+                        <md-input-container-flat class="md-block">
+                            <label></label>
+                            <input type="time" placeholder="" ng-model="$ctrl.dialysisHeader.DialysisDataFirstTime" />
+                        </md-input-container-flat>
+                        <md-input-container-flat class="md-block">
+                            <label translate>{{'overview.DialysisDataLastTime'}}</label>
+                            <input type="date" placeholder="" ng-model="$ctrl.dialysisHeader.DialysisDataLastTime" />
+                        </md-input-container-flat>
+                        <md-input-container-flat class="md-block">
+                            <label></label>
+                            <input type="time" placeholder="" ng-model="$ctrl.dialysisHeader.DialysisDataLastTime" />
+                        </md-input-container-flat>
+                        <md-input-container class="md-block">
+                            <label htmlFor="chiefComplaint" translate>{{'overview.chiefComplaint'}}</label>
+                            <textarea name="chiefComplaint" ng-model="$ctrl.dialysisHeader.ChiefComplaint" md-maxlength="5000" md-detect-hidden="true" rows="3"></textarea>
+                        </md-input-container>
+                    </md-card-content>
+                </md-card>
+            </div>
+            <div class="wf-box">
+                <md-card ng-if="$ctrl.dialysisHeader.Id">
+                    <md-card-content>
+                        <h3 translate>{{'overview.dialysisPrescription'}}</h3>
+                        <div ng-if="$ctrl.prescriptionLength > 0">
+                            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.Type">
+                                <label translate>{{'overview.Type'}}</label>
+                                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.Type === 'LongTerm' ? '{{'overview.longTerm' | translate}}' : '{{'overview.temporary' | translate}}'" disabled />
+                            </md-input-container-flat>
+                            <!-- ng-if="$ctrl.dialysisHeader.Prescription.InBed" -->
+                            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.InBed || $ctrl.dialysisHeader.Prescription.InBed == null">
+                                <label translate>{{'overview.InBed'}}</label>
+                                <input type="text" ng-if="$ctrl.dialysisHeader.Prescription.InBed === 'false'" ng-value="'--'" disabled />
+                                <input type="text" ng-if="$ctrl.dialysisHeader.Prescription.InBed !== 'false'" ng-value="'是' || '--'" disabled />
+                            </md-input-container-flat>
+                            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.StandardWeight">
+                                <label translate>{{'overview.StandardWeight'}}</label>
+                                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.StandardWeight || '--'" disabled />
+                            </md-input-container-flat>
+                            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.Frequency">
+                                <label translate>{{'overview.Frequency'}}</label>
+                                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.Frequency || '--'" disabled />
+                            </md-input-container-flat>
+                            <md-input-container-flat class="md-block" ng-repeat="(key, value) in $ctrl.dialysisHeader.Prescription.Anticoagulants" ng-if="$ctrl.dialysisHeader.Prescription.Anticoagulants && $ctrl.anticoagulantsLength > 0">
+                                <label>
+                                    <span ng-if="$first" translate>{{'overview.anticoagulants'}}</span>
+                                </label>
+                                <input type="text" ng-value="key + ' ' + (value[0] || '{{'overview.none' | translate}}') + '／' + (value[1] || '{{'overview.none' | translate}}')" disabled />
+                            </md-input-container-flat>
+                            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.Dialysate">
+                                <label translate>{{'overview.Dialysate'}}</label>
+                                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.Dialysate || '--'" disabled />
+                            </md-input-container-flat>
+
+                            <!-- <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.HCO3">
+                                <label>HCO<sub style="font-size: 2px; line-height: 35px;">3</sub></label>
+                                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.HCO3 || '--'" disabled />
+                            </md-input-container-flat> -->
+                            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.Na">
+                                <label>Na<sup style="font-size: 2px; line-height: 17px;">+</sup></label>
+                                <!-- <label translate>{{'overview.Na'}}</label> -->
+                                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.Na || '--'" disabled />
+                            </md-input-container-flat>
+
+
+                            <!-- <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.HCO3">
+                                <label>
+                                    HCO<sub>3</sub>／Na<sup>+</sup>
+                                </label>
+                                <input type="text" value="100／25" disabled />
+                            </md-input-container-flat> -->
+
+
+                            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.DialysateTemperature">
+                                <label translate>{{'overview.DialysateTemperature'}}</label>
+                                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.DialysateTemperature || '--'" disabled />
+                            </md-input-container-flat>
+                            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.DialysateFlowRate">
+                                <label translate>{{'overview.DialysateFlowRate'}}</label>
+                                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.DialysateFlowRate || '--'" disabled />
+                            </md-input-container-flat>
+                            <!-- <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.Needle.ArteryLength">
+                                <label translate>{{'overview.ArteryLength'}}</label>
+                                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.Needle.ArteryLength || '--'" disabled />
+                            </md-input-container-flat>
+                            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.Needle.VeinLength">
+                                <label translate>{{'overview.VeinLength'}}</label>
+                                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.Needle.VeinLength || '--'" disabled />
+                            </md-input-container-flat> -->
+                            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.DialysisMode.Name">
+                                <label translate>{{'overview.DialysisMode'}}</label>
+                                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.DialysisMode.Name || '--'" disabled />
+                            </md-input-container-flat>
+                            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.DialysisMode.Name === 'HDF' || $ctrl.dialysisHeader.Prescription.DialysisMode.Name === 'OHDF'">
+                                <label translate>{{'overview.SupplementVolume'}}</label>
+                                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.SupplementVolume || '--'" disabled />
+                            </md-input-container-flat>
+                            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.DialysisMode.Name === 'HDF' || $ctrl.dialysisHeader.Prescription.DialysisMode.Name === 'OHDF'">
+                                <label translate>{{'overview.SupplementPosition'}}</label>
+                                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.SupplementPosition" disabled />
+                            </md-input-container-flat>
+                            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.Route">
+                                <label translate>{{'overview.Route'}}</label>
+                                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.Route || '--'" disabled />
+                            </md-input-container-flat>
+                            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.BF">
+                                <label translate>{{'overview.BF'}}</label>
+                                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.BF || '--'" disabled />
+                            </md-input-container-flat>
+                            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.Duration.Hours || $ctrl.dialysisHeader.Prescription.Duration.Minutes">
+                                <label translate>{{'overview.Duration'}}</label>
+                                <input type="text" ng-value="($ctrl.dialysisHeader.Prescription.Duration.Hours || '--') + 'H' + ($ctrl.dialysisHeader.Prescription.Duration.Minutes || '--') + 'M'" disabled />
+                            </md-input-container-flat>
+                            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.ArtificialKidney">
+                                <label translate>{{'overview.ArtificialKidney'}}</label>
+                                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.ArtificialKidney || '--'" disabled />
+                            </md-input-container-flat>
+                            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.Memo">
+                                <label translate>{{'overview.Memo'}}</label>
+                                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.Memo || '--'" disabled />
+                            </md-input-container-flat>
+
+                            <!-- <div layout="row" layout-align="end center" ng-if="!$ctrl.isSelector" class="seal-out-div">
+                                <div class="sign-title" translate>{{'overview.signNurseNfcTitle'}}</div>
+                                <div ng-show="!$ctrl.showNfcBtn" layout="row" layout-align="end center">
+                                    <seal created="none" modified="none" name="{{$ctrl.signNurse.Name}}" ng-click="$ctrl.nfcSign($ctrl.iosNFCSupport)" class="seal-div"></seal>
+                                    <i ng-if="$ctrl.signNurse === ''" class="material-icons nfcSign-btn" ng-click="$ctrl.nfcSign($ctrl.iosNFCSupport)">person</i>
+                                </div>
+                                <div ng-show="$ctrl.showNfcBtn">
+                                    <i class="material-icons nfcSign-btn" ng-click="$ctrl.nfcSign($ctrl.iosNFCSupport)">person</i>
+                                </div>
+                            </div>
+                            <div layout="row" layout-align="end center" ng-if="$ctrl.isSelector" class="seal-out-div">
+                                <div class="sign-title" translate>{{'overview.signNurseTitle'}}</div>
+                                <div ng-show="!$ctrl.showSelect" layout="row" layout-align="end center" class="seal-div">
+                                    <seal created="none" modified="none" name="{{$ctrl.signNurse.Name}}" ng-click="$ctrl.reSelectNurse()"></seal>
+                                </div>
+                                <md-input-container ng-show="$ctrl.showSelect" class="md-block">
+                                    <label translate>{{'overview.signNurse'}}</label>
+                                    <md-select id="sign-select" ng-model="$ctrl.signNurse" ng-model-options="{trackBy: '$value.Id'}" md-on-close="$ctrl.clearSearch($ctrl.signNurse)" ng-change="$ctrl.selectSignNurse($ctrl.signNurse)">
+                                        <md-select-header>
+                                            <i style="background: url(../../static/img/ic_search.png) no-repeat scroll 2.5px 2.5px;padding-left: 25px;border-radius: 5px;font-size: 13px;" ng-model="$ctrl.searchStr" type="search" ng-keydown="$event.stopPropagation()" ng-change="$ctrl.searchNurse($ctrl.searchStr)" placeholder="{{'overview.signName' | translate}}">
+                                        </md-select-header>
+                                        <md-option ng-repeat="nurse in $ctrl.allSignNurses track by nurse.Id" ng-value="nurse">
+                                            <span ng-if="nurse.Name !== 'NoSign'">{{::nurse.Name}}</span>
+                                            <span ng-if="nurse.Name === 'NoSign'" translate>{{'overview.noSign'}}</span>
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div> -->
+
+                            <!-- (NFC/QRCode) -->
+                            <md-input-container-flat class="md-block">
+                                <label></label>
+                                <check-staff ng-if="$ctrl.prescriptionAllStaff.length > 0 && $ctrl.prescriptionLength > 0" title-name="核對簽章" title-name-nfc="核對簽章" all-staff="$ctrl.prescriptionAllStaff" sign-nurse="$ctrl.prescriptionUser" show-select="$ctrl.showSelectForPrescription" show-nfc-btn="$ctrl.showNfcBtnForPrescription" pre-sign-nurse="$ctrl.prePrescriptionUser" password-for-web="false" password-for-nfc="false" password-for-qrcode="false"></check-staff>
+                            </md-input-container-flat>
+
+
+
+
+                        </div>
+
+                        <div style="color : red" ng-if="$ctrl.prescriptionLength === 0">
+                            <h4 translate>{{'overview.noData'}}</h4>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+            <div class="wf-box">
+                <!-- <vital-signs-card ng-if="$ctrl.dialysisHeader" pre-vital-sign="$ctrl.PreVitalSign" post-vital-sign="$ctrl.PostVitalSign" dialysis-start-time="$ctrl.dialysisStartTime" showbp-module="false"></vital-signs-card> -->
+                <vital-signs-card ng-if="$ctrl.dialysisHeader" data="$ctrl.vitalSign" dialysis-start-time="$ctrl.dialysisStartTime" showbp-module="$ctrl.ModuleFunctions === null || $ctrl.ModuleFunctions.BloodPressure === '1'">
+                </vital-signs-card>
+            </div>
+            <div class="wf-box">
+                <weight-and-dehydration ng-if="$ctrl.dialysisHeader" data="$ctrl.dialysisHeader" prescription-length="$ctrl.prescriptionLength" last-estimated-dehydration="$ctrl.dialysisHeader.EstimatedDehydration"></weight-and-dehydration>
+            </div>
+            <div class="wf-box">
+                <md-card>
+                    <md-card-content>
+                        <!-- <div class="beforeDialysisExsanguinate"> -->
+                        <h3 translate>{{'overview.BeforeDialysisExsanguinate'}}</h3>
+                        <md-radio-group ng-model="$ctrl.dialysisHeader.BeforeDISExsanguinate" ng-change="$ctrl.checkExsanguinate($ctrl.dialysisHeader.BeforeDISExsanguinate)" layout="row">
+                            <md-radio-button value="有" flex>{{'overview.yes' | translate}}</md-radio-button>
+                            <md-radio-button value="無" flex>{{'overview.none' | translate}}</md-radio-button>
+                            <md-radio-button value="其他" flex>{{'overview.other' | translate}}</md-radio-button>
+                        </md-radio-group>
+                        <div ng-if="$ctrl.dialysisHeader.BeforeDISExsanguinate === '有'">
+                            <!-- <md-input-container class="md-block" flex>
+                                <label translate>{{'overview.BeforeDialysisExsanguinateContent'}}</label>
+                                <input type="text" ng-model="$ctrl.dialysisHeader.BeforeDialysisExsanguinateContent" />
+                            </md-input-container> -->
+                            <div ng-if="$ctrl.showBloodCollectionText" style="color:red; margin-bottom: -20px;">
+                                {{'overview.DialysisExsanguinateSettingAlertText' | translate}}</div>
+                            <md-select ng-model="$ctrl.dialysisHeader.BeforeDISExsanguinateContent" ng-change="" placeholder="{{'overview.BeforeDialysisExsanguinateContent' | translate}}">
+                                <md-option ng-repeat="item in $ctrl.dialysisExsanguinateContent track by $index" ng-value="item">
+                                    {{item}}
+                                </md-option>
+                            </md-select>
+                            <!-- <div layout="row" class="row" >
+                                <label class="label-margin">結案原因</label>
+                                <input list="closedReason" name="closedReason" />
+                                <datalist id="closedReason">
+                                        <option ng-repeat="va in $ctrl.vesselAssessments | filter:{va: '!'} track by $index" ng-value="va.Id">
+                                                {{va.Text}}
+                                            </option>
+                                </datalist>
+                            </div> -->
+                            <md-input-container class="md-block" flex>
+                                <label translate>{{'overview.BeforeBloodTransfusionPerson'}}</label>
+                                <input type="text" ng-model="$ctrl.dialysisHeader.BeforeBloodTransfusionPerson" />
+                            </md-input-container>
+                        </div>
+                        <div ng-if="$ctrl.dialysisHeader.BeforeDISExsanguinate === '其他'">
+                            <input ng-model="$ctrl.dialysisHeader.BeforeDISExsanguinateContent" placeholder="{{'overview.BeforeDialysisExsanguinateContent' | translate}}">
+                            <md-input-container class="md-block" flex>
+                                <label translate>{{'overview.BeforeBloodTransfusionPerson'}}</label>
+                                <input type="text" ng-model="$ctrl.dialysisHeader.BeforeBloodTransfusionPerson" />
+                            </md-input-container>
+                        </div>
+                        <!-- </div> -->
+                        <!-- <div class="afterDialysisExsanguinate"> -->
+                        <h3 translate>{{'overview.AfterDialysisExsanguinate'}}</h3>
+                        <md-radio-group ng-model="$ctrl.dialysisHeader.AfterDISExsanguinate" ng-change="$ctrl.checkExsanguinate($ctrl.dialysisHeader.AfterDISExsanguinate, true)" layout="row">
+                            <md-radio-button value="有" flex>{{'overview.yes' | translate}}</md-radio-button>
+                            <md-radio-button value="無" flex>{{'overview.none' | translate}}</md-radio-button>
+                            <md-radio-button value="其他" flex>{{'overview.other' | translate}}</md-radio-button>
+                        </md-radio-group>
+                        <div ng-if="$ctrl.dialysisHeader.AfterDISExsanguinate === '有'">
+
+                            <!-- <md-input-container class="md-block" flex>
+                                <label translate>{{'overview.AfterDialysisExsanguinateContent'}}</label>
+                                <input type="text" ng-model="$ctrl.dialysisHeader.AfterDISExsanguinateContent" />
+                            </md-input-container> -->
+                            <div ng-if="$ctrl.showBloodCollectionText" style="color:red; margin-bottom: -20px;">
+                                {{'overview.DialysisExsanguinateSettingAlertText' | translate}}</div>
+                            <md-select ng-model="$ctrl.dialysisHeader.AfterDISExsanguinateContent" ng-change="" placeholder="{{'overview.AfterDialysisExsanguinateContent' | translate}}">
+                                <md-option ng-repeat="item in $ctrl.dialysisExsanguinateContent track by $index" ng-value="item">
+                                    {{item}}
+                                </md-option>
+                            </md-select>
+                            <md-input-container class="md-block" flex>
+                                <label translate>{{'overview.AfterBloodTransfusionPerson'}}</label>
+                                <input type="text" ng-model="$ctrl.dialysisHeader.AfterBloodTransfusionPerson" />
+                            </md-input-container>
+                        </div>
+                        <div ng-if="$ctrl.dialysisHeader.AfterDISExsanguinate === '其他'">
+                            <input ng-model="$ctrl.dialysisHeader.AfterDISExsanguinateContent" placeholder="{{'overview.AfterDialysisExsanguinateContent' | translate}}">
+                            <md-input-container class="md-block" flex>
+                                <label translate>{{'overview.AfterBloodTransfusionPerson'}}</label>
+                                <input type="text" ng-model="$ctrl.dialysisHeader.AfterBloodTransfusionPerson" />
+                            </md-input-container>
+                        </div>
+                        <!-- </div> -->
+                    </md-card-content>
+                </md-card>
+            </div>
+            <div class="wf-box">
+                <md-card class="feature-area">
+                    <md-card-content>
+                        <!-- <h3>通路種類及部位</h3> -->
+                        <h3 translate>{{'overview.vesselAssessmentsTitle'}}</h3>
+                        <span style="color: red;" ng-if="item === false" translate>{{'overview.vesselAssessmentsNoData'}}</span>
+
+
+                        <div ng-repeat="item in $ctrl.headerVesselAssessments">
+
+                            <!-- 顯示前次導管長度-->
+                            <!-- ng-if="$ctrl.lastCatheterLength.length > 0" -->
+                            <!-- <div class="preCatheterLength">
+                                <span translate>{{'overview.preCatheterLength'}}</span>
+                                <span ng-if="!$ctrl.lastCatheterLengthError && $ctrl.lastCatheterLength[$index] !== null">{{$ctrl.lastCatheterLength[$index]}}</span>
+                                <span ng-if="!$ctrl.lastCatheterLengthError && ($ctrl.lastCatheterLength[$index] === null || !$ctrl.lastCatheterLength[$index] || $ctrl.noLastCatheterLength)">--</span>
+
+                                <span ng-if="$ctrl.lastCatheterLengthError" translate>{{'overview.lastCatheterLengthError'}}</span>
+                            </div> -->
+
+                            <div layout="row">
+                                <div layout="column" flex>
+                                    <div layout-gt-sm="column" ng-if="$ctrl.dialysisHeader.StartTime">
+                                        <md-input-container class="md-block">
+                                            <label translate>{{'overview.vesselAssessments'}}</label>
+                                            <!-- ng-model="item.Data.Id" -->
+                                            <div layout="row" layout-align="start center">
+                                                <md-select ng-model="item.SourceId" ng-change="$ctrl.vesselAssessmentFunction($index)" ng-disabled="!$ctrl.dialysisHeader.VesselAssessments">
+                                                    <md-option value="" translate>{{'overview.chooseAssessment'}}
+                                                    </md-option>
+                                                    <md-option ng-repeat="va in $ctrl.vesselAssessments | filter:{va: '!'} track by $index" ng-value="va.Id">
+                                                        {{va.Text}}
+                                                    </md-option>
+                                                </md-select>
+                                                <md-button class="md-primary clearbtn" ng-show="$ctrl.clearbuttonShow[$index]" ng-click="$ctrl.deleteVesselAssessmentsContent($index)">
+                                                    {{'overview.clearAfterDialysisOptions' | translate}}</md-button>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                    <div layout-gt-sm="column" ng-if="!$ctrl.dialysisHeader.StartTime">
+                                        <span class="warning" translate>{{'overview.noStartTime'}}</span>
+                                    </div>
+
+                                    <div ng-if="$ctrl.clearbuttonShow[$index]">
+                                        <div class="md-block" style="margin-bottom: 8px;">
+                                            <label>
+                                                動脈端上針部位
+                                            </label>
+                                            <div layout="row" layout-wrap>
+                                                <md-checkbox flex="30" ng-repeat="(k, v) in $ctrl.NeedlePositionObj track by $index" ng-checked="$ctrl.exists('Artery', item, v)" ng-click="$ctrl.toggle('Artery', item, v)">{{k}}</md-checkbox>
+
+                                            </div>
+                                            <md-checkbox flex="30" ng-checked="$ctrl.exists('Artery', item, 'other')" ng-click="$ctrl.toggle('Artery', item, 'other')">其他</md-checkbox>
+                                            <input style="width: initial" ng-if="item.ShowArteryInput" ng-model="item.ArteryPositionInput">
+                                            <!-- <md-radio-group ng-model="item.ArteryPosition" layout="row" layout-wrap
+                                            style="margin-top: 10px;" flex>
+                                            <md-radio-button value="outside" flex="30">外側</md-radio-button>
+                                            <md-radio-button value="inside" flex="30">內側</md-radio-button>
+                                            <div layout="row" flex>
+                                                <md-radio-button value="other">其他</md-radio-button>
+                                                <input style="width: initial" ng-if="item.ArteryPosition =='other'"
+                                                    ng-model="$ctrl.ArteryPositionInput[$index]">
+                                            </div>
+                                        </md-radio-group> -->
+                                        </div>
+
+                                        <div class="md-block" flex style="margin-bottom: 8px;">
+                                            <label>
+                                                靜脈端上針部位
+                                            </label>
+                                            <div layout="row" layout-wrap>
+                                                <md-checkbox flex="30" ng-repeat="(k, v) in $ctrl.NeedlePositionObj track by $index" ng-checked="$ctrl.exists('Vein', item, v)" ng-click="$ctrl.toggle('Vein', item, v)">{{k}}</md-checkbox>
+
+                                            </div>
+                                            <md-checkbox flex="30" ng-checked="$ctrl.exists('Vein', item, 'other')" ng-click="$ctrl.toggle('Vein', item, 'other')">其他</md-checkbox>
+                                            <input style="width: initial" ng-if="item.ShowVeinInput" ng-model="item.VeinPositionInput">
+                                            <!-- <md-radio-group ng-model="item.VeinPosition" layout="row" layout-wrap
+                                            style="margin-bottom: 8px;" flex>
+                                            <md-radio-button value="outside" flex="30">外側</md-radio-button>
+                                            <md-radio-button value="inside" flex="30">內側</md-radio-button>
+                                            <div layout="row" flex>
+                                                <md-radio-button value="other">其他</md-radio-button>
+                                                <input style="width: initial" ng-if="item.VeinPosition =='other'"
+                                                    ng-model="$ctrl.VeinPositionInput[$index]">
+                                            </div>
+                                        </md-radio-group> -->
+                                        </div>
+
+                                        <div class="md-block" flex style="margin-bottom: 8px;">
+                                            <label>
+                                                通路功能評估－Thrill
+                                            </label>
+                                        </div>
+                                        <md-radio-group ng-model="item.Thrill" layout="row" style="margin-top: 10px;" flex>
+                                            <md-radio-button value="yes" flex>有</md-radio-button>
+                                            <md-radio-button value="none" flex>無</md-radio-button>
+                                            <span flex></span>
+                                        </md-radio-group>
+
+
+                                        <div class="md-block" flex style="margin-bottom: 8px;">
+                                            <label>
+                                                通路功能評估－順暢
+                                            </label>
+                                            <md-radio-group ng-model="item.Favorable" layout="row" style="margin-top: 10px;" flex>
+                                                <md-radio-button value="yes" flex>是</md-radio-button>
+                                                <md-radio-button value="no" flex>否</md-radio-button>
+                                                <span flex></span>
+                                            </md-radio-group>
+                                        </div>
+                                    </div>
+                                    <!-- <md-input-container-flat class="md-block" flex>
+                                        <label>
+                                            {{'overview.ArteryCatheter' | translate}}
+                                            {{item.Data.CatheterType === 'Permanent' || item.Data.CatheterType === 'DoubleLumen' ? '(cc)' : 'overview.times' | translate}}
+                                        </label>
+                                        <input type="tel" ng-model="item.ArteryCatheter" ng-pattern="/^[+-]?\d*[.]?\d*$/" />
+                                    </md-input-container-flat>
+
+                                    <md-input-container-flat class="md-block" flex>
+                                        <label>
+                                            {{'overview.VeinCatheter' | translate}}
+                                            {{item.Data.CatheterType === 'Permanent' || item.Data.CatheterType === 'DoubleLumen' ? '(cc)' : 'overview.times' | translate}}
+                                        </label>
+                                        <input type="tel" ng-model="item.VeinCatheter" ng-pattern="/^[+-]?\d*[.]?\d*$/" />
+                                    </md-input-container-flat>
+
+                                    <md-input-container-flat class="md-block" flex ng-show="item.Data.CatheterType === 'Permanent' || item.Data.CatheterType === 'DoubleLumen'">
+                                        <label translate>{{'overview.CatheterLength'}}</label>
+                                        <input type="tel" ng-model="item.CatheterLength" />
+                                    </md-input-container-flat> -->
+
+                                </div>
+                                <div layout="column" layout-align="center center" class="va-delet-btn-div" ng-if="$ctrl.headerVesselAssessments.length !== 1">
+                                    <i class="material-icons delete-btn" ng-click="$ctrl.deleteVesselAssessments($index)">clear</i>
+                                </div>
+                            </div>
+                        </div>
+                        <div layout="row" layout-align="end center" style="margin-bottom: 20px;">
+                            <md-button class="md-primary" ng-hide="$ctrl.headerVesselAssessments.length === 2 " ng-click="$ctrl.addVesselAssessments()">{{'overview.addOneData' | translate}}
+                            </md-button>
+                        </div>
+                        <!-- <div layout-gt-sm="column" ng-if="$ctrl.dialysisHeader.StartTime">
+                            <md-input-container class="md-block">
+                                <label translate>{{'overview.vesselAssessments'}}</label>
+                                <md-select ng-model="$ctrl.headerVesselAssessments[1].Data.Id" ng-change="$ctrl.vesselAssessmentFunction($ctrl.headerVesselAssessments[1].Data, 1)"
+                                    ng-disabled="!$ctrl.dialysisHeader.VesselAssessments">
+                                    <md-option value="" translate>{{'overview.chooseAssessment'}}</md-option>
+                                    <md-option ng-repeat="va in $ctrl.vesselAssessments | filter:{va: '!'} track by $index" ng-value="va.Id">
+                                        {{va.Text}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                        <div layout-gt-sm="column" ng-if="!$ctrl.dialysisHeader.StartTime">
+                            <span className="warning" translate>{{'overview.noStartTime'}}</span>
+                        </div>
+                        <div>
+                            <md-input-container-flat class="md-block" flex>
+                                <label>{{'overview.ArteryCatheter' | translate}} {{$ctrl.headerVesselAssessments[1].Data.CatheterType
+                                    === 'Permanent' ? '(cc)' : 'overview.times' | translate}}</label>
+                                <input type="text" ng-model="$ctrl.headerVesselAssessments[1].ArteryCatheter" ng-pattern="/^[+-]?\d*[.]?\d*$/" />
+                            </md-input-container-flat>
+                            <md-input-container-flat class="md-block" flex>
+                                <label>{{'overview.VeinCatheter' | translate}} {{$ctrl.headerVesselAssessments[1].Data.CatheterType
+                                    === 'Permanent' ? '(cc)' : 'overview.times' | translate}}</label>
+                                <input type="text" ng-model="$ctrl.headerVesselAssessments[1].VeinCatheter" ng-pattern="/^[+-]?\d*[.]?\d*$/" />
+                            </md-input-container-flat>
+                            <md-input-container-flat class="md-block" flex ng-show="$ctrl.headerVesselAssessments[1].Data.CatheterType === 'Permanent'">
+                                <label translate>{{'overview.CatheterLength'}}</label>
+                                <input type="text" ng-model="$ctrl.headerVesselAssessments[1].CatheterLength" />
+                            </md-input-container-flat>
+                        </div> -->
+                        <label translate>{{'overview.VACR'}}</label>
+                        <md-radio-group ng-model="$ctrl.dialysisHeader.VACR" layout="row" style="margin-top: 10px;" flex>
+                            <md-radio-button value="yes" flex>{{'overview.yes' | translate}}</md-radio-button>
+                            <md-radio-button value="none" flex>{{'overview.none' | translate}}</md-radio-button>
+                            <span flex></span>
+                        </md-radio-group>
+
+                        <md-input-container-flat class="md-block" flex ng-show="$ctrl.dialysisHeader.VACR === '有'">
+                            <label translate>{{'overview.content'}}</label>
+                            <input type="text" ng-model="$ctrl.dialysisHeader.VACRcontent" />
+                        </md-input-container-flat>
+                    </md-card-content>
+                </md-card>
+            </div>
+            <div class="wf-box">
+                <md-card class="feature-area">
+                    <md-card-content>
+                        <div layout="row" layout-align="start center">
+                            <h3 translate>{{'overview.postDialysisData'}}</h3>
+                            <span flex></span>
+                            <md-button class="md-primary clearbtn" ng-click="$ctrl.clearAfterDialysisOptions()">
+                                {{'overview.clearAfterDialysisOptions' | translate}}</md-button>
+                        </div>
+                        <!-- <md-input-container class="md-block">
+                        <label>透析機種類</label>
+                        <span>{{$ctrl.dialysisHeader.DialysisSystem || '--'}}</span>
+                    </md-input-container>
+                    <md-input-container-flat class="md-block">
+                        <label>透析液流速</label>
+                        <input type="number" ng-model="$ctrl.dialysisHeader.DialysateFlowRates" />
+                    </md-input-container-flat>
+                    <md-input-container-flat class="md-block">
+                        <label>肝素種類</label>
+                        <input type="text" ng-model="$ctrl.dialysisHeader.HeparinType" />
+                    </md-input-container-flat>
+                    <md-input-container-flat class="md-block">
+                        <label>肝素最初量</label>
+                        <input type="number" ng-model="$ctrl.dialysisHeader.HeparinInitial" />
+                    </md-input-container-flat>
+                    <md-input-container-flat class="md-block">
+                        <label>肝素維持量</label>
+                        <input type="number" ng-model="$ctrl.dialysisHeader.HeparinMaintain" />
+                    </md-input-container-flat>
+                    <md-input-container-flat class="md-block">
+                        <label>Bicarb</label>
+                        <input type="number" ng-model="$ctrl.dialysisHeader.Bicarb" />
+                    </md-input-container-flat>
+                    <md-input-container-flat md-no-float class="md-block">
+                        <label>Na</label>
+                        <input type="text" ng-model="$ctrl.dialysisHeader.Na" />
+                    </md-input-container-flat>
+                    <md-input-container-flat class="md-block">
+                        <label>Na-</label>
+                        <input type="text" ng-model="$ctrl.dialysisHeader.BeforeNa" />
+                    </md-input-container-flat>
+                    <md-input-container-flat class="md-block">
+                        <label>Na+</label>
+                        <input type="text" ng-model="$ctrl.dialysisHeader.AfterNa" />
+                    </md-input-container-flat>
+                    <md-input-container-flat class="md-block">
+                        <label>Ca-</label>
+                        <input type="text" ng-model="$ctrl.dialysisHeader.BeforeCa" />
+                    </md-input-container-flat>
+                    <md-input-container-flat class="md-block">
+                        <label>Ca+</label>
+                        <input type="text" ng-model="$ctrl.dialysisHeader.AfterCa" />
+                    </md-input-container-flat>
+                    <md-input-container-flat class="md-block">
+                        <label>ACT Test</label>
+                        <input type="text" ng-model="$ctrl.dialysisHeader.ACTTestBaseline" />
+                    </md-input-container-flat>
+                    <md-input-container-flat class="md-block">
+                        <label>體溫</label>
+                        <input type="number" ng-model="$ctrl.dialysisHeader.BT" step="0.01" />
+                    </md-input-container-flat>
+                    <md-input-container-flat class="md-block">
+                        <label>Conduct.</label>
+                        <input type="number" ng-model="$ctrl.dialysisHeader.Conductivity" />
+                    </md-input-container-flat>
+                    <md-input-container-flat class="md-block">
+                        <label>透析後透析器</label>
+                        <md-select ng-model="$ctrl.dialysisHeader.AKOfEnd">
+                            <md-option value="">請選擇透析後透析器</md-option>
+                            <md-option value="Clear">Clear</md-option>
+                            <md-option value="Slight">Slight</md-option>
+                            <md-option value="Moderate">Moderate</md-option>
+                            <md-option value="Severe">Severe</md-option>
+                        </md-select>
+                    </md-input-container-flat> -->
+                        <div style="margin-bottom: 8px;">
+                            <label translate>{{'overview.EndHollowFiber'}}</label>
+                            <md-radio-group ng-model="$ctrl.dialysisHeader.EndHollowFiber" layout="row" layout-wrap style="margin-top: 10px;">
+                                <md-radio-button flex="33" value="clear">Clear</md-radio-button>
+                                <md-radio-button flex="33" value="partialClot">部分Clot</md-radio-button>
+                                <md-radio-button flex="33" value="allClot">全部Clot</md-radio-button>
+                                <!-- <md-radio-button flex="33" value="{{item}}" ng-repeat="item in $ctrl.endHollowFiberContent track by $index">
+                                    {{item}}
+                                </md-radio-button> -->
+                            </md-radio-group>
+                            <!-- <md-select ng-if="!$ctrl.showFiberText" ng-model="$ctrl.dialysisHeader.EndHollowFiber" placeholder="{{'overview.EndHollowFiber' | translate}}">
+                                <md-option ng-repeat="item in $ctrl.endHollowFiberContent track by $index" ng-value="item">
+                                    {{item}}
+                                </md-option>
+                            </md-select>
+                            <div ng-if="$ctrl.showFiberText" style="color:red;">{{'overview.EndHollowFiberAlertText' | translate}}</div> -->
+                        </div>
+                        <div style="margin-bottom: 8px;">
+                            <label translate>{{'overview.EndChamber'}}</label>
+                            <md-radio-group ng-model="$ctrl.dialysisHeader.EndChamber" layout="row" layout-wrap style="margin-top: 10px;">
+                                <md-radio-button flex="33" value="clear">Clear</md-radio-button>
+                                <md-radio-button flex="33" value="partialClot">部分Clot</md-radio-button>
+                                <md-radio-button flex="33" value="allClot">全部Clot</md-radio-button>
+                                <!-- <md-radio-button flex="33" value="{{item}}" ng-repeat="item in $ctrl.endChamberContent track by $index">
+                                    {{item}}
+                                </md-radio-button> -->
+                            </md-radio-group>
+                            <!-- <md-select ng-if="!$ctrl.showChamberText" ng-model="$ctrl.dialysisHeader.EndChamber" placeholder="{{'overview.EndChamber' | translate}}">
+                                <md-option ng-repeat="item in $ctrl.endChamberContent track by $index" ng-value="item">
+                                    {{item}}
+                                </md-option>
+                            </md-select>
+                            <div ng-if="$ctrl.showChamberText" style="color:red;">{{'overview.EndChamberAlertText' | translate}}</div> -->
+                        </div>
+
+                        <!-- <div style="margin-bottom: 8px;">
+                            <label translate>動靜脈針緣</label>
+                            <md-radio-group ng-model="$ctrl.dialysisHeader.AVNeedleBlood" layout="row" layout-wrap style="margin-top: 10px;">
+                                <md-radio-button flex="33" value="止血">止血</md-radio-button>
+                                <md-radio-button flex="33" value="微滲血">微滲血</md-radio-button>
+                                <md-radio-button flex="33" value="滲血">滲血</md-radio-button>
+                            </md-radio-group>
+                        </div>
+
+                        <div style="margin-bottom: 8px;">
+                            <label translate>離開方式</label>
+                            <md-radio-group ng-model="$ctrl.dialysisHeader.Leave" layout="row" layout-wrap style="margin-top: 10px;">
+                                <md-radio-button flex="25" value="步行">步行</md-radio-button>
+                                <md-radio-button flex="25" value="輪椅">輪椅</md-radio-button>
+                                <md-radio-button flex="25" value="推床">推床</md-radio-button>
+                                <md-radio-button flex="25" value="其他">其他</md-radio-button>
+                            </md-radio-group>
+                        </div> -->
+
+
+                    </md-card-content>
+                </md-card>
+            </div>
+
+            <div class="wf-box">
+                <md-card>
+                    <md-card-content>
+                        <h3 translate>{{'overview.afterSituation'}}</h3>
+                        <!-- ng-change="$ctrl.situationChange()" -->
+                        <div layout="row" layout-align="start center" layout-wrap>
+                            <md-checkbox ng-repeat="item in $ctrl.afterSituationTitle" ng-checked="$ctrl.afterSituationExists(item)" ng-click="$ctrl.afterSituationChange(item)">
+                                <span class="margin-right-5">{{::item}}</span>
+                            </md-checkbox>
+                            <div layout="row" layout-align="start center" flex>
+                                <md-checkbox ng-checked="$ctrl.afterSituationExists('其他')" ng-click="$ctrl.afterSituationChange('其他')">
+                                    <span class="margin-right-5">其他</span>
+                                </md-checkbox>
+                                <input style="margin-top: 6px; max-width: 150px;" ng-model="$ctrl.afterSituationOther[1]" ng-if="$ctrl.afterSituationOther[0] === '其他'">
+                            </div>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+
+            <div class="wf-box">
+                <md-card>
+                    <md-card-content>
+                        <h3 translate>動靜脈針緣</h3>
+                        <md-radio-group ng-model="$ctrl.dialysisHeader.AVNeedleBlood" layout="row" layout-wrap style="margin-top: 10px;">
+                            <md-radio-button flex="33" value="hemostasis">止血</md-radio-button>
+                            <md-radio-button flex="33" value="microAngiostaxis">微滲血</md-radio-button>
+                            <md-radio-button flex="33" value="angiostaxis">滲血</md-radio-button>
+                        </md-radio-group>
+                    </md-card-content>
+                </md-card>
+            </div>
+
+            <div class="wf-box">
+                <md-card>
+                    <md-card-content>
+                        <h3 translate>離開方式</h3>
+                        <md-radio-group ng-model="$ctrl.dialysisHeader.Leaving" layout="row" layout-wrap style="margin-top: 10px;">
+                            <md-radio-button flex="25" value="walk">步行</md-radio-button>
+                            <md-radio-button flex="25" value="wheel">輪椅</md-radio-button>
+                            <md-radio-button flex="25" value="manipulator">推床</md-radio-button>
+                            <div layout="row" flex>
+                                <md-radio-button value="other">其他</md-radio-button>
+                                <input style="width: initial" ng-if="$ctrl.dialysisHeader.Leaving =='other'" ng-model="$ctrl.LeavingInput">
+                            </div>
+                        </md-radio-group>
+                    </md-card-content>
+                </md-card>
+
+
+            </div>
+            <div class="layout-padding" layout="row" layout-wrap>
+                <div flex="50" flex-xs="100" ng-if="$ctrl.dialysisHeader.CreatedUserName">
+                    <!-- <span>建立: {{ $ctrl.dialysisHeader.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                    <span translate="overview.CreatedTime" translate-values='{CreatedTime: $ctrl.dialysisHeader.CreatedTime}'></span>
+                    <seal model="$ctrl.dialysisHeader" modified="none"></seal>
+                </div>
+                <div flex="50" flex-xs="100" ng-if="$ctrl.dialysisHeader.ModifiedTime != null">
+                    <!-- <span>修改: {{ $ctrl.dialysisHeader.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                    <span translate="overview.EditTime" translate-values='{ModifiedTime: $ctrl.dialysisHeader.ModifiedTime}'></span>
+                    <seal model="$ctrl.dialysisHeader" created="none"></seal>
+                </div>
+            </div>
+        </div>
+        <footer layout="row" layout-margin layout-align="start center">
+            <md-button ng-click="$ctrl.submit()" class="md-raised md-primary" ng-disabled="$ctrl.isSaving || !$ctrl.dialysisHeader.WardId || !$ctrl.dialysisHeader.Numbers.all">
+                {{'overview.save' | translate}}</md-button>
+            <md-progress-circular md-diameter="20px" md-mode="indeterminate" ng-show="$ctrl.isSaving">
+            </md-progress-circular>
+            <span flex></span>
+            <md-button class="md-raised md-primary" ng-disabled="$ctrl.dialysisHeader.IsWaitingToUpload == 'true'" ng-click="$ctrl.uploadEMR()">電子病歷上傳並儲存</md-button>
+            <md-button ng-click="$ctrl.handleDialysisFinish($ctrl.dialysisHeader.StartTime)" class="md-warn md-raised" ng-if="$ctrl.dialysisHeader.EndTime === null" ng-disabled="$ctrl.isSaving">
+                {{'overview.finishRecord' | translate}}</md-button>
+        </footer>
+        <span ng-if="$ctrl.dialysisHeader.UploadTime" style="float:right;font-size:10px;color:#616161">電子病歷上傳時間：{{$ctrl.dialysisHeader.UploadTime | moment:'YYYY/MM/DD HH:mm:ss'}}</span>
+        <div style="clear:both" ng-if="$ctrl.dialysisHeader.EndTime !== null" translate="overview.finishRecordTime" translate-values='{EndTime: $ctrl.dialysisHeader.EndTime}'></div>
+    </md-content>
+</div>
+
+<div flex layout-padding layout="column" ng-show="$ctrl.dialysisHeader === null && !$ctrl.loading" translate>
+    {{'overview.dataDontExist'}}
+</div>
+
+<script type="text/ng-template" id="confirmDataReLoad.html">
+    <md-dialog aria-label="資料重整確認">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2 translate>{{'overview.refreshConfirm'}}</h2>
+                    <span flex></span>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content" translate>
+                    {{'overview.editedByNurse'}}
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+                <md-button ng-click="vm.ok()">
+                    {{'overview.refresh' | translate}}
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>
+
+<script type="text/ng-template" id="confirmModal.html">
+    <md-dialog aria-label="關表確認">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h4 translate>{{'overview.confirmDialysis'}}</h4>
+                    <span flex></span>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content" layout="column">
+                    <h4 translate>{{'overview.finishDialysisRecord'}}</h4>
+                    <div>
+                        <date-time-picker-standard my-model="c.closeDatetime" text="'完成'" required="true" />
+                    </div>
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+                <md-button class="md-raised" ng-click="c.cancel()">
+                    {{'overview.cancel' | translate}}
+                </md-button>
+                <md-button class="md-raised md-primary" ng-click="c.ok()">
+                    {{'overview.finishRecord' | translate}}
+                </md-button>
+            </md-dialog-actions> 
+        </form>
+    </md-dialog>
+
+</script>

@@ -1,0 +1,30 @@
+<div flex layout="column" layout-fill>
+    <md-toolbar class="no-print">
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="$ctrl.openLeftMenu()" hide-gt-md>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <md-button style="margin-left: -8px" class="md-icon-button" aria-label="Settings" ng-click="$ctrl.toggleSideNav()" hide-md hide-sm hide-xs show-gt-md>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <div layout="row" translate>
+                體重機歷程
+            </div>
+            <!-- <span flex></span> -->
+        </div>
+    </md-toolbar>
+
+    <div layout="row" class="list-header" layout-align="center">
+        查詢日期：
+        <input type="date" min="1900-01-01" max="2999-12-31" ng-model="$ctrl.durationQuery" ng-change="$ctrl.changeDurationQuery()"/>
+        <span flex></span>
+        <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+    </div>
+    <md-content flex layout-fill>
+        <div ui-grid="gridOptions" ng-show="!$ctrl.loading && $ctrl.serviceData.length > 0 " id="i18nGrid" class="grid" ui-grid-auto-resize ui-grid-pinning></div>
+        <loading ng-show="$ctrl.loading">{{'bads.loadingWard' | translate}}</loading>
+        <server-error-page flex ng-show="!$ctrl.loading && $ctrl.isError" refresh="$ctrl.refresh()"></server-error-page>
+        <nodata-page flex ng-show="!$ctrl.loading && $ctrl.serviceData.length == 0 && !$ctrl.isError" nodata-title="目前沒有資料" ></nodata-page>
+        
+    </md-content>
+</div>

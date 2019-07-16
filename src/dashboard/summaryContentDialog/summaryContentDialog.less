@@ -1,0 +1,17 @@
+
+.summary-content-dialog {
+    .readonly-container {
+        width: 21cm;   // A4 寬度 595px 加上 8px padding
+        position: relative;
+        display: inline-block;
+    }
+
+    // 遮罩擋住 summary content 使用者無法點
+    .readonly {
+        // background-color: rgba(10, 10, 10, 0.2);
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        z-index: 1000;
+    }
+}

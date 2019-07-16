@@ -1,0 +1,24 @@
+<md-content layout="column" layout-fill class="ward-calendar-container">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="$ctrl.openLeftMenu()">
+                <i class="material-icons">menu</i>
+            </md-button>
+            <div layout="row">
+                透析室行事曆
+            </div>
+            <span flex></span>
+        </div>
+    </md-toolbar>
+    <div layout="row" layout-align="center center" ng-show="!$ctrl.loading" style="background:#BBDEFB; height:65px;">
+        <label class="choose-ward"><h2 style="color:black;">請選擇透析室</h2></label>
+        <md-select ng-model="$ctrl.ward" ng-change="$ctrl.changeWard($ctrl.ward)" ng-disabled="">
+            <md-option ng-repeat="k in $ctrl.keys" ng-value="k">{{::$ctrl.wards[k]}}</md-option>
+        </md-select>
+    </div>
+    <md-content flex>
+        <loading ng-show="$ctrl.loading"></loading>
+        <div flex id="calendar" ng-show="!$ctrl.loading"></div>
+        </div>
+    </md-content>
+</md-content>

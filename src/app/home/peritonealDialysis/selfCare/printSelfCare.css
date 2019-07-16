@@ -1,0 +1,32 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td{margin:0;padding:0;border:0;outline:0;}
+
+h1{font-size: 24px; line-height: 34px; letter-spacing: 5px; color: #000}
+h2{font-size: 22px; line-height: 26px; letter-spacing: 5px; color: #000}
+/*h3{font-size: 16px; line-height: 20px; color: #000; padding-top: 8px}*/
+
+ul{ display: inline-block; }
+/*ul li{ margin-left: 20px;  font-size: 10pt  }*/
+.rightbox{float: right; } .rightbox span{ padding-left: 10px}
+.button{ display: inline-block; color: #fff; padding: 10px 18px; font-size: 18pt; font-weight: bold; margin:4px ; border-radius: 6px; cursor: pointer;  }
+.submit{ background: #2993c9 } .submit:active{ background: #1578aa }
+.clear{ background: #6e6a67 } .clear:active{ background: #554f4b }
+/*div{font-size: 10pt }*/
+.option{font-size: 10pt; padding:1px 2px; border-radius: 4px }
+.radio{vertical-align: middle; margin-top: -2px}
+/*body { padding: 10px; line-height: 24px; }*/
+input{font-size: 10pt; padding:4px 2px; border-radius: 4px; border: 1px solid #ccc; margin:1px }
+.bdaytime{ padding:2px!important}
+.radio{ width: 17px; height: 17px; vertical-align: middle; margin:-2px 0px 0 8px }
+.table{ border-collapse: collapse; border-spacing: 0;  }
+.table tr td{border-collapse: collapse; font-size: 10pt;border: #000 solid 1px; padding:2px ; word-break: break-all; line-height: 15px;}
+.table tr th{border-collapse: collapse; font-size: 10pt; border: #000 solid 1px; padding:2px ; padding-bottom:4px; word-break: break-all; line-height: 15px; text-align: left; white-space: pre-wrap; }
+
+
+.bar{ background: #BBDEFB; padding:10px 6px; font-size: 10px; font-weight: bold; }
+.list{ padding: 10px 6px; border-bottom: #ccc solid 1px; background: url(baseline-delete-24px.svg) no-repeat right center; background-size: 55px } .list p{ font-size: 15px;  }
+
+@media print {
+    .md-whiteframe-10dp {
+        box-shadow:none;
+    }
+}

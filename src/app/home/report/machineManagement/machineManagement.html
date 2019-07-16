@@ -1,0 +1,83 @@
+<div layout-fill layout="column" flex style="background:#f3f3f3">
+    <h2 style="margin-top: 25px ; margin-bottom: 0; padding-left: 15px;">
+        透析機管理
+    </h2>
+    <md-content flex layout-fill layout-padding layout="column" style="background:#f3f3f3">
+        <div>
+            <div layout="row" layout-align="start center">
+                <!-- <span class="nowrap">病房:</span>
+                    <md-input-container>
+                        <md-select ng-model="$ctrl.selectedWard" >
+                            <md-option ng-repeat="i in $ctrl.keys" ng-value="i">{{::$ctrl.wards[i]}}</md-option>
+                        </md-select>
+                    </md-input-container> -->
+                <span class="nowrap margin-left-10">起始日:</span>
+                <div>
+                    <!-- max="{{$ctrl.EndDate | moment: 'YYYY-MM-DD'}}" -->
+                    <input type="date" ng-model="$ctrl.StartDate" />
+                </div>
+                <span class="nowrap margin-left-10">結束日:</span>
+                <div>
+                    <!-- min="{{$ctrl.StartDateAddOneDay | moment: 'YYYY-MM-DD'}}" -->
+                    <input type="date" ng-model="$ctrl.EndDate" />
+                </div>
+                <!-- <span class="nowrap margin-left-10">班別:</span>
+                    <md-input-container>
+                        <md-select ng-model="$ctrl.selectedShift">
+                            <md-option ng-repeat="k in $ctrl.optionShift " ng-value="k">{{::k | shiftFilter}}</md-option>
+                        </md-select>
+                    </md-input-container> -->
+                <md-card-actions>
+                    <md-button class="md-raised md-primary" ng-click="$ctrl.getReportData()" ng-disabled="($ctrl.Type == 'patient' && !$ctrl.MedicalId) || ($ctrl.Type == 'machine' && $ctrl.MachineNumber == null)">查詢</md-button>
+                </md-card-actions>
+                <md-card-actions>
+                    <md-button class="md-raised md-primary" ng-click="$ctrl.exportExcel()" ng-disabled="!$ctrl.searchContent">匯出 excel 檔</md-button>
+                </md-card-actions>
+            </div>
+            <div layout="row" layout-align="start center" class="nowrap margin-left-10">
+                <md-radio-group class="radioGroup" ng-model="$ctrl.Type" layout="row" layout-align="start center">
+                    <md-radio-button value="patient">病人</md-radio-button>
+                    <md-radio-button value="machine">透析機</md-radio-button>
+                </md-radio-group>
+                <div layout="row" layout-align="start center" class="margin-left-10" ng-if="$ctrl.Type == 'patient'">
+                    <span class="nowrap margin-left-20">病歷號:</span>
+                    <div>
+                        <input id="medicalId-input" type="text" class="margin-left-10" ng-model="$ctrl.MedicalId" ng-keyup="$event.keyCode == 13 ? $ctrl.getReportData($ctrl.MedicalId) : null" />
+                    </div>
+                </div>
+                <div layout="row" layout-align="start center" class="margin-left-10" ng-if="$ctrl.Type == 'machine'">
+                    <span class="nowrap margin-left-20">透析機號:</span>
+                    <md-select ng-model="$ctrl.MachineNumber" name="machineNumber" class="machine-select">
+                        <md-option ng-value="null">請選擇</md-option>
+                        <md-option ng-repeat="m in $ctrl.machineNumberList" ng-value="m">{{m}}</md-option>
+                    </md-select>
+                </div>
+            </div>
+        </div>
+        <loading ng-show="$ctrl.loading"></loading>
+        <div ng-show="!$ctrl.loading">
+            <table id="myTable" ng-show="!$ctrl.loading && !$ctrl.isInit && !$ctrl.isError">
+                <tbody>
+                    <tr class="title-area">
+                        <td class="content" ng-repeat="title in $ctrl.title track by $index">{{::title | machineManagementTitleFilter}}</td>
+                    </tr>
+                    <tr ng-repeat="value in $ctrl.finalData track by $index" ng-if="$ctrl.finalData !== null">
+                        <td class="content" ng-repeat="v in value track by $index">
+                            <!-- ng-class="{breakLine: $last}" -->
+                            <div>{{v}}</div>
+                        </td>
+                    </tr>
+                    <tr ng-if="$ctrl.finalData === null">
+                        <!-- ng-if="$ctrl.noData" -->
+                        <td colspan="4" class="content">此區間暫無資料</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div flex layout-fill layout-padding ng-show="$ctrl.isError" layout="column" layout-align="center center" style="background:#f3f3f3">
+            <h3>
+                伺服器錯誤，請重新整理
+            </h3>
+        </div>
+    </md-content>
+</div>

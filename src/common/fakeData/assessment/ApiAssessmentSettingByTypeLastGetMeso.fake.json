@@ -1,0 +1,115 @@
+{
+    "DateTimestamp": "2019-03-22T18:50:56.8432149+08:00",
+    "Type": "in",
+    "Items": [
+        {
+            "Item": "透析機運作狀況",
+            "Options": [
+                "血流速度",
+                "壓力監測",
+                "空氣氣泡監測",
+                "溫度監測:透析液溫度",
+                "導電度監測:鈉離子濃度",
+                "漏血監測(Blood Leakage):人工腎臟或機器內部",
+                "肝素輸入劑",
+                "A透析液Ca濃度"
+            ],
+            "IncludeOther": false
+        },
+        {
+            "Item": "病人狀況-生命徵象",
+            "Options": [
+                "高血壓",
+                "低血壓",
+                "休克"
+            ],
+            "IncludeOther": false
+        },
+        {
+            "Item": "病人狀況-不平衡症候群",
+            "Options": [
+                "頭痛",
+                "高血壓",
+                "噁心",
+                "嘔吐",
+                "背痛",
+                "意識不清",
+                "躁動不安",
+                "全身痙攣",
+                "視力模糊",
+                "昏迷"
+            ],
+            "IncludeOther": false
+        },
+        {
+            "Item": "病人狀況-初次使用症候群(First use syndrome)",
+            "Options": [
+                "A型過敏反應",
+                "B型非專一型反應"
+            ],
+            "IncludeOther": false
+        },
+        {
+            "Item": "病人狀況-肌肉痙攣",
+            "Options": [
+                "肌肉痙攣"
+            ],
+            "IncludeOther": false
+        },
+        {
+            "Item": "病人狀況-熱原反應",
+            "Options": [
+                "RO水系統或透析液內毒素污染"
+            ],
+            "IncludeOther": false
+        },
+        {
+            "Item": "病人狀況-空氣栓塞(Air Embolism)",
+            "Options": [
+                "空氣栓塞(Air Embolism)"
+            ],
+            "IncludeOther": false
+        },
+        {
+            "Item": "血管通路",
+            "Options": [
+                "穿刺失誤",
+                "Blood Flow",
+                "靜脈壓",
+                "漏針(瘻管血管破裂血腫)",
+                "血管通路穿刺部位滲血",
+                "穿刺針脫出",
+                "chamb有血塊",
+                "人工腎臟凝固"
+            ],
+            "IncludeOther": false
+        },
+        {
+            "Item": "脫水情形",
+            "Options": [
+                "脫水情形"
+            ],
+            "IncludeOther": false
+        }
+    ],
+    "HospitalId": "56fcc5dd4ead7870942f61c3",
+    "Revision": 60,
+    "HistoryId": null,
+    "Status": "Normal",
+    "CreatedUserId": null,
+    "CreatedUserName": null,
+    "CreatedTime": "2018-09-04T02:25:01.241Z",
+    "ModifiedUserId": "570600fdd53d3c61d6794f95",
+    "ModifiedUserName": "Admin",
+    "ModifiedTime": "2019-03-22T10:45:33.329Z",
+    "Id": "5c94bccd9b5d1a1f6cd7f6a2",
+    "CreatedOn": "2018-09-04T02:25:01Z",
+    "ModifiedOn": "0001-01-01T00:00:00Z",
+    "ObjectId": {
+        "Timestamp": 1553251533,
+        "Machine": 10181914,
+        "Pid": 8044,
+        "Increment": 14153378,
+        "CreationTime": "2019-03-22T10:45:33Z"
+    }
+}

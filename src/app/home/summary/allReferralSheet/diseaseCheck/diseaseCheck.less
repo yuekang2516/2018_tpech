@@ -1,0 +1,154 @@
+disease-check {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .disease-check-container {
+        height: 100%;
+        width: 100%;
+        padding: 10px;
+
+        // .mygrid {
+        //     height: calc(~"100vh - 200px");
+        //     // margin-top: 15px;
+        // }
+
+        .timeSearchBtn-span {
+            cursor: pointer;
+            float:right;
+            color:white;
+            padding:5px; 
+            background: #6bc3e6; // #4CAF50
+            border-radius:2px;
+            font-size: 15px;
+        }
+
+        .timeSearchBtn-span:hover {
+            background: #3fb1df; //#449d48
+        }
+
+        .margin-left-5 {
+            margin-left: 5px;
+        }
+
+        .margin-left-10 {
+            margin-left: 10px;
+        }
+
+        .margin-bottom-5 {
+            margin-bottom: 5px;
+        }
+
+        .margin-bottom-10 {
+            margin-bottom: 10px;
+        }
+    
+        .nowrap-text {
+            font-size: 15px!important;
+            // font-weight: bold!important;
+            white-space:nowrap;
+        }
+
+        .lab-search-input {
+            width: 50%;
+        }
+
+
+        // 小畫面
+        @media (max-width: 632px) and (min-width: 0) {
+            .mygrid {
+                height: calc(~"100vh - 230px");
+            }
+            .search-area-hide-xs {
+                display: none;
+            }
+        }
+
+        // 大畫面
+        @media (min-width: 632px) {
+            .mygrid {
+                height: calc(~"100vh - 150px");
+            }
+            .search-area-hide-gtxs {
+                display: none;
+            }
+        }
+
+
+
+    }
+
+    .labCheckBtn-div {
+        height: 50px;
+        // width: 100%;
+        padding: 10px 25px 10px 10px;
+        // position: absolute;
+        // bottom: 0;
+        // right: 50;
+        background: #fafafa;
+        .labCheckBtn-span {
+            cursor: pointer;
+            float:right;
+            color:white;
+            padding:5px; 
+            background: #4CAF50;
+            border-radius:2px;
+            font-size: 15px;
+        }
+
+        .labCheckBtn-span:hover {
+            background: #449d48;
+        }
+
+        .disabled {
+            cursor: default;
+            background: lightgray !important;
+            color: rgb(84, 84, 84);
+            opacity: 1;
+            float:right;
+            padding:5px; 
+            border-radius:2px;
+            font-size: 15px;
+        }
+
+    }
+
+    .font-15px {
+        font-size: 15px;
+    }
+
+    .ag-theme-balham .ag-header-cell-label {
+        font-size: 15px;
+    }
+
+    .ag-theme-balham .ag-paging-panel {
+        font-size: 15px;
+    }
+
+    .other-memo {
+        background: lightgoldenrodyellow!important;
+    }
+
+    .other-memo:empty:before{
+        color:#666;
+        content:"請輸入說明內容...";
+    }
+
+    // .ag-input-text-wrapper:not(:focus):before {
+    //     content:"abcd";
+    //     color:gray
+    //   }
+    
+    // .other-memo:not(:focus):before {
+    //     content:"abc";
+    //     color:gray
+    //   }
+    
+    //   input {
+    //       &.ag-cell-edit-input::-webkit-input-placeholder:empty::before {
+    //         content:"abcd";
+    //         color:gray
+    //       }
+    //   }
+  
+}

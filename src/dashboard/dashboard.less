@@ -1,0 +1,637 @@
+dashboard {
+    height: 100%;
+    html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+        font-family: '微軟正黑體', Arial, Helvetica, sans-serif;
+    }
+    // dashboard header
+    :focus {
+        outline: 0;
+    }
+    .ward-select {
+        cursor: pointer;
+        font-size: 16px;
+        font-family: '微軟正黑體', Arial, Helvetica, sans-serif;
+        padding: 4px 6px;
+        border-radius: 4px;
+        line-height: 40px;
+        height: 35px;
+        vertical-align: top!important;
+        margin-top: 10px
+    }
+    .head {
+        height: 55px;
+        color: #282828;
+        font-size: 34px;
+        position: fixed;
+        top: 0;
+        z-index: 999;
+        width: 100%;
+        box-shadow: 0px 2px 4px #7a7a7a;
+        background: linear-gradient(to bottom, #ffffff 0%, #f3f3f3 50%, #ededed 50%, #e9eaec 100%);
+        padding-left: 4px
+    }
+    .head h1 {
+        display: inline;
+        font-size: 36px;
+        line-height: 50px;
+        color: #000;
+        font-weight: normal;
+        padding-left: 15px;
+    }
+    .head img {
+        float: left;
+        border-right: #333 solid 1px;
+        height: 55px
+    }
+    .head b {
+        font-size: 17px;
+        font-weight: normal;
+        color: #333;
+        vertical-align: top!important;
+        line-height: 55px
+    }
+    .head b span {
+        font-size: 17px;
+        font-weight: normal;
+        color: #ff0000;
+        vertical-align: top!important;
+        line-height: 55px
+    }
+    .head .time {
+        color: #282828;
+        font-size: 20px;
+        float: right;
+        padding-top: 12px;
+        margin-right: 10px
+    }
+    .cn {
+        text-align: center;
+    }
+    .red {
+        color: #ff0000
+    }
+    .bk {
+        color: #000;
+        font-weight: bold;
+    }
+    // container
+    .container {
+        margin: auto;
+        height: calc(~"100vh - 55px");
+        overflow: hidden;
+        clear: both;
+        background-color: #e9eaec;
+        margin-top: 55px
+    }
+    .menu {
+        width: 110px;
+        float: left;
+        padding-top: 5px;
+    }
+    .button_main {
+        cursor: pointer;
+        width: 85px;
+        height: 85px;
+        float: left;
+        margin-right: 14px;
+        margin-top: 8px;
+        margin-left: 12px
+    }
+    // 選單的按鈕 (未選擇)    
+    .a1 {
+        background: url(../static/img/dashboard_menu_button.png) no-repeat 0px 0px
+    }
+    .a1:active {
+        background: url(../static/img/dashboard_menu_button.png) no-repeat 0px -85px;
+    }
+    .a2 {
+        background: url(../static/img/dashboard_menu_button.png) no-repeat -85px 0;
+    }
+    .a2:active {
+        background: url(../static/img/dashboard_menu_button.png) no-repeat -85px -85px;
+    }
+    .a3 {
+        background: url(../static/img/dashboard_menu_button.png) no-repeat -170px 0;
+    }
+    .a3:active {
+        background: url(../static/img/dashboard_menu_button.png) no-repeat -170px -85px;
+    }
+    .a4 {
+        background: url(../static/img/dashboard_menu_button.png) no-repeat -254px 0;
+    }
+    .a4:active {
+        background: url(../static/img/dashboard_menu_button.png) no-repeat -254px -85px;
+    }
+    .a5 {
+        background: url(../static/img/dashboard_menu_button.png) no-repeat -338px 0;
+    }
+    .a5:active {
+        background: url(../static/img/dashboard_menu_button.png) no-repeat -338px -85px;
+    }
+    .a6 {
+        background: url(../static/img/dashboard_menu_button.png) no-repeat -424px 0;
+    }
+    .a6:active {
+        background: url(../static/img/dashboard_menu_button.png) no-repeat -424px -85px;
+    }
+    .a7 {
+        background: url(../static/img/dashboard_menu_button.png) no-repeat -508px 0;
+    }
+    .a7:active {
+        background: url(../static/img/dashboard_menu_button.png) no-repeat -508px -85px;
+    }
+    // 英文選單的按鈕 (未選擇)    
+    .e1 {
+        background: url(../static/img/dashboard_menu_button_En.png) no-repeat 0px 0px
+    }
+    .e1:active {
+        background: url(../static/img/dashboard_menu_button_En.png) no-repeat 0px -85px;
+    }
+    .e2 {
+        background: url(../static/img/dashboard_menu_button_En.png) no-repeat -85px 0;
+    }
+    .e2:active {
+        background: url(../static/img/dashboard_menu_button_En.png) no-repeat -85px -85px;
+    }
+    .e3 {
+        background: url(../static/img/dashboard_menu_button_En.png) no-repeat -170px 0;
+    }
+    .e3:active {
+        background: url(../static/img/dashboard_menu_button_En.png) no-repeat -170px -85px;
+    }
+    .e4 {
+        background: url(../static/img/dashboard_menu_button_En.png) no-repeat -254px 0;
+    }
+    .e4:active {
+        background: url(../static/img/dashboard_menu_button_En.png) no-repeat -254px -85px;
+    }
+    .e5 {
+        background: url(../static/img/dashboard_menu_button_En.png) no-repeat -338px 0;
+    }
+    .e5:active {
+        background: url(../static/img/dashboard_menu_button_En.png) no-repeat -338px -85px;
+    }
+    .e6 {
+        background: url(../static/img/dashboard_menu_button_En.png) no-repeat -424px 0;
+    }
+    .e6:active {
+        background: url(../static/img/dashboard_menu_button_En.png) no-repeat -424px -85px;
+    }
+    // 按鈕選擇後的效果
+    .button_white {
+        width: 100px;
+        height: 97px;
+        float: left;
+        padding-left: 0px;
+        margin-right: 10px;
+        margin-left: 0px;
+        margin-top: 5px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 0px;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 0px;
+    }
+    // 最後更新時間
+    .lasttime {
+        position: fixed;
+        bottom: 5px;
+        left: 0px;
+        padding: 5px 10px;
+        padding-top: 15px;
+        width: 90px;
+        text-align: center
+    }
+    .lasttime span {
+        font-size: 12px
+    }
+    .refresh {
+        cursor: pointer;
+        margin-top: 8px;
+    }
+    // 病人、透析機資料共用的部分
+    .main {
+        float: right;
+        width: calc(~"100% - 116px");
+        margin-top: 10px;
+        padding-right: 6px
+    }
+    .main .box {
+        width: 9.6%;
+        margin-right: 0.444444%;
+        height: 300px;
+        float: left;
+        margin-bottom: 8px;
+        box-shadow: 1px 1px 2px #aaaaaa;
+        background-color: #fff;
+        position: relative;
+        box-sizing: border-box;
+    }
+    .main .box1 {
+        width: 9.6%;
+        margin-right: 0.444444%;
+        float: left;
+        margin-bottom: 8px;
+        box-shadow: 1px 1px 2px #aaaaaa;
+        background-color: #fff;
+        position: relative;
+    }
+    .main .box:nth-child(10n+10) {
+        margin-right: 0
+    }
+    @media only screen and (max-width: 1800px) {
+        .main .box {
+            width: 15%;
+            margin-right: 0.57%;
+        }
+        .main .box:nth-child(10n+10) {
+            margin-right: 0.57%
+        }
+        // .main .box:nth-child(8n+8){ margin-right: 0 }
+    }
+    @media only screen and (max-width: 1500px) {
+        .main .box {
+            width: 20%;
+            margin-right: 0.8%;
+        }
+        .main .box:nth-child(10n+10) {
+            margin-right: 0.8%
+        }
+        .main .box:nth-child(8n+8) {
+            margin-right: 0.8%
+        }
+        // .main .box:nth-child(6n+6){ margin-right: 0 }
+    }
+    @media only screen and (max-width: 1200px) {
+        .main .box {
+            width: 23%;
+            margin-right: 0.625%;
+        }
+        .main .box:nth-child(10n+10) {
+            margin-right: 0.625%
+        }
+        .main .box:nth-child(8n+8) {
+            margin-right: 0.625%
+        }
+        .main .box:nth-child(6n+6) {
+            margin-right: 0.625%
+        }
+        // .main .box:nth-child(5n+5){ margin-right: 0 }
+    }
+    @media only screen and (max-width: 1000px) {
+        .main .box {
+            width: 24.5%;
+            margin-right: 0.6666%;
+        }
+        .main .box:nth-child(10n+10) {
+            margin-right: 0.6666%;
+        }
+        .main .box:nth-child(8n+8) {
+            margin-right: 0.6666%;
+        }
+        .main .box:nth-child(6n+6) {
+            margin-right: 0.6666%;
+        }
+        .main .box:nth-child(5n+5) {
+            margin-right: 0.6666%;
+        }
+        // .main .box:nth-child(4n+4){ margin-right: 0 }
+    }
+    .main .box .whitetxt {
+        font-family: 'Arial Black';
+        font-size: 56px;
+        color: #e7e7e7;
+        // margin-top: 85px;
+        margin-top: 110px;
+        text-align: center;
+    }
+    .main .box .number {
+        font-family: 'Arial Black'!important;
+        color: #fff;
+        font-size: 23px;
+        line-height: 36px;
+        padding-left: 6px;
+        margin-bottom: 4px;
+        position: relative;
+        background-color: #4886e7!important;
+        &.abnormal {
+            background-color: #b71c1c!important;
+            cursor: pointer;
+        }
+    }
+    .main .box1 .number {
+        font-family: 'Arial Black'!important;
+        color: #fff;
+        font-size: 23px;
+        line-height: 36px;
+        padding-left: 6px;
+        margin-bottom: 4px;
+        position: relative;
+        background-color: #4886e7!important;
+    }
+    .main .activearea {
+        height: 206px;
+        overflow: hidden;
+    }
+    .main .box .exclamation {
+        position: absolute;
+        padding: 3px 8px;
+        border-radius: 100px;
+        text-align: center;
+        background: #ff0000;
+        top: 10px;
+        left: 10px;
+        color: #fff;
+        font-size: 20px;
+        line-height: 20px;
+        font-family: 'Arial Black'
+    }
+    .patientname {
+        font-size: 23px;
+        line-height: 24px;
+        color: rgb(77, 77, 77);
+        margin: 0;
+        font-weight: bold
+    }
+    .patientnameh2 {
+        font-size: 16px;
+        line-height: 20px;
+        color: rgb(77, 77, 77);
+        margin: 0;
+        font-weight: bold
+    }
+    .boxtxt {
+        padding: 3px
+    }
+    // 燈號
+    .main .box .right {
+        float: right;
+        padding-right: 8px;
+        color: #fff;
+        font-size: 13px
+    }
+    /**/
+    .main .box .right::before {
+        content: "►"
+    }
+    .main .box .dot {
+        border-radius: 20px;
+        width: 10px;
+        height: 10px;
+        display: inline-block;
+        margin-right: 6px;
+        border: #fff solid 1px;
+        position: relative;
+    }
+    // 排床 排班 最上面挑選時間的區塊
+    .bar {
+        padding-top: 20px;
+    }
+    .date {
+        display: inline-block;
+        height: 28px;
+        width: 180px;
+        position: relative;
+    }
+    .date_in {
+        position: absolute;
+        width: 180px;
+        text-align: center;
+        font-size: 24px;
+        color: #000;
+    }
+    .backward {
+        display: inline-block;
+        width: 34px;
+        height: 35px;
+        background: url(../../static/img/arrow.png);
+    }
+    .backward:active {
+        opacity: 0.7
+    }
+    .forward {
+        display: inline-block;
+        width: 34px;
+        height: 35px;
+        background: url(../../static/img/arrow.png) -33px 0px;
+    }
+    .forward:active {
+        opacity: 0.7
+    }
+    .disable, .disable:active {
+        opacity: 0.3
+    }
+
+    // 透析機警示文字區
+    .warningArea {
+        position: absolute;
+        top: 7.6rem;
+        word-break: break-all;
+        width: 100%;
+        background-color: #fce4ec;
+        color: red;
+        font-weight: bold;
+        text-align: center;
+        padding: 6px;
+        box-sizing: border-box;
+    }
+    .alertborder {
+        overflow-y: auto;
+        overflow-x: hidden;
+        border: solid 5px!important;
+        animation: blink2 0.5s infinite;
+        animation-direction: alternate;
+        animation-timing-function: ease-in-out;
+    }
+    @keyframes blink2 {
+        from {
+            border-color: rgb(246, 189, 0);
+        }
+        to {
+            border-color: rgb(255, 0, 0);
+        }
+    }
+}
+
+md-toolbar {
+    background: #0e99dc!important;
+}
+
+// seal 相關
+.seal {
+    font-size: xx-small;
+    font-weight: bold;
+    color: red;
+    line-height: 1em;
+    white-space: nowrap;
+    text-align: center;
+}
+
+// seal 於列表中固定於右邊的位置
+.seal .fixed {
+    border: 1px solid red;
+    transform: rotate(-10deg);
+    padding: 3px;
+    max-width: 4.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: absolute;
+    bottom: 20px;
+    right: 60px;
+}
+
+.seal .fixedMiddle {
+    border: 1px solid red;
+    transform: rotate(-10deg);
+    padding: 3px;
+    max-width: 4.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: absolute;
+    bottom: 40px;
+    right: 60px;
+}
+
+.seal .fixedTop {
+    border: 1px solid red;
+    transform: rotate(-10deg);
+    padding: 3px;
+    max-width: 4.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: absolute;
+    bottom: 60px;
+    right: 60px;
+}
+
+// seal 使用相對位置
+.seal .floated {
+    border: 1px solid red;
+    transform: rotate(-10deg);
+    padding: 3px;
+    max-width: 4.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    display: inline-block;
+}
+
+// patient list 中病人目前狀態的標籤 (轉癒棄退歿)
+.state-style .seal .label {
+    position: absolute;
+    height: 15px;
+    width: 15px;
+    border: 0;
+    background: #1b5e20;
+    color: white;
+    border-radius: 50%;
+    line-height: 15px;
+    font-size: small;
+    top: 43px;
+    left: 43px;
+    z-index: 99;
+}
+
+// patient tag
+.badge {
+    color: white;
+    padding: 1px 2px;
+    border-radius: 4px;
+    background-color: springgreen;
+    margin: 1px;
+    font-size: 13px!important;
+    display: inline-block;
+    &.pointer {
+        cursor: pointer;
+    }
+}
+
+// ro 異常對話框
+#roWarning {
+    .main_card {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        .title {
+            color: darkgray;
+            font-size: small;
+            padding-left: 6px;
+            white-space: nowrap;
+        }
+        .title:after {
+            content: '：'
+        }
+        .content {
+            padding-left: 6px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            margin-bottom: 8px;
+        }
+    }
+    .main_card .card {
+        float: left;
+        width: 100%;
+        margin-right: 0;
+        border-right: none
+    }
+    .main_card .card:nth-child(2n+2) {
+        border-right: none
+    }
+    .main_card .card:last-of-type {
+        border-bottom: rgb(214, 214, 214) solid 1px !important;
+    }
+    .message {
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-top: 4px;
+    }
+    .alertcolor {
+        color: #ff0000
+    }
+    .alertbg {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        z-index: 999;
+        margin: 0;
+        padding: 10px 0;
+        animation: blink1 0.5s infinite;
+        animation-direction: alternate;
+        animation-timing-function: ease-in-out;
+    }
+    @keyframes blink1 {
+        from {
+            background: rgb(246, 189, 0);
+        }
+        to {
+            background: rgb(255, 0, 0);
+        }
+    }
+    .alertbg h2 {
+        margin: 0;
+        color: #fff;
+        font-weight: normal;
+        padding-left: 10px
+    }
+    .alertborder {
+        overflow-y: auto;
+        overflow-x: hidden;
+        margin-top: 50px;
+        border: solid 3px!important;
+        animation: blink2 0.5s infinite;
+        animation-direction: alternate;
+        animation-timing-function: ease-in-out;
+    }
+    @keyframes blink2 {
+        from {
+            border-color: rgb(246, 189, 0);
+        }
+        to {
+            border-color: rgb(255, 0, 0);
+        }
+    }
+}

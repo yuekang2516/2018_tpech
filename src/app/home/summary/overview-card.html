@@ -1,0 +1,87 @@
+<loading ng-show="$ctrl.loading"></loading>
+<server-error-page flex ng-show="!$ctrl.loading && $ctrl.isError" refresh="$ctrl.refresh()"></server-error-page>
+<div ng-show="!$ctrl.loading && !$ctrl.isError" class="flexcard_2">
+    <div class="card2" ng-if="$ctrl.prescriptionLength > 0">
+        <h2 translate="overview.dialysisPrescription"></h2>
+        <p ng-if="$ctrl.dialysisHeader.Prescription.Type">{{ 'overview.Type' | translate }} : {{ ::$ctrl.dialysisHeader.Prescription.Type | prescriptionType }}</p>
+        <p ng-if="$ctrl.dialysisHeader.Prescription.InBed == 'true'">{{'overview.InBed' | translate}}</p>
+        <p ng-if="$ctrl.dialysisHeader.Prescription.StandardWeight">{{'overview.StandardWeight' | translate}} : {{ ::$ctrl.dialysisHeader.Prescription.StandardWeight }}</p>
+        <p ng-if="$ctrl.dialysisHeader.Prescription.Frequency">{{'overview.Frequency' | translate}} : {{ ::$ctrl.dialysisHeader.Prescription.Frequency }}</p>
+        <p ng-if="$ctrl.dialysisHeader.Prescription.Anticoagulants && $ctrl.anticoagulantsLength > 0">
+            <span>{{'overview.anticoagulants' | translate}} : </span>
+            <span ng-repeat="(key, value) in $ctrl.dialysisHeader.Prescription.Anticoagulants">
+                {{ ::key + ' ' + (value[0] || '--') + ', ' + (value[1] || '--') }}
+                <span ng-if="!$last">; </span>
+            </span>
+        </p>
+        <p ng-if="$ctrl.dialysisHeader.Prescription.Dialysate">{{'overview.Dialysate' | translate}} : {{ ::$ctrl.dialysisHeader.Prescription.Dialysate }}</p>
+        <!-- <p ng-if="$ctrl.dialysisHeader.Prescription.HCO3">{{'overview.HCO3' | translate}} : {{ ::$ctrl.dialysisHeader.Prescription.HCO3 }}</p> -->
+        <p ng-if="$ctrl.dialysisHeader.Prescription.Na">{{'overview.Na' | translate}} : {{ ::$ctrl.dialysisHeader.Prescription.Na }}</p>
+        <p ng-if="$ctrl.dialysisHeader.Prescription.DialysateTemperature">{{'overview.DialysateTemperature' | translate}} : {{ ::$ctrl.dialysisHeader.Prescription.DialysateTemperature }}</p>
+        <p ng-if="$ctrl.dialysisHeader.Prescription.DialysateFlowRate">{{'overview.DialysateFlowRate' | translate}} : {{ ::$ctrl.dialysisHeader.Prescription.DialysateFlowRate }}</p>
+        <!-- <p ng-if="$ctrl.dialysisHeader.Prescription.Needle.ArteryLength">{{'overview.ArteryLength' | translate}} : {{ ::$ctrl.dialysisHeader.Prescription.Needle.ArteryLength }}</p>
+        <p ng-if="$ctrl.dialysisHeader.Prescription.Needle.VeinLength">{{'overview.VeinLength' | translate}} : {{ ::$ctrl.dialysisHeader.Prescription.Needle.VeinLength }}</p> -->
+        <p ng-if="$ctrl.dialysisHeader.Prescription.DialysisMode.Name">{{'overview.DialysisMode' | translate}} : {{ ::$ctrl.dialysisHeader.Prescription.DialysisMode.Name }}</p>
+        <p ng-if="$ctrl.dialysisHeader.Prescription.DialysisMode.Name === 'HDF' || $ctrl.dialysisHeader.Prescription.DialysisMode.Name === 'OHDF'">
+            {{'overview.SupplementVolume' | translate}} : {{ ::$ctrl.dialysisHeader.Prescription.SupplementVolume }}
+        </p>
+        <p ng-if="$ctrl.dialysisHeader.Prescription.DialysisMode.Name === 'HDF' || $ctrl.dialysisHeader.Prescription.DialysisMode.Name === 'OHDF'">
+            {{'overview.SupplementPosition' | translate}} : {{ ::$ctrl.dialysisHeader.Prescription.SupplementPosition }}
+        </p>
+        <p ng-if="$ctrl.dialysisHeader.Prescription.Route">{{'overview.Route' | translate}} : {{ ::$ctrl.dialysisHeader.Prescription.Route }}</p>
+        <p ng-if="$ctrl.dialysisHeader.Prescription.BF">{{'overview.BF' | translate}} : {{ ::$ctrl.dialysisHeader.Prescription.BF }}</p>
+        <p ng-if="$ctrl.dialysisHeader.Prescription.Duration.Hours || $ctrl.dialysisHeader.Prescription.Duration.Minutes">
+            {{'overview.Duration' | translate}} : {{ ::($ctrl.dialysisHeader.Prescription.Duration.Hours || '--') + 'H' + ($ctrl.dialysisHeader.Prescription.Duration.Minutes || '--') + 'M' }}
+        </p>
+        <p ng-if="$ctrl.dialysisHeader.Prescription.ArtificialKidney">{{'overview.ArtificialKidney' | translate}} : {{ ::$ctrl.dialysisHeader.Prescription.ArtificialKidney }}</p>
+        <p ng-if="$ctrl.dialysisHeader.Prescription.Memo">{{'overview.Memo' | translate}} : {{ ::$ctrl.dialysisHeader.Prescription.Memo }}</p>
+    </div>
+    <div class="margin"></div>
+    <div class="card2">
+        <div>
+            <h2 class="inline" translate>{{'overview.weightAndWater'}}</h2>
+            <span style="padding-left: 10px">
+                {{'overview.checkInTime' | translate}} : {{ ::$ctrl.dialysisHeader.CheckInTime | moment: 'YYYY/MM/DD(dd) HH:mm' }}
+            </span>
+        </div>
+        <p>{{'overview.TotalWeightPredialysis' | translate}} : {{ ::$ctrl.dialysisHeader.TotalWeightPredialysis}}</p>
+        <p>{{'overview.WheelchairWeight' | translate}} : {{ ::$ctrl.dialysisHeader.WheelchairWeight }}</p>
+        <p>{{'overview.NoClothingWeight' | translate}} : {{ ::$ctrl.dialysisHeader.NoClothingWeight }}</p>
+        <p>{{'overview.PredialysisWeight' | translate}} : {{ ::$ctrl.dialysisHeader.PredialysisWeight}}</p>
+        <p>{{'overview.expectedWeight' | translate}} : {{ ::$ctrl.dialysisHeader.Prescription.StandardWeight }}</p>
+        <p>{{'overview.DehydrationTarget' | translate}} : {{ ::$ctrl.dialysisHeader.DehydrationTarget }}</p>
+        <p>{{'overview.FoodWeight' | translate}} : {{ ::$ctrl.dialysisHeader.FoodWeight }}</p>
+        <p>{{'overview.Flush' | translate}} : {{ ::$ctrl.dialysisHeader.Flush }}</p>
+        <p>{{'overview.EstimatedDehydration' | translate}} : {{ ::$ctrl.dialysisHeader.EstimatedDehydration }}</p>
+        <p>{{'overview.DehydrationSetting' | translate}} : {{ ::$ctrl.dialysisHeader.DehydrationSetting }}</p>
+        <p>{{'overview.TotalWeightAfterDialysis' | translate}} : {{ ::$ctrl.dialysisHeader.TotalWeightAfterDialysis }}</p>
+        <p>{{'overview.WeightAfterDialysis' | translate}} : {{ ::$ctrl.dialysisHeader.WeightAfterDialysis }}</p>
+        <p>{{'overview.ActualDehydration' | translate}} : {{ ::$ctrl.dialysisHeader.Dehydration }}</p>
+        <p ng-if="$ctrl.dialysisHeader.AbnormalWeight">{{'overview.abnormalWeight' | translate}} : {{ ::$ctrl.dialysisHeader.AbnormalWeightReason }}</p>
+    </div>
+</div>
+<div style="flex: 1">
+    <h2 style="margin-top: 8px" translate>{{'overview.signs'}}</h2>
+    <table border="0" cellpadding="0" cellspacing="0" class="table_in_table" width="100%">
+        <tr>
+            <th translate>{{'overview.vitalSignDate'}}</th>
+            <td translate>種類</td>
+            <td translate>{{'overview.posture'}}</td>
+            <td translate>{{'overview.BPS'}}</td>
+            <td translate>{{'overview.BPD'}}</td>
+            <td translate>{{'overview.Temperature'}}</td>
+            <td translate>{{'overview.Pulse'}}</td>
+            <td translate>{{'overview.Respiration'}}</td>
+        </tr>
+        <tr ng-repeat="item in $ctrl.vitalSigns">
+            <th>{{ ::item.RecordTime | moment: 'YYYY/MM/DD HH:mm' }}</th>
+            <td>{{ ::item.Type == 'pre' ? '前' : '後'}}</td>
+            <td>{{ ::item.BloodPressurePosture }}</td>
+            <td>{{ ::item.BPS }}</td>
+            <td>{{ ::item.BPD }}</td>
+            <td>{{ ::item.Temperature }}</td>
+            <td>{{ ::item.Pulse }}</td>
+            <td>{{ ::item.Respiration }}</td>
+        </tr>
+    </table>
+</div>

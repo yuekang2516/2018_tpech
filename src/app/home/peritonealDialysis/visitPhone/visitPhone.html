@@ -1,0 +1,76 @@
+<style>
+    visit-phone{
+        height: 100%;
+    }
+    @media print{
+        * {
+            -webkit-print-color-adjust: exact !important;
+        }
+        .peritonealDialysisTabView{
+            display: inline-table; /* Not really needed in all cases */
+        }
+        md-dialog{
+            box-shadow: none;
+            width:100%;
+        }
+        div,input,table,select,md-select{
+            page-break-inside :avoid;
+            page-break-after: avoid;
+        }
+    }
+</style>
+<md-content layout="column" layout-fill>
+        <summary-toolbar ng-if="$ctrl.headerId" toolbar-title="'電話訪談記錄表'" cancel="$ctrl.back()"></summary-toolbar>
+        <md-content layout="column" flex>
+            <div class="list-header" layout="row" layout-align="center center" ng-show="$ctrl.serviceData.length > 0">
+                <md-switch ng-model="$ctrl.showDeleted" aria-label="Switch data">
+                    <span translate="visitPhone.Records.showDeleted" translate-values='{deletedItemsLength: $ctrl.deletedItemsLength}'></span>
+                </md-switch>
+                <span flex></span>
+                <h6 translate="visitPhone.Records.totalRecord" translate-values='{totalCnt: $ctrl.totalCnt}'></h6>
+                <span flex></span>
+                <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+            </div>
+            <md-content layout="column" flex>
+                <loading ng-show="$ctrl.loading && $ctrl.serviceData.length === 0">loading...</loading>
+                <md-content layout="column" flex ng-show="$ctrl.serviceData.length > 0">
+                    <div infinite-scroll="$ctrl.myPagingFunction()" infinite-scroll-disabled='$ctrl.loading' infinite-scroll-distance='1' infinite-scroll-parent>
+                        <md-list>                
+                            <md-list-item class="md-2-line"  ng-class="{deleted: item.Status == 'Deleted'}" ng-repeat="item in $ctrl.serviceData"  ng-click="$ctrl.openEditDialog(item,false)" ng-show="item.Status !== 'Deleted' || $ctrl.showDeleted">
+                                <div class="md-list-item-text" layout="column">
+                                    <h3>{{item.Record_Date | moment:'YYYY/MM/DD (dd) HH:mm'}}</h3>
+                                    <seal my-style="$ctrl.myStyle" model="item" modified="hideIfSame" fixed="true"></seal>
+                                </div>
+                                <div  style="position: absolute; right: 6px; top: 20px" ng-show="item.Status !== 'Deleted'">
+                                    <md-button class="md-icon-button" ng-click="$ctrl.openEditDialog(item,true)">
+                                        <i class="material-icons">
+                                            content_copy
+                                        </i>
+                                        <md-tooltip style="margin-top: -5px;">
+                                            複製
+                                        </md-tooltip>
+                                    </md-button>
+                                    <md-button  class="md-icon-button" ng-click="$ctrl.deleteOne($event,item)">
+                                        <i class="material-icons">delete</i>
+                                        <md-tooltip style="margin-top: -5px;">
+                                            刪除
+                                        </md-tooltip>
+                                    </md-button>
+                                </div>
+                                <md-divider></md-divider>
+                            </md-list-item>
+                        </md-list>
+                    </div>
+                </md-content>
+                <div flex ng-show="!$ctrl.loading && $ctrl.serviceData.length == 0 && !$ctrl.isError" layout="column" layout-fill layout-align="center center">
+                        <h1 translate>{{'visitPhone.Records.noData'}}</h1>
+                    </div>
+                    <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+                        <h3 translate>{{'visitPhone.Records.serverError'}}</h3>
+                    </div>
+            </md-content>
+        </md-content>
+</md-content>
+<md-button class="no-print md-fab md-fab-bottom-right" style="position: fixed;" ng-click="$ctrl.openCreateDialog()">
+    <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+</md-button>

@@ -1,0 +1,230 @@
+<md-dialog class="arrange-container" ng-class="{notDayoff: !$ctrl.isDayoff}">
+    <form name="arrangeForm" novalidate ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 ng-if="$ctrl.title" translate="arrange.status" translate-values="{status: $ctrl.title}"></h2>
+                <h2 ng-if="!$ctrl.title">
+                    <span translate>{{ $ctrl.isDayoff ? 'arrange.dayoffTitle' : 'arrange.arrangeBed'}}</span>
+                </h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+                    <i class="material-icons">clear</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content ng-class="{notDayoff: !$ctrl.isDayoff}" layout="row">
+            <div layout="column" ng-if="$ctrl.assignBedCopy.Type !== 'dayoff' && !$ctrl.takeDayoffOnly">
+                <input class="searchNurse" type="text" ng-model="$ctrl.searchNurseTerm" ng-change="$ctrl.searchDoc($ctrl.searchNurseTerm, 'nurse')" ng-model-options="{debounce:600}" placeholder="{{'arrange.nurseName' | translate}}" />
+                <md-content flex>
+                    <md-virtual-repeat-container ng-if="!$ctrl.loadingPatients" id="vertical-container">
+                        <md-list-item ng-disabled="$ctrl.selectedNurses.length === 2 && !nurse.isSelected" class="nurse" md-virtual-repeat="nurse in $ctrl.nurses" ng-class="{active: nurse.isSelected}" ng-click="arrangeForm.$dirty = ture; $ctrl.selectNurse(nurse)">
+                            {{nurse.Name}} - {{nurse.EmployeeId}}
+                            <md-divider></md-divider>
+                        </md-list-item>
+                    </md-virtual-repeat-container>
+                </md-content>
+            </div>
+            <div ng-if="!$ctrl.isDayoff" class="md-dialog-content" flex>
+                <md-checkbox ng-if="$ctrl.mode === 'single' && $ctrl.canTakeDayoff" ng-true-value="'dayoff'" ng-model="$ctrl.assignBedCopy.Type">{{'arrange.dayoff' | translate}}</md-checkbox>
+                <div style="margin-bottom: 10px">
+                    <span translate>{{'arrange.patient'}}</span>
+                    <md-autocomplete required md-require-match md-input-name="autocompleteField" md-no-cache="true" md-selected-item="$ctrl.selectedPatient" md-search-text-change="$ctrl.searchPatients(ctrl.searchText)" md-search-text="$ctrl.searchPatientText" md-selected-item-change="$ctrl.selectedItemChange(item)" ng-blur="$ctrl.selectedFirstMeetPatient()" md-items="item in $ctrl.searchPatientResults" md-item-text="item.MedicalId +'-'+ item.Name" md-min-length="0" placeholder="{{ 'arrange.searchPatient' | translate }}">
+                        <md-item-template>
+                            <span md-highlight-text="$ctrl.searchPatientText" md-highlight-flags="^i">{{item.MedicalId + '-' + item.Name}}</span>
+                        </md-item-template>
+                    </md-autocomplete>
+                    <div class="warning" ng-messages="arrangeForm.autocompleteField.$error" ng-if="arrangeForm.autocompleteField.$touched">
+                        <div ng-message="md-require-match" translate>{{ 'arrange.noMatchPatient' }}</div>
+                    </div>
+
+                </div>
+
+                <div ng-if="$ctrl.selectedPatient.HintMessage && $ctrl.selectedPatient.HintMessage === 'arranged'" class="hint-message">
+                    同天同班別不可重複排床。
+                    <br/>
+                    病人姓名：{{$ctrl.selectedPatient.Name}}
+                    <br/>
+                    目前床位：{{$ctrl.selectedPatient.HintBed}}
+                </div>
+
+                <div ng-if="$ctrl.selectedPatient.HintMessage && $ctrl.selectedPatient.HintMessage === 'dayoff'" class="hint-message">
+                    病人該天該班別已請假，不可排床。
+                    <br/>
+                    病人姓名：{{$ctrl.selectedPatient.Name}}
+                </div>
+
+                <div class="bedNo" layout="row" layout-align="start center">
+                    <md-input-container class="md-block">
+                        <label translate>{{'arrange.bad'}}</label>
+                        <md-select ng-model="$ctrl.assignBedCopy.BedNo" ng-change="$ctrl.mode == 'single' && $ctrl.filterPatients($ctrl.assignBedCopy.AssignDate, $ctrl.assignBedCopy.Shift)" required>
+                            <md-option ng-repeat="b in $ctrl.beds" value="{{ b.No }}">{{ ::b.No }}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <div ng-if="$ctrl.assignBedCopy.Type !== 'dayoff'">
+                    <md-input-container class="md-block">
+                        <label translate>{{'arrange.doctor'}}</label>
+                        <md-select ng-model="$ctrl.doctor" ng-model-options="{trackBy: '$value.Id'}" md-on-close="$ctrl.clearSearch()" >
+                            <md-select-header>
+                                <input ng-keydown="$event.stopPropagation()" style="background: url(../../static/img/ic_search.png) no-repeat scroll 2.5px 2.5px;padding-left: 25px;border-radius: 5px;font-size: 13px;" class="searchDoc" ng-model="$ctrl.searchTerm" type="search" ng-change="$ctrl.searchDoc($ctrl.searchTerm, 'doctor')" placeholder="{{'arrange.doctorName' | translate}}">
+                            </md-select-header>
+                            <md-option ng-value="null">請選擇醫師</md-option>
+                            <md-option ng-repeat="doctor in $ctrl.doctors track by doctor.Id" ng-value="doctor">{{::doctor.Name}} - {{::doctor.EmployeeId}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <div ng-if="$ctrl.assignBedCopy.Type !== 'dayoff'" class="nurse">
+                    <p class="title" translate>{{'arrange.nurses'}}</p>
+                    <p style="color: #3949ab;" ng-if="$ctrl.selectedNurses.length === 0" translate>( {{'arrange.chooseFromLeft'}} )</p>
+                    <md-chips md-max-chips="5" name="nurses" ng-model="$ctrl.selectedNurses" readonly="true" md-removable="true" md-on-remove="$ctrl.removeNurse($chip)" >
+                        <md-chip-template>
+                            {{$chip.Name}}
+                        </md-chip-template>
+                    </md-chips>
+                </div>
+
+                <div ng-if="$ctrl.assignBedCopy.Type !== 'dayoff'" class="mode">
+                    <p class="title" translate>{{'arrange.mode'}}</p>
+                    <md-radio-group class="radioGroup" ng-model="$ctrl.assignBedCopy.DialysisMode" layout="column" required>
+                        <div layout="row">
+                            <md-radio-button value="HD" class="md-primary">HD</md-radio-button>
+                            <md-radio-button value="HDF" class="md-primary margin-left">HDF</md-radio-button>
+                        </div>
+                        <div>
+                            <md-radio-button value="SLEDD-f" class="md-primary">SLEDD-f</md-radio-button>
+                        </div>
+                    </md-radio-group>
+                </div>
+
+                <!--Changed to HTML input type="date"  -->
+                <div ng-if="$ctrl.mode != 'single'">
+                    <div>
+                        <span translate>{{'arrange.startDate'}}</span>
+                        <input type="date" min="1900-01-01" max="2999-12-31" ng-model="$ctrl.assignBedCopy.StartTime" required />
+                    </div>
+                    <div>
+                        <span translate>{{'arrange.endDate'}}</span>
+                        <input type="date" min="1900-01-01" max="2999-12-31" ng-model="$ctrl.assignBedCopy.EndTime" required />
+                    </div>
+                </div>
+
+                <div ng-if="$ctrl.mode == 'single'" style="margin: 10px 0">
+                    <span class="title" translate>{{'arrange.date'}}: </span>
+                    <!-- <span>{{::$ctrl.assignBedCopy.AssignDate | moment:'YYYY/MM/DD'}}</span> -->
+                    <input type="date" min="1900-01-01" max="2999-12-31" ng-model="$ctrl.assignBedCopy.AssignDate" ng-change="$ctrl.filterPatients($ctrl.assignBedCopy.AssignDate, $ctrl.assignBedCopy.Shift)" required />
+                </div>
+
+                <div ng-if="$ctrl.mode != 'single'" class="Days">
+                    <p class="title" translate>{{'arrange.chooseDays'}}</p>
+                    <p>
+                        <md-checkbox ng-model="$ctrl.monday" ng-click="$ctrl.selectDay($ctrl.monday)">
+                            <span translate>{{'arrange.mon'}}</span>
+                        </md-checkbox>
+                        <md-checkbox ng-model="$ctrl.wednesday" ng-click="$ctrl.selectDay($ctrl.wednesday)">
+                            <span translate>{{'arrange.wed'}}</span>
+                        </md-checkbox>
+                        <md-checkbox ng-model="$ctrl.friday" ng-click="$ctrl.selectDay($ctrl.friday)">
+                            <span translate>{{'arrange.fri'}}</span>
+                        </md-checkbox>
+                    </p>
+                    <p>
+                        <md-checkbox ng-model="$ctrl.tuesday" ng-click="$ctrl.selectDay($ctrl.tuesday)">
+                            <span translate>{{'arrange.tue'}}</span>
+                        </md-checkbox>
+                        <md-checkbox ng-model="$ctrl.thursday" ng-click="$ctrl.selectDay($ctrl.thursday)">
+                            <span translate>{{'arrange.thurs'}}</span>
+                        </md-checkbox>
+                        <md-checkbox ng-model="$ctrl.saturday" ng-click="$ctrl.selectDay($ctrl.saturday)">
+                            <span translate>{{'arrange.sat'}}</span>
+                        </md-checkbox>
+                    </p>
+                    <md-checkbox ng-model="$ctrl.sunday" ng-click="$ctrl.selectDay($ctrl.sunday)">
+                        <span translate>{{'arrange.sun'}}</span>
+                    </md-checkbox>
+                </div>
+
+                <!-- <div ng-if="$ctrl.mode == 'single'">
+                    <span class="title" translate>{{'shifts.shiftsContent.shift'}}: </span>
+                    <span>{{::$ctrl.assignBedCopy.Shift | shift}}</span>
+                </div> -->
+                <div>
+                    <p class="title" translate>{{'arrange.chooseShifts'}}</p>
+                    <md-radio-group class="radioGroup" ng-change="$ctrl.mode == 'single' && $ctrl.filterPatients($ctrl.assignBedCopy.AssignDate, $ctrl.assignBedCopy.Shift)" ng-model="$ctrl.assignBedCopy.Shift" layout="column" required>
+                        <div layout="row">
+                            <md-radio-button value="morning" class="md-primary">
+                                <span translate>{{'arrange.morning'}}</span>
+                            </md-radio-button>
+                            <md-radio-button value="afternoon" class="md-primary margin-left">
+                                <span translate>{{'arrange.afternoon'}}</span>
+                            </md-radio-button>
+                            <md-radio-button value="evening" class="md-primary margin-left">
+                                <span translate>{{'arrange.evening'}}</span>
+                            </md-radio-button>
+                        </div>
+                        <div layout="row">
+                            <md-radio-button value="night" class="md-primary">
+                                <span translate>{{'arrange.night'}}</span>
+                            </md-radio-button>
+                            <md-radio-button value="temp" class="md-primary margin-left">
+                                <span translate>{{'arrange.temp'}}</span>
+                            </md-radio-button>
+                        </div>
+                    </md-radio-group>
+                </div>
+
+                <div>
+                    <p style="margin-bottom: 0" class="title" translate>{{'arrange.memo'}}</p>
+                    <md-input-container class="md-block textarea">
+                        <textarea name="chiefComplaint" ng-model="$ctrl.assignBedCopy.Memo" md-maxlength="5000" md-detect-hidden="true" rows="3"></textarea>
+                    </md-input-container>
+                </div>
+
+                <div ng-if="$ctrl.arrangeErr" id="errMsg">
+                    <p translate>{{'arrange.shiftsArranged'}}</p>
+                    <span ng-repeat="date in $ctrl.repeatDateAry">[{{date}}]</span>
+                </div>
+
+            </div>
+
+            <div layout="column" ng-if="$ctrl.isDayoff" class="md-dialog-content" flex>
+                <div class="widthlable">{{'arrange.patient' | translate}}：
+                    <span>{{::$ctrl.selectedPatient.MedicalId}} - {{::$ctrl.selectedPatient.Name}}</span>
+                </div>
+                <div class="widthlable">{{'arrange.bad' | translate}}：
+                    <span>{{::$ctrl.assignBedCopy.BedNo}}</span>
+                </div>
+                <div class="widthlable">{{'arrange.date' | translate}}：
+                    <span>{{::$ctrl.assignBedCopy.AssignDate | moment: "YYYY/MM/DD"}}</span>
+                </div>
+                <div class="widthlable">{{'shifts.shiftsContent.shift' | translate}}：
+                    <span>{{::$ctrl.assignBedCopy.Shift | shift}}</span>
+                </div>
+                <div>
+                    <p style="margin-bottom: 0" class="title" translate>{{'arrange.memo'}}</p>
+                    <md-input-container class="md-block textarea">
+                        <textarea name="chiefComplaint" ng-model="$ctrl.assignBedCopy.Memo" md-maxlength="5000" md-detect-hidden="true" rows="3"></textarea>
+                    </md-input-container>
+                </div>
+            </div>
+            <!-- </div> -->
+        </md-dialog-content>
+
+        <md-dialog-actions flex layout="row" layout-align="start center">
+            <md-button class="md-raised md-warn" ng-click="$ctrl.delete()" ng-show="$ctrl.editMode && !$ctrl.cannotDel" ng-disabled="$ctrl.isLoading">
+                <span translate>{{'arrange.delete'}}</span>
+            </md-button>
+            <md-button class="md-raised" ng-click="$ctrl.cancel()" ng-disabled="$ctrl.isLoading">
+                <span translate>{{'arrange.cancel'}}</span>
+            </md-button>
+            <md-button class="md-raised md-primary" ng-click="$ctrl.save()" ng-show="!$ctrl.editMode"  ng-disabled="$ctrl.isLoading || arrangeForm.$invalid || ($ctrl.selectedPatient.HintMessage && ($ctrl.selectedPatient.HintMessage === 'arranged' || $ctrl.selectedPatient.HintMessage === 'dayoff'))">
+                <span translate>{{$ctrl.assignBedCopy.Type == 'dayoff' ? 'arrange.dayoff' : 'arrange.arrangeBed'}}</span>
+            </md-button>
+            <md-button class="md-raised md-primary" ng-click="$ctrl.edit()" ng-show="$ctrl.editMode" ng-disabled="$ctrl.isLoading || arrangeForm.$invalid || !arrangeForm.$dirty || ($ctrl.selectedPatient.HintMessage && ($ctrl.selectedPatient.HintMessage === 'arranged' || $ctrl.selectedPatient.HintMessage === 'dayoff'))">
+                <span translate>{{'arrange.edit'}}</span>
+            </md-button>
+            <md-progress-circular md-diameter="20px" md-mode="indeterminate" ng-show="$ctrl.isLoading"></md-progress-circular>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

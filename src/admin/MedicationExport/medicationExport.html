@@ -1,0 +1,59 @@
+<style scoped>
+    medication-export {
+        height: 100%;
+    }
+
+    .padding {
+        padding: 20px;
+    }
+</style>
+
+<div flex layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.openLeftMenu()" hide-gt-sm>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <h3 translate="medicationExport.pageTitle"></h3>
+        </div>
+    </md-toolbar>
+    <md-content layout-fill flex>
+        <loading ng-show="vm.loading"></loading>
+        <div flex ng-show="vm.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate="customMessage.serverError"></h3>
+        </div>
+        <div class="padding" ng-show="!vm.loading && !vm.isError">
+            <div>
+                <!-- <md-datepicker ng-model="vm.medicationExportStartDate" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
+                <md-datepicker ng-model="vm.medicationExportEndDate" md-placeholder="Enter date" md-open-on-focus></md-datepicker> -->
+                <md-input-container>
+                    <label translate="medicationExport.startDate"></label>
+                    <input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.medicationExportStartDate"/>
+                </md-input-container>
+                <md-input-container>
+                    <label translate="medicationExport.endDate"></label>
+                    <input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.medicationExportEndDate"/>
+                </md-input-container>
+            </div>
+            <md-input-container class="md-block">
+                <label translate="medicationExport.kind"></label>
+                <br><br>
+                <div layout="row" layout-wrap>
+                    <div flex="50" ng-repeat="(key, value) in vm.categories">
+                        <md-checkbox ng-click="vm.toggle(value, vm.checkdcategories)" ng-checked="vm.exists(value, vm.checkdcategories)">
+                            {{ value }}
+                        </md-checkbox>
+                    </div>
+                </div>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <md-checkbox ng-model="vm.isDeleted">
+                    <span translate="medicationExport.showDelete"></span>
+                </md-checkbox>
+            </md-input-container>
+            <md-card-actions layout="row">
+                <md-button class="md-raised md-primary" ng-click="vm.exportCSV()"><span translate>{{'medicationExport.exportbutton'}}</span></md-button>
+            </md-card-actions>
+        </div>
+    </md-content>
+</div>

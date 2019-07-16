@@ -1,0 +1,49 @@
+<md-content layout="column" layout-fill class="monthly-dialysis-records-container">
+   
+    <!-- <summary-toolbar toolbar-title=" ($ctrl.calendarDate | moment: 'MMM') + ('monthlyDialysisRecords.monthlyDialysisRecords.calendar' | translate)" cancel="$ctrl.goback()"></summary-toolbar> -->
+    <summary-toolbar toolbar-title="$ctrl.toolbarTitle" cancel="$ctrl.goback()"></summary-toolbar>
+    
+    <!-- <md-toolbar hide-gt-sm>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="$ctrl.goback()">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <div layout="row">
+                <span>{{$ctrl.calendarDate | moment: 'MMM'}}</span>&nbsp;
+                <span translate>{{'monthlyDialysisRecords.monthlyDialysisRecords.calendar'}}</span>
+            </div>
+            <span flex></span>
+        </div>
+    </md-toolbar> -->
+    
+    <!-- 20190403 只留下顯示透析記錄功能，其他記事都拿掉 -->
+    <!-- <div layout="row" layout-align="center center" ng-show="!$ctrl.loading" style="background:#BBDEFB; height:65px;">
+
+        <span flex></span>
+
+        <md-button class="md-raised md-primary filter-btn" ng-class="{'filter-btn-active': $ctrl.filterBtn === 'all'}" ng-click="$ctrl.getOneEventType('all')" style="background-color: rgb(72, 134, 231);">
+            <span translate>{{'monthlyDialysisRecords.monthlyDialysisRecords.all'}}</span>
+        </md-button>
+        
+        <md-button class="md-raised md-primary filter-btn" ng-class="{'filter-btn-active': $ctrl.filterBtn === 'dialysis'}" ng-click="$ctrl.getOneEventType('dialysis')" style="background-color: rgb(72, 134, 231);">
+            <span translate>{{'monthlyDialysisRecords.monthlyDialysisRecords.dialysisRecord'}}</span>
+        </md-button>
+
+        <md-button class="md-raised md-primary filter-btn" ng-class="{'filter-btn-active': $ctrl.filterBtn === 'patient'}" ng-click="$ctrl.getOneEventType('patient')" style="background-color: rgb(72, 134, 231);">
+            <span translate>{{'monthlyDialysisRecords.monthlyDialysisRecords.patientEvent'}}</span>
+        </md-button>
+
+        <span flex></span>
+    </div> -->
+
+
+    <md-content flex>
+        <loading ng-show="$ctrl.loading"></loading>
+        <div flex id="calendar"></div>
+        <div class="legend" layout="row" layout-wrap>
+            <span translate>{{'monthlyDialysisRecords.monthlyDialysisRecords.mode'}}</span>
+            <div class="none" translate>{{'monthlyDialysisRecords.monthlyDialysisRecords.none'}}</div>
+            <div ng-repeat="(key, value) in $ctrl.modes track by $index" ng-bind-html="value"></div>
+        </div>
+    </md-content>
+</md-content>

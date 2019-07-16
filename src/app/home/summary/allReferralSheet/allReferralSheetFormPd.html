@@ -1,0 +1,742 @@
+<div layout-fill layout="column" ui-view>
+    <md-toolbar layout="row" class="disablePrint">
+        <div class="md-toolbar-tools">
+            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.goback('allReferralSheetList')"
+                aria-label="call">
+                <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+            </md-button>
+
+            <h3 flex>
+                <span ng-show="!$ctrl.referralSheetId">新增病歷摘要</span>
+                <span ng-show="$ctrl.referralSheetId && $ctrl.referralSheetForm.Status !== 'Deleted'">修改病歷摘要</span>
+                <span ng-show="$ctrl.referralSheetForm.Status === 'Deleted'">查看己刪除病歷摘要</span>
+            </h3>
+            <md-button ng-if="$ctrl.isBrowser" class="md-icon-button" aria-label="More" ng-click="$ctrl.print()">
+                <i class="material-icons">print</i>
+            </md-button>
+            <!-- <md-button class="md-icon-button" aria-label="More" ng-click="$ctrl.gotoHomePage()">
+                <i class="material-icons">home</i>
+            </md-button> -->
+        </div>
+    </md-toolbar>
+
+    <loading ng-if="$ctrl.loading"></loading>
+    <md-content layout="column" flex class="all-referral-sheet-form-container" layout-align="center center">
+        <form flex class="out-form" ng-if="!$ctrl.loading && !$ctrl.isError" layout="column" name="referralSheetForm">
+            <md-whiteframe class="md-whiteframe-10dp " layout-align="center center"
+                style="width: 21.4cm; padding: 18px;">
+                <!-- width: 19.5cm; -->
+                <div style="width: 21.4cm; clear: both;">
+                    <!-- <img ng-src="{{'static/img/TV_logo.jpg'}}" width="250px" height="250px" alt="Hospital logo" /> -->
+                    <!-- <img ng-src="{{'static/img/TV_logo.jpg'}}" alt="" style="float: left; width: 10%; margin-left: 15px"> -->
+                    <div ng-if="$ctrl.stateName.substr(0, 2) !== 'pd'" style="text-align: center;">
+                        <h3>血液透析病歷摘要</h3>
+                        <!-- <h4>Referral Sheet from Hemodialysis unit of Taipei Veterans General Hospital</h4> -->
+                    </div>
+                    <div ng-if="$ctrl.stateName.substr(0, 2) === 'pd'" style="text-align: center;">
+                        <h3>腹膜透析病歷摘要</h3>
+                        <!-- <h4>Referral Sheet from Hemodialysis unit of Taipei Veterans General Hospital</h4> -->
+                    </div>
+                    <div style="clear: both;"></div>
+                    <table class="table_content" style=" margin-top: 0px" width="100%">
+                        <tbody>
+                            <!-- <tr>
+                                <td colspan="4" style="text-align: center; height:15px;">
+                                </td>
+                            </tr> -->
+                            <tr>
+                                <td colspan="3" style="font-weight: bold;">
+                                    <h5>基本資料 Patient's Summary</h5>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            姓名 Name：{{$ctrl.referralSheetForm.Name}}
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            病歷號碼 Chart No.：{{$ctrl.referralSheetForm.MedicalId}}
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            身分證號 ID No.：{{$ctrl.referralSheetForm.IdentifierId}}
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            性別 Sex：{{$ctrl.referralSheetForm.Gender === 'M' ? '男' : '女'}}
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            生日 Date of Birth：{{$ctrl.referralSheetForm.Birthday}}
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            年齡 Age：{{$ctrl.referralSheetForm.Age}}
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <ul>
+                                        <li>
+                                            首次透析日期 Date of Initiating Dialysis (First Dialysis Date)：
+                                            <input type="date" ng-model="$ctrl.referralSheetForm.FirstDialysisDate"
+                                                class="ng-pristine ng-valid ng-not-empty ng-touched"
+                                                aria-invalid="false">
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr ng-show="$ctrl.stateName.substr(0, 2) == 'pd'">
+                                <td colspan="3">
+                                    <ul>
+                                        <li>
+                                            腹膜透析植管日期 Date of PD Catheter Insertion：
+                                            <input type="date"
+                                                class="ng-pristine ng-valid ng-not-empty ng-touched"
+                                                aria-invalid="false">
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr ng-show="$ctrl.stateName.substr(0, 2) == 'pd'">
+                                <td colspan="3">
+                                    <ul>
+                                        <li>
+                                            首次腹膜透析日期 PD Initiation Date：
+                                            <input type="date"
+                                                class="ng-pristine ng-valid ng-not-empty ng-touched"
+                                                aria-invalid="false">
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr ng-hide="$ctrl.stateName.substr(0, 2) == 'pd'">
+                                <td colspan="3">
+                                    <ul>
+                                        <li>
+                                            最後透析日期 Date of Last Dialysis (Last Dialysis Date)：
+                                            <input type="date" ng-model="$ctrl.referralSheetForm.LastDialysisDate"
+                                                class="ng-pristine ng-valid ng-not-empty ng-touched"
+                                                aria-invalid="false" style="">
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr ng-hide="$ctrl.stateName.substr(0, 2) == 'pd'">
+                                <td colspan="3">
+                                    <ul>
+                                        <li>
+                                            透析血管通路 Vascular Access Type / 建立日期 Date of Operation：
+                                            <!--  (Date of Operation - Vascular Access Type) -->
+                                            <span class="hideInScreen"
+                                                ng-class="{showInPrint: (!$ctrl.referralSheetForm.OverviewVessel1 || $ctrl.referralSheetForm.OverviewVessel1 == '-') && (!$ctrl.referralSheetForm.OverviewVessel2 || $ctrl.referralSheetForm.OverviewVessel2 == '-') }">
+                                                -
+                                            </span>
+                                            <div layout="row" layout-align="start center"
+                                                ng-class="{disablePrint: !$ctrl.referralSheetForm.OverviewVessel1 || $ctrl.referralSheetForm.OverviewVessel1 == '-'}">
+                                                <span class="arrow-symbol">&#8227;</span> <input
+                                                    ng-model="$ctrl.referralSheetForm.OverviewVessel1"
+                                                    style="width: 550px">
+                                            </div>
+                                            <div layout="row" layout-align="start center"
+                                                ng-class="{disablePrint: !$ctrl.referralSheetForm.OverviewVessel2 || $ctrl.referralSheetForm.OverviewVessel2 == '-'}">
+                                                <span class="arrow-symbol">&#8227;</span> <input
+                                                    ng-model="$ctrl.referralSheetForm.OverviewVessel2"
+                                                    style="width: 550px">
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr ng-hide="$ctrl.stateName.substr(0, 2) == 'pd'">
+                                <td colspan="3">
+                                    <div flex layout="column">
+                                        <ul class="spanGap">
+                                            <li>
+                                                <div layout="row" layout-align="start center">
+                                                    <span>手術記錄日期 - 手術發現：</span>
+                                                    <div class="disablePrint">
+                                                        <span class="checkBtn-span surgery-CheckBtn"
+                                                            ng-click="$ctrl.gotoSurgeryCheck()">手術歷程</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <textarea name="surgery" class="sugery-textarea"
+                                            ng-model="$ctrl.referralSheetForm.SurgeryCheckedData" rows="2"
+                                            style="height: 25px;">&nbsp;</textarea>
+                                    </div>
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td colspan="3">
+                                    <ul>
+                                        <li>
+                                            原發病因 Primary Renal Disease (大類 / 細項)：
+                                            <span class="hideInScreen"
+                                                ng-class="{showInPrint: !$ctrl.referralSheetForm.PrimaryDisease1 && !$ctrl.referralSheetForm.PrimaryDiseaseDetail1 &&
+                                                                        !$ctrl.referralSheetForm.PrimaryDisease2 && !$ctrl.referralSheetForm.PrimaryDiseaseDetail2 &&
+                                                                        !$ctrl.referralSheetForm.PrimaryDisease3 && !$ctrl.referralSheetForm.PrimaryDiseaseDetail3}">
+                                                -
+                                            </span>
+                                            <div layout="row" layout-align="start center" flex
+                                                ng-class="{disablePrint: !$ctrl.referralSheetForm.PrimaryDisease1 && !$ctrl.referralSheetForm.PrimaryDiseaseDetail1}">
+                                                <span class="arrow-symbol">&#8227;</span>
+                                                <md-select ng-model="$ctrl.referralSheetForm.PrimaryDisease1"
+                                                    style="margin: 0px;" flex="30">
+                                                    <md-option value="{{null}}">{{'patientDetail.select' | translate}}
+                                                    </md-option>
+                                                    <md-option ng-repeat="(pdKey, pdValue) in $ctrl.primaryDiseaseList"
+                                                        value="{{pdKey}}">{{pdValue}}</md-option>
+                                                </md-select>
+                                                <div style="margin: 0 5px;">/</div>
+                                                <md-select ng-model="$ctrl.referralSheetForm.PrimaryDiseaseDetail1"
+                                                    style="margin: 0px;" flex="55">
+                                                    <md-option value="{{null}}">{{'patientDetail.select' | translate}}
+                                                    </md-option>
+                                                    <md-option
+                                                        ng-repeat="(pdKey, pdValue) in $ctrl.primaryDiseaseDetailList"
+                                                        value="{{pdKey}}">{{pdValue}}</md-option>
+                                                </md-select>
+                                            </div>
+                                            <div layout="row" layout-align="start center" flex
+                                                ng-class="{disablePrint: !$ctrl.referralSheetForm.PrimaryDisease2 && !$ctrl.referralSheetForm.PrimaryDiseaseDetail2}">
+                                                <span class="arrow-symbol">&#8227;</span>
+                                                <md-select ng-model="$ctrl.referralSheetForm.PrimaryDisease2"
+                                                    style="margin: 0px;" flex="30">
+                                                    <md-option value="{{null}}">{{'patientDetail.select' | translate}}
+                                                    </md-option>
+                                                    <md-option ng-repeat="(pdKey, pdValue) in $ctrl.primaryDiseaseList"
+                                                        value="{{pdKey}}">{{pdValue}}</md-option>
+                                                </md-select>
+                                                <div style="margin: 0 5px;">/</div>
+                                                <md-select ng-model="$ctrl.referralSheetForm.PrimaryDiseaseDetail2"
+                                                    style="margin: 0px;" flex="55">
+                                                    <md-option value="{{null}}">{{'patientDetail.select' | translate}}
+                                                    </md-option>
+                                                    <md-option
+                                                        ng-repeat="(pdKey, pdValue) in $ctrl.primaryDiseaseDetailList"
+                                                        value="{{pdKey}}">{{pdValue}}</md-option>
+                                                </md-select>
+                                            </div>
+                                            <div layout="row" layout-align="start center" flex
+                                                ng-class="{disablePrint: !$ctrl.referralSheetForm.PrimaryDisease3 && !$ctrl.referralSheetForm.PrimaryDiseaseDetail3}">
+                                                <span class="arrow-symbol">&#8227;</span>
+                                                <md-select ng-model="$ctrl.referralSheetForm.PrimaryDisease3"
+                                                    style="margin: 0px;" flex="30">
+                                                    <md-option value="{{null}}">{{'patientDetail.select' | translate}}
+                                                    </md-option>
+                                                    <md-option ng-repeat="(pdKey, pdValue) in $ctrl.primaryDiseaseList"
+                                                        value="{{pdKey}}">{{pdValue}}</md-option>
+                                                </md-select>
+                                                <div style="margin: 0 5px;">/</div>
+                                                <md-select ng-model="$ctrl.referralSheetForm.PrimaryDiseaseDetail3"
+                                                    style="margin: 0px;" flex="55">
+                                                    <md-option value="{{null}}">{{'patientDetail.select' | translate}}
+                                                    </md-option>
+                                                    <md-option
+                                                        ng-repeat="(pdKey, pdValue) in $ctrl.primaryDiseaseDetailList"
+                                                        value="{{pdKey}}">{{pdValue}}</md-option>
+                                                </md-select>
+                                            </div>
+
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <!-- <tr>
+                                <td colspan="3">
+                                    <ul>
+                                        <li>
+                                            <div layout="row" layout-align="start center" flex>
+                                                <span>其他共病 Comorbidity：</span>
+                                                <span class="hideInScreen" ng-class="{showInPrint: !$ctrl.referralSheetForm.Comorbidity}">
+                                                    -
+                                                </span>
+                                                <md-select ng-model="$ctrl.referralSheetForm.Comorbidity" style="margin: 0px;" flex="50" ng-class="{disablePrint: !$ctrl.referralSheetForm.Comorbidity}">
+                                                    <md-option value="{{null}}">{{'patientDetail.select' | translate}}</md-option>
+                                                    <md-option ng-repeat="(pdKey, pdValue) in $ctrl.comorbidityList" value="{{pdKey}}">{{pdValue}}</md-option>
+                                                </md-select>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr> -->
+
+                            <tr>
+                                <td colspan="3">
+                                    <div flex layout="column">
+                                        <ul class="spanGap">
+                                            <li>
+                                                <div layout="row" layout-align="start center">
+                                                    <span>其他共病 Comorbidity：</span>
+                                                    <div class="disablePrint">
+                                                        <span class="checkBtn-span disease-CheckBtn"
+                                                            ng-click="$ctrl.gotoDiseaseCheck()">共病項目</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <textarea name="Comorbidity" class="sugery-textarea"
+                                            ng-model="$ctrl.referralSheetForm.Comorbidity" rows="2"
+                                            style="height: 25px;">&nbsp;</textarea>
+                                    </div>
+                                </td>
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+
+                    <!-- <br> -->
+                    <table border="0" cellpadding="0" cellspacing="0" class="table_content" width="100%"
+                        ng-if="$ctrl.stateName.substr(0, 2) !== 'pd'">
+                        <tbody>
+                            <tr>
+                                <td colspan="2" style="font-weight: bold;">
+                                    <h5>透析醫囑 Dialysis Prescriptions</h5>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            透析頻率 Frequency of Dialysis：
+                                            <input ng-model="$ctrl.referralSheetForm.Frequency"
+                                                class="ng-pristine ng-untouched ng-valid ng-not-empty"
+                                                aria-invalid="false" style="">
+
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li>透析時間 Duration of Dialysis：
+                                            <input ng-model="$ctrl.referralSheetForm.Duration" aria-invalid="false"
+                                                style="">
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            乾體重 Ideal Dry Weight：
+                                            <input ng-model="$ctrl.referralSheetForm.DryWeight"
+                                                class="ng-pristine ng-untouched ng-valid ng-not-empty"
+                                                aria-invalid="false" style="">
+
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li>脫⽔量 Usual Ultrafiltration：
+                                            <input ng-model="$ctrl.referralSheetForm.UltraFiltration"
+                                                aria-invalid="false" style="">
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            人工腎臟 Dialyzer：
+                                            <input ng-model="$ctrl.referralSheetForm.Dialyzer"
+                                                class="ng-pristine ng-untouched ng-valid ng-not-empty"
+                                                aria-invalid="false" style="">
+
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li>透析液 Dialysate Potassium：
+                                            <input ng-model="$ctrl.referralSheetForm.Dialysate" aria-invalid="false"
+                                                style="">
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <ul>
+                                        <li>
+                                            血液流速 Blood Flow Rate：
+                                            <input ng-model="$ctrl.referralSheetForm.BloodFlow"
+                                                class="ng-pristine ng-untouched ng-valid ng-not-empty"
+                                                aria-invalid="false" style="">
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <ul>
+                                        <li>
+                                            肝素量 Heparin Dosage Loading / Maintain：
+                                            <input ng-model="$ctrl.referralSheetForm.HeparinLoading"
+                                                class="ng-pristine ng-untouched ng-valid ng-not-empty"
+                                                aria-invalid="false" style="width: 500px">
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            透析前血壓 Pre-dialysis BP：
+                                            <input ng-model="$ctrl.referralSheetForm.PreBloodPressure"
+                                                class="ng-pristine ng-untouched ng-valid ng-not-empty"
+                                                aria-invalid="false" style="">
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            透析後血壓 Post-dialysis BP：
+                                            <input ng-model="$ctrl.referralSheetForm.PostBloodPressure"
+                                                class="ng-pristine ng-untouched ng-valid ng-not-empty"
+                                                aria-invalid="false" style="">
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <br />
+                    <div layout="column" layout-align="start start" ng-if="$ctrl.stateName.substr(0, 2) === 'pd'">
+                        <div layout="row" layout-align="start start">
+                            <h5>透析醫囑 : </h5>
+                            <div class="disablePrint">
+                                <span class="checkBtn-span drug-CheckBtn" ng-click="$ctrl.gotoOrderCheck()">查詢處方</span>
+                            </div>
+                        </div>
+                        <span>ESA</span>
+                        <table style="width: 100%;border-spacing: 0;">
+                            <thead style="text-align: left">
+                                <th style="border-width: 1px;border-style: solid;">序</th>
+                                <th style="border-width: 1px;border-style: solid;">種類</th>
+                                <th style="border-width: 1px;border-style: solid;">頻率</th>
+                                <th style="border-width: 1px;border-style: solid;">劑量</th>
+                                <th style="border-width: 1px;border-style: solid;">使用天數</th>
+                                <th style="border-width: 1px;border-style: solid;">總劑量</th>
+                            </thead>
+                            <tbody style="text-align: left">
+                                <tr ng-repeat="eo in $ctrl.pdEsaAry">
+                                    <td style="border-width: 1px;border-style: solid;">{{$index+1}}</td>
+                                    <td style="border-width: 1px;border-style: solid;">{{eo.Esa_Types}}</td>
+                                    <td style="border-width: 1px;border-style: solid;">{{eo.Frequency}}</td>
+                                    <td style="border-width: 1px;border-style: solid;">{{eo.Esa_Dose_U}}</td>
+                                    <td style="border-width: 1px;border-style: solid;">{{eo.Used_Days}}</td>
+                                    <td style="border-width: 1px;border-style: solid;">{{eo.Total_Dose}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <span>換液處方<br>Dianeal</span>
+                        <table style="width: 100%;border-spacing: 0;">
+                            <thead style="text-align: left">
+                                <th style="border-width: 1px;border-style: solid;">序</th>
+                                <th style="border-width: 1px;border-style: solid;">透析液藥水</th>
+                                <th style="border-width: 1px;border-style: solid;">葡萄糖(%)</th>
+                                <th style="border-width: 1px;border-style: solid;">鈣離子濃度(mEq/L)</th>
+                                <th style="border-width: 1px;border-style: solid;">每日袋數</th>
+                                <th style="border-width: 1px;border-style: solid;">注入量(L)</th>
+                            </thead>
+                            <tbody style="text-align: left">
+                                <tr ng-repeat="do in $ctrl.pdDianealAry">
+                                    <td style="border-width: 1px;border-style: solid;">{{$index +1}}</td>
+                                    <td style="border-width: 1px;border-style: solid;">{{do.Potiontypes}}</td>
+                                    <td style="border-width: 1px;border-style: solid;">{{do.Glucoseconcentration}}</td>
+                                    <td style="border-width: 1px;border-style: solid;">{{do.Calciumconcentration}}</td>
+                                    <td style="border-width: 1px;border-style: solid;">{{do.Bagnumber}}</td>
+                                    <td style="border-width: 1px;border-style: solid;">{{do.Esa_Dose_U}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <span>Nutrineal&nbsp;給付條件</span>
+                        <table style="width: 100%;border-spacing: 0;">
+                            <thead style="text-align: left">
+                                <th style="border-width: 1px;border-style: solid;">序</th>
+                                <th style="border-width: 1px;border-style: solid;">腹膜透析液</th>
+                                <th style="border-width: 1px;border-style: solid;">胺基酸濃度</th>
+                                <th style="border-width: 1px;border-style: solid;">鈣離子濃度(mEq/L)</th>
+                                <th style="border-width: 1px;border-style: solid;">每日袋數</th>
+                                <th style="border-width: 1px;border-style: solid;">注入量(L)</th>
+                            </thead>
+                            <tbody style="text-align: left">
+                                <tr ng-repeat="no in $ctrl.pdNutrinealAry">
+                                    <td style="border-width: 1px;border-style: solid;">{{$index +1}}</td>
+                                    <td style="border-width: 1px;border-style: solid;">{{no.Potiontypes}}</td>
+                                    <td style="border-width: 1px;border-style: solid;">{{no.Glucoseconcentration}}</td>
+                                    <td style="border-width: 1px;border-style: solid;">{{no.Calciumconcentration}}</td>
+                                    <td style="border-width: 1px;border-style: solid;">{{no.Bagnumber}}</td>
+                                    <td style="border-width: 1px;border-style: solid;">{{no.Esa_Dose_U}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <span>Extraneal&nbsp;給付條件</span>
+                        <table style="width: 100%;border-spacing: 0;">
+                            <thead style="text-align: left">
+                                <th style="border-width: 1px;border-style: solid;">序</th>
+                                <th style="border-width: 1px;border-style: solid;">腹膜透析液</th>
+                                <th style="border-width: 1px;border-style: solid;">Icodextrin</th>
+                                <th style="border-width: 1px;border-style: solid;">鈣離子濃度(mEq/L)</th>
+                                <th style="border-width: 1px;border-style: solid;">每日袋數</th>
+                                <th style="border-width: 1px;border-style: solid;">注入量(L)</th>
+                            </thead>
+                            <tbody style="text-align: left">
+                                <tr ng-repeat="eo in $ctrl.pdExtranealAry">
+                                    <td style="border-width: 1px;border-style: solid;">{{$index +1}}</td>
+                                    <td style="border-width: 1px;border-style: solid;">{{eo.Potiontypes}}</td>
+                                    <td style="border-width: 1px;border-style: solid;">{{eo.Glucoseconcentration}}</td>
+                                    <td style="border-width: 1px;border-style: solid;">{{eo.Calciumconcentration}}</td>
+                                    <td style="border-width: 1px;border-style: solid;">{{eo.Bagnumber}}</td>
+                                    <td style="border-width: 1px;border-style: solid;">{{eo.Esa_Dose_U}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <span>每日換袋次數 ( 袋 ) : {{$ctrl.Daily_Changed_Bag_Times}} 每日換液量 ( L ) : {{$ctrl.CAPD_Total_Prescription}}</span>
+                    </div>
+
+                    <br />
+                    <div layout="row" layout-align="start center">
+                        <h5>檢驗報告 Laboratory Data：</h5>
+                        <div class="disablePrint">
+                            <span class="checkBtn-span lab-CheckBtn" ng-click="$ctrl.gotoLabexamCheck()">檢驗紀錄表</span>
+                        </div>
+                        <div class="disablePrint"
+                            ng-if="$ctrl.finalTableCheckData.length > 0 || $ctrl.referralSheetForm.LabCheckedData.length > 0">
+                            <span class="checkBtn-span labDelete-CheckBtn" ng-click="$ctrl.deleteLabexam()">刪除報告</span>
+                        </div>
+                    </div>
+
+                    <div ng-if="$ctrl.finalTableCheckData.length == 0">
+                        <ul>
+                            <li>
+                                無檢驗資料
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- layout-wrap -->
+                    <div ng-if="$ctrl.finalTableCheckData.length > 0" class="lab-table" layout="row">
+                        <table border="0" cellpadding="0" cellspacing="0" class="table center "
+                            style="margin-bottom: -1px" ng-repeat="item in $ctrl.finalTableCheckData" flex="50">
+                            <!-- <tr>
+                                    <td colspan="10" style="text-align: left;">
+                                        <h4>檢驗檢查 Lab Data</h4>
+                                    </td>
+                                </tr> -->
+                            <tr>
+                                <td class="gray">項目<br>Item</td>
+                                <td class="gray" width="150">日期<br>Date</td>
+                                <td class="gray">結果<br>Result</td>
+                            </tr>
+                            <tr ng-repeat="i in item">
+                                <td class="gray nowrap">{{i.LAB_NAME}}</td>
+                                <td class="nowrap">
+                                    <!-- 民國 -->
+                                    {{i.TaiwanDate}}
+                                    <!-- 西元 -->
+                                    <!-- {{i.DateTime}} -->
+                                </td>
+                                <td class="nowrap">{{i.ResultUnit}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- <h5>檢驗報告 Laboratory Data：</h5>
+                    <div flex layout="column" >
+                        <ul class="spanGap">
+                            <li>
+                                <span>CBC：</span>
+                            </li>
+                        </ul>
+                        <textarea width="80%" name="cbc" ng-model="$ctrl.referralSheetForm.CBC" rows="2" style="height: 25px;">&nbsp;</textarea>
+                    </div>
+                    <div flex layout="column" >
+                        <ul class="spanGap">
+                            <li>
+                                <span>SKS：</span>
+                            </li>
+                        </ul>
+                        <textarea width="80%" name="sks" ng-model="$ctrl.referralSheetForm.SKS" rows="2" style="height: 25px;">&nbsp;</textarea>
+                    </div>
+                    <div flex layout="column" >
+                        <ul class="spanGap">
+                            <li>
+                                <span>Iron profile，iPTH，Hepatitis marker，RPR，Anti-HIV：</span>
+                            </li>
+                        </ul>
+                        <textarea width="80%" name="otherlabdata" ng-model="$ctrl.referralSheetForm.OtherLabData" rows="2" style="height: 25px;">&nbsp;</textarea>
+                    </div> -->
+
+
+                    <br />
+                    <div layout="row" layout-align="start center">
+                        <h5>目前用藥 Current Medication：</h5>
+                        <div class="disablePrint">
+                            <span class="checkBtn-span drug-CheckBtn" ng-click="$ctrl.gotoDrugCheck()">用藥明細</span>
+                        </div>
+                    </div>
+
+                    <textarea width="90%" name="drug" ng-model="$ctrl.referralSheetForm.DrugCheckedData" rows="4"
+                        style="height: 40px;">&nbsp;</textarea>
+
+                    <!-- <div flex layout="column" >
+                        <ul class="spanGap">
+                            <li>
+                                <span>Erythropoiesis Stimulating Agent：</span>
+                            </li>
+                        </ul>
+                        <textarea width="80%" name="epo" ng-model="$ctrl.referralSheetForm.EPO" rows="2" style="height: 25px;">&nbsp;</textarea>
+                    </div>
+                    <div flex layout="column" >
+                        <ul class="spanGap">
+                            <li>
+                                <span>透析處方藥物：</span>
+                            </li>
+                        </ul>
+                        <textarea width="80%" name="dialysisdrug" ng-model="$ctrl.referralSheetForm.DialysisDrug" rows="2" style="height: 25px;">&nbsp;</textarea>
+                    </div>
+                    <div flex layout="column" >
+                        <ul class="spanGap">
+                            <li>
+                                <span>自備他科藥物：</span>
+                            </li>
+                        </ul>
+                        <textarea width="80%" name="otherdrug" ng-model="$ctrl.referralSheetForm.OtherDrug" rows="2" style="height: 25px;">&nbsp;</textarea>
+                    </div> -->
+
+                    <br>
+                    <div layout="row" layout-align="start center">
+                        <h5>現況問題 Present Problems / 透析中合併症 Dialysis Complications 及醫療建議計畫 Plan：</h5>
+                        <div class="phrase-div disablePrint">
+                            <span class="phrase-span" ng-click="$ctrl.isOpenRight()">插入片語</span>
+                        </div>
+                    </div>
+                    <textarea id="Content" name="Content" width="100%" name="Problems"
+                        ng-model="$ctrl.referralSheetForm.Problems" rows="4" style="height: 40px;">&nbsp;</textarea>
+
+                    <br>
+                    <h5 style="margin-top: 10px;">特別注意事項 Special Notes：</h5>
+                    <textarea width="100%" name="specialnotes" ng-model="$ctrl.referralSheetForm.SpecialNotes" rows="4"
+                        style="height: 40px;">&nbsp;</textarea>
+
+                    <table class="table_content" style=" margin-top: 8px" width="100%">
+                        <tr>
+                            <td>
+                                主治醫生：
+                                <input ng-model="$ctrl.referralSheetForm.AttendingDoctor"
+                                    class="ng-pristine ng-untouched ng-valid ng-empty" aria-invalid="false">
+                            </td>
+                            <td>
+                                記錄日期：
+                                <input type="date" ng-model="$ctrl.referralSheetForm.RecordDate"
+                                    class="ng-pristine ng-untouched ng-valid ng-not-empty" aria-invalid="false"
+                                    style="">
+                            </td>
+                        </tr>
+                        <!-- <tr>
+                            <td>
+                                In Charge Fellow：
+                                <input ng-model="$ctrl.referralSheetForm.ChargeFellow" class="ng-pristine ng-untouched ng-valid ng-empty" aria-invalid="false">
+                            </td>
+                            <td>HN/AHN：</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Date：
+                                <input type="date" ng-model="$ctrl.referralSheetForm.RecordDate" class="ng-pristine ng-untouched ng-valid ng-not-empty" aria-invalid="false" style="">
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr> -->
+                    </table>
+                </div>
+
+            </md-whiteframe>
+
+            <div layout="column" class="disablePrint creator-div">
+                <div layout="row" layout-wrap>
+                    <div layout="row" flex="50" ng-show="$ctrl.referralSheetForm.CreatedTime != null">
+                        <h5>建立：{{$ctrl.referralSheetForm.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}}</h5>
+                        <seal model="$ctrl.referralSheetForm" modified="none"></seal>
+                    </div>
+                    <div layout="row" flex="50" ng-show="$ctrl.referralSheetForm.ModifiedTime != null">
+                        <h5>修改：{{$ctrl.referralSheetForm.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}}</h5>
+                        <seal model="$ctrl.referralSheetForm" created="none"></seal>
+                    </div>
+                </div>
+
+                <div layout="row" layout-align="end center">
+                    <!-- ng-show="$ctrl.referralSheetForm.Status !== 'Deleted'"   ng-disabled="referralSheetForm.$invalid"-->
+                    <md-button ng-click="$ctrl.submit($event)" class="md-raised md-primary">儲存</md-button>
+                </div>
+            </div>
+        </form>
+
+        <div ng-if="!$ctrl.loading && $ctrl.isError" layout="column" flex layout-align="center center">
+            <h4>伺服器錯誤，請重新整理</h4>
+        </div>
+        <phrase ng-if="!$ctrl.isForPdf" id="phrase" callback="$ctrl.phraseInsertCallback(word)"></phrase>
+    </md-content>
+</div>
+
+
+<script type="text/ng-template" id="deleteLabDialog.html">
+    <md-dialog aria-label="刪除確認">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>檢驗報告刪除</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="vm.cancel()">
+                        <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    將會刪除整個檢驗報告表格，繼續刪除？
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+                <md-button class="md-warn" ng-click="vm.cancel()">
+                    取消
+                </md-button>
+                <md-button class="md-primary" ng-click="vm.ok()">
+                    刪除
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>

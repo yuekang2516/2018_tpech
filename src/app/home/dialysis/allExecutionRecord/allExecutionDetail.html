@@ -1,0 +1,254 @@
+<div flex layout="column" layout-fill class="all-execution-detail-container">
+
+    <!-- <md-toolbar hide-gt-sm layout="row" ng-class="{true: 'background-white' ,false: ''}[$ctrl.serviceData.Mode == 'Neglect']">
+        <div class="md-toolbar-tools">
+            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.goback()" aria-label="call">
+                <md-icon ng-show="$ctrl.serviceData.Mode == 'Performed'" md-svg-icon="static/img/svg/ic_arrow_back_24px.svg" ></md-icon>
+                <md-icon ng-show="$ctrl.serviceData.Mode == 'Neglect'" md-svg-icon="static/img/svg/ic_arrow_back_24px.svg" style="fill: rgb(253, 0, 0);"></md-icon>
+            </md-button>
+            <h3 ng-show="$ctrl.serviceData.Mode == 'Performed'" translate>{{'allExecutionRecord.allExecutionDetail.executeMedicine'}}</h3>
+            <h3 ng-show="$ctrl.serviceData.Mode == 'Neglect'" style="color: red" translate>{{'allExecutionRecord.allExecutionDetail.confirmExecuteMedicine'}}</h3>
+        </div>
+    </md-toolbar>
+    <div hide-xs hide-sm ng-show="!$ctrl.loading">
+        <h3 style="float: left; padding-left: 10px" ng-show="$ctrl.serviceData.Mode == 'Performed'" translate>{{'allExecutionRecord.allExecutionDetail.executeMedicine'}}</h3>
+        <h3 style="float: left; padding-left: 10px; color: red;" ng-show="$ctrl.serviceData.Mode == 'Neglect'" translate>{{'allExecutionRecord.allExecutionDetail.confirmExecuteMedicine'}}</h3>
+        <md-button style="float:right; margin-top: 8px" class="md-secondary md-icon-button" ng-click="$ctrl.goback()" aria-label="call">
+            <i class="material-icons">cancel</i>
+        </md-button>
+    </div> -->
+
+    <summary-toolbar
+        toolbar-title="$ctrl.mode == 'Performed' ? ('allExecutionRecord.allExecutionDetail.executeMedicine' | translate) : ('allExecutionRecord.allExecutionDetail.confirmExecuteMedicine' | translate)"
+        cancel="$ctrl.goback()"></summary-toolbar>
+    <span ng-if="!$ctrl.canAccess" class="readonly-text" title="{{ 'customMessage.readonlyTitle' | translate }}"
+        translate>{{ 'customMessage.readonly' }}</span>
+    <md-content flex layout-fill>
+        <loading ng-show="$ctrl.loading">loading...</loading>
+        <div class="inner">
+            <div class="readonly-inner" ng-if="!$ctrl.canAccess"></div>
+            <md-card ng-show="!$ctrl.loading && !$ctrl.isError">
+                <md-card-content>
+                    <form class="yuekang-input-container" layout="column" name="regForm" ng-hide="$ctrl.loading">
+                        <!-- <date-time-picker-standard my-model="$ctrl.serviceData.ProcessTime" required="true" /> -->
+                        <date-time-picker-standard my-model="$ctrl.serviceData.ProcessTime"
+                            on-change="$ctrl.dateChanged()" required="true"></date-time-picker-standard>
+                        <!-- <div layout="row">
+                            <label>日期</label>
+                            <select-date-picker ng-model="$ctrl.serviceData.ProcessTime" on-change="$ctrl.dateChanged(date)" required></select-date-picker>
+                        </div>
+                        <div layout="row">
+                            <label>時間</label>
+                            <select-time-picker ng-model="$ctrl.serviceData.ProcessTime" on-change="$ctrl.timeChanged(time)" required></select-time-picker>
+                        </div> -->
+                        <div ng-if="$ctrl.timeMessage" class="error-message">
+                            {{ $ctrl.timeMessage}}
+                        </div>
+                        <div layout="row">
+                            <label translate>{{'allExecutionRecord.allExecutionDetail.medicine'}}</label>
+                            <p>
+                                <div layout="row" layout-align="start center">
+                                    <!-- 高危險用藥-->
+                                    <i ng-if="$ctrl.serviceData.IsDangerMed"
+                                        class="material-icons dangerous-drug-icon">warning</i>
+                                    {{::$ctrl.serviceData.Name}}
+                                </div>
+                            </p>
+                        </div>
+                        <div layout="row">
+                            <label translate>{{'allExecutionRecord.allExecutionDetail.route'}}</label>
+                            <p>{{::$ctrl.serviceData.Route}}</p>
+                        </div>
+                        <div layout="row">
+                            <label translate>{{'allExecutionRecord.allExecutionDetail.Frequency'}}</label>
+                            <p>{{::$ctrl.serviceData.Frequency}}</p>
+                        </div>
+                        <div layout="row">
+                            <label>
+                                <span translate>
+                                    {{'allExecutionRecord.allExecutionDetail.Quantity'}}
+                                </span>
+                                <span ng-if="$ctrl.serviceData.QuantityUnit">
+                                    ({{::$ctrl.serviceData.QuantityUnit}})
+                                </span>
+                            </label>
+                            <p>{{ ::$ctrl.serviceData.Quantity }}</p>
+                        </div>
+                        <div layout="row" ng-if="$ctrl.serviceData.OrderMode == 'Performed'">
+                            <label>
+                                <span translate>{{'allExecutionRecord.allExecutionDetail.ActualQuantity'}}</span>
+                                <span ng-if="$ctrl.serviceData.QuantityUnit">
+                                    ({{::$ctrl.serviceData.QuantityUnit}})
+                                </span>
+                            </label>
+                            <input required type="number" name="Quantity" ng-model="$ctrl.serviceData.ActualQuantity"
+                                min="0" />
+                        </div>
+                        <div ng-messages="regForm.Quantity.$error" multiple md-auto-hide="false">
+                            <div ng-message="required" translate>
+                                {{'allExecutionRecord.allExecutionDetail.usageMsgRequired'}}</div>
+                            <div ng-message="min" translate>{{'allExecutionRecord.allExecutionDetail.usageMsgMin'}}
+                            </div>
+                        </div>
+
+                        <div layout="row">
+                            <label translate>{{'allExecutionRecord.allExecutionDetail.doctorMemo'}}</label>
+                            <p>{{::$ctrl.doctorMemo}}</p>
+                        </div>
+
+                        <div layout="row" ng-if="$ctrl.serviceData.OrderMode == 'Performed'">
+                            <label translate>{{'allExecutionRecord.allExecutionDetail.DetailMemo'}}</label>
+                            <md-input-container flex>
+                                <textarea name="DetailMemo" rows="5" ng-model="$ctrl.DetailMemo"
+                                    md-detect-hidden="true"></textarea>
+                            </md-input-container>
+                        </div>
+
+                        <div layout="row" ng-if="$ctrl.serviceData.OrderMode == 'Neglect'">
+                            <label translate>{{'allExecutionRecord.allExecutionDetail.reason'}}</label>
+                            <md-input-container flex>
+                                <textarea required name="DetailMemo" rows="5" ng-model="$ctrl.DetailMemo"
+                                    md-detect-hidden="true"></textarea>
+                            </md-input-container>
+                        </div>
+
+                        <div ng-messages="regForm.DetailMemo.$error" multiple md-auto-hide="false">
+                            <div ng-message="required" translate>
+                                {{'allExecutionRecord.allExecutionDetail.reasonRequired'}}</div>
+                        </div>
+
+                        <!--  判斷有高危險用藥才需顯示 -->
+                        <!-- <div layout="row" ng-if="$ctrl.serviceData.IsDangerMed" style="margin-bottom: 10px;">
+                                <label translate>{{'allExecutionRecord.allExecutionDetail.signNurseTitleI'}}</label>
+                                <div ng-if="!$ctrl.isSelector">
+                                    <div ng-if="!$ctrl.showNfcBtn[0]" layout="row" layout-align="start center" class="seal-out-div">
+                                        <seal created="none" modified="none" name="{{$ctrl.signNurse[0].Name}}" ng-click="$ctrl.nfcSign($ctrl.iosNFCSupport, 0)" class="seal-div"></seal>
+                                        <i ng-if="$ctrl.signNurse[0] === ''" class="material-icons nfcSign-btn" ng-click="$ctrl.nfcSign($ctrl.iosNFCSupport, 0)" >person</i>
+                                    </div>
+                                    <div ng-if="$ctrl.showNfcBtn[0]">
+                                        <i class="material-icons nfcSign-btn" ng-click="$ctrl.nfcSign($ctrl.iosNFCSupport, 0)" >person</i>
+                                    </div>
+                                </div> 
+                                <div ng-if="$ctrl.isSelector" class="seal-out-div">
+                                    <div ng-show="!$ctrl.showSelect[0]" layout="row" layout-align="start center" class="seal-div">
+                                        <seal created="none" modified="none" name="{{$ctrl.signNurse[0].Name}}" ng-click="$ctrl.reSelectNurse(0)"></seal>
+                                    </div>
+                                    <md-select id="sign-select-0" ng-show="$ctrl.showSelect[0]" style="max-width:200px!important;" ng-model="$ctrl.signNurse[0]" ng-model-options="{trackBy: '$value.Id'}" md-on-close="$ctrl.clearSearch($ctrl.signNurse[0], 0)"
+                                        ng-change="$ctrl.selectSignNurse($ctrl.signNurse[0], 0)">
+                                        <md-select-header>
+                                            <input style="background: url(../../static/img/ic_search.png) no-repeat scroll 2.5px 2.5px;padding-left: 25px;border-radius: 5px;font-size: 13px;"
+                                                ng-model="$ctrl.searchStr[0]" type="search" ng-keydown="$event.stopPropagation()"
+                                                ng-change="$ctrl.searchNurse($ctrl.searchStr[0], 0)" placeholder="{{'allExecutionRecord.allExecutionDetail.signName' | translate}}">
+                                        </md-select-header>
+                                        <md-option ng-repeat="nurse in $ctrl.allSignNurses[0] track by nurse.Id" ng-value="nurse">
+                                            <span ng-if="nurse.Name !== 'NoSign'">{{::nurse.Name}}</span>
+                                            
+                                            <span ng-if="nurse.Name === 'NoSign'" translate>{{'allExecutionRecord.allExecutionDetail.noSign'}}</span>
+                                        </md-option>
+                                    </md-select>
+                                </div>
+                                <label translate>{{'allExecutionRecord.allExecutionDetail.signNurseTitleII'}}</label>
+                                <div ng-if="!$ctrl.isSelector" >
+                                    <div ng-if="!$ctrl.showNfcBtn[1]" layout="row" layout-align="start center" class="seal-out-div">
+                                        <seal created="none" modified="none" name="{{$ctrl.signNurse[1].Name}}" ng-click="$ctrl.nfcSign($ctrl.iosNFCSupport, 1)" class="seal-div"></seal>
+                                        <i ng-if="$ctrl.signNurse[1] === ''" class="material-icons nfcSign-btn" ng-click="$ctrl.nfcSign($ctrl.iosNFCSupport, 1)" >person</i>
+                                    </div>
+                                    <div ng-if="$ctrl.showNfcBtn[1]">
+                                        <i class="material-icons nfcSign-btn" ng-click="$ctrl.nfcSign($ctrl.iosNFCSupport, 1)" >person</i>
+                                    </div>
+                                </div>
+                                <div ng-if="$ctrl.isSelector">
+                                    <div ng-show="!$ctrl.showSelect[1]" layout="row" layout-align="start center" class="seal-div">
+                                        <seal created="none" modified="none" name="{{$ctrl.signNurse[1].Name}}" ng-click="$ctrl.reSelectNurse(1)"></seal>
+                                    </div>
+                                    <md-select id="sign-select-1" ng-show="$ctrl.showSelect[1]" style="max-width:200px!important;" ng-model="$ctrl.signNurse[1]" ng-model-options="{trackBy: '$value.Id'}" md-on-close="$ctrl.clearSearch($ctrl.signNurse[1], 1)"
+                                        ng-change="$ctrl.selectSignNurse($ctrl.signNurse[1], 1)">
+                                        <md-select-header>
+                                            <input style="background: url(../../static/img/ic_search.png) no-repeat scroll 2.5px 2.5px;padding-left: 25px;border-radius: 5px;font-size: 13px;"
+                                                ng-model="$ctrl.searchStr[1]" type="search" ng-keydown="$event.stopPropagation()"
+                                                ng-change="$ctrl.searchNurse($ctrl.searchStr[1], 1)" placeholder="{{'allExecutionRecord.allExecutionDetail.signName' | translate}}">
+                                        </md-select-header>
+                                        <md-option ng-repeat="nurse in $ctrl.allSignNurses[1] track by nurse.Id" ng-value="nurse">
+                                            <span ng-if="nurse.Name !== 'NoSign'">{{::nurse.Name}}</span>
+                                            <span ng-if="nurse.Name === 'NoSign'" translate>{{'allExecutionRecord.allExecutionDetail.noSign'}}</span>
+                                        </md-option>
+                                    </md-select>
+                                </div>
+                            </div> -->
+                        <!-- 判斷有高危險用藥才需顯示 -->
+
+                        <!-- 模組化的簽章 IsDangerMed-->
+                        <!-- layout-xs="column" layout-gt-xs="row" -->
+                        <div layout="column" ng-if="$ctrl.serviceData.IsDangerMed" style="margin-bottom: 10px;">
+                            <check-staff flex-gt-xs="50" ng-if="$ctrl.firstAllStaff.length > 0"
+                                title-name="核對簽章 &nbsp;I" title-name-nfc="核對簽章 &nbsp;I" all-staff="$ctrl.firstAllStaff"
+                                sign-nurse="$ctrl.firstStaff" show-select="$ctrl.showSelectForFirst"
+                                show-nfc-btn="$ctrl.showNfcBtnForFirst" pre-sign-nurse="$ctrl.preFirstStaff"
+                                password-for-web="false" password-for-nfc="false" password-for-qrcode="false">
+                            </check-staff>
+                            <check-staff flex-gt-xs="50" ng-if="$ctrl.secondAllStaff.length > 0" title-name="核對簽章 II"
+                                title-name-nfc="核對簽章 II" all-staff="$ctrl.secondAllStaff" sign-nurse="$ctrl.secondStaff"
+                                show-select="$ctrl.showSelectForSecond" show-nfc-btn="$ctrl.showNfcBtnForSecond"
+                                pre-sign-nurse="$ctrl.preSecondStaff" password-for-web="false" password-for-nfc="false"
+                                password-for-qrcode="false"></check-staff>
+                        </div>
+
+                        <div ng-if="$ctrl.serviceData.IsDangerMed && ($ctrl.firstStaff === '' && $ctrl.secondStaff === '')"
+                            style="margin-bottom: 10px; color: red;">注意：雙簽章不可為空白。</div>
+                        <div ng-if="$ctrl.serviceData.IsDangerMed && $ctrl.firstStaff.Id && $ctrl.secondStaff.Id && $ctrl.firstStaff.Id === $ctrl.secondStaff.Id"
+                            style="margin-bottom: 10px; color: red;">注意：雙簽章不可為同一人。</div>
+
+                        <label translate>{{'patientDetail.allergicHistory'}}</label>
+
+                        <div layout="row" flex layout-wrap>
+                            <span ng-repeat="i in $ctrl.allergyMed">
+                                {{i.Odr_Atc_Name}}
+                                <span ng-if="!$last">；</span>
+                            </span>
+                        </div>
+
+                        <div class="action-area" layout="row" layout-margin layout-align="start center">
+                            <!-- 判斷有高危險用藥才需顯示 ng-disabled="regForm.$invalid || $ctrl.signNurse[0].Id === $ctrl.signNurse[1].Id"-->
+                            <!-- ng-disabled="regForm.$invalid" -->
+                            <md-button ng-click="$ctrl.submit()" ng-if="$ctrl.canAccess" class="md-raised md-primary"
+                                ng-disabled="$ctrl.isSaving || regForm.$invalid || ($ctrl.serviceData.IsDangerMed && $ctrl.firstStaff.Id === $ctrl.secondStaff.Id) || ($ctrl.serviceData.IsDangerMed && ($ctrl.firstStaff === '' || $ctrl.secondStaff === ''))">
+                                {{'allExecutionRecord.allExecutionDetail.save' | translate}}</md-button>
+                            <md-button ng-click="$ctrl.deleteRecord($ctrl.serviceData)"
+                                ng-if="$ctrl.canAccess&& $ctrl.event=='update'" class="md-raised md-warn margin-left-10"
+                                ng-disabled="$ctrl.isSaving">
+                                {{'allExecutionRecord.allExecutionDetail.delete' | translate}}</md-button>
+                            <md-progress-circular md-diameter="20px" md-mode="indeterminate" ng-show="$ctrl.isSaving">
+                            </md-progress-circular>
+                        </div>
+                    </form>
+                </md-card-content>
+            </md-card>
+        </div>
+        <!-- <md-card>
+            <md-card-content ng-if="$ctrl.serviceData.DoctorMemo.length > 0">
+                <div layout="row">
+                    <label translate>{{'allExecutionRecord.allExecutionDetail.DoctorMemo'}}</label>
+                    <p>{{::$ctrl.serviceData.DoctorMemo}}</p>
+                </div>
+            </md-card-content>
+        </md-card> -->
+        <div layout="row" layout-wrap>
+            <div flex="50" flex-xs="100" ng-show="$ctrl.event === 'update'">
+                <!-- <span>建立: {{ $ctrl.serviceData.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                <span translate="allExecutionRecord.allExecutionDetail.createdTime"
+                    translate-values='{CreatedTime: $ctrl.serviceData.CreatedTime}'></span>
+                <seal model="$ctrl.serviceData" modified="none"></seal>
+            </div>
+            <div flex="50" flex-xs="100" ng-show="$ctrl.event === 'update' && $ctrl.serviceData.ModifiedTime">
+                <!-- <span>修改: {{ $ctrl.serviceData.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                <span translate="allExecutionRecord.allExecutionDetail.editedTime"
+                    translate-values='{ModifiedTime: $ctrl.serviceData.ModifiedTime}'></span>
+                <seal model="$ctrl.serviceData" created="none"></seal>
+            </div>
+        </div>
+
+        <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate>{{'allExecutionRecord.allExecutionDetail.serverError'}}</h3>
+        </div>
+    </md-content>
+</div>

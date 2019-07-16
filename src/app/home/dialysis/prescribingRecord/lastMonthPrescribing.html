@@ -1,0 +1,62 @@
+<md-toolbar hide-gt-sm layout="row">
+  <div class="md-toolbar-tools">
+    <md-button class="md-secondary md-icon-button" ng-click="$ctrl.goback()" aria-label="call">
+      <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+    </md-button>
+    <h3 translate="prescribingRecord.lastMonthPrescribing.createNoST" translate-values='{showDate: $ctrl.showDate}'></h3>
+  </div>
+</md-toolbar>
+
+<md-content flex layout-padding>
+  <loading ng-show="$ctrl.loading">loading...</loading>
+
+  <form layout="column" name="regForm" ng-hide="$ctrl.loading">
+    <div hide-xs hide-sm ng-show="!$ctrl.loading">
+      <h3 style="float: left; padding-left: 10px" translate="prescribingRecord.lastMonthPrescribing.createNoST" translate-values='{showDate: $ctrl.showDate}'></h3>
+      <md-button style="float:right; margin-top: 8px" class="md-secondary md-icon-button" ng-click="$ctrl.goback()" aria-label="call">
+        <i class="material-icons">cancel</i>
+      </md-button>
+    </div>
+    <div layout="row">
+      <md-input-container>
+        <label translate>{{'prescribingRecord.lastMonthPrescribing.usageDate'}}</label>
+        <md-select required ng-model="$ctrl.Day">
+          <md-option ng-repeat="n in $ctrl.days track by $index" ng-value="$index + 1">
+            {{ ::$index + 1}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+    </div>
+    <div layout="row">
+      <md-input-container>
+        <label translate>{{'prescribingRecord.lastMonthPrescribing.usageDays'}}</label>
+        <input required type="number" name="Days" ng-model="$ctrl.sendData.Days" min="1" />
+        <div ng-messages="regForm.Days.$error">
+          <div ng-message="required" translate>{{'prescribingRecord.lastMonthPrescribing.usageDaysRequired'}}</div>
+          <div ng-message="min" translate>{{'prescribingRecord.lastMonthPrescribing.usageDaysMin'}}</div>
+        </div>
+      </md-input-container>
+    </div>
+    <md-list>
+      <div class="my-message" ng-show="$ctrl.serviceData.length > 0 && $ctrl.sendData.OrderMasterIds.length <= 0" translate>{{'prescribingRecord.lastMonthPrescribing.chooseMedicine'}}</div>
+      <md-list-item class="md-2-line" ng-repeat="item in $ctrl.serviceData">
+        <div class="md-list-item-text" layout="column">
+          <md-checkbox ng-checked="$ctrl.exists(item.Id, $ctrl.sendData.OrderMasterIds)" ng-click="$ctrl.toggle(item.Id, $ctrl.sendData.OrderMasterIds)">
+            <p>{{ ::item.CategoryName }}</p>
+            <p>{{ ::item.Name }}</p>
+            <p translate="prescribingRecord.lastMonthPrescribing.Quantity" translate-values='{Route: item.Route, Frequency: item.Frequency, Quantity: item.Quantity, 
+              QuantityUnit: item.QuantityUnit, TotalQuantity: item.TotalQuantity}'>
+              <!-- {{ ::item.Route }} {{ ::item.Frequency }} 每次 {{ ::item.Quantity }} {{ ::item.QuantityUnit }} ，共 {{ ::item.TotalQuantity}} {{ ::item.QuantityUnit}} -->
+            </p>
+          </md-checkbox>
+        </div>
+      </md-list-item>
+    </md-list>
+    <div layout="row">
+      <md-button ng-click="$ctrl.submit()" class="md-raised md-primary" ng-disabled="regForm.$invalid || $ctrl.sendData.OrderMasterIds.length == 0">{{'prescribingRecord.lastMonthPrescribing.save' | translate}}</md-button>
+    </div>
+  </form>
+  <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+    <h3 translate>{{'prescribingRecord.lastMonthPrescribing.serverError'}}</h3>
+  </div>
+</md-content>

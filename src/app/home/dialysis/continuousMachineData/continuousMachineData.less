@@ -1,0 +1,347 @@
+continuous-machine-data {
+    height: 100%;
+    .fullscreenMask {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 90; // md-dialog 為 80
+
+        .content {
+            font-size: 1rem;
+            font-weight: initial;
+            margin-right: 10px;
+        }
+    }
+
+    // Pi button
+    .no-outline {
+        outline: none;
+    }
+    img {
+        cursor: pointer;
+        width: 30px;
+        margin-left: 6px;
+    }
+    .list-header {
+        .date {
+            color: #000;
+        }
+        // 日期選擇按鈕
+        .date-select {
+            .md-button {
+                width: initial;
+                padding-left: 0;
+                // padding-right: 0;
+                margin-left: 0;
+                margin-right: 0;
+            }
+            .md-button:disabled {
+                color: rgba(0, 0, 0, 0.2);
+            }
+        }
+    }
+    // 上方 barchart 相關
+    .name_fixed {
+        width: 100%;
+        z-index: 10;
+        border-bottom: #e7e7e7 solid 1px;
+        background: #fff;
+        .nameh2 {
+            float: left;
+            height: 48px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            padding-right: 2px;
+            h2 {
+                font-size: 20px;
+                color: #444;
+                font-weight: normal;
+                line-height: 48px;
+                padding-left: 8px;
+                border-left: #47d2a8 solid 4px;
+                display: inline;
+            }
+        }
+        span {
+            float: left;
+            padding-top: 16px;
+            font-size: 14px
+        }
+        span::before {
+            content: "("
+        }
+        span::after {
+            content: ")"
+        }
+    }
+    .barchart {
+        margin: 0;
+        height: 60px;
+        width: auto;
+        overflow-x: hidden;
+        white-space: nowrap;
+        background: #fff;
+        text-align: center;
+        padding-top: 5px; 
+    }
+    .barchartscroll {
+        overflow: hidden;
+    }
+    .barchartscroll::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        background-color: #F5F5F5;
+        border-radius: 10px;
+    }
+    .barchartscroll::-webkit-scrollbar {
+        height: 8px;
+        border-radius: 10px;
+        background-color: #F5F5F5;
+    }
+    .barchartscroll::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+        border-radius: 10px;
+    }
+    // .barchart::-webkit-scrollbar {display:none}
+    .barchart .bar24 {
+        outline: none;
+        cursor: pointer;
+        display: inline-block;
+        height: 40px;
+        border-radius: 10px;
+        width: 27px;
+        margin-right: 10px;
+        position: relative;
+    }
+    .barchart .bar24:active {
+        opacity: 0.8;
+    }
+    .barchart .bar24:last-child {
+        margin-right: 0
+    }
+    .barchart .bar24 .nob {
+        position: absolute;
+        font-size: 0.6rem;
+        top: 5px;
+        right: 0;
+        left: 0;
+        color: #fff;
+        letter-spacing: -1px
+    }
+    .barchart .bar24 .txt {
+        font-size: 0.6rem;
+        position: absolute;
+        bottom: -16px;
+        left: -37%;
+        letter-spacing: -1px
+    }
+    .barchart .bar24 .txt1 {
+        font-size: 0.6rem;
+        position: absolute;
+        bottom: -16px;
+        right: -37%;
+        letter-spacing: -1px
+    }
+    .count {
+        padding-left: 10px;
+        line-height: 16px;
+        text-align: center;
+        background: #fff;
+        border-bottom: #e7e7e7 solid 1px;
+        font-size:13px;
+        // color:#747474;
+    }
+    // 768px -> ipad air
+    @media only screen and (min-width: 1px) {
+        .barchart {
+            padding-top: 5px !important;
+            padding: 0 14px;
+            margin: 0;
+            overflow-y: hidden;
+            overflow-x: auto;
+        }
+        .barchart::-webkit-scrollbar {
+            display: none
+        }
+        /*.barchart .bar24 .nob{ display: none; }*/
+        .barchartscroll {
+            height: 60px!important;
+        }
+        .barchartscroll::-webkit-scrollbar {
+            display: block;
+        }
+        .barchartscroll .bar24 {
+            height: 34px!important;
+        }
+        .barchartscroll .bar24 .txt {
+            bottom: -16px;
+        }
+        .barchart .bar24 {
+            height: 40px;
+            width: 27px;
+            margin-right: 10px;
+            float: inherit;
+            display: inline-block;
+            position: relative;
+            background: #ececec;
+            border-radius: 6px
+        }
+        .barchart .bar24 .txt, .barchart .bar24 .txt1 {
+            // -webkit-transform: rotate(-45deg);
+            // -moz-transform: rotate(-45deg);
+            // -o-transform: rotate(-45deg);
+        }
+    }
+    // table 不能用 ng-show 的方式，會取不到原本的高度，故利用此方式不顯示於畫面上
+    .away {
+        position: absolute;
+        top: -9999px;
+    }
+    .scrollbar-measure {
+        width: 100px;
+        height: 100px;
+        overflow: scroll;
+        position: absolute;
+        top: -9999px;
+    }
+    // grid table fixed first column and first row
+    #table-container {
+        overflow: hidden;
+    }
+    .buttonselect {
+        outline: none;
+        cursor: pointer;
+        border: #717171 solid 1px;
+        border-radius: 3px;
+        display: inline-block;
+        padding: 0px 4px;
+        font-size: 13px;
+        color: #000;
+        background: #f7f7f7;
+        line-height: 24px;
+    }
+    .buttonselect:active {
+        background: #ccc
+    }
+    .selected {
+        background: #0078d7!important;
+        border: #fff solid 1px;
+        color: #fff!important
+    }
+    #cont-machine-data-table {
+        height: 100%;
+        table {
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            border-collapse: collapse;
+            table-layout: fixed;
+            background-color: #ffffff;
+            font-size: 15px;
+            width: 100%;
+            #selectedTitle {
+                font-size: 14px;
+            }
+        }
+        /*thead*/
+        thead {
+            position: relative;
+            display: block;
+            /*seperates the header from the body allowing it to be positioned*/
+            overflow: visible;
+            th {
+                width: 100px;
+                max-width: 100px;
+                min-width: 100px;
+                border-right: #e8e8e8 solid 1px;
+                border-bottom:#000 solid 1px;
+                background: #e8e8e8;
+                color: #3e3e3e;
+                border-top: 0!important;
+                // line-height: 24px!important;
+                text-align: center!important;
+                box-sizing: border-box;
+                // padding: 8px 6px;   // 會造成 windows 上會有誤差
+            }
+            /*first cell in the header*/
+            th:nth-child(1) {
+                height: 50px;   // 需固定高度方便計算 tbody 高度
+                position: relative;
+                width: 100px;
+                max-width: 100px;
+                min-width: 100px;
+                background: #dfdfdf;
+                /*seperates the first cell in the header from the header*/
+            }
+        }
+        tr {
+            td{padding: 6px 4px;}
+            outline: none;
+            &:nth-child(even) {
+                td {
+                    background: #f6f5f5;
+                }
+            }
+
+            // 警示變紅字
+            .warning {
+                color: red;
+            }
+        }
+        .title {
+            display: table-cell;
+            width: 100px;
+            min-width: 100px;
+            max-width: 100px;
+        }
+        /*tbody*/
+        tbody {
+            position: relative;
+            display: block;
+            /*seperates the tbody from the header*/
+            overflow: scroll;
+            // height: calc(~"100% - 293px"); // 扣掉外層 toolbar(會隨不同大小變動:64px), tab bar(48px), status bar(44.8px), barchart(65+21px), thead(50px) 的高度
+            max-height: calc(~"100% - 50px") ;
+        }
+        // @media (max-width: 959px) and (min-width: 0) and (orientation: landscape) {
+        //     tbody {
+        //         height: calc(~"100vh - 277px"); // 外層 toolbar height 會變為 48px (angular material)
+        //     }
+        // }
+        tbody td {
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
+            // border: 1px solid #222;
+            border-bottom: #e8e8e8 solid 1px;
+            border-right: #e8e8e8 solid 1px;
+            // outline: none;
+            text-align: center;
+            box-sizing: border-box;
+            &.active:active {
+                background: #8eacbb;
+            }
+            .title {
+                color: #bdbdbd;
+                font-weight: bold;
+            }
+        }
+        tbody tr td:nth-child(1) {
+            /*the first cell in each tr*/
+            position: relative;
+            text-align: right;
+            padding-right: 10px;
+            background: linear-gradient(to right,rgba(240,240,240,1) 99%,rgba(240,240,240,1) 99%,rgba(0,0,0,1) 99%)!important;
+        }
+        tbody tr:nth-child(even) td:first-child {
+            background-color: #dfdfdf;
+        }
+        tbody tr:nth-child(odd) td:first-child {
+            background-color: #f5f5f5;
+        }
+    }
+}

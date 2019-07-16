@@ -1,0 +1,104 @@
+
+<div layout="column" layout-fill>
+    <summary-toolbar ng-if="$ctrl.nursingGuideId === 'create'" toolbar-title="'新增護理指導'" cancel="$ctrl.goback()">
+    </summary-toolbar>
+    <summary-toolbar ng-if="$ctrl.nursingGuideId !== 'create' && $ctrl.data.Status !== 'Deleted'"
+        toolbar-title="'修改護理指導'" cancel="$ctrl.goback()"></summary-toolbar>
+    <summary-toolbar ng-if="$ctrl.data.Status === 'Deleted'" toolbar-title="'查看己刪除護理指導'" cancel="$ctrl.goback()">
+    </summary-toolbar>
+    <!-- <span ng-if="!$ctrl.canAccess" class="readonly-text" title="{{ 'customMessage.readonlyTitle' | translate }}" translate>{{ 'customMessage.readonly' }}</span> -->
+    <md-button class="md-primary" ng-click="$ctrl.openFiles()">瀏覽檔案</md-button>
+    <md-content layout="column" flex ng-show="!$ctrl.loading">
+        <loading ng-show="$ctrl.loading"></loading>
+        <server-error-page flex ng-show="!$ctrl.loading && $ctrl.isError" refresh="$ctrl.refresh()"></server-error-page>
+        <form name="nursingGuideForm" ng-show="!$ctrl.isError">
+            <div style="margin-bottom: 10px" layout="row">
+                <div layout="column" flex layout="column" style="margin-right: 5px">
+                    <label translate>指導日期</label>
+                    <input type="date" ng-model="$ctrl.data.RecordTime" required />
+                </div>
+                <div layout="column" flex>
+                    <label translate>指導時間</label>
+                    <input type="time" ng-model="$ctrl.data.RecordTime" step="1" required />
+                </div>
+            </div>
+            <div layout="column" ng-repeat="item in $ctrl.items">
+                <span class="title">{{($index + 1) + '. '}}{{::item}}</span>
+
+                <!-- <div layout="row" class="item" layout-align="start center"> -->
+                <div class="select" layout="row" layout-align="start center">
+                    <label style="min-width: 100px;">指導對象：</label>
+                    <div layout="row" layout-align="start center" ng-model="$ctrl.targetPersonType1" flex layout-wrap>
+                        <md-checkbox ng-repeat="item in $ctrl.targetPersonType track by $index"
+                            ng-checked="$ctrl.exists(item, $ctrl.data.NursingGuideItems[$parent.$index].Target)" ng-click="$ctrl.itemChange(item,$ctrl.data.NursingGuideItems[$parent.$index].Target)">{{::item}}
+                            <!-- <md-option  ng-value="item">{{::item}}</md-option> -->
+                        </md-checkbox>
+                        <div layout="row" layout-align="start center" layout-wrap>
+                            <md-checkbox ng-model="$ctrl.others[$index]" ng-checked="$ctrl.exists('其他', $ctrl.data.NursingGuideItems[$index].Target)" ng-click="$ctrl.itemChange('其他',$ctrl.data.NursingGuideItems[$index].Target)">
+                                其他
+                            </md-checkbox>
+
+                            <input style="margin-top: 6px; max-width: 150px;" ng-model="$ctrl.inputOther[$index]" 
+                                ng-if="$ctrl.others[$index]">
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- </div> -->
+                <div layout-wrap class="select" layout="row" layout-align="start center">
+                    <label style="min-width: 100px;">指導方式：</label>
+                    <!-- <md-select ng-model="$ctrl.data.Items[$index].Way">
+                    <md-option ng-repeat="item in $ctrl.guideWays track by $index" ng-value="item">{{::item}}
+                    </md-option>
+                </md-select> -->
+                    <div layout="row" layout-align="start center" flex layout-wrap>
+                        <md-checkbox ng-repeat="item in $ctrl.guideWays track by $index"
+                            ng-checked="$ctrl.exists(item, $ctrl.data.NursingGuideItems[$parent.$index].Way)" ng-click="$ctrl.itemChange(item, $ctrl.data.NursingGuideItems[$parent.$index].Way)">{{::item}}
+                            <!-- <md-option  ng-value="item">{{::item}}</md-option> -->
+                        </md-checkbox>
+                    </div>
+
+                </div>
+                <div layout-wrap class="select" layout="row" layout-align="start center">
+                    <label style="min-width: 100px;">評值結果：</label>
+                    <!-- <md-select ng-model="$ctrl.data.Items[$index].Result">
+                    <md-option ng-repeat="item in $ctrl.answers track by $index" ng-value="item">{{::item}}</md-option>
+                </md-select> -->
+                    <div layout="row" layout-align="start center" flex layout-wrap>
+                        <!-- <md-checkbox ng-repeat="item in $ctrl.answers track by $index"
+                             ng-checked="$ctrl.exists(item, $ctrl.data.NursingGuideItems[$parent.$index].Result)" ng-click="$ctrl.itemChange(item, $ctrl.data.NursingGuideItems[$parent.$index].Way) "a-exclusive="true">{{::item}} -->
+                            <!-- <md-option  ng-value="item">{{::item}}</md-option> -->
+                        <!-- </md-checkbox> -->
+                        <md-checkbox ng-model="$ctrl.data.NursingGuideItems[$index].Result" ng-true-value="'暸解'" ng-false-value="false" ng-change="$ctrl.selectOne($index,$ctrl.data.NursingGuideItems[$index].Result)">
+                            暸解
+                        </md-checkbox>
+                        <md-checkbox ng-model="$ctrl.data.NursingGuideItems[$index].Result" ng-true-value="'部分暸解'" ng-false-value="false" ng-change="$ctrl.selectOne($index,$ctrl.data.NursingGuideItems[$index].Result)">
+                            部分暸解
+                        </md-checkbox>
+                    </div>
+                </div>
+
+                <!-- </div> -->
+            </div>
+            <div layout="row" layout-wrap>
+                    <div flex="50" flex-xs="100" ng-show="$ctrl.data.CreatedUserName">
+                        <!-- <span>建立: {{ $ctrl.regForm.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                        <span translate="allNursingRecord.nursingRecord.createdTime" translate-values='{CreatedTime: $ctrl.data.CreatedTime}'></span>
+                        <seal model="$ctrl.data" modified="none"></seal>
+                    </div>
+                    <div flex="50" flex-xs="100" ng-show="$ctrl.data.ModifiedTime != null">
+                        <!-- <span>修改: {{ $ctrl.regForm.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                        <span translate="allNursingRecord.nursingRecord.editedTime" translate-values='{ModifiedTime: $ctrl.data.ModifiedTime}'></span>
+                        <seal model="$ctrl.data" created="none"></seal>
+                    </div>
+                </div>
+            <md-input-container layout="row" layout-margin layout-align="start center">
+                <md-button type="submit" class="md-raised md-primary" ng-click="$ctrl.submit()"
+                    ng-disabled="nursingGuideForm.$invalid || $ctrl.isSaving">儲存</md-button>
+                <md-progress-circular md-diameter="20px" md-mode="indeterminate" ng-show="$ctrl.isSaving">
+                </md-progress-circular>
+            </md-input-container>
+        </form>
+    </md-content>
+</div>

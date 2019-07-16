@@ -1,0 +1,36 @@
+<div flex layout="column" layout-fill>
+    <div ng-show="!contractList.loading && contractList.contracts.length > 0">
+        <div class="list-header" layout="row" layout-align="center center">
+            <span flex> 合約資料：</span>
+            <span flex><input type="text" ng-model="contractList.search" ng-show="false" /></span>
+            共 {{(contractList.contracts|filter:contractList.search).length}} 筆
+            <md-switch ng-model="contractList.showDelete" ng-change="contractList.changeSearch()" aria-label="show deleted">顯示已刪除項目</md-switch>
+        </div>
+    </div>
+    <md-content flex layout="column">
+        <loading ng-show="contractList.loading"></loading>
+        <md-list>
+            <div ng-repeat="c in contractList.contracts | orderBy:'-StartDate'">
+                <md-list-item class="md-2-line" ng-class="{deleted: c.Status == 'Deleted'}" ng-click="contractList.gotoContractDetail(c.Id)" ng-show="(c.Status === 'Normal') || ( c.Status === 'Deleted' && contractList.showDelete)">
+                    <div layout="row" layout-fill>
+                        <span flex=20>{{c.Number}}</span>
+                        <span flex=40>{{c.Name}}</span>
+                        <span flex=25>{{c.StartDate | date:'yyyy/MM/dd'}}~{{c.EndDate | date:'yyyy/MM/dd'}}</span>
+                        <span flex=15>{{c.State}}</span>
+                    </div>
+                </md-list-item>
+            </div>
+        </md-list>
+        <div ng-show="contractList.contracts && contractList.contracts.length == 0" layout="column" layout-fill layout-align="center center" flex>
+            <i class="fa fa-file-o"></i>
+            <h3>目前沒有資料</h3>
+            <h4>您可以按右下角新增按鈕來新增合約資料</h4>
+        </div>
+        <div flex ng-show="!contractList.loading && contractList.isError" layout="column" layout-fill layout-align="center center">
+            <h3>伺服器資料讀取失敗</h3>
+        </div>
+    </md-content>
+    <md-button class="md-fab md-fab-bottom-right" style="position:fixed;" ng-click="contractList.gotoCreate()" aria-label="Add Contract">
+        <md-icon md-font-icon="mdi mdi-plus" style="font-size: 24px;height: 33px">+</md-icon>
+    </md-button>
+</div>

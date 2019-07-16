@@ -1,0 +1,35 @@
+<style scoped>
+    .width {
+        width: 600px;
+    }
+</style>
+
+<md-dialog aria-label="{{ dvm.title }}">
+    <form ng-cloak class="width">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{{ dvm.title }}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="dvm.cancel()">
+                    <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div class="md-dialog-content" flex>
+                <form name="editForm">
+                    <md-input-container class="md-block">
+                        <label translate="phrase.catalogName"></label>
+                        <input type="text" name="categoryName" ng-model="dvm.categoryName" required />
+                        <div ng-messages="editForm.categoryName.$error">
+                            <div ng-message="required"><span translate="customMessage.dataRequired"></span></div>
+                        </div>
+                    </md-input-container>
+
+                    <md-button type="submit" class="md-raised md-primary" ng-click="dvm.save()" ng-disabled="dvm.isSaving"><span translate>{{'user.savebutton'}}</span></md-button>
+                </form>
+            </div>
+        </md-dialog-content>
+    </form>
+</md-dialog>

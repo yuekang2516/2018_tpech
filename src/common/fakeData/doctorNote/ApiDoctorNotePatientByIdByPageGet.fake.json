@@ -1,0 +1,34 @@
+{
+    "Current": 1,
+    "Total": 1,
+    "Limit": 40,
+    "Results": [
+      {
+        "DateTimestamp": "2019-03-20T17:44:39.4013885+08:00",
+        "RecordTime": "2019-03-18T10:25:00Z",
+        "PatientId": "5c8f61ae98584d53f0458527",
+        "DialysisId": "5c8f6a2a98584d53f046ca4b",
+        "Content": "No discomfort during HD, Keep current DW and UF 2.4 kg today.",
+        "HospitalId": "56fcc5dd4ead7870942f61c3",
+        "Revision": 1,
+        "HistoryId": null,
+        "Status": "Normal",
+        "CreatedUserId": "5c8f5c9e98584d53f044eac8",
+        "CreatedUserName": "楊昌宏",
+        "CreatedTime": "2019-03-18T10:26:33.94Z",
+        "ModifiedUserId": null,
+        "ModifiedUserName": null,
+        "ModifiedTime": null,
+        "Id": "5c8f725998584d53f047d4d7",
+        "CreatedOn": "2019-03-18T10:26:33Z",
+        "ModifiedOn": "0001-01-01T00:00:00Z",
+        "ObjectId": {
+          "Timestamp": 1552904793,
+          "Machine": 9984077,
+          "Pid": 21488,
+          "Increment": 4707543,
+          "CreationTime": "2019-03-18T10:26:33Z"
+        }
+      }
+    ]
+  }

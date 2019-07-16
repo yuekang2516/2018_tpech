@@ -1,0 +1,57 @@
+chang-gung-report {
+    body {
+        padding: 5px
+    }
+    h3 {
+        font-size: 24px;
+        margin: 0;
+        line-height: 46px
+    }
+    h4 {
+        font-size: 18px
+    }
+    table tr td {
+        font-size: 9pt;
+        line-height: 17px;
+        padding: 1px;
+    }
+    .table {
+        width: 29cm;
+        border-collapse: collapse;
+        border-spacing: 0;
+        font-size: 9pt;
+    }
+    p {
+        font-size: 9pt;
+        line-height: 15px;
+        margin: 0;
+        padding: 0;
+        text-align: left;
+    }
+    .table tr td {
+        border: #000 solid 1px;
+        padding: 2px 1px;
+        word-break: break-all;
+        line-height: 17px;
+        /*text-align: center;*/
+    }
+    .center {
+        text-align: center;
+    }
+    .tick {
+        vertical-align: middle;
+        margin-right: 2px
+    }
+    @media print {
+        body {
+            font-family: "DFKai-sb", "Times New Roman";
+        }
+        table tr td {
+            font-size: 9pt !important;
+            line-height: 14px !important;
+        }
+        .table tr td {
+            line-height: 14px
+        }
+    }
+}

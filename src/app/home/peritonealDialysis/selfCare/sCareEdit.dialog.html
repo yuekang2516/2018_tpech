@@ -1,0 +1,1090 @@
+<style type="text/css">
+    .peritonealDialysisTabView .inputbox .inputBoxTit {
+        width: 500px;
+    }
+    .inputbox .inputBoxTit{width:100px;}
+    input{width:100%;}
+    @media (max-width: 599px) {
+
+        /* md-dialog md-dialog-actions {
+            min-height: 130px;
+        } */
+        .peritonealDialysisTabView .inputbox .inputBoxTit {
+            width: inherit;
+        }
+    }
+    .patient_name{
+        position: absolute;
+        left: 210px;
+        top: 13px;
+    }
+</style>
+<md-dialog class="peritonealDialysisTabView selfCare" style="width:90%;">
+    <form name="editForm" novalidate ng-cloak>
+        <md-toolbar hide-gt-xs>
+            <div class="md-toolbar-tools">
+                <md-button class="circular md-button ng-scope md-ink-ripple" aria-label="Settings"
+                    ng-click="$ctrl.cancel()">
+                    <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+                </md-button>
+                <h3>
+                    <span ng-if="$ctrl.sCareDataObj.isCreate || $ctrl.sCareDataObj.isCopy == true">{{'selfCare.dialog.createTitle' | translate}}</span>
+                    <span
+                        ng-if="!$ctrl.sCareDataObj.isCreate && !$ctrl.sCareDataObj.isCopy && $ctrl.sCareDataObj.Status != 'Deleted'">{{'selfCare.dialog.editTitle' | translate}}</span>
+                    <span
+                        ng-show="$ctrl.sCareDataObj.Status == 'Deleted'">{{'selfCare.dialog.readTitle' | translate}}</span>
+                </h3>
+                <div
+                    class="{{'patient_name ' + (($ctrl.currentPatient.Gender|gender) == '男' ? 'male ' : '') + (($ctrl.currentPatient.Gender|gender) == '女' ? 'female' : '') }}">
+                    {{ $ctrl.currentPatient.MedicalId + ' - ' + $ctrl.currentPatient.Name }}
+                </div>
+                <span flex></span>
+                <span style="font-size:16px;" ng-show="$ctrl.vtPhoneDataObj.Status == 'Deleted'" class="readonly-text"
+                    title="{{ 'customMessage.readonlyTitle' | translate }}"
+                    translate>{{ 'customMessage.readonly' }}</span>
+            </div>
+        </md-toolbar>
+        <summary-toolbar ng-if="$ctrl.sCareDataObj.isCreate" ng-click="$ctrl.cancel()"
+            toolbar-title="'selfCare.dialog.createTitle' | translate"></summary-toolbar>
+        <summary-toolbar ng-if="!$ctrl.sCareDataObj.isCreate" ng-click="$ctrl.cancel()"
+            toolbar-title="'selfCare.dialog.editTitle' | translate"></summary-toolbar>
+        <div
+            class="{{'patient_name ' + (($ctrl.currentPatient.Gender|gender) == '男' ? 'male ' : '') + (($ctrl.currentPatient.Gender|gender) == '女' ? 'female' : '') }}">
+            {{ $ctrl.currentPatient.MedicalId + ' - ' + $ctrl.currentPatient.Name }}
+        </div>
+        <span ng-show="$ctrl.sCareDataObj.Status == 'Deleted'" class="readonly-text"
+            title="{{ 'customMessage.readonlyTitle' | translate }}" translate>{{ 'customMessage.readonly' }}</span>
+        <!-- <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2 ng-if="$ctrl.sCareDataObj.isCreate" translate="selfCare.dialog.createTitle"></h2>
+                    <h2 ng-if="!$ctrl.odSTDsCareDataObjataObj.isCreate" translate="selfCare.dialog.editTitle"></h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+                        <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar> -->
+        <md-dialog-content>
+            <div class="dialogBoxData">
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label></label>
+                    </div>
+                    <div class="inputboxflex itemList" style="text-align:right !important;"
+                        ng-hide="!$ctrl.sCareDataObj.isCreate">
+                        {{$ctrl.CopyMessage}}
+                        <md-button style="text-align:right;" class="btnSearch"
+                            ng-disabled="!$ctrl.sCareDataObj.isCreate" ng-click="$ctrl.CopyPer()">
+                            複製上一筆
+                        </md-button>
+                    </div>
+                    <div class="inputboxflex itemList" style="text-align:right !important;"
+                        ng-show="!$ctrl.sCareDataObj.isCreate && !$ctrl.sCareDataObj.isCopy && $ctrl.sCareDataObj.Status != 'Deleted'">
+                        <button class="md-icon-button md-button no-print" ng-click="$ctrl.printPaper(item)">
+                            <i class="material-icons ng-scope">print</i>
+                            <md-tooltip style="margin-top: -5px;">
+                                列印
+                            </md-tooltip>
+                        </button>
+                    </div>
+
+                </div>
+                <div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem lightblue">
+                            <label>*評值日期</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <input ng-disabled="!$ctrl.sCareDataObj.isCreate" ng-model="$ctrl.sCareDataObj.Record_Date"
+                                type="date" min="1900-01-01" max="2999-12-31" name="RecordDate" required>
+                            <div ng-messages="editForm.RecordDate.$error" ng-show="editForm.RecordDate.$dirty">
+                                <div ng-message="required" class="clrRequired">必填選項</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem lightblue">
+                            <label>*評值者</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <input ng-disabled="!$ctrl.sCareDataObj.isCreate"
+                                ng-model="$ctrl.sCareDataObj.Environment_User" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="cardContent">
+                    <div class="cardTit">
+                        <h2>腹膜透析環境介紹</h2>
+                    </div>
+                    <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                        <div class="inputBoxTit titItem">
+                            <label>指導對象</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Environment_Target" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="病人">病人</md-radio-button>
+                                <md-radio-button value="家屬">家屬</md-radio-button>
+                                <md-radio-button value="其他">其他</md-radio-button>
+                                <div ng-if="$ctrl.sCareDataObj.Environment_Target == '其他'">
+                                    <input type="tel" ng-model="$ctrl.sCareDataObj.Environment_Target_Other">
+                                </div>
+                            </md-radio-group>
+                        </div>
+                    </div>
+                    <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出腹膜透析所在位置及緊急逃生方向</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Emergency_Exit" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="cardContent">
+                    <div class="cardTit">
+                        <h2>腹膜透析認識</h2>
+                    </div>
+                    <!-- <div class="inputbox">
+                            <div class="inputBoxTit titItem lightblue">
+                                <label>*評值日期</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <input ng-model="$ctrl.odSTDataObj.Record_Date" type="date" name="RecordDate" required>
+                                <div ng-messages="editForm.RecordDate.$error" ng-show="editForm.RecordDate.$dirty">
+                                    <div ng-message="required" class="clrRequired">必填選項</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem lightblue">
+                                <label>*評值者</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <input ng-model="$ctrl.odSTDataObj.Record_Date" type="text">
+                            </div>
+                        </div>                 -->
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>指導對象</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Knowdialysis_Target" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="病人">病人</md-radio-button>
+                                <md-radio-button value="家屬">家屬</md-radio-button>
+                                <md-radio-button value="其他">其他</md-radio-button>
+                                <div ng-if="$ctrl.sCareDataObj.Knowdialysis_Target == '其他'">
+                                    <input type="tel" ng-model="$ctrl.sCareDataObj.Knowdialysis_Target_Other">
+                                </div>
+                            </md-radio-group>
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出末期腎衰竭替代療法四種</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Last_Renal_Fail" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出腹膜透析治療的原理</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Pd_Treat_Principle" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出透析導管之構造及功能</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Catheter_Function" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="cardContent">
+                    <div class="cardTit">
+                        <h2>腹膜透析液認識及自我管理</h2>
+                    </div>
+                    <!-- <div class="inputbox">
+                            <div class="inputBoxTit titItem lightblue">
+                                <label>*評值日期</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <input ng-model="$ctrl.odSTDataObj.Record_Date" type="date" name="RecordDate" required>
+                                <div ng-messages="editForm.RecordDate.$error" ng-show="editForm.RecordDate.$dirty">
+                                    <div ng-message="required" class="clrRequired">必填選項</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem lightblue">
+                                <label>*評值者</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <input ng-model="$ctrl.odSTDataObj.Record_Date" type="text">
+                            </div>
+                        </div>                 -->
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>指導對象</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Selfcontrol_Target" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="病人">病人</md-radio-button>
+                                <md-radio-button value="家屬">家屬</md-radio-button>
+                                <md-radio-button value="其他">其他</md-radio-button>
+                                <div ng-if="$ctrl.sCareDataObj.Selfcontrol_Target == '其他'">
+                                    <input type="tel" ng-model="$ctrl.sCareDataObj.Selfcontrol_Target_Other">
+                                </div>
+                            </md-radio-group>
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能正確說出自己目前使用之透析處方(透析液種類、濃度及總量)</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Self_Pd_Treatment" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出腹膜透析液的儲存管理與取用注意事項</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Liquid_Save_Use" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出腹膜透析液使用前正確的加溫方法</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Liquid_Heat_Method" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出透析引流液檢查方式</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Liquid_Check_Method" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出何種情況需來院加抗凝劑</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Antic_Situation" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="cardContent">
+                    <div class="cardTit">
+                        <h2>正確操作腹膜透析技術</h2>
+                    </div>
+                    <!-- <div class="inputbox">
+                            <div class="inputBoxTit titItem lightblue">
+                                <label>*評值日期</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <input ng-model="$ctrl.odSTDataObj.Record_Date" type="date" name="RecordDate" required>
+                                <div ng-messages="editForm.RecordDate.$error" ng-show="editForm.RecordDate.$dirty">
+                                    <div ng-message="required" class="clrRequired">必填選項</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem lightblue">
+                                <label>*評值者</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <input ng-model="$ctrl.odSTDataObj.Record_Date" type="text">
+                            </div>
+                        </div>                 -->
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>指導對象</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group class="radioGroup" ng-model="$ctrl.sCareDataObj.Correct_User"  layout="row"
+                            layout-sm="column">
+                                <md-radio-button value="病人">病人</md-radio-button>
+                                <md-radio-button value="家屬">家屬</md-radio-button>
+                                <md-radio-button value="其他">其他</md-radio-button>
+                                <div ng-if="$ctrl.sCareDataObj.Correct_User == '其他'">
+                                    <input type="tel" ng-model="$ctrl.sCareDataObj.Correct_User_Other">
+                                </div>
+                            </md-radio-group>
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能正確執行雙連袋換液技術及引流不順處理</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Twinbag_Unsmooth" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能正確執行空袋引流操作技術</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Emptybag_Drainage" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能正確執行全自動腹膜透析機換液技術及警訊排除</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Auto_Change_Alarm" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能正確執行導管出口換藥技術</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Catheter_Medicine" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能正確執行沐浴用人工肛門袋使用方式</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Artifical_Anus" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="cardContent">
+                    <div class="cardTit">
+                        <h2>日常生活居家注意事項</h2>
+                    </div>
+                    <!-- <div class="inputbox">
+                            <div class="inputBoxTit titItem lightblue">
+                                <label>*評值日期</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <input ng-model="$ctrl.odSTDataObj.Record_Date" type="date" name="RecordDate" required>
+                                <div ng-messages="editForm.RecordDate.$error" ng-show="editForm.RecordDate.$dirty">
+                                    <div ng-message="required" class="clrRequired">必填選項</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem lightblue">
+                                <label>*評值者</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <input ng-model="$ctrl.odSTDataObj.Record_Date" type="text">
+                            </div>
+                        </div>                 -->
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>指導對象</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Living_Target" layout="row" layout-sm="column">
+                                <md-radio-button value="病人">病人</md-radio-button>
+                                <md-radio-button value="家屬">家屬</md-radio-button>
+                                <md-radio-button value="其他">其他</md-radio-button>
+                                <div ng-if="$ctrl.sCareDataObj.Living_Target == '其他'">
+                                    <input type="tel" ng-model="$ctrl.sCareDataObj.Living_Target_Other">
+                                </div>
+                            </md-radio-group>
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出腹膜炎原因及預防注意事項至少3項</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Peritonitis_Prevent" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出導管出口照護注意事項至少4項</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Catheter_Care" layout="row" layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出導管固定方法及重要性</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Catheter_Fix_Method" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出每天測量體重、血壓及確實記錄透析記錄本重要性</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Daily_Measure" layout="row" layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出貧血原因、症狀及日常生活、飲食注意事項</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Anemia_Situation" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出透析相關用藥居家使用注意事項(ESA紅血球生成刺激素、磷結合劑、降血壓藥、降血糖藥)</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Dialysis_Drug" layout="row" layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出個人衛生、沐浴與皮膚照護注意事項</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Hygiene_Care" layout="row" layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出運動的重要性及合適的運動方式</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Suitable_Exercise" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出預防跌倒注意事項至少3項</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Prevent_Faller" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出須立即與醫院聯繫或返院就診的緊急情況至少3項</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Back_Hosp_Situation" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出與醫院聯繫方式</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Hosp_Contact_Way" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="cardContent">
+                    <div class="cardTit">
+                        <h2>腹膜透析飲食</h2>
+                    </div>
+                    <!-- <div class="inputbox">
+                            <div class="inputBoxTit titItem lightblue">
+                                <label>*評值日期</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <input ng-model="$ctrl.odSTDataObj.Record_Date" type="date" name="RecordDate" required>
+                                <div ng-messages="editForm.RecordDate.$error" ng-show="editForm.RecordDate.$dirty">
+                                    <div ng-message="required" class="clrRequired">必填選項</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem lightblue">
+                                <label>*評值者</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <input ng-model="$ctrl.odSTDataObj.Record_Date" type="text">
+                            </div>
+                        </div>                 -->
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>指導對象</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Diet_Target" layout="row" layout-sm="column">
+                                <md-radio-button value="病人">病人</md-radio-button>
+                                <md-radio-button value="家屬">家屬</md-radio-button>
+                                <md-radio-button value="其他">其他</md-radio-button>
+                                <div ng-if="$ctrl.sCareDataObj.Diet_Target == '其他'">
+                                    <input type="tel" ng-model="$ctrl.sCareDataObj.Diet_Target_Other">
+                                </div>
+                            </md-radio-group>
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出優質高蛋白食物3項</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Great_High_Protein" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出高磷食物3項</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.High_Phosphorous" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出高鉀食物3項</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.High_Potassium" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出含鐵質食物3項</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Irony_Food" layout="row" layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出含高vit-C食物3項</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.High_Vit_C_Food" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出優質油脂3種</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Great_Cook_Oil" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出水分攝取注意事項3項</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Water_Absorb" layout="row" layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="cardContent">
+                    <div class="cardTit">
+                        <h2>出院準備</h2>
+                    </div>
+                    <!-- <div class="inputbox">
+                            <div class="inputBoxTit titItem lightblue">
+                                <label>*評值日期</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <input ng-model="$ctrl.odSTDataObj.Record_Date" type="date" name="RecordDate" required>
+                                <div ng-messages="editForm.RecordDate.$error" ng-show="editForm.RecordDate.$dirty">
+                                    <div ng-message="required" class="clrRequired">必填選項</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem lightblue">
+                                <label>*評值者</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <input ng-model="$ctrl.odSTDataObj.Record_Date" type="text">
+                            </div>
+                        </div>                 -->
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>指導對象</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Outhosp_Target" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="病人">病人</md-radio-button>
+                                <md-radio-button value="家屬">家屬</md-radio-button>
+                                <md-radio-button value="其他">其他</md-radio-button>
+                                <div ng-if="$ctrl.sCareDataObj.Outhosp_Target == '其他'">
+                                    <input type="tel" ng-model="$ctrl.sCareDataObj.Outhosp_Target_Other">
+                                </div>
+                            </md-radio-group>
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出腹膜透析診回診注意事項3項</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Pd_Back_Hosp" layout="row" layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                            <!-- <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-value="通過">通過</md-option>
+                                    <md-option ng-value="需加強">需加強</md-option>
+                                    <md-option ng-value="不通過">不通過</md-option>
+                                    <md-option ng-value="不適用">不適用</md-option>
+                                </md-select> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>能說出家中透析液送貨注意事項3項</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Home_Transport" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="通過">通過</md-radio-button>
+                                <md-radio-button value="需加強">需加強</md-radio-button>
+                                <md-radio-button value="不通過">不通過</md-radio-button>
+                                <md-radio-button value="不適用">不適用</md-radio-button>
+                            </md-radio-group>
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>長期透析之重大傷病及身心障礙手冊申請流程</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group ng-model="$ctrl.sCareDataObj.Long_Pd_Govhelp" layout="row"
+                                layout-sm="column">
+                                <md-radio-button value="了解">了解</md-radio-button>
+                                <md-radio-button value="不了解">不了解</md-radio-button>
+                            </md-radio-group>
+                        </div>
+                    </div>
+                </div>
+                <div row-warp layout="row" layout-sm="row" layout-xs="column">
+                    <div flex="50" flex-xs="100" ng-show="$ctrl.sCareDataObj.CreatedUserName">
+                        <!-- <span>建立: {{ $ctrl.regForm.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                        <span translate="selfCare.createdTime"
+                            translate-values='{CreatedTime: $ctrl.sCareDataObj.CreatedTime}'></span>
+                        <seal model="$ctrl.sCareDataObj" modified="none"></seal>
+                    </div>
+                    <div flex="50" flex-xs="100" ng-show="$ctrl.sCareDataObj.ModifiedTime != null">
+                        <!-- <span>修改: {{ $ctrl.regForm.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                        <span translate="selfCare.editedTime"
+                            translate-values='{ModifiedTime: $ctrl.sCareDataObj.ModifiedTime}'></span>
+                        <seal model="$ctrl.sCareDataObj" created="none"></seal>
+                    </div>
+                </div>
+                <!-- <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>簽名</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                        </div>
+                    </div> -->
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row" ng-hide="$ctrl.sCareDataObj.Status == 'Deleted'">
+            <div layout="row" layout-align="end center">
+                <md-button class="md-raised" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.cancel()">
+                    {{'selfCare.dialog.cancel' | translate}}
+                </md-button>
+                <md-button class="md-raised md-primary" ng-click="$ctrl.ok()" ng-if="!$ctrl.sCareDataObj.isCopy">
+                    {{$ctrl.sCareDataObj.isCreate ? 'selfCare.dialog.create' : 'selfCare.dialog.edit' | translate}}
+                </md-button>
+                <md-button class="md-raised md-primary" ng-click="$ctrl.ok()" ng-if="$ctrl.sCareDataObj.isCopy">
+                    {{'selfCare.dialog.create' | translate}}
+                </md-button>
+            </div>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

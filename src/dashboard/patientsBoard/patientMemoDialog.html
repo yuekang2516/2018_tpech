@@ -1,0 +1,16 @@
+<md-dialog class="patient-memo-dialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2><span>{{::$ctrl.currentPatient.Name}} ({{::$ctrl.currentPatient.MedicalId}}) 重要記事</span></h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+                <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <div class="md-padding">
+            {{::$ctrl.currentPatient.Memo}}
+        </div>
+    </md-dialog-content>
+</md-dialog>

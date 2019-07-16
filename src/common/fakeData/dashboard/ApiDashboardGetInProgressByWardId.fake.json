@@ -1,0 +1,90 @@
+[{
+    "Id": "57889c0827920c3e0cc57546",
+    "MedicalId": "00227",
+    "Name": "陸酊季",
+    "Gender": "F",
+    "DialysisId": "5cb6a3f60e763605d60964a4",
+    "Mode": "HD",
+    "ShiftIssues": null,
+    "Memo": "This is me\"\",, \\\\ // ||mo coralThis is memo coralThis is memo coralThis is memo coralThis is memo coralThis is memo coralThis is memo coral This is memo coralThis is memo coral This is memo cora l66666 666666 666666666 ggg ggg gggggggggggggg jjjjjjjjj jjjjjjjjjjjjjj tjntn n hng nfg ngn gn fg nfg nfg n7777777777777 7777778 888888 88888888888   999999 9999999999 0000000000000 00000000",
+    "Status": null,
+    "Tags": [{
+        "TagName": "b肝",
+        "TagColor": "#FFFFFF",
+        "TagBgColor": "#FB4C2F",
+        "LineThrough": "none",
+        "FontStyle": "normal",
+        "FontWeight": "normal"
+    }, {
+        "TagName": "Fall",
+        "TagColor": "#FFFFFF",
+        "TagBgColor": "#2DA2BB",
+        "LineThrough": "none",
+        "FontStyle": "normal",
+        "FontWeight": "normal"
+    }, {
+        "TagName": "egergerg",
+        "TagColor": "#525252",
+        "TagBgColor": "#80dbf7",
+        "LineThrough": "none",
+        "FontStyle": "normal",
+        "FontWeight": "normal"
+    }, {
+        "TagName": "aergargargargargargargrgrg",
+        "TagColor": "#525252",
+        "TagBgColor": "#d5d5d5",
+        "LineThrough": "none",
+        "FontStyle": "normal",
+        "FontWeight": "normal"
+    }],
+    "BedNo": "A01",
+    "EndTime": null,
+    "BeforeBP": {
+        "BPS": "444",
+        "BPD": ""
+    },
+    "AfterBP": {
+        "BPS": null,
+        "BPD": null
+    },
+    "BeforeWeight": null,
+    "AfterWeight": null,
+    "EstimatedEndTime": null,
+    "StartTime": "2019-04-17T03:56:38.208Z",
+    "SourceBedNo": "A01",
+    "EmergencyBedNo": null
+}, {
+    "Id": "5c6d78625a7c5d1568fc50f2",
+    "MedicalId": "387665",
+    "Name": "王柏宏",
+    "Gender": "M",
+    "DialysisId": "5cb6d0476b730130b8fcedab",
+    "Mode": "HD",
+    "ShiftIssues": null,
+    "Memo": null,
+    "Status": null,
+    "Tags": [{
+        "TagName": "tab",
+        "TagColor": "#464646",
+        "TagBgColor": "#98D7E4",
+        "LineThrough": "overline",
+        "FontStyle": "normal",
+        "FontWeight": "normal"
+    }],
+    "BedNo": "A04",
+    "EndTime": null,
+    "BeforeBP": {
+        "BPS": null,
+        "BPD": null
+    },
+    "AfterBP": {
+        "BPS": null,
+        "BPD": null
+    },
+    "BeforeWeight": null,
+    "AfterWeight": null,
+    "EstimatedEndTime": null,
+    "StartTime": "2019-04-17T07:05:43.511Z",
+    "SourceBedNo": null,
+    "EmergencyBedNo": "2"
+}]

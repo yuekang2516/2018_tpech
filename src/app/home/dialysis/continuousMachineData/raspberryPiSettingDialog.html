@@ -1,0 +1,69 @@
+<md-dialog aria-label="傳輸器設定" class="pi">
+    <form name="piSetting">
+        <md-toolbar class="md-toolbar-tools" layout="row" layout-align="center center">
+            <div>
+                <h2 translate>{{'continuousMachineData.raspberrySetting.piSetting'}}</h2>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div layout="row" style="padding:10px" layout-align="center center">
+                <div layout="column" class="setting" layout-align="center center">
+                    <div class="removeMdErr" layout="row" flex>
+                        <md-input-container class="md-block" flex>
+                            <label translate>{{'continuousMachineData.raspberrySetting.frequency'}}</label>
+                            <input md-on-select type="number" min="0.5" name="frequency" ng-model="$ctrl.data.frequency" ng-disabled="$ctrl.data.isSetContinuous || $ctrl.isBrowser" required />
+                            <div ng-messages="piSetting.frequency.$error">
+                                <div ng-message="min" translate>{{'continuousMachineData.raspberrySetting.frequencyMin'}}</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div class="removeMdErr" ng-if="$ctrl.isPiBind" layout="row" flex>
+                        <md-input-container class="md-block bottom-btn">
+                            <label translate>{{'continuousMachineData.raspberrySetting.machine'}}</label>
+                            <input type="text" ng-model="$ctrl.data.meter" readonly />
+                            <!-- <md-select ng-model="$ctrl.data.meter" ng-disabled="!$ctrl.data.isPiBind" ng-change="$ctrl.changeSetting($ctrl.data.meter, '{{$ctrl.data.meter}}')" flex>
+                                <md-option value="Nikkiso">Nikkiso</md-option>
+                                <md-option value="Fresenius">Fresenius</md-option>
+                            </md-select> -->
+                        </md-input-container>
+                    </div>
+                    <div class="removeMdErr" ng-if="$ctrl.isPiBind" layout="row" flex>
+                        <md-input-container class="md-block bottom-btn">
+                            <label translate>{{'continuousMachineData.raspberrySetting.raspberryPiId'}}</label>
+                            <!-- <input type="text" ng-model="$ctrl.data.raspberryPiId" readonly/> -->
+                            <input type="text" ng-model="$ctrl.data.raspberryPiId" readonly />
+                        </md-input-container>
+                    </div>
+                </div>
+                <div layout="column" ng-if="!$ctrl.isBrowser" layout-align="center center">
+                    <md-button ng-if="$ctrl.isPiBind && !$ctrl.hideUnbind" class="pibuttonselect" ng-disabled="!$ctrl.data.isPiBind || $ctrl.data.isSetContinuous" ng-click="$ctrl.doUnbind()">
+                        <span translate>{{'continuousMachineData.raspberrySetting.unBind'}}</span>
+                    </md-button>
+                    <md-button class="pibuttonselect" ng-if="$ctrl.isPiBind" ng-click="$ctrl.setStartOrStop()" ng-disabled="piSetting.$invalid">
+                        <span translate>{{$ctrl.data.isSetContinuous ? 'continuousMachineData.raspberrySetting.stop' : 'continuousMachineData.raspberrySetting.resume'}}</span>
+                    </md-button>
+                    <md-button class="pibuttonselect" ng-if="!$ctrl.isPiBind" ng-click="$ctrl.scan()" ng-disabled="piSetting.$invalid">
+                        <span translate>{{'raspberryPi.scan'}}</span>
+                    </md-button>
+                    <!-- <md-button ng-show="$ctrl.data.isSetContinuous" class="pibuttonselect" ng-disabled="$ctrl.data.isPauseDisable" ng-click="$ctrl.setPauseOrRestart()">{{$ctrl.data.isPauseOrRestart ? '暫停' : '重啟'}}</md-button> -->
+                    <!-- <md-button class="pibuttonselect" ng-disabled="$ctrl.data.isStopDisable" ng-click="$ctrl.setStop()">停止</md-button> -->
+                </div>
+            </div>
+            <div layout="row" class="info" layout-align="center center">
+                <i class="material-icons position positionDiff">info</i>
+                <span>{{$ctrl.info}}</span>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row" layout-align="start center">
+            <md-button class="warning" ng-if="!$ctrl.isBrowser && $ctrl.isPiBind" ng-click="$ctrl.doUnbind()">
+                <span translate>{{'continuousMachineData.raspberrySetting.machineError'}}</span>
+            </md-button>
+            <span flex></span>
+            <md-button ng-click="$ctrl.hide()">
+                <span translate>{{'continuousMachineData.raspberrySetting.close'}}</span>
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

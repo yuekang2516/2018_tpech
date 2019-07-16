@@ -1,0 +1,250 @@
+<style scoped>
+    basic-setting {
+        height: 100%;
+    }
+
+    .padding {
+        padding: 20px;
+    }
+
+    .warning {
+        color: red;
+    }
+
+    a { text-decoration:none}
+    .width1200{ max-width: 1200px}
+    .button{ text-align: center; margin-right: 40px; width: 33.3%; display: inline-block}
+    .button img{ width: 100%}
+    .smallbutton{ margin:auto;display: inline-block; padding: 4px 6px; text-align: center; border-radius: 3px; color: #000; background: #ccc; border: rgb(130, 130, 130) solid 1px; margin-top: 5px;  }
+    .smallbutton:hover,.smallbutton:active{background: rgb(179, 178, 178)}
+    .width33 {width: 33.3%; float: left; text-align: center}
+    .width25 {width: 25%; float: left; text-align: center}
+
+    md-input-container .md-errors-spacer {
+        min-height: 0;
+        text-decoration:none;
+    }
+</style>
+
+<div layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.openLeftMenu()" hide-gt-sm>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <h3 translate="basicSetting.pageTitle"></h3>
+        </div>
+    </md-toolbar>
+    <div ng-show="vm.isError" layout="column" layout-fill layout-align="center center">
+        <h3 translate="customMessage.serverError"></h3>
+    </div>
+    <md-content layout-padding>
+        <loading ng-show="vm.loading"></loading>
+        <form name="editForm" ng-show="!vm.loading && !vm.isError">
+            <div layout-gt-xs="row" layout="column">
+                <md-card flex>
+                    <md-card-content class="yuekang-input-container">
+                        <div layout="row">
+                            <label translate="basicSetting.hospitalLogo"></label>
+                            <div class="logo-container">
+                                <img ng-show="vm.loadingPicture" height="16px" width="16px" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                                <img ng-if="!vm.HospitalInfo.Logo" height="160" width="160" ng-src="static/img/Unknown.png" />
+                                <img ngf-thumbnail="vm.HospitalInfo.Logo" />
+                                <input type="file" ngf-change="vm.handleChangeBase64()" ngf-select ng-model="vm.Logo" name="Logo" accept="image/*" ngf-fix-orientation="true" ngf-resize="{width: 200px, height: 200px, centerCrop: false}" />
+                            </div>
+                        </div>
+                        <div layout="row">
+                            <label translate="basicSetting.hospitalName"></label>
+                            <input ng-model="vm.HospitalInfo.HospitalName" />
+                        </div>
+                        <div layout="row">
+                            <label translate="basicSetting.hospitalCode"></label>
+                            <input ng-model="vm.HospitalInfo.SystemCode" readonly />
+                        </div>
+                        <div layout="row">
+                            <label translate="basicSetting.formTitle"></label>
+                            <input ng-model="vm.HospitalInfo.FormTitle" />
+                        </div>
+                        <div layout="row">
+                            <label translate="basicSetting.hostName"></label>
+                            <textarea ng-model="vm.HostName" md-detect-hidden="true"></textarea>
+                        </div>
+                    </md-card-content>
+                </md-card>
+                <md-card flex>
+                    <md-card-content class="yuekang-input-container">
+                        <div layout="row">
+                            <md-subheader class="md-no-sticky"><span translate="basicSetting.mailSetting"></span></md-subheader>
+                        </div>
+                        <div layout="row">
+                            <label translate="basicSetting.host"></label>
+                            <input ng-model="vm.mailsetting.Records.Host" />
+                        </div>
+                        <div layout="row">
+                            <label translate="basicSetting.port"></label>
+                            <input ng-model="vm.mailsetting.Records.Port" />
+                        </div>
+                        <div layout="row">
+                            <label translate="basicSetting.account"></label>
+                            <input ng-model="vm.mailsetting.Records.Account" />
+                        </div>
+                        <div layout="row">
+                            <label translate="basicSetting.password"></label>
+                            <input ng-model="vm.mailsetting.Records.Password" />
+                        </div>
+                        <div layout="row">
+                            <label translate="basicSetting.enableSSL"></label>
+                            <md-radio-group ng-model="vm.mailsetting.Records.EnableSSL" layout="row" aria-label="IsNormal">
+                                <md-radio-button ng-value="true">　 True</md-radio-button>　
+                                <md-radio-button ng-value="false">　 False</md-radio-button>
+                            </md-radio-group>
+                        </div>
+                        <div layout="row">
+                            <label translate="basicSetting.from"></label>
+                            <input ng-model="vm.mailsetting.Records.From" />
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+            <!-- <md-input-container class="md-block width1200">
+                <div flex style="margin-top:0.8em">
+                    <label translate="basicSetting.SheetTemplate"></label>
+                    
+                    <md-radio-group ng-model="vm.SheetTemplate1" layout="row" aria-label="表單範本">
+                        <md-radio-button ng-value="'A'" class="button" ng-click="vm.radioA()">
+                            <h2>A</h2>
+                            <img ng-src="static/img/FormD.jpg" /><br>
+                        </md-radio-button>　
+                        <md-radio-button ng-value="'B'" class="button" ng-click="vm.radioA()">
+                            <h2>B</h2>
+                            <img ng-src="static/img/FormA.jpg" /><br>
+                        </md-radio-button>　
+                        <md-radio-button ng-value="'C'" class="button" ng-click="vm.radioA()">
+                            <h2>C</h2>
+                            <img ng-src="static/img/FormB.jpg" /><br>
+                        </md-radio-button>　
+                        <md-radio-button ng-value="'D'" class="button" ng-click="vm.radioA()">
+                            <h2>D</h2>
+                            <img ng-src="static/img/FormC1.jpg" /><br>
+                        </md-radio-button>
+                    </md-radio-group>
+                    <div style="overflow:hidden; clear:both">
+                        <div class="width25">
+                            <a href="static/img/FormD.jpg" target="_blank"><div class="smallbutton" style="margin-left:15px"><span translate>{{'basicSetting.enlargebutton'}}</span></div></a>
+                        </div>
+                        <div class="width25">
+                            <a href="static/img/FormA.jpg" target="_blank"><div class="smallbutton" style="margin-left:22px"><span translate>{{'basicSetting.enlargebutton'}}</span></div></a>
+                        </div>
+                        <div class="width25">
+                            <a href="static/img/FormB.jpg" target="_blank"><div class="smallbutton" style="margin-left:28px"><span translate>{{'basicSetting.enlargebutton'}}</span></div></a>
+                        </div>
+                        <div class="width25">
+                            <a href="static/img/FormC.jpg" target="_blank"><div class="smallbutton" style="margin-left:28px"><span translate>{{'basicSetting.enlargebutton'}}</span></div></a>
+                        </div>
+                    </div>
+                    <br>
+                    <div layout="row" layout-align="start center">
+                    <div>
+                        <md-radio-group ng-model="vm.SheetTemplate2" layout="row" aria-label="IsNormal">
+                            <md-radio-button ng-value="'O'" ng-click="vm.radioO()">{{'basicSetting.SheetOther' | translate}}　</md-radio-button>
+                        </md-radio-group>
+                    </div>
+                    <div>
+                        <span translate="basicSetting.SheetName" ng-show="vm.SheetTemplate2==='O'"></span>　
+                    </div>
+                    <div>
+                        <input  ng-model="vm.HospitalInfo.SheetTemplate" ng-show="vm.SheetTemplate2==='O'" />
+                    </div>
+                    </div>
+                </div>
+            </md-input-container> -->
+            <!--以下為舊DT欄位 新版WIDAS API已無這些欄位-->
+            <!--<md-input-container class="md-block padding-bottom">
+                <label>病人姓名遮罩</label>
+                <md-select ng-model="hospital.PatientnameMask">
+                    <md-option ng-repeat="g in optMask" value="{{g.value}}">
+                        {{g.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container class="md-block padding-bottom">
+                <label>護理紀錄</label>
+                <md-select ng-model="nursingRecrodEdit">
+                    <md-option ng-repeat="g in [{key: true, value: '是'}, {key: false, value: '否'}]" value="{{g.key}}">
+                        {{g.value}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container class="md-block padding-bottom">
+                <label>執行用藥是否要寫至護理紀錄</label>
+                <md-select ng-model="isMedicationToNursingRecord">
+                    <md-option ng-repeat="g in [{key: true, value: '是'}, {key: false, value: '否'}]" value="{{g.key}}">
+                        {{g.value}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>重要記事</label>
+                <textarea ng-model="hospital.Details" columns="1" md-maxlength="150"></textarea>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>電子郵件訊息的寄件者地址</label>
+                <input ng-model="hospital.SystemMailSettings.From">
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>SMTP 交易的使用者名稱</label>
+                <input ng-model="hospital.SystemMailSettings.UserName">
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>SMTP 交易的使用者密碼</label>
+                <input type="password" ng-model="hospital.SystemMailSettings.Password">
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>SMTP 交易的主機名稱或 IP 位址</label>
+                <input ng-model="hospital.SystemMailSettings.Host">
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>SMTP 交易的連接埠</label>
+                <input ng-model="hospital.SystemMailSettings.Port" ng-pattern="/^([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1][0][0-2][0-3])$/">
+            </md-input-container>-->
+            <div class="warning" layout="row" layout-align="end none">
+                <span translate="basicSetting.afterUpdate"></span>
+            </div>
+            <div layout="row" layout-align="end none">
+                <md-button class="md-raised md-primary" ng-click="vm.edit()" ng-disabled="vm.isSaving"><span translate>{{'basicSetting.savebutton'}}</span></md-button>
+            </div>
+        </form>
+        <!--<md-tabs md-selected="vm.selectedIndex" md-border-bottom md-dynamic-height="true" class="no-print">
+            <md-tab md-on-select="" label="目前合約" ng-click="vm.gotoContent(0)"></md-tab>
+            <md-tab md-on-select="" label="最新帳單" ng-click="vm.gotoContent(1)"></md-tab>
+        </md-tabs>-->
+        <!--<div flex layout="row">
+            <div flex ng-show="vm.contract != ''">
+                <h5 translate="basicSetting.contract"></h5><br>
+                <span translate="contract.number"></span> : {{vm.contract.Number}}<br>
+                <span translate="contract.name"></span> : {{vm.contract.Name}}<br>
+                <span translate="contract.range"></span> : {{vm.contract.StartDate | date:'yyyy/MM/dd'}} ~ {{vm.contract.EndDate | date:'yyyy/MM/dd'}}<br>
+                <span translate="contract.state"></span> : {{vm.contract.State}}<br>
+                <span translate="contract.billingMethod"></span> : {{vm.showMethod(vm.contract.BillingMethod)}}<br>
+                <span translate="contract.invoice"></span> : {{vm.contract.Invoice}}<br>
+                <span translate="contract.companyId"></span> : {{vm.contract.CompanyId}}<br>
+                <span translate="contract.person"></span> : {{vm.contract.Person}}<br>
+                <span translate="contract.phone"></span> : {{vm.contract.Phone}}<br>
+                <span translate="contract.address"></span> : {{vm.contract.Address}}<br>
+            </div>
+            <div flex ng-show="vm.payment != ''">
+                <h5 translate="basicSetting.payment"></h5><br>
+                <span translate="payment.name"></span> : {{vm.payment.Name}}<br>
+                <span translate="payment.range"></span> : {{vm.payment.StartDate | date:'yyyy/MM/dd'}} ~ {{vm.payment.EndDate | date:'yyyy/MM/dd'}}<br>
+                <span translate="payment.state"></span> : {{vm.payment.State}}<br>
+                <span translate="payment.pricingMethod"></span> : {{vm.showMethod(vm.payment.PricingMethod)}}<br>
+                <span translate="payment.price"></span> : {{vm.payment.Price}}<br>
+                <span translate="payment.quantity"></span> : {{vm.payment.Quantity}}<br>
+                <span translate="payment.discount"></span> : {{vm.payment.Discount}}<br>
+                <span translate="payment.totalAmount"></span> : {{vm.payment.TotalAmount}}<br>
+                <span translate="payment.invoiceNumber"></span> : {{vm.payment.InvoiceNumber}}<br>
+                <span translate="payment.postingDate"></span> : {{vm.payment.PostingDate}}<br>
+            </div>
+        </div>-->
+    </md-content>
+</div>

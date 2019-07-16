@@ -1,0 +1,592 @@
+<div layout="row" class="summary" layout-padding layout-wrap layout-fill style="padding-bottom: 32px;" ng-cloak>
+    <md-whiteframe ng-class="{'md-whiteframe-10dp' : $ctrl.whiteframe}" layout-align="center center" flex>
+        <div class="piyavatePage1">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table border" style="margin-bottom: -2px">
+                <tr>
+                    <td width="40%" align="center" style="vertical-align: middle;">
+                        <img src="http://www.piyavate.com/public/upload/config/thumbnails/configd55a2e458214523f63fbf6253669c50c.jpg" alt="">
+                    </td>
+                    <td width="60%" style="padding: 0">
+                        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_in_line">
+                            <tr>
+                                <td style="border-top: none;">Name：
+                                    <u>{{$ctrl.patient.Name}}</u>
+                                </td>
+                                <td style="border-top: none;">Date：
+                                    <u>{{$ctrl.data.DialysisHeader.CreatedTime | moment: 'Do MMMM YYYY HH mm'}}</u>
+                                    &nbsp;&nbsp; VN/AN&nbsp;:
+                                    <u>{{$ctrl.data.DialysisHeader.AdmissionNumber}}</u>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Dapt：
+                                    <u>{{$ctrl.data.DialysisHeader.WardName}}</u>
+                                </td>
+                                <td>Gender：
+                                    <u>{{$ctrl.patient.Gender}}</u>&nbsp;&nbsp; HN：
+                                    <u>{{$ctrl.patient.MedicalId}}</u>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>DOB：
+                                    <u>{{$ctrl.patient.Birthday | moment: 'Do MMMM YYYY'}}</u> &nbsp;&nbsp; Age：
+                                    <u>{{$ctrl.patient.Birthday | age}}</u>
+                                </td>
+                                <td>Physician：
+                                    <u>{{$ctrl.data.DoctorNote.ModifiedUserName ? $ctrl.data.DoctorNote.CreatedUserName : $ctrl.data.DoctorNote.ModifiedUserName}}</u>
+                                    <br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <table border="0" cellpadding="0" cellspacing="0" class="table_in" width="100%">
+                            <tr>
+                                <td width="50px" rowspan="2" style="vertical-align:middle;">Allergy：</td>
+                                <td>
+                                    {{$ctrl.patient.AllergicHistory}}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table border" style="margin-bottom: -2px;cursor: pointer"
+                ng-click="$ctrl.gotoOverview()">
+                <tr>
+                    <td class="center" colspan="5">
+                        <span>Hemodialysis Nursing Record</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="25%">No. Of HD:&nbsp;
+                        <u>{{$ctrl.data.DialysisHeader.Numbers.HD}}</u>
+                    </td>
+                    <td width="25%">Start Time:&nbsp;
+                        <u>{{$ctrl.data.DialysisHeader.CreatedTime | moment: 'Do MMMM YYYY HH mm'}}</u>
+                    </td>
+                    <td width="25%">End:&nbsp;
+                        <u>{{$ctrl.data.DialysisHeader.EndTime && $ctrl.data.DialysisHeader.EndTime | moment: 'Do MMMM YYYY
+                            HH mm'}}</u>
+                    </td>
+                    <td width="25%">Duration:&nbsp;
+                        <u>{{$ctrl.data.DialysisHeader.Prescription.Duration.Hours}}</u>Hour</td>
+                </tr>
+            </table>
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table border" style="margin-bottom: -2px">
+                <tr>
+                    <td>Arrival Time:&nbsp;
+                        <u>{{$ctrl.patient.FirstDialysisDate | moment: 'Do MMMM YYYY HH mm'}}</u>&nbsp; Status on arrival：&nbsp;{{$ctrl.patient.EntryMode}}</td>
+                    <td>
+                        Emergency Severity Index (ESI) Level：&nbsp;{{$ctrl.data.DialysisHeader.ESItriage}}
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table border" style="margin-bottom: -2px;cursor: pointer"
+                ng-click="$ctrl.gotoOverview()">
+                <tr>
+                    <th colspan="5">
+                        Dialysis Assessment
+                    </th>
+                </tr>
+                <tr>
+                    <td rowspan="2" style="padding: 0; ">
+                        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_in_line" style="margin: -1px ">
+                            <tr>
+                                <td style="border-right: 0">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td style="border-right: 0; font-weight: bold">Dyspnea</td>
+                            </tr>
+                            <tr>
+                                <td style="border-right: 0; font-weight: bold">Fever</td>
+                            </tr>
+                            <tr>
+                                <td style="border-right: 0; font-weight: bold">Headache</td>
+                            </tr>
+                            <tr>
+                                <td style="border-right: 0; font-weight: bold">Nausea/Vomilting</td>
+                            </tr>
+                            <tr>
+                                <td style="border-right: 0; font-weight: bold">Sleep Disturbance</td>
+                            </tr>
+                            <tr>
+                                <td style="border-right: 0; font-weight: bold">Prolonged Bleeding</td>
+                            </tr>
+                            <tr>
+                                <td style="border-right: 0; font-weight: bold">Itching</td>
+                            </tr>
+                            <tr>
+                                <td style="border-right: 0; font-weight: bold">Engorged Neck Vain</td>
+                            </tr>
+                            <tr>
+                                <td style="border-right: 0; font-weight: bold">Pale</td>
+                            </tr>
+                            <tr>
+                                <td style="border-right: 0; font-weight: bold">Edema</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td rowspan="2" style="padding: 0;">
+                        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_in_line" style="margin: -1px ">
+                            <tr>
+                                <td align="center" style="border-right: 0; font-weight: bold">Pre</td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="border-right: 0">&nbsp;
+                                    <span ng-if="$ctrl.dyspnea.includes('Y')">Yes</span>
+                                    <span ng-if="$ctrl.dyspnea.includes('N')">No</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="border-right: 0">&nbsp;
+                                    <span ng-if="$ctrl.Fever.includes('Y')">Yes</span>
+                                    <span ng-if="$ctrl.Fever.includes('N')">No</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="border-right: 0">&nbsp;
+                                    <span ng-if="$ctrl.Headache.includes('Y')">Yes</span>
+                                    <span ng-if="$ctrl.Headache.includes('N')">No</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="border-right: 0">&nbsp;
+                                    <span ng-if="$ctrl.Nausea.includes('Y')">Yes</span>
+                                    <span ng-if="$ctrl.Nausea.includes('N')">No</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="border-right: 0">&nbsp;
+                                    <span ng-if="$ctrl.Sleep.includes('Y')">Yes</span>
+                                    <span ng-if="$ctrl.Sleep.includes('N')">No</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="border-right: 0">&nbsp;
+                                    <span ng-if="$ctrl.Bleeding.includes('Y')">Yes</span>
+                                    <span ng-if="$ctrl.Bleeding.includes('N')">No</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="border-right: 0">&nbsp;
+                                    <span ng-if="$ctrl.Intching.includes('Y')">Yes</span>
+                                    <span ng-if="$ctrl.Intching.includes('N')">No</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="border-right: 0">&nbsp;
+                                    <span ng-if="$ctrl.Engorged.includes('Y')">Yes</span>
+                                    <span ng-if="$ctrl.Engorged.includes('N')">No</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="border-right: 0">&nbsp;
+                                    <span ng-if="$ctrl.Paie.includes('Y')">Yes</span>
+                                    <span ng-if="$ctrl.Paie.includes('N')">No</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="border-right: 0">&nbsp;
+                                    <span ng-if="$ctrl.Edema.includes('Y')">Yes</span>
+                                    <span ng-if="$ctrl.Edema.includes('N')">No</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td rowspan="2" style="padding: 0;">
+                        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_in_line" style="margin: -1px ">
+                            <tr>
+                                <td align="center" style="border-right: 0; font-weight: bold">Post</td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="border-right: 0">&nbsp;
+                                    <span ng-if="$ctrl.reDyspnea.includes('Y')">Yes</span>
+                                    <span ng-if="$ctrl.reDyspnea.includes('N')">No</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="border-right: 0">&nbsp;
+                                    <span ng-if="$ctrl.reFever.includes('Y')">Yes</span>
+                                    <span ng-if="$ctrl.reFever.includes('N')">No</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="border-right: 0">&nbsp;
+                                    <span ng-if="$ctrl.reHeadache.includes('Y')">Yes</span>
+                                    <span ng-if="$ctrl.reHeadache.includes('N')">No</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="border-right: 0">&nbsp;
+                                    <span ng-if="$ctrl.reNausea.includes('Y')">Yes</span>
+                                    <span ng-if="$ctrl.reNausea.includes('N')">No</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="border-right: 0">&nbsp;
+                                    <span ng-if="$ctrl.reSleep.includes('Y')">Yes</span>
+                                    <span ng-if="$ctrl.reSleep.includes('N')">No</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="border-right: 0">&nbsp;
+                                    <span ng-if="$ctrl.reBleeding.includes('Y')">Yes</span>
+                                    <span ng-if="$ctrl.reBleeding.includes('N')">No</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="border-right: 0">&nbsp;
+                                    <span ng-if="$ctrl.reIntching.includes('Y')">Yes</span>
+                                    <span ng-if="$ctrl.reIntching.includes('N')">No</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="border-right: 0">&nbsp;
+                                    <span ng-if="$ctrl.reEngorged.includes('Y')">Yes</span>
+                                    <span ng-if="$ctrl.reEngorged.includes('N')">No</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="border-right: 0">&nbsp;
+                                    <span ng-if="$ctrl.rePaie.includes('Y')">Yes</span>
+                                    <span ng-if="$ctrl.rePaie.includes('N')">No</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="border-right: 0">&nbsp;
+                                    <span ng-if="$ctrl.reEdema.includes('Y')">Yes</span>
+                                    <span ng-if="$ctrl.reEdema.includes('N')">No</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="line-height: 21px; cursor: pointer" ng-click="$ctrl.gotoOverview()" rowspan="2">
+                        Dry Weight：<u>{{$ctrl.data.DialysisHeader.Prescription.StandardWeight}}</u>kg<br>
+                        Last BW：<u>{{$ctrl.data.DialysisHeader.LastWeightBehindDialysis}}</u>kg<br><!--上次透析後體重-->
+                        Pre BW：<u>{{$ctrl.data.DialysisHeader.PredialysisWeight}}</u>kg<br>
+                        Weight gain：<u>{{$ctrl.WeightGain}}</u>kg<br>
+                        Meal/drink：<u>{{($ctrl.data.DialysisHeader.FoodWeight || 0) + ($ctrl.data.DialysisHeader.Flush || 0)}}</u>kg<br>
+                        UF goal：<u>{{$ctrl.data.DialysisHeader.DehydrationSetting}}</u>kg<br> <!--設定脫水量-->
+                        Post BW：<u>{{$ctrl.data.DialysisHeader.WeightAfterDialysis}}</u>
+                        <span style="font-weight: normal" ng-if="!$ctrl.data.DialysisHeader.AbnormalWeight || $ctrl.data.DialysisHeader.WeightAfterDialysis">kg</span>
+                        <u ng-if="$ctrl.data.DialysisHeader.AbnormalWeight">{{$ctrl.data.DialysisHeader.AbnormalWeightReason}}</u><br>                        
+                        Weight loss：<u>{{$ctrl.Weightloss}}</u>kg<br>
+                    </td>
+                    <td rowspan="2" style="cursor: pointer" ng-click="$ctrl.gotoOverview()">
+                        Vascular Access
+                        <ul>
+                            <li>
+                                <img ng-src="{{($ctrl.data.DialysisHeader.VesselAssessments[0].Data.CatheterPosition.Side).includes('left') && 'static/img/tick.png' || 'static/img/blank.png'}}"
+                                    alt="" class="tick">Left
+                                <img ng-src="{{($ctrl.data.DialysisHeader.VesselAssessments[0].Data.CatheterPosition.Side).includes('right') && 'static/img/tick.png' || 'static/img/blank.png'}}"
+                                    alt="" class="tick">Right
+                            </li>
+                            <li>
+                                <img ng-src="{{($ctrl.data.DialysisHeader.VesselAssessments[0].Data.CatheterPosition.Side).includes('AVFistula') && 'static/img/tick.png' || 'static/img/blank.png'}}"
+                                    alt="" class="tick">AVF
+                                <img ng-src="{{($ctrl.data.DialysisHeader.VesselAssessments[0].Data.CatheterPosition.Side).includes('AVGraft') && 'static/img/tick.png' || 'static/img/blank.png'}}"
+                                    alt="" class="tick">AVG
+                            </li>
+                            <li>
+                                <img ng-src="{{($ctrl.data.DialysisHeader.VesselAssessments[0].Data.CatheterPosition.Side).includes('Permanent') && 'static/img/tick.png' || 'static/img/blank.png'}}"
+                                    alt="" class="tick">Permanent Catheter
+                            </li>
+                            <li>
+                                <img ng-src="{{($ctrl.data.DialysisHeader.VesselAssessments[0].Data.CatheterPosition.Side).includes('DoubleLumen') && 'static/img/tick.png' || 'static/img/blank.png'}}"
+                                    alt="" class="tick">DLC
+                                <u></u>
+                            </li>
+                            <li>{{$ctrl.data.DialysisHeader.VACRcontent}}</li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table border" style="margin-bottom: -2px; cursor: pointer"
+                ng-click="$ctrl.gotoPrescription()">
+                <tr>
+                    <th colspan="2">Hemodialysis Prescription</th>
+                    <th>Anticoagulant</th>
+                </tr>
+                <tr>
+                    <td style="line-height: 20px" rowspan="2">
+                        Machine：
+                        <u>{{$$ctrl.data.DialysisHeader.Prescription.Mode.Name}}</u>
+                        <br> Dialyzer：
+                        <u>{{$ctrl.data.DialysisHeader.Prescription.ArtificialKidney}}</u>
+                        <br> Dialysis flow：
+                        <u>{{$ctrl.data.DialysisHeader.Prescription.DialysateFlowRate}}</u>ml/min
+                        <br/> dialysate temp：
+                        <u>{{$ctrl.data.DialysisHeader.Prescription.DialysateTemperature}}</u>°c
+                        <br>
+                    </td>
+                    <td style="line-height: 20px">
+                        Na/UF vanation Profile
+                        <br> Na：
+                        <u>{{$ctrl.data.DialysisHeader.Prescription.Na}}</u>mEq/L
+                        <br> Ca²/k：
+                        <u>{{$ctrl.data.DialysisHeader.Prescription.Dialysate}}</u>mEq/L
+                        <br> HCO3：
+                        <u>{{$ctrl.data.DialysisHeader.Prescription.HCO3}}</u>mEq/L
+                        <br>
+                    </td>
+                    <td style="line-height: 20px">
+                        <span ng-if="$ctrl.data.DialysisHeader.Prescription.Anticoagulants" ng-repeat="(name, value) in $ctrl.data.DialysisHeader.Prescription.Anticoagulants">
+                            {{name}}：
+                            <span> {{value[0]}} </span> unit
+                            <br/> Maintenance：
+                            <span>{{value[1]}} </span> unit
+                            <br/>
+                        </span>
+                        <img ng-src="{{$ctrl.data.DialysisHeader.Prescription.AnticoagulantFreeCause ? 'static/img/tick.png' : 'static/img/blank.png' }}"
+                            alt="" class="tick"> No Heparin
+                        <br> Flush NSS &nbsp;
+                        <u>{{$ctrl.data.DialysisHeader.Flush}}</u> min
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        Check by
+                        <u>{{$ctrl.data.DialysisHeader.OnUserName}}</u> RN
+                    </td>
+                </tr>
+            </table>
+
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table border" style="margin-top: -2px; cursor: pointer; "
+                ng-click="$ctrl.gotoMachineData()">
+                <tr>
+                    <th>Time</th>
+                    <th>BP
+                        <br>mmHg</th>
+                    <th>PR
+                        <br>/min</th>
+                    <th>RR
+                        <br>/min</th>
+                    <th>BFR
+                        <br>ml/min</th>
+                    <th>VP
+                        <br>mmHg</th>
+                    <th>TMP
+                        <br>mmHg</th>
+                    <th>UFR
+                        <br>ml/hr</th>
+                    <th>Total UF
+                        <br>ml</th>
+                    <th>ลงชื่อ</th>
+                    <th>Note</th>
+                </tr>
+                <tr ng-repeat="data in $ctrl.data.DialysisData track by $index">
+                    <td style="width: 5%">{{data.DialysisTime | date: 'HH:mm'}}</td>
+                    <td>{{data.BPS}}/{{data.BPD}}</td>
+                    <td>{{data.Pulse}}</td>
+                    <td>{{data.Breath}}</td>
+                    <td>{{data.BloodFlowRate}}</td>
+                    <td>{{data.VenousPressure}}</td>
+                    <td>{{data.TMP}}</td>
+                    <td>{{data.UFRate * 1000}}</td>
+                    <td>{{data.TotalUF * 1000}}</td>
+                    <td>{{data.ModifiedUserName ? data.ModifiedUserName : data.CreatedUserName}}</td>
+                    <td>{{data.Memo}}
+                        <span ng-if="$index === 0">Before HD: BT
+                            <u>{{$ctrl.data.DialysisHeader.PreVitalSign[0].Temperature}}</u>°c</span>
+                        <span ng-if="$last && $ctrl.columnTd.length === 0">Post HD: BT
+                            <u>{{$ctrl.data.DialysisHeader.PostVitalSign[0].Temperature}}</u>°c</span>
+                    </td>
+                </tr>
+                <tr ng-repeat="i in $ctrl.columnTd">
+                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp; </td>
+                    <td>
+                        <span ng-if="$index === 0 && $ctrl.data.DialysisData.length === 0">Before HD: BT
+                            <u>{{$ctrl.data.DialysisHeader.PreVitalSign[0].Temperature}}</u>°c</span>
+                        <span ng-if="$last">Post HD: BT
+                            <u>{{$ctrl.data.DialysisHeader.PostVitalSign[0].Temperature}}</u>°c</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="9" style="text-align: center;">
+                    </td>
+                    <td colspan="2" style="text-align: center;">
+                        Total UF
+                        <br>
+                        <u ng-if="$ctrl.data.DialysisData">{{$ctrl.data.DialysisData[$ctrl.data.DialysisData.length -1].TotalUF}}</u>ml
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <p style="page-break-after: always;">&nbsp;</p>
+        <div class="piyavatePage2">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table border" style="margin-bottom: -2px">
+                <tr>
+                    <td width="40%" align="center" style="vertical-align: middle;">
+                        <img src="http://www.piyavate.com/public/upload/config/thumbnails/configd55a2e458214523f63fbf6253669c50c.jpg" alt="">
+                    </td>
+                    <td width="60%" style="padding: 0;">
+                        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_in_line">
+                            <tr>
+                                <td style="border-top: none;">Name：
+                                    <u>{{$ctrl.patient.Name}}</u>
+                                </td>
+                                <td style="border-top: none;">Date：
+                                    <u>{{$ctrl.data.DialysisHeader.CreatedTime | moment: 'Do MMMM YYYY HH mm'}}</u>
+                                    &nbsp;&nbsp; VN/AN&nbsp;:
+                                    <u>{{$ctrl.data.DialysisHeader.AdmissionNumber}}</u>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Dapt：
+                                    <u>{{$ctrl.data.DialysisHeader.WardName}}</u>
+                                </td>
+                                <td>Gender：
+                                    <u>{{$ctrl.patient.Gender}}</u>&nbsp;&nbsp; HN：
+                                    <u>{{$ctrl.patient.MedicalId}}</u>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>DOB：
+                                    <u>{{$ctrl.patient.Birthday | moment: 'Do MMMM YYYY'}}</u> &nbsp;&nbsp; Age：
+                                    <u>{{$ctrl.patient.Birthday | age}}</u>
+                                </td>
+                                <td>Physician：
+                                    <u>{{$ctrl.data.DoctorNote.ModifiedUserName ? $ctrl.data.DoctorNote.CreatedUserName : $ctrl.data.DoctorNote.ModifiedUserName}}</u>
+                                    <br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="border-top:#000 solid 2px ">
+                        <table border="0" cellpadding="0" cellspacing="0" class="table_in" width="100%">
+                            <tr>
+                                <td width="50px" rowspan="2" style="vertical-align:middle;">Allergy：</td>
+                                <td>
+                                    {{$ctrl.patient.AllergicHistory}}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table border" style="margin-bottom: -2px">
+                <tr>
+                    <th style="border-right: #000 solid 2px">
+                        Complication
+                    </th>
+                    <th style="border-right: 0" colspan="4">
+                        Medication During HD
+                    </th>
+                </tr>
+
+                <tr>
+                    <td style="border-right: #000 solid 2px; padding: 0" rowspan="2" width="40%">
+                        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_in_line" style="margin: -1px " ng-repeat="item in $ctrl.AbnormalItems">
+                            <tr>
+                                <td style="border-right: 0">
+                                    <img src="../../static/img/tick.png" alt="" class="tick">{{item}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 0; cursor: pointer" ng-click="$ctrl.gotoExecutionRecord()">
+                        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_in_line">
+                            <tr>
+                                <td style="border-right: 0">Medication</td>
+                                <td style="border-right: 0">Route</td>
+                                <td style="border-right: 0">Time</td>
+                                <td style="border-right: 0">Sign</td>
+                            </tr>
+                            <tr ng-repeat="data in $ctrl.data.OrderRecord track by $index">
+                                <td>
+                                    {{data.Name}} {{data.Quantity}} {{data.DoseUnit}}
+                                </td>
+                                <td>
+                                    {{data.Frequency}}
+                                </td>
+                                <td>
+                                    {{data.PrescribingTime | moment: 'MM-DD (dd) HH:mm'}}
+                                </td>
+                                <td>
+                                    {{!data.ModifiedUserName ? data.CreatedUserName : data.ModifiedUserName}}
+                                </td>
+                            </tr>
+                            <tr ng-if="$ctrl.data.OrderRecord.length <= $ctrl.AbnormalItems.length" ng-repeat="i in ($ctrl.AbnormalItems.length - $ctrl.data.OrderRecord.length) | TdRange">
+                                <td>
+                                    &nbsp;&nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table border" style="margin-bottom: -2px; cursor: pointer"
+                ng-click="$ctrl.gotoDoctorNote()">
+                <tr>
+                    <th colspan="3">
+                        Physician note
+                    </th>
+                </tr>
+                <tr ng-repeat="doctorNote in $ctrl.data.DoctorNotes">
+                    <td valign="top" width="6%">&nbsp; {{doctorNote.RecordTime | date: 'HH:mm'}}
+                    </td>
+                    <td colspan="2" valign="top">&nbsp; {{doctorNote.Content}}
+                        <seal ng-show="doctorNote" model="doctorNote" modified="hideIfSame"></seal>
+                    </td>
+                </tr>
+                <tr ng-if="$ctrl.data.DoctorNotes.length === 0" ng-repeat="i in [0]">
+                    <td>
+                        &nbsp;
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table border" style="margin-bottom: -2px; margin-top: -2px; cursor: pointer"
+                ng-click="$ctrl.gotoNursingRecords()">
+                <tr>
+                    <th colspan="2">Nursing Record</th>
+                </tr>
+                <tr ng-repeat="rec in $ctrl.data.NursingRecord track by rec.Id">
+                    <td width="6%" valign="top">{{rec.NursingTime | date: 'HH:mm'}}</td>
+                    <td valign="top">{{rec.Content}}
+                        <seal model="rec" ng-hide="rec.ModifiedUserName" modified="none"></seal>
+                        <seal model="rec" ng-if="rec.ModifiedUserName" created="none"></seal>
+                    </td>
+                </tr>
+                <tr ng-if="$ctrl.data.NursingRecord.length === 0" ng-repeat="i in [0]">
+                    <td>
+                        &nbsp;
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </md-whiteframe>
+</div>

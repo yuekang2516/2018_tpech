@@ -1,0 +1,58 @@
+<style scoped>
+    system-phrase {
+        height: 100%;
+    }
+
+    i {
+        padding-right: 20px;
+    }
+</style>
+<div flex layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.openLeftMenu()" hide-gt-sm>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <h3 translate="phrase.pageTitle"></h3>
+        </div>
+    </md-toolbar>
+    <md-subheader class="md-no-sticky"><span translate="phrase.noAdd"></span></md-subheader>
+    <md-content layout-fill flex>
+        <loading ng-show="vm.loading"></loading>
+        <div flex ng-show="vm.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate="customMessage.serverError"></h3>
+        </div>
+        <div ng-show="!vm.loading && !vm.isError">
+            <div ng-show="vm.wards && vm.wards.length == 0" layout="column" layout-fill layout-align="center center" flex>
+                <i class="fa fa-file-o"></i>
+                <h3 translate="customMessage.noData"></h3>
+            </div>
+            <md-list>
+                <md-list-item ng-click="vm.gotoPersonalPhrase()">
+                    <div layout="row" layout-fill>
+                        <div flex=5><i class="material-icons">folder</i></div>
+                        <div flex=15><span translate="phrase.kind"></span> : <span translate="phrase.catalog"></span></div>
+                        <div flex=80><span translate="phrase.name"></span> : <span translate="phrase.personalPhrase"></span></div>
+                    </div>
+                    <md-divider></md-divider>
+                </md-list-item>
+                <md-list-item ng-click="vm.gotoSystemPhrase()">
+                    <div layout="row" layout-fill>
+                        <div flex=5><i class="material-icons">folder</i></div>
+                        <div flex=15><span translate="phrase.kind"></span> : <span translate="phrase.catalog"></span></div>
+                        <div flex=80><span translate="phrase.name"></span> : <span translate="phrase.systemPhrase"></span></div>
+                    </div>
+                    <md-divider></md-divider>
+                </md-list-item>
+                <md-list-item ng-repeat="w in vm.wards" ng-click="vm.gotoPhrase(w.Id)">
+                    <div layout="row" layout-fill>
+                        <div flex=5><i class="material-icons">folder</i></div>
+                        <div flex=15><span translate="phrase.kind"></span> : <span translate="phrase.catalog"></span></div>
+                        <div flex=80><span translate="phrase.name"></span> : {{ w.Name }}</div>
+                    </div>
+                    <md-divider></md-divider>
+                </md-list-item>
+            </md-list>
+        </div>
+    </md-content>
+</div>

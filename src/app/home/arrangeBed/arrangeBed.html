@@ -1,0 +1,152 @@
+<md-content layout="column" layout-fill class="bed-container">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="$ctrl.back()">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <div layout="row" translate>
+                {{'bed.arrangeBed'}}
+            </div>
+            <!-- <span flex></span> -->
+            <md-button ng-if="!$ctrl.loading" id="right-menu" class="md-icon-button" aria-label="More" ng-click="$ctrl.gotoFixedBed()">
+                <md-tooltip md-direction="right">{{ 'bed.fixedBed' | translate }}</md-tooltip>
+                <i class="material-icons">
+                    hotel
+                </i>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <div class="table-head" layout="row">
+        <div class="scroll" layout="row" layout-align="start center">
+            <div class="calendar-btn">
+                <!-- <span translate="shifts.yearAndMonth" translate-values='{year: bed.currentYear, month: bed.currentMonth}'></span> -->
+                <span ng-show="$ctrl.monthTitle == 'sameMonth'" translate="bed.yearAndWeekSameMonth" translate-values='{year: $ctrl.currentYear, month: $ctrl.currentMonth, day: $ctrl.currentDay}'></span>
+                <span ng-show="$ctrl.monthTitle == 'diffMonth'" translate="bed.yearAndWeekDiffMonth" translate-values='{year: $ctrl.beginYear, beginMonth: $ctrl.beginMonth, beginDay: $ctrl.beginDay, endMonth: $ctrl.endMonth, endDay: $ctrl.endDay}'></span>
+                <span ng-show="$ctrl.monthTitle == 'diffYear'" translate="bed.yearAndWeekDiffYear" translate-values='{beginYear: $ctrl.beginYear, beginMonth: $ctrl.beginMonth, beginDay: $ctrl.beginDay, endYear: $ctrl.endYear, endMonth: $ctrl.endMonth, endDay: $ctrl.endDay}'></span>
+                <md-button class="md-raised md-primary" ng-click="$ctrl.today()" ng-disabled="!$ctrl.isLoadingPatientsFinished || $ctrl.loadingBeds || $ctrl.thisWeekDisable()">{{'bed.currentWeek'
+                    | translate}}</md-button>
+                <md-button class="square md-raised md-primary" aria-label="上個月" ng-click="$ctrl.lastWeek()" ng-disabled="!$ctrl.isLoadingPatientsFinished || $ctrl.loadingBeds ">
+                    <md-icon class="material-icons">chevron_left</md-icon>
+                </md-button>
+                <md-button class="square md-raised md-primary" aria-label="下個月" ng-click="$ctrl.nextWeek()" ng-disabled="!$ctrl.isLoadingPatientsFinished || $ctrl.loadingBeds">
+                    <md-icon class="material-icons">chevron_right</md-icon>
+                </md-button>
+            </div>
+            <div class="ward" layout="row" layout-align="start center">
+                <label translate>{{'bed.ward'}} </label>
+                <label class="title" ng-if="$ctrl.keys.length == 1" readonly>{{::$ctrl.wards[$ctrl.ward]}}</label>
+                <md-select ng-model="$ctrl.ward" ng-if="$ctrl.keys.length > 1" ng-change="$ctrl.changeWard($ctrl.ward)" ng-disabled="!$ctrl.isLoadingPatientsFinished || $ctrl.loadingBeds">
+                    <md-option ng-repeat="k in $ctrl.keys" ng-value="k">{{::$ctrl.wards[k]}}</md-option>
+                </md-select>
+                <label class="memo">
+                    {{$ctrl.wardMemo}}
+                </label>
+            </div>
+        </div>
+    </div>
+    <mask-loading ng-show="$ctrl.fixedBedCloning" is-show-title="true" title-text="{{ 'bed.fixedBedCloning' | translate }}"></mask-loading>
+    <md-content layout="column" flex>
+        <md-content layout="row" flex>
+            <md-content layout="column">
+                <md-content layout="row" flex>
+                    <md-content class="patients" layout="column">
+                        <input id="search" class="search" type="text" ng-model="$ctrl.search" ng-change="$ctrl.searchPatient($ctrl.search)" ng-model-options="{debounce:600}" placeholder="{{ 'arrange.searchPatient' | translate }}" />
+                        <md-content flex>
+                            <loading ng-show="$ctrl.loadingPatients">{{'bed.loadingPatients' | translate}}</loading>
+                            <md-virtual-repeat-container ng-show="!$ctrl.loadingPatients" id="vertical-container">
+                                <md-list-item class="md-2-line" ng-class="{active: p.isSelected}" md-virtual-repeat="p in $ctrl.patients" ng-click="$ctrl.selectPatient(p)">
+                                    <div class="md-list-item-text">
+                                        <h3>{{p.MedicalId}} - </h3>
+                                        <h3>{{p.Name}}</h3>
+                                        <p translate="bed.bedArrangeCount" translate-values='{count: p.Count}'></p>
+                                    </div>
+                                </md-list-item>
+                            </md-virtual-repeat-container>
+                        </md-content>
+                        <!-- ng-class="{'first': $ctrl.showCloneFixedBed}"  -->
+                        <md-button class="md-raised md-primary right-button" ng-disabled="!$ctrl.isLoadingPatientsFinished || !$ctrl.isLoadingBedsFinished || $ctrl.isBedAssigned === -1" ng-click="$ctrl.arrange($event)">
+                            {{'bed.arrangeBed' | translate}}
+                        </md-button>
+                        <div>
+                            <!-- ng-if="$ctrl.showCloneFixedBed"  -->
+                            <md-button class="md-raised md-primary right-button" ng-disabled="!$ctrl.isLoadingPatientsFinished || !$ctrl.isLoadingBedsFinished || !$ctrl.hasAssignedFixedBeds" ng-click="$ctrl.cloneArranged($event)">
+                                {{'bed.copyAll' | translate}}
+                            </md-button>
+                            <md-tooltip ng-show="!$ctrl.hasAssignedFixedBeds" md-direction="right">{{ 'bed.noFixedBedWarning' | translate }}</md-tooltip>
+                        </div>
+                    </md-content>
+                </md-content>
+            </md-content>
+            <div layout="column" flex>
+                <div id="table-container" flex>
+                    <loading ng-show="$ctrl.loading"></loading>
+                    <div flex ng-show="$ctrl.loadingBedsErr || $ctrl.loadingPatientsErr || $ctrl.loadDataErr || $ctrl.loadingFixedBedsErr" layout="column" layout-fill layout-align="center center">
+                        <h3>{{'bed.serverError' | translate}}</h3>
+                        <md-button class="md-icon-button" ng-show="!$ctrl.loadingPatientsErr" ng-click="$ctrl.refreshAssignBed()">
+                            <i class="material-icons">refresh</i>
+                        </md-button>
+                    </div>
+                    <table id="arrange-bed-table" ng-class="{away: $ctrl.loading || $ctrl.loadingPatients || $ctrl.loadingBedsErr || $ctrl.loadingPatientsErr || $ctrl.loadDataErr || $ctrl.loadingFixedBedsErr}">
+                        <thead>
+                            <tr>
+                                <th translate>
+                                    {{'bed.bedNo'}}
+                                </th>
+                                <th ng-repeat="item in $ctrl.daysInWeek">
+                                    <span ng-class="{weekends: item.isWeekend}">{{item | moment:'DD'}} ({{item.Weekday}})</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="bed in $ctrl.beds">
+                                <td class="bed-no">
+                                    <div>
+                                        <div style="font-weight: bold">
+                                            {{ bed.No }}
+                                        </div>
+                                        <div ng-if="bed.Group" class="bedGroup">
+                                            {{ bed.Group }}
+                                        </div>
+                                        <span ng-if="bed.isNotInSetting" class="icon-button-badge" style="line-height:1em; font-weight:bold">
+                                            !
+                                            <md-tooltip>{{'bed.bedNoNotInSetting' | translate}}</md-tooltip>
+                                        </span>
+                                        <div class="sub-title" translate="bed.patientArrangeTitle"></div>
+                                        <div class="sub-title" translate="bed.patientArrangeCount" translate-values='{count: bed.Count}'></div>
+                                    </div>
+                                </td>
+                                <td ng-repeat="item in $ctrl.daysInWeek" valign="top" ng-class="{today: item.isToday}">
+                                    <div ng-repeat="(key, value) in item[bed.No]" ng-if="value.AssignBed.PatientId || (key !== 'night' && key !== 'temp')" class="shiftBadge border" ng-class="$ctrl.compareStatus(value, bed)" ng-click="$ctrl.showArrangeDialog(value, bed.isNotInSetting)">
+                                        <i ng-class="{dayoffSelected: value.Dayoff.PatientId === $ctrl.previousSelected.Id}" class="material-icons" ng-if="value.Dayoff.PatientId" ng-click="$event.stopPropagation(); $ctrl.showArrangeDialog(value.Dayoff, bed.isNotInSetting, true);">
+                                            date_range
+                                            <md-tooltip>{{$ctrl.dayoffTitle}}: {{value.Dayoff.PatientName}} - {{value.Dayoff.MedicalId}}</md-tooltip>
+                                        </i>
+                                        <span class="title" ng-if="$ctrl.showPatient(value)" translate>{{'bed.'+ key + 'ShiftAbbr'}}</span>
+                                        <span class="title" ng-if="!$ctrl.showPatient(value)" translate>{{'bed.'+ key + 'Shift'}}</span>
+                                        <span class="content">
+                                            {{$ctrl.showPatient(value) ? (value.AssignBed.PatientName || value.FixedBed.PatientName) : ''}}
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="legenddiv">
+                    <div class="legendbox differentPatient"></div>
+                    <span translate="bed.diffPatient"></span>
+                    <div class="legendbox patientInFixed"></div>
+                    <span translate="bed.patientInFixed"></span>
+                    <div class="legendbox patientInBed"></div>
+                    <span translate="bed.patientInBed"></span>
+                    <div class="legendbox assigned"></div>
+                    <span translate="bed.samePatient"></span>
+                    <span class="arrangeBedMessage" ng-if="$ctrl.isBedAssigned > -1" translate="bed.thisWeekIsBedAssigned"></span>
+                    <span class="arrangeBedMessage" ng-if="$ctrl.isBedAssigned === -1" translate="bed.thisWeekNoBedAssigned"></span>
+                </div>
+            </div>
+
+        </md-content>
+    </md-content>
+</md-content>

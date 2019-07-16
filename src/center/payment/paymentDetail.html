@@ -1,0 +1,143 @@
+<style scoped>
+    payment-detail {
+        height: 100%;
+    }
+    
+    .padding {
+        padding: 20px;
+    }
+    
+    .warning {
+        color: red;
+    }
+
+    div.deleted {
+        background-color: rgba(10, 10, 10, 0.2);
+        position: absolute;
+        width: 100%;
+    }
+</style>
+<md-content layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.back()">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <h4>
+                <span>帳務管理 / </span>
+                <span ng-show="vm.type === 'create'">新增</span>
+                <span ng-show="vm.payment.Status === 'Deleted'">己刪除</span>
+                <span ng-bind="vm.payment.Name"></span> 資料
+            </h4>
+        </div>
+    </md-toolbar>
+    <loading ng-show="vm.loading"></loading>
+    <md-content layout-fill flex>
+        <div ng-show="!vm.loading">
+            <div flex ng-show="vm.isError" layout="column" layout-fill layout-align="center center">
+                <h3>伺服器資料讀取失敗</h3>
+            </div>
+            <form name="editForm" class="padding">
+                <div>
+                <md-grid-list md-cols="2" md-row-height="70px" flex>
+                        <md-grid-tile ng-if="!vm.editMode" md-colspan="2">
+                                <div style="margin-top:-1.2em" flex>
+                                    <md-input-container class="md-block" flex>
+                                    <label>醫院別</label>
+                                    <md-select ng-model="vm.Hospital" required>
+                                        <md-option ng-repeat="h in vm.hospitals" value="{{ h.Id + '-' + h.HospitalName }}">{{ h.HospitalName }}</md-option>
+                                    </md-select>
+                                    </md-input-container>
+                                </div>
+                            </md-grid-tile>
+                            <md-grid-tile ng-if="vm.editMode" md-colspan="2">
+                                    <md-input-container class="md-block" flex>
+                                    <label>醫院別</label>
+                                    <input type="text" name="HospitalName" ng-model="vm.formData.HospitalName" required ng-readonly="true" />
+                                    </md-input-container>
+                            </md-grid-tile>
+                                <md-grid-tile>
+                                <md-input-container class="md-block" flex>
+                                    <label>帳單名稱</label>
+                                    <input type="text" name="Name" ng-model="vm.formData.Name" required ng-readonly="vm.readonly" />
+                                    <div ng-messages="editForm.Name.$error">
+                                        <div ng-message="required">必填選項</div>
+                                    </div>
+                                </md-input-container>
+                            </md-grid-tile>
+                            <md-grid-tile>
+                                <md-input-container class="md-block" flex>
+                                    <label>帳單狀態</label>
+                                    <input type="text" name="State" ng-model="vm.formData.State" ng-readonly="true" />
+                                </md-input-container>
+                            </md-grid-tile>
+                            <md-grid-tile>
+                                <md-input-container class="md-block" flex>
+                                    <label>計價起日</label>
+                                    <input type="date" min="1900-01-01" max="2999-12-31" name="StartDate" ng-model="vm.formData.StartDate" ng-readonly="vm.readonly" />
+                                </md-input-container>
+                            </md-grid-tile>
+                            <md-grid-tile>
+                                <md-input-container class="md-block" flex>
+                                    <label>計價迄日</label>
+                                    <input type="date" min="1900-01-01" max="2999-12-31" name="EndDate" ng-model="vm.formData.EndDate" ng-readonly="vm.readonly" />
+                                </md-input-container>
+                            </md-grid-tile>
+                            <md-grid-tile>
+                                <div style="margin-top:-1.2em" flex>
+                                    <md-input-container class="md-block" flex>
+                                        <label>計費方式</label>
+                                        <md-select ng-model="vm.formData.PricingMethod" ng-disabled="vm.readonly">
+                                            <md-option ng-repeat="b in vm.Billing" value="{{ b.value }}">{{ b.name }}</md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </div>
+                            </md-grid-tile>
+                            <md-grid-tile>
+                                <md-input-container class="md-block" flex>
+                                    <label>單價</label>
+                                    <input type="text" name="Price" ng-model="vm.formData.Price" ng-readonly="vm.readonly" />
+                                </md-input-container>
+                            </md-grid-tile>
+                            <md-grid-tile>
+                                <md-input-container class="md-block" flex>
+                                    <label>數量</label>
+                                    <input type="text" name="Quantity" ng-model="vm.formData.Quantity" ng-readonly="vm.readonly" />
+                                </md-input-container>
+                            </md-grid-tile>
+                            <md-grid-tile>
+                                <md-input-container class="md-block" flex>
+                                    <label>折扣金額</label>
+                                    <input type="text" name="Discount" ng-model="vm.formData.Discount" ng-readonly="vm.readonly" ng-change="vm.recalculate()" />
+                                </md-input-container>
+                            </md-grid-tile>
+                            <md-grid-tile>
+                                <md-input-container class="md-block" flex>
+                                    <label>總金額</label>
+                                    <input type="text" name="TotalAmount" ng-model="vm.formData.TotalAmount" ng-readonly="vm.readonly" />
+                                </md-input-container>
+                            </md-grid-tile>
+                            <md-grid-tile>
+                            <md-input-container class="md-block" flex>
+                                <label>發票號碼</label>
+                                <input type="text" name="InvoiceNumber" ng-model="vm.formData.InvoiceNumber" ng-readonly="vm.readonly" />
+                            </md-input-container>
+                        </md-grid-tile>
+                        <md-grid-tile>
+                            <md-input-container class="md-block" flex>
+                                <label>入帳日期</label>
+                                <input type="date" min="1900-01-01" max="2999-12-31" name="PostingDate" ng-model="vm.formData.PostingDate" ng-readonly="vm.readonly" />
+                            </md-input-container>
+                        </md-grid-tile>
+                    </md-grid-list>
+                </div>
+                <div>
+                <md-button class="md-raised md-warn" ng-show="vm.formData.Status === 'Deleted'" ng-click="vm.recover()" ng-disabled="vm.isSaving">復原</md-button>
+                <md-button class="md-raised md-warn" ng-show="vm.editMode && vm.formData.Status === 'Normal'" ng-click="vm.delete($event)" ng-disabled="vm.isSaving">刪除</md-button>
+                <md-button type="submit" class="md-raised md-primary" ng-show="vm.formData.Status !== 'Deleted'" ng-click="vm.showSimpleToast()" ng-disabled="editForm.$invalid || vm.isSaving">儲存</md-button>
+                <md-button class="md-raised md-warn" ng-show="vm.editMode && vm.formData.State !== 'Closed'" ng-disabled="vm.formData.InvoiceNumber === '' || vm.formData.PostingDate === null || vm.isSaving" ng-click="vm.closePayment($event)">關帳</md-button>
+            </div>
+            </form>
+        </div>
+    </md-content>
+</md-content>

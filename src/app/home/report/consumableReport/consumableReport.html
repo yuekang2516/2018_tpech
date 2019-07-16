@@ -1,0 +1,85 @@
+<div layout-fill layout="column" flex style="background:#f3f3f3">
+    <h2 style="margin-top: 25px ; margin-bottom: 0; padding-left: 15px;">
+        耗材使用統計表
+    </h2>
+    <md-content flex layout-fill layout-padding layout="column" style="background:#f3f3f3">
+        <div>
+            <div layout="row" layout-align="start center">
+                <!-- <span class="nowrap">病房:</span>
+                    <md-input-container>
+                        <md-select ng-model="$ctrl.selectedWard" >
+                            <md-option ng-repeat="i in $ctrl.keys" ng-value="i">{{::$ctrl.wards[i]}}</md-option>
+                        </md-select>
+                    </md-input-container> -->
+                <span class="nowrap margin-left-10">起始日:</span>
+                <div>
+                    <!-- max="{{$ctrl.EndDate | moment: 'YYYY-MM-DD'}}" -->
+                    <input type="date" ng-model="$ctrl.StartDate" />
+                </div>
+                <span class="nowrap margin-left-10">結束日:</span>
+                <div>
+                    <!-- min="{{$ctrl.StartDateAddOneDay | moment: 'YYYY-MM-DD'}}" -->
+                    <input type="date" ng-model="$ctrl.EndDate" />
+                </div>
+                <!-- <span class="nowrap margin-left-10">班別:</span>
+                    <md-input-container>
+                        <md-select ng-model="$ctrl.selectedShift">
+                            <md-option ng-repeat="k in $ctrl.optionShift " ng-value="k">{{::k | shiftFilter}}</md-option>
+                        </md-select>
+                    </md-input-container> -->
+                <md-card-actions>
+                    <md-button class="md-raised md-primary" ng-click="$ctrl.getReportData()">查詢</md-button>
+                </md-card-actions>
+                <md-card-actions >
+                    <md-button class="md-raised md-primary" ng-click="$ctrl.exportExcel()" ng-disabled="!$ctrl.searchContent">匯出 excel 檔</md-button>
+                </md-card-actions>
+            </div>
+        </div>
+        <loading ng-show="$ctrl.loading"></loading>
+        <div ng-show="!$ctrl.loading">
+            <table id="myTable" ng-show="!$ctrl.loading && !$ctrl.isInit && !$ctrl.isError">
+                <tbody>
+
+                    <tr class="title-area">
+                        <td class="content" ng-repeat="title in $ctrl.title track by $index">{{::title | consumableReportTitleFilter}}</td>
+                    </tr>
+                    <tr ng-repeat="value in $ctrl.akFinal track by $index" ng-if="$ctrl.akFinal.length !== 0">
+                        <th rowspan="{{$ctrl.akRowspan}}" ng-if="$index === 0">
+                            AK
+                        </th>
+                        <td class="content" ng-repeat="v in value track by $index">
+                            <div>{{v}}</div>
+                        </td>
+                    </tr>
+                    <tr ng-repeat="value in $ctrl.dialysateFinal track by $index" ng-if="$ctrl.dialysateFinal.length !== 0">
+                        <th rowspan="{{$ctrl.dialysateRowspan}}" ng-if="$index === 0">
+                            藥水
+                            <!-- {{ 'DIALYSATE' | typeFilter}} -->
+                        </th>
+                        <td class="content" ng-repeat="v in value track by $index">
+                            <div>{{v}}</div>
+                        </td>
+                    </tr>
+                    <tr ng-repeat="value in $ctrl.routeFinal track by $index" ng-if="$ctrl.routeFinal.length !== 0">
+                        <th rowspan="{{$ctrl.routeRowspan}}" ng-if="$index === 0">
+                            管路
+                            <!-- {{ 'ROUTE' | typeFilter}} -->
+                        </th>
+                        <td class="content" ng-repeat="v in value track by $index">
+                            <div>{{v}}</div>
+                        </td>
+                    </tr>
+                    <tr ng-if="$ctrl.finalData == null || $ctrl.finalData == []">
+                        <!-- ng-if="$ctrl.noData" -->
+                        <td colspan="2" class="content">此區間暫無資料</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div flex layout-fill layout-padding ng-show="$ctrl.isError" layout="column" layout-align="center center" style="background:#f3f3f3">
+            <h3>
+                伺服器錯誤，請重新整理
+            </h3>
+        </div>
+    </md-content>
+</div>

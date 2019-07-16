@@ -1,0 +1,224 @@
+all-Referral-Sheet-List {
+    height: 100%;
+
+    md-switch {
+        margin: 0;
+    }
+
+    .buttonblue{ padding: 4px 6px; background: rgb(41, 98, 255); border-radius: 4px; border: 0!important; color: #fff; margin-right:3px; z-index: 999;}
+        .buttonblue:hover,.buttonblue:active{ background: rgb(35, 86, 226);}
+
+}
+
+
+all-referral-sheet-form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .all-referral-sheet-form-container {
+        padding-left: 1cm!important;
+        .out-form{ font-size: 9pt;}
+        h3 {
+            font-size: 28px;
+            margin:5px 0 ;
+            line-height: 30px;
+            letter-spacing: 5px
+        }
+        h4{  margin:5px 0; font-size: 18px ; line-height: 30px; white-space: nowrap; }
+        h5{  margin:0; font-size: 15px ; line-height: 24px;  }
+        ul li{list-style-type: square; line-height: 15px }
+        textarea{ width: 95%; }
+
+        .sugery-textarea {
+            width: 93%!important;
+            margin-left: 20px;
+        }
+        
+        .labexam-text { height: 130px!important; }
+
+        table tr td {
+            font-size: 9pt; line-height: 15px; padding: 2px;
+        }
+    
+        .table_content{
+            border-collapse: collapse;
+            border-spacing: 0;
+            font-size: 9pt;
+    
+        }
+        .table_content tr td {
+            font-size: 9pt; line-height: 15px; padding:2px 0px;  white-space: nowrap;
+        }
+        .table_content tr th {
+            font-size: 9pt; line-height: 15px; padding: 2px; border: #000 solid 1px; text-align: left; white-space: nowrap;
+        }
+        ul {margin:0 } ul li{ margin-left: -20px }
+        p{font-size: 9pt; 
+            line-height: 15px; margin: 0; padding: 0; text-align: left;
+        }
+
+        .arrow-symbol {
+            margin-right:5px;
+            font-size: 24px;
+        }
+
+        .hideInScreen {
+            display: none;
+        }
+
+        .spanGap {
+            margin-top: 3px;
+            margin-bottom: 3px;
+        }
+
+        .phrase-span {
+            cursor: pointer;
+            float:right;
+            color:#fff;
+            padding:5px; 
+            background: #6bc3e6; // #4CAF50
+            border-radius:2px;
+            margin-left: 10px;
+            margin-bottom: 5px;
+            font-size: 15px;
+            line-height: 17px;
+            margin-top: 5px;
+        }
+
+        .phrase-span:hover {
+            background: #3fb1df; //#449d48
+        }
+
+        .checkBtn-span {
+            cursor: pointer;
+            float:right;
+            color:#fff;
+            padding:3px; 
+            background: #6bc3e6; // #4CAF50
+            border-radius:2px;
+            font-size: 15px;
+        }
+        .checkBtn-span:hover {
+            background: #3fb1df; //#449d48
+        }
+
+        .surgery-CheckBtn {
+            line-height: 17px;
+            margin-bottom: 3px;
+        }
+
+        .disease-CheckBtn {
+            line-height: 17px;
+            margin-bottom: 3px;
+        }
+
+        .drug-CheckBtn {
+            margin-bottom: 3px;
+        }
+
+        .lab-CheckBtn {
+            margin-bottom: 3px;
+            // margin-top: 3px;
+        }
+
+        .labDelete-CheckBtn {
+            background: #FF5722;
+            margin-left: 10px;
+            margin-bottom: 3px;
+            // margin-top: 3px;
+        }
+        .labDelete-CheckBtn:hover {
+            background: #ee3900;
+        }
+
+        
+        .creator-div {
+            margin-top: 15px;
+            padding: 8px;
+        }
+
+
+        .lab-table {
+            width: 95%;
+
+            table tr td {
+                font-size: 10pt;  line-height: 22px; text-align: center;
+            }
+        
+            .table {
+                // width: 20cm;
+                border-collapse: collapse;
+                border-spacing: 0;
+                font-size: 10pt;
+            }
+            p{font-size: 10pt; 
+                margin: 0; padding: 0; text-align: left;
+            }
+        
+            .table tr td {
+                border: #000 solid 1px;
+                padding: 1px 2px; // 4px 2px
+                word-break: break-all;
+                line-height: 18px
+            }
+
+            .table td {
+                height: 21px;
+            }
+        
+            .pic{ position: absolute; top: -12px; left: 44px; width: 110px; height: 110px;  }
+            .pic img{ width: 100% }
+            .gray{ background: #ddd!important; }
+
+            .nowrap {
+                white-space: nowrap;
+            }
+        }
+    }
+    
+    
+
+    @media print {
+        /*列印時隱藏*/
+        .disablePrint {
+            display: none!important;
+        }
+
+        .showInPrint {
+            display: inline!important;
+        }
+ 
+        .all-referral-sheet-form-container {
+            padding-left: 1cm!important;
+            font-family: "Microsoft JhengHei", "DFKai-sb", "Times New Roman";
+            body, input ,textarea{font-family: "Microsoft JhengHei", "DFKai-sb", "Times New Roman";}
+
+            input, md-select { padding:0; border:none!important; width: auto; height: 15px; background: transparent!important;}
+            // textarea { padding:0 ; border:none!important; }
+            h4{   font-size: 15px ; }
+            textarea {height: auto!important;}
+
+         
+            .md-select-value .md-select-icon {
+                // background: transparent;
+                color: transparent;
+                border: none!important;
+                // text-align: left;
+                // margin: 0 0 0 0;
+            }
+           
+        }
+
+        // 不印 white-frame 的部分
+        .md-whiteframe-10dp {
+            box-shadow: initial;
+        }
+        
+    }
+
+    @page {
+        size: letter;
+    }
+
+}

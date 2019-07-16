@@ -1,0 +1,37 @@
+<style scoped>
+    .setting-container {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+</style>
+
+<md-content layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="setting.back();">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <div layout="row">
+                設定
+            </div>
+            <span flex></span>
+        </div>
+    </md-toolbar>
+    <md-content layout-padding flex>
+        <md-content class="setting-container">
+            <md-input-container class="md-block">
+                <label>伺服器位置</label>
+                <input type="text" ng-model="setting.serverUrl">
+
+                <div class="hint">請輸入網址, 例如: 192.168.1.1 或是 http://192.168.1.1:8080</div>
+            </md-input-container>
+            <div layout="row" layout-align="end none">
+                <md-button class="md-raised md-primary" ng-click="setting.save();">
+                    儲存
+                </md-button>
+            </div>
+            <span flex></span>
+            <!-- todo 關於, 版本號等等 -->
+        </md-content>
+    </md-content>
+</md-content>

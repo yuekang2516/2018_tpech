@@ -1,0 +1,92 @@
+<div layout="column" layout-fill ui-view flex>
+    <summary-toolbar toolbar-title="'歷次健康問題'" cancel="$ctrl.back()"></summary-toolbar>
+
+    <!-- <md-toolbar hide-gt-sm>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="$ctrl.back();">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <div layout="row">
+                {{'allNursingRecord.nursingRecords.nursingRecord' | translate}}
+            </div>
+            <span flex></span>
+        </div>
+    </md-toolbar> -->
+    <div class="list-header" ng-show="!$ctrl.loading" layout="row" layout-align="center center">
+        <md-switch ng-model="$ctrl.showDeleted" aria-label="Switch data">
+            <h6 translate>{{'allNursingRecord.nursingRecords.showDeleted'}}
+                <!-- ({{$ctrl.deletedItemsLength}}筆) -->
+            </h6>
+        </md-switch>
+        <span flex></span>
+        <!-- <h6>共 {{$ctrl.totalCnt}} 筆</h6> -->
+        <h6 translate="allNursingRecord.nursingRecords.totalRecord" translate-values='{totalCnt: $ctrl.totalCnt}'></h6>
+        <span flex></span>
+        <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+    </div>
+    <md-content layout="column" flex>
+        <loading ng-show="$ctrl.loading"></loading>
+        <div ng-show="$ctrl.serviceData.length > 0" infinite-scroll="$ctrl.loadMore()"
+            infinite-scroll-disabled='$ctrl.loading' infinite-scroll-distance='2' infinite-scroll-parent>
+            <md-content ng-show="!$ctrl.loading && $ctrl.serviceData.length > 0 && !$ctrl.isError">
+                <md-list>
+                    <md-list-item class="md-2-line" ng-class="{deleted: item.Status == 'Deleted'}"
+                        ng-repeat="item in $ctrl.serviceData |orderBy:'-RecordTime'" ng-click="$ctrl.goto(item.Id)"
+                        ng-show="item.Status !== 'Deleted' || $ctrl.showDeleted">
+                        <div class="md-list-item-text" layout="column">
+                            <h3 ng-bind="item.RecordTime | moment:'YYYY/MM/DD (dd) HH:mm'"></h3>
+                            <p ng-bind="item.Content" />
+                            <seal model="item" modified="hideIfSame" fixed="true"></seal>
+                        </div>
+                        <md-icon class="md-secondary"
+                            ng-show="$ctrl.checkCanAccess(item.CreatedUserId,item.Status, item.ModifiedUserId)"
+                            ng-click="$ctrl.showDialog($event, item)"
+                            md-svg-icon="static/img/svg/ic_delete_black_24px.svg"></md-icon>
+                        <md-divider ng-if="!$last"></md-divider>
+                    </md-list-item>
+                </md-list>
+            </md-content>
+        </div>
+        <md-progress-circular ng-show="$ctrl.loadingMore" class="loadmore" md-diameter="40" md-mode="indeterminate">
+        </md-progress-circular>
+        <div flex ng-show="!$ctrl.loading && $ctrl.serviceData.length == 0 && !$ctrl.isError" layout="column"
+            layout-fill layout-align="center center">
+            <h1>目前沒有健康問題</h1>
+        </div>
+        <server-error-page flex ng-show="!$ctrl.loading && $ctrl.isError" refresh="$ctrl.refresh()"></server-error-page>
+    </md-content>
+    <md-button class="md-fab md-fab-bottom-right" ng-click="$ctrl.goto('')">
+        <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+    </md-button>
+</div>
+
+<script type="text/ng-template" id="allnursingRecordDialog.html">
+    <md-dialog aria-label="刪除確認">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2 translate>{{'allNursingRecord.nursingRecords.confirmDelete'}}</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="vm.cancel()">
+                        <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content" translate>
+                    {{'allNursingRecord.nursingRecords.deleteRecord'}}
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+                <md-button ng-click="vm.cancel()">
+                    {{'allNursingRecord.nursingRecords.cancel' | translate}}
+                </md-button>
+                <md-button ng-click="vm.ok()">
+                    {{'allNursingRecord.nursingRecords.delete' | translate}}
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>

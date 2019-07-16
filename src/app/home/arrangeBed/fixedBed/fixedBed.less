@@ -1,0 +1,292 @@
+fixed-bed {
+    // height: 100%;
+    .table-head {
+        overflow: auto; // white-space: nowrap;
+        font-size: 20px;
+        font-weight: bold;
+        padding-left: 15px;
+        border-bottom: 1px solid #eeeeee;
+        padding-top: 10px;
+        .scroll {
+            min-width: 1080px;
+            margin-bottom: 10px;
+        }
+        .scroll-smaller {
+            min-width: 300px;
+            margin-bottom: 10px;
+        }
+        .calendar-btn {
+            .md-button {
+                min-height: initial;
+                min-width: initial;
+                &.square {
+                    height: 36px;
+                    width: 36px;
+                    margin: 0;
+                }
+            }
+        }
+        .ward {
+            margin: 0 42px 0 50px;
+            .title {
+                color: black;
+                margin-left: 5px;
+                min-width: 45px;
+                padding: 5px;
+                background-color: lightgoldenrodyellow;
+                border: 1px solid rgba(0, 0, 0, 0.12);
+                height: 1.8em;
+            }
+            md-select {
+                margin: 0;
+                margin-left: 5px;
+                width: auto;
+                min-width: 45px;
+                padding: 0 3px;
+            }
+            .memo {
+                margin-left: 10px;
+                color: rgb(58, 58, 58);
+                font-size: 17px;
+                font-weight: normal;
+            }
+        }
+    }
+    .span_1 {
+        line-height: 40px;
+        margin-left: -7px
+    }
+    .div_1 {
+        float: right;
+        margin: 5px -10px 0 0
+    }
+    .addicon:active {
+        outline: none
+    }
+    .addicon span {
+        vertical-align: top
+    }
+
+    // 床組顯示
+    .bedGroup {
+        border: #3949ab 2px solid;
+        border-radius: 4px;
+        font-weight: bold;
+        color: red;
+    }
+
+    // virtual-repeat related
+    #vertical-container {
+        height: 100%;
+    }
+
+    // autocomplete
+    md-autocomplete {
+        height: 26px;
+        margin: 6px 0;
+        min-width: 120px;
+
+        input:not(.md-input) {
+            font-size: 12px;
+            padding: 0;
+            line-height: initial;
+            height: 26px;
+        }
+
+        .md-show-clear-button button {
+            width: 26px;
+            height: 26px;
+            margin: initial;
+        }
+
+        md-autocomplete-wrap {
+            height: initial;
+        }
+
+    }
+    .warning {
+        font-size: 14px;
+        color: #d92018;
+        margin-top: 4px;
+    }
+
+    .hint-message {
+        // padding: 5px;
+        font-size: 14px;
+        text-align: left!important;
+        color: #d92018;
+    }
+
+    #arrange-fixed-container {
+        // height: 100%;
+        table {
+            // width: 100%;
+            position: relative;
+            overflow: hidden;
+            border-collapse: collapse;
+            table-layout: fixed;
+            background-color: #ffffff;
+        }
+        /*thead*/
+        thead {
+            position: relative;
+            // display: block;
+            /*seperates the header from the body allowing it to be positioned*/
+            width: calc(~"100vw - 165px") !important; //width:95%;
+            display: block;
+            overflow: visible;
+            th {
+                width: 150px;
+                min-width: 150px;
+                border-right: #e8e8e8 solid 1px;
+                background: #d5d4d4;
+                color: #3e3e3e;
+                border-bottom: #dddddd solid 1px !important;
+                border-top: 0 !important;
+                font-size: 13px !important;
+                line-height: 24px !important;
+                text-align: center !important;
+                .weekends {
+                    color: red;
+                }
+            }
+            /*first cell in the header*/
+            th:nth-child(1) {
+                position: relative;
+                background: #d5d4d4;
+                // width: 88px;
+                width: 66px !important;
+                min-width: 66px !important;
+                /*seperates the first cell in the header from the header*/
+            }
+        }
+        tr {
+            outline: none;
+            &:nth-child(even) {
+                td {
+                    background: #f4f4f4;
+                }
+            }
+        }
+        .bed-no {
+            background-color: #ffffff;
+            width: 68px;
+            min-width: 68px;
+        }
+        /*tbody*/
+        tbody {
+            position: relative;
+            /*seperates the tbody from the header*/
+            overflow: scroll;
+            display: block;
+            // width: 100%;
+            // border-collapse: collapse;
+            max-height: calc(~"100vh - 218px")
+        }
+        // tbody tr {
+        //     display: table;
+        //     width: 100%;
+        //     table-layout: fixed
+        // }
+        tbody td {
+            display: table-cell;
+            border-bottom: #bdbdbd solid 1px;
+            border-right: #e8e8e8 solid 1px; // outline: none;
+            font-size: 12px;
+            text-align: center;
+            width: 153px;
+            min-width: 153px; 
+            box-sizing: border-box;
+            &.active:active {
+                background: #8eacbb;
+            }
+            .tableTitle {
+                color: #a0a0a0;
+                font-weight: bold;
+            }
+            &.today {
+                background-color: #f1f8e9 !important;
+            }
+            .border {
+                outline: none;
+                cursor: pointer; // background: #ffffff;
+                border: 1px solid #e2e2e2;
+                border-radius: 3px;
+                margin: 10px 5px;;
+                padding: 2px 4px;
+                &.assigned {
+                    border: #666666 solid 2px;
+                    background: #fff;
+                    .title {
+                        color: #424242;
+                    }
+                    .tableTitle {
+                        color: #666666;
+                    }
+                }
+                &.assigned:hover {
+                    border: #666666 solid 2px;
+                }
+                &:hover {
+                    border: #666666 solid 1px
+                }
+                &.selected {
+                    border: #ff5722 2px solid; // color: #ffffff;
+                }
+                &.selected:hover {
+                    border: #ff5722 2px solid; // color: #ffffff;
+                }
+                &.disableHover {
+                    cursor: default;
+                    border: 1px solid #cecece !important;
+                }
+            } // .border:hover {
+            //     background: #e2e2e2;
+            //     color: red;
+            //     font-weight: bold;
+            // }
+            .bedCell {
+                i {
+                    font-size: 17px;
+                    // position: absolute;
+                    left: 0;
+                    outline: 0;
+                    color: #9b9b9b;
+                }
+            }
+            .done,
+            .edit {
+                width: 18px;
+                height: 18px;
+                font-size: 18px;
+            }
+        }
+        tbody tr td:nth-child(1) {
+            /*the first cell in each tr*/
+            position: relative;
+            width: 68px;
+            min-width: 68px;
+            background-color: #fff;
+        }
+    }
+    .patients {
+        width: 150px;
+        .active {
+            background-color: #b3e5fc !important;
+        }
+        .md-list-item-text {
+            h3 {
+                font-size: 13px !important;
+            }
+            p {
+                font-size: 13px !important;
+            }
+        }
+        .search {
+            background: url(../../static/img/ic_search.png) no-repeat scroll 2.5px 2.5px;
+            padding-left: 25px;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+    }
+}

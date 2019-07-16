@@ -1,0 +1,180 @@
+<div flex layout="column" style="position: relative;" layout-fill>
+    <summary-toolbar toolbar-title="'dialysisTabView.prescribingRecord' | translate" cancel="vm.goback()"
+        ng-hide="vm.stateName === 'pdPrescribingRecord'"></summary-toolbar>
+
+    <div class="list-header" layout="row" layout-align="center center">
+        <md-select ng-model="vm.myCategoryName" ng-change="vm.changeCategory()">
+            <md-option value="All" ng-selected="true" translate>{{'prescribingRecord.prescribingRecord.All'}}
+            </md-option>
+            <md-option value="STAT" translate>{{'prescribingRecord.prescribingRecord.ST'}}</md-option>
+            <md-option value="NotST" translate>{{'prescribingRecord.prescribingRecord.NotST'}}</md-option>
+            <md-option ng-repeat="key in vm.CategoryNameList track by $index" ng-value="key">
+                {{ ::key }}
+            </md-option>
+        </md-select>
+        <span flex></span>
+        <!-- small screen -->
+        <md-button class="md-raised" hide-xs hide-md aria-label="上個月" ng-click="vm.changeDate('prev')"
+            ng-hide="vm.checkValid">
+            {{'prescribingRecord.prescribingRecord.prevMonth' | translate}}
+        </md-button>
+        <md-button hide-sm hide-gt-md class="md-icon-button" aria-label="上個月" ng-click="vm.changeDate('prev')"
+            ng-hide="vm.checkValid">
+            <i class="material-icons">chevron_left</i>
+        </md-button>
+
+        <div style="white-space:nowrap;" ng-hide="vm.checkValid">
+            {{vm.showDate}}
+        </div>
+        <md-button class="md-raised" hide-xs hide-md aria-label="下個月" ng-click="vm.changeDate('next')"
+            ng-hide="vm.checkValid">
+            {{'prescribingRecord.prescribingRecord.nextMonth' | translate}}
+        </md-button>
+        <md-button hide-sm hide-gt-md class="md-icon-button" aria-label="下個月" ng-click="vm.changeDate('next')"
+            ng-hide="vm.checkValid">
+            <i class="material-icons">chevron_right</i>
+        </md-button>
+
+        <div layout="row" layout-align="center center" class="checkValid-div">
+            <md-checkbox ng-model="vm.checkValid" ng-change="vm.changeCheckValid()"></md-checkbox>
+            <label class="checkValid-label">{{'prescribingRecord.prescribingRecord.validDrug' | translate}}</label>
+        </div>
+        <span flex></span>
+        <!-- <md-button class="md-raised" hide-xs hide-md aria-label="匯入前 ST" ng-click="vm.ImportST()">
+            {{'prescribingRecord.prescribingRecord.ImportST' | translate}}
+        </md-button>
+        <md-button class="md-raised" hide-xs hide-md aria-label="匯入上月" ng-click="vm.goto('lastMonthPrescribing')">
+            {{'prescribingRecord.prescribingRecord.lastMonthPrescribing' | translate}}
+        </md-button> -->
+        <md-menu>
+            <md-button class="md-icon-button" ng-click="vm.openMenu($mdMenu, $event)">
+                <i class="material-icons">more_vert</i>
+            </md-button>
+            <md-menu-content width="4">
+                <md-menu-item>
+                    <md-button aria-label="匯入前 ST" ng-click="vm.ImportST()">
+                        {{'prescribingRecord.prescribingRecord.ImportST' | translate}}
+                    </md-button>
+                </md-menu-item>
+                <md-menu-divider></md-menu-divider>
+                <md-menu-item>
+                    <md-button aria-label="匯入上月" ng-click="vm.goto('lastMonthPrescribing')">
+                        {{'prescribingRecord.prescribingRecord.lastMonthPrescribing' | translate}}
+                    </md-button>
+                </md-menu-item>
+                <md-menu-divider ng-if="vm.stateName.substr(0, 2) === 'pd'"></md-menu-divider>
+                <md-menu-item ng-if="vm.stateName.substr(0, 2) === 'pd'">
+                    <md-button aria-label="查詢全院" ng-click="vm.goto('checkWholeMedicine')">
+                        {{'prescribingRecord.prescribingRecord.checkWholeMedicine' | translate}}
+                    </md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
+    </div>
+    <div class="list-header" layout="row" layout-align="center center"
+        ng-show="!vm.loading && vm.serviceData.length > 0">
+        <md-switch ng-model="vm.showDeleted" aria-label="Switch 1" ng-hide="vm.checkValid">
+            <!-- 顯示已刪除 ({{vm.deletedItemsLength}}筆) -->
+            <span translate="prescribingRecord.prescribingRecord.showDeleted"
+                translate-values='{deletedItemsLength: vm.deletedItemsLength}'></span>
+        </md-switch>
+        <span flex></span>
+        <!-- <h6>共 {{vm.serviceData.length}} 筆</h6> -->
+        <h6 translate="prescribingRecord.prescribingRecord.totalRecord"
+            translate-values='{length: vm.serviceData.length}'></h6>
+        <span flex></span>
+        <last-refresh-time accesstime='vm.lastAccessTime' refresh='vm.refresh()'></last-refresh-time>
+    </div>
+    <md-content flex layout="column">
+        <loading ng-show="vm.loading">Loading...</loading>
+        <div ng-hide="vm.loading || vm.isValidError || vm.serviceData.length === 0">
+            <md-list>
+                <!-- ng-hide="(item.Status === 'Deleted' && !vm.showDeleted) || (!item.isValidDrug && vm.checkValid)" -->
+                <md-list-item class="md-2-line" ng-repeat="item in vm.serviceData | orderBy: '-StartDate'"
+                    ng-click="vm.goto('prescribingDetail', item)" ng-hide="item.Status === 'Deleted' && !vm.showDeleted"
+                    ng-class="{deleted: item.Status == 'Deleted'}">
+                    <div class="md-list-item-text" layout="column">
+                        <!-- <div>{{ ::item.StartDate | date: 'yyyy-MM-dd' }} {{ item.Days > 1 ? vm.getEndDate(item.StartDate, item.Days)
+                            : "" }} 共 {{ ::item.Days }} 天</div> -->
+                        <!-- <div ng-show="item.Days !== null" translate="prescribingRecord.prescribingRecord.totalDays" translate-values='{StartDate: item.StartDate, Days: item.Days}'></div>
+                        <div ng-show="item.Days === null">
+                            {{item.StartDate | date: 'yyyy-MM-dd'}}
+                            <span class="infinity-text" translate>{{'prescribingRecord.prescribingRecord.Infinity'}}</span>
+                        </div> -->
+                        <div>
+                            <div style="float: left; font-weight:bold;">
+                                <div ng-show="item.Days !== null && item.Days != 0"
+                                    translate="prescribingRecord.prescribingRecord.totalDays"
+                                    translate-values='{StartDate: item.StartDate, Days: item.Days, endDate:item.endDate}' class="f14"></div>
+                                <div ng-show="item.Days === null || item.Days == 0" class="f14">
+                                    {{item.StartDate | date: 'MM/dd'}}
+                                    <span class="infinity-text f14"
+                                        translate>{{'prescribingRecord.prescribingRecord.Infinity'}}</span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div style="margin-left: -2px; margin-top: -10px">
+                            <div style="margin: 2px"
+                                ng-if="item.isValidDrug !== 'deleted' && item.isValidDrug && !vm.checkValid"
+                                class="medicinetag bgblue">
+                                {{'prescribingRecord.prescribingRecord.validDrug' | translate}}</div>
+                            <div style="margin: 2px" ng-if="item.IsOther" class="medicinetag bgpink">
+                                <span translate>{{'prescribingRecord.prescribingRecord.IsOtherDrug'}}</span> <span
+                                    ng-if="item.OtherContent !== null && item.OtherContent !== ''">-{{item.OtherContent}}</span>
+                            </div>
+                        </div>
+                        <div layout="row" layout-align="start center">
+                            <!-- 高危險用藥-->
+                            <i ng-if="item.IsDangerMed" class="material-icons dangerous-drug-icon">warning</i>
+                            <span ng-show="item.CategoryName">{{::item.CategoryName}} - {{::item.Name}}</span>
+                            <span ng-show="!item.CategoryName">{{::item.Name}}</span>
+                            <!-- <span ng-if="item.CategoryName === 'CustomMedicine'" translate>{{'prescribingRecord.prescribingRecord.CustomMedicine'}} </span> <span class="margin-left-5"> - {{::item.Name}}</span> -->
+                            <span flex></span>
+                            <!-- <span>{{::item.Route}} {{ ::item.Frequency }} 每次 {{ ::item.Quantity }} {{ ::item.QuantityUnit }} ，共
+                                    {{ ::item.TotalQuantity}} {{ ::item.QuantityUnit}} </span> -->
+                            <!-- <span ng-show="item.Days !== null" translate="prescribingRecord.prescribingRecord.totalQuantity" translate-values='{Route: item.Route, Frequency: item.Frequency,
+                                        Quantity: item.Quantity, QuantityUnit: item.QuantityUnit, TotalQuantity: item.TotalQuantity}'></span>
+                            <span ng-show="item.Days === null" translate="prescribingRecord.prescribingRecord.quantity" translate-values='{Quantity: item.Quantity, QuantityUnit: item.QuantityUnit}'></span> -->
+                        </div>
+                        <div class="medicinename">
+                            <span ng-show="item.Days !== null"
+                                translate="prescribingRecord.prescribingRecord.totalQuantity"
+                                translate-values='{Route: item.Route, Frequency: item.Frequency,
+                                Quantity: item.Quantity, QuantityUnit: item.QuantityUnit, TotalQuantity: item.TotalQuantity}' style="font-weight: bold"></span>
+                            <span ng-show="item.Days === null" translate="prescribingRecord.prescribingRecord.quantity"
+                                translate-values='{Quantity: item.Quantity, QuantityUnit: item.QuantityUnit}'
+                                style="font-weight: bold"></span>
+                        </div>
+                        <div>{{::item.Memo}}</div>
+                        <seal model="item" modified="hideIfSame" class="seal-1"></seal>
+                        <!-- <seal model="item" modified="hideIfSame" fixed="true"></seal> -->
+                        <!--<div class="seal">{{::item.CreatedUserName}}</div>-->
+                    </div>
+                    <md-button class="md-icon-button"
+                        ng-show="vm.checkCanAccess(item.CreatedUserId, item.Status) && vm.checkHIS(item.Source)"
+                        ng-click="vm.delete(item.Id)">
+                        <i class="material-icons">delete</i>
+                    </md-button>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-list-item>
+            </md-list>
+        </div>
+
+        <nodata-page flex ng-show="vm.serviceData.length === 0 && !vm.loading"
+            nodata-title="{{ 'prescribingRecord.prescribingRecord.noData' | translate }}"
+            content="{{ 'prescribingRecord.prescribingRecord.clickBottomRight' | translate }}"></nodata-page>
+        <!-- <div flex ng-show="vm.serviceData.length === 0 && !vm.loading" layout="column" layout-fill layout-align="center center">
+            <h3 translate="prescribingRecord.prescribingRecord.noData" translate-values='{showDate: vm.showDate}'></h3>
+            <h4 translate>{{'prescribingRecord.prescribingRecord.clickBottomRight'}}</h4>
+        </div> -->
+        <server-error-page flex ng-show="(!vm.loading && vm.isError) || (vm.isValidError)"></server-error-page>
+        <!-- <div flex ng-show="(!vm.loading && vm.isError) || (vm.isValidError)" layout="column" layout-fill layout-align="center center">
+            <h3 translate>{{'prescribingRecord.prescribingRecord.serverError'}}</h3>
+        </div> -->
+    </md-content>
+    <md-button class="md-fab md-fab-bottom-right" ng-click="vm.goto('medicineRecord')"
+        ng-if="vm.checkCanAccess(item.CreatedUserId, item.Status)">
+        <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+    </md-button>
+</div>

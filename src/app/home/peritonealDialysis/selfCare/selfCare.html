@@ -1,0 +1,204 @@
+<style>
+    self-care{
+        height: 100%;
+    }
+    .item{
+        color: black;
+        padding: 2px 4px;
+        border-radius: 4px;
+        height: 20px;
+        line-height: 20px;
+        margin: 3px;
+        font-size:11px;
+        display:inline-block;
+        width:fit-content;
+        width:-webkit-fit-content;
+        width:-moz-fit-content;
+    }
+    .no{
+        background-color: #ccc;
+    }
+    .ok {
+        background-color: springgreen;
+    }
+</style>
+<md-content layout="column" layout-fill>
+    <summary-toolbar ng-if="$ctrl.headerId" toolbar-title="自我照護評估表" cancel="$ctrl.back()"></summary-toolbar>
+    <md-content layout="column" flex>
+        <md-list ng-show="!$ctrl.loading && $ctrl.sCareList.length > 0">
+            <div class="list-header" ng-show="!$ctrl.loading" layout="row" layout-align="center center">
+                <md-switch ng-model="$ctrl.showDeleted" aria-label="Switch data">
+                    <span translate="selfCare.Records.showDeleted" translate-values='{deletedItemsLength: $ctrl.deletedItemsLength}'></span>
+                </md-switch>
+                <span flex></span>
+                <h6 translate="selfCare.Records.totalRecord" translate-values='{totalCnt: $ctrl.totalCnt}'></h6>
+                <span flex></span>
+                <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+            </div>
+            <md-content layout="column" flex>
+                <loading ng-show="$ctrl.loading"></loading>
+                <div ng-show="$ctrl.sCareList.length > 0" infinite-scroll="$ctrl.loadMore()" infinite-scroll-disabled='$ctrl.loading' infinite-scroll-distance='2' infinite-scroll-parent>
+                    <md-content>
+                        <md-list>
+                            <md-list-item layout="row" class="md-2-line" ng-class="{deleted: item.Status == 'Deleted'}" ng-repeat="item in $ctrl.sCareList | orderBy:['-Record_Date', '-CreatedTime']" ng-click="$ctrl.openEditDialog(item,$index,false)" ng-show="item.Status !== 'Deleted' || $ctrl.showDeleted">
+                                <div class="md-list-item-text" layout="row">
+                                    <div>
+                                        <h3 ng-bind="item.Record_Date | moment:'YYYY/MM/DD (dd) HH:mm'" style="width:300px;"></h3>
+                                        <h3 ng-show="item.chklength == 7" style="color: red">全部項目尚未評值</h3>
+                                        <h3 ng-show="item.chklength == 0" style="color: green">全部項目評值完畢</h3>
+                                        <div layout="row" layout-xs="column" ng-hide="item.chklength == 7 || item.chklength == 0">
+                                            <div class="{{(item.EnvironmentFlg) ? 'item ok' : 'item no'}}">腹膜透析環境介紹</div>
+                                            <div class="{{(item.KnowdialysisFlg) ? 'item ok' : 'item no'}}">腹膜透析認識</div>
+                                            <div class="{{(item.SelfcontrolFlg) ? 'item ok' : 'item no'}}">腹膜透析液認識及自我管理</div>
+                                        </div>
+                                        <div layout="row" layout-xs="column" ng-hide="item.chklength == 7 || item.chklength == 0">
+                                            <div class="{{(item.Correct_UserFlg) ? 'item ok' : 'item no'}}">正確操作腹膜透析技術</div>
+                                            <div class="{{(item.LivingFlg) ? 'item ok' : 'item no'}}">日常生活居家注意事項</div>
+                                            <div class="{{(item.DietFlg) ? 'item ok' : 'item no'}}">腹膜透析飲食</div>
+                                            <div class="{{(item.OuthospFlg) ? 'item ok' : 'item no'}}">出院準備</div>
+                                        </div>
+                                        <p>評值者：{{item.Environment_User}}</p>
+                                    </div>
+                                    <span flex></span>
+                                    <div  style="position: absolute; right: 6px; top: 20px" ng-hide="item.Status == 'Deleted'">
+                                        <seal my-style="$ctrl.myStyle" model="item" modified="hideIfSame" fixed="true"></seal>
+                                        <button class="md-icon-button md-button no-print" ng-click="$ctrl.printPaper(item)" ng-show="$ctrl.isBrowser">
+                                            <i class="material-icons ng-scope">print</i>
+                                            <md-tooltip style="margin-top: -5px;">
+                                                    列印
+                                            </md-tooltip>
+                                        </button>
+                                        <md-button class="md-icon-button" ng-click="$ctrl.openEditDialog(item,$index,true)">
+                                            <i class="material-icons">
+                                                content_copy
+                                            </i>
+                                            <md-tooltip style="margin-top: -5px;">
+                                                複製
+                                            </md-tooltip>
+                                        </md-button>
+                                        <md-button  class="md-icon-button" ng-click="$ctrl.deleteOne($event,item)">
+                                            <i class="material-icons">delete</i>
+                                            <md-tooltip style="margin-top: -5px;">
+                                                刪除
+                                            </md-tooltip>
+                                        </md-button>
+                                    </div>
+                                </div>
+                                <md-divider ng-if="!$last"></md-divider>
+                            </md-list-item>
+                        </md-list>
+                    </md-content>
+                </div>
+                
+            </md-content>            
+        </md-list>
+        <md-progress-circular ng-show="$ctrl.loadingMore" class="loadmore" md-diameter="40" md-mode="indeterminate"></md-progress-circular> 
+        <div flex ng-show="!$ctrl.loading && $ctrl.sCareList.length == 0 && !$ctrl.isError" layout="column" layout-fill layout-align="center center">
+            <h1 translate>{{'selfCare.Records.noData'}}</h1>
+        </div>
+        <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate>{{'selfCare.Records.serverError'}}</h3>
+        </div>
+    </md-content>
+</md-content>
+<md-button class="md-fab md-fab-bottom-right" style="position: fixed;" ng-click="$ctrl.openCreateDialog()">
+    <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+</md-button>
+<!-- <div class="freezeDiv tbSelfCare">
+    <table class="freezeTb tb">
+        <thead>
+            <tr>
+                <th>評值日期</th>
+                <th>評值者</th>
+                <th>腹膜透析環境介紹</th>
+                <th>腹膜透析認識</th>
+                <th>腹膜透析液認識及自我管理</th>
+                <th>正確操作腹膜透析技術</th>
+                <th>日常生活居家注意事項</th>
+                <th>腹膜透析飲食</th>
+                <th>出院準備</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td ng-click="$ctrl.openEditDialog(SC)">{{SC.Record_Date  | moment:'YYYY-MM-DD'}}</td>
+                <td ng-click="$ctrl.openEditDialog(SC)"></td>
+                <td ng-click="$ctrl.openEditDialog(SC)">
+                    <ul>
+                        <li><label>能說出腹膜透析所在位置及緊急逃生方向:</label>通過</li>
+                    </ul>
+                </td>
+                <td ng-click="$ctrl.openEditDialog(SC)">
+                    <ul>
+                        <li><label>能說出末期腎衰竭替代療法四種:</label>需加強</li>
+                        <li><label>能說出腹膜透析治療的原理:</label>不通過</li>
+                        <li><label>能說出透析導管之構造及功能:</label>不適用</li>
+                    </ul>
+                </td>
+                <td ng-click="$ctrl.openEditDialog(SC)">
+                    <ul>
+                        <li><label>能正確說出自己目前使用之透析方(透析液種類、濃度及總量):</label>通過</li>
+                        <li><label>能說出腹膜透析液的儲存管理與取用注意事項:</label>需加強</li>
+                        <li><label>能說出腹膜透析液使用前正確的加溫方法:</label>不通過</li>
+                        <li><label>能說出透析引流液檢查方式:</label>不適用</li>
+                        <li><label>能說出何種情況需來院加抗凝劑:</label>通過</li>
+                    </ul>
+                </td>
+                <td ng-click="$ctrl.openEditDialog(SC)">
+                    <ul>
+                        <li><label>能正確執行雙連袋換液技術及引流不順處理:</label>通過</li>
+                        <li><label>能正確執行空袋引流操作技術:</label>需加強</li>
+                        <li><label>能正確執行全自動腹膜透析機換液技術及警訊排除:</label>不適用</li>
+                        <li><label>能正確執行導管出口換藥技術:</label>不通過</li>
+                        <li><label>能正確執行沐浴用人工肛門袋使用方式:</label>需加強</li>
+                    </ul>
+                </td>
+                <td ng-click="$ctrl.openEditDialog(SC)">
+                    <ul>
+                        <li><label>能說出腹膜炎原因及預防注意事項至少3項:</label>通過</li>
+                        <li><label>能說出導管出口照護注意事項至少4項:</label>不適用</li>
+                        <li><label>能說出導管固定方法及重要性:</label>不通過</li>
+                        <li><label>能說出每天測量體重、血壓及確實記錄透析記錄本重要性:</label>不通過</li>
+                        <li><label>能說出貧血原因、症狀及日常生活、飲食注意事項:</label>不適用</li>
+                        <li><label>能說出透析相關用藥居家使用注意事項(ESA紅血球生成刺激素、磷結合劑、降血壓藥、降血糖藥):</label>不適用</li>
+                        <li><label>能說出個人衛生、沐浴與皮膚照護注意事項:</label>通過</li>
+                        <li><label>能說出運動的重要性及合適的運動方式:</label>需加強</li>
+                        <li><label>能說出預防跌倒注意事項至少3項:</label>不通過</li>
+                        <li><label>能說出須立即與醫院聯繫或返院就診的緊急情況至少3項:</label>通過</li>
+                        <li><label>能說出與醫院聯繫方式:</label>不適用</li>
+                    </ul>
+                </td>
+                <td ng-click="$ctrl.openEditDialog(SC)">
+                    <ul>
+                        <li><label>能說出優質高蛋白食物3項:</label>不通過</li>
+                        <li><label>能說出高磷食物3項:</label>不適用</li>
+                        <li><label>能說出高鉀食物3項:</label>不通過</li>
+                        <li><label>能說出含鐵質食物3項:</label>通過</li>
+                        <li><label>能說出含高vit-C食物3項:</label>通過</li>
+                        <li><label>能說出優質油脂3種:</label>不通過</li>
+                        <li><label>能說出水分攝取注意事項3項:</label>不適用</li>
+                    </ul>
+                </td>
+                <td ng-click="$ctrl.openEditDialog(SC)">
+                    <ul>
+                        <li><label>能說出腹膜透析診回診注意事項3項:</label>通過</li>
+                        <li><label>能說出家中透析液送貨注意事項3項:</label>不適用</li>
+                    </ul>
+                </td>
+                <td>
+                    <label class="signinNm"><span class="fixed">楊昌宏</span></label><br/><br/><br/>
+                    <button class="btnDef btnDel" type="button" ng-click="$ctrl.printPaper()">
+                        <span>列印</span>
+                    </button>
+                    <button class="btnDef btnDel" type="button" ng-click="$ctrl.deleteOne($event, SC)">
+                        <span>刪除</span>
+                    </button>
+                    <button class="btnDef btnDel" type="button" ng-click="$ctrl.openCreateDialog()">
+                        <span>複製</span>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div> -->

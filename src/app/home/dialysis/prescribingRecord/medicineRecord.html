@@ -1,0 +1,59 @@
+<style scoped>
+    medicine-record {
+        height: 100%;
+    }
+</style>
+<div layout="column" layout-fill>
+    <summary-toolbar toolbar-title="'prescribingRecord.medicineRecord.chooseMedicine' | translate" cancel="$ctrl.goback()"></summary-toolbar>
+
+    <!-- <div hide-xs hide-sm ng-show="!$ctrl.loading">
+        <h3 style="float: left; padding-left: 10px" translate ng-show="!$ctrl.loading">{{'prescribingRecord.medicineRecord.chooseMedicine'}}</h3>
+        <md-button style="float:right; margin-top: 8px" class="md-secondary md-icon-button" ng-click="$ctrl.goback()" aria-label="call">
+            <i class="material-icons">cancel</i>
+        </md-button>
+    </div> -->
+
+    <div layout="row" class="list-header" ng-hide="$ctrl.loading">
+        <md-select ng-model="$ctrl.myCategoryName" ng-change="$ctrl.searchMed()">
+            <md-option value="All" ng-selected="true" translate>{{'prescribingRecord.medicineRecord.All'}}</md-option>
+            <md-option ng-repeat="key in $ctrl.CategoryNameList track by $index" ng-value="key">
+                {{ ::key }}
+            </md-option>
+        </md-select>
+        <span flex></span>
+        <!-- <span>共 {{results.length}} 筆</span> -->
+        <span translate="prescribingRecord.medicineRecord.totalRecord" translate-values='{length: $ctrl.filteredMedicine.length}'></span>
+        <span flex></span>
+        <div layout="row">
+            <i class="material-icons">search</i>
+            <input ng-model="$ctrl.searchText" ng-change="$ctrl.searchMed()"/>
+        </div>
+    </div>
+
+    <md-content flex layout-fill>
+        <loading ng-show="$ctrl.loading">loading...</loading>
+        <md-list>
+            <md-list-item ng-repeat="item in $ctrl.currentMedicine track by $index" ng-click="$ctrl.gotoAdd(item)">
+
+                <div layout-fill layout="row">
+                    <span ng-if="item.IsCustomMedicine" flex="40" translate>{{'prescribingRecord.medicineRecord.CustomMedicine'}}</span>
+                    <span ng-if="item.IsCustomMedicine" flex></span>
+
+                    <span ng-if="!item.IsCustomMedicine" flex="40">{{ ::item.CategoryName }}</span>
+                    <span ng-if="!item.IsCustomMedicine" flex>
+                        <div layout="row" layout-align="start center">
+                            <!-- 高危險用藥-->
+                            <i ng-if="item.IsDangerMed" class="material-icons dangerous-drug-icon">warning</i>
+                            {{ ::item.Name }}
+
+                        </div>
+                    </span>
+                </div>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+        </md-list>
+        <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate>{{'prescribingRecord.medicineRecord.serverError'}}</h3>
+        </div>
+    </md-content>
+</div>

@@ -1,0 +1,106 @@
+<md-dialog class="peritonealDialysisTabView">
+    <form name="petEditForm" novalidate ng-cloak>
+        <!-- <summary-toolbar ng-if="$ctrl.isCreate" ng-click="$ctrl.cancel()" toolbar-title="'peritonitis.treat.createTitle' | translate"></summary-toolbar>
+        <summary-toolbar ng-if="!$ctrl.isCreate" ng-click="$ctrl.cancel()" toolbar-title="'peritonitis.treat.editTitle' | translate"></summary-toolbar> -->
+        <md-dialog-toolbar>
+            <div class="md-toolbar-tools">
+                <md-button class="md-fab" aria-label="Settings" ng-click="$ctrl.cancel()">
+                    <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+                </md-button>
+                <h2 ng-if="$ctrl.isCreate" translate="peritonitis.treat.createTitle"></h2>
+                <h2 ng-if="!$ctrl.isCreate" translate="peritonitis.treat.editTitle"></h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+                    <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-dialog-toolbar>
+ 
+        <md-dialog-content>
+            <div class="dialogBoxData">
+                <div class="inputbox">
+                    <div class="lightblue" flex>
+                        <label>開始日期</label>
+                    </div>
+                    <div flex>
+                        <input ng-model="$ctrl.petDataObj.Startdate" type="date" required>
+                        <div ng-messages="petEditForm.Startdate.$error" ng-show="petEditForm.Startdate.$dirty">
+                            <div ng-message="required" class="clrRequired">必填選項</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="lightblue" flex>
+                        <label>記錄日期</label>
+                    </div>
+                    <div flex>
+                        <input ng-model="$ctrl.petDataObj.Recorddate" type="date" required>
+                        <div ng-messages="petEditForm.Recorddate.$error" ng-show="petEditForm.Recorddate.$dirty">
+                            <div ng-message="required" class="clrRequired">必填選項</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>治療記錄</label>
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <input ng-model="$ctrl.petDataObj.Treatment_Record" type="text">
+                        <md-button class="btnSearch" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.cancel()">
+                            用藥記錄
+                        </md-button>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>Cell Count</label>
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <input ng-model="$ctrl.petDataObj.Cell_Count" type="text">
+                        <md-button class="btnSearch" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.cancel()">
+                            檢驗紀錄查詢
+                        </md-button>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>Culture 菌種</label>
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <input ng-model="$ctrl.petDataObj.Culture_Strain" type="text">
+                        <md-button class="btnSearch" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.cancel()">
+                            檢驗紀錄查詢
+                        </md-button>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>備註</label>
+                    </div>
+                    <div class="inputboxflex autoWidth">
+                        <input ng-model="$ctrl.petDataObj.Memo" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="inputbox">
+                <div class="signinGroup" ng-show="!$ctrl.isCreate"> 
+                    <label class="signinTime">建立:{{$ctrl.petDataObj.CreatedTime | moment:'YYYY-MM-DD(dd) HH:mm:ss'}}</label>
+                    <label class="signinNm"><span class="fixed">{{$ctrl.petDataObj.CreatedUserName}}</span></label>          
+                </div>
+                <div class="signinGroup" ng-show="!$ctrl.isCreate && $ctrl.petDataObj.ModifiedTime !== null">  
+                    <label class="signinTime">修改:{{$ctrl.petDataObj.ModifiedTime | moment:'YYYY-MM-DD(dd) HH:mm:ss'}}</label>
+                    <label class="signinNm"><span class="fixed">{{$ctrl.petDataObj.ModifiedUserName}}</span></label>         
+                </div>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <md-button class="md-raised" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.cancel()">
+                {{'peritonitis.treat.cancel' | translate}}
+            </md-button>
+            <md-button class="md-raised md-primary" ng-click="$ctrl.ok()">
+                {{$ctrl.isCreate ? 'peritonitis.treat.create' : 'peritonitis.treat.edit' | translate}}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

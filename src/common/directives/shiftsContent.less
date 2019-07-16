@@ -1,0 +1,204 @@
+.shifts-container {
+    // 總計按鈕
+    .totalbtn {
+        background: #F7AD0A;
+        cursor: pointer;
+        font-weight: bold;
+        border-radius: 4px;
+        color: #3e3e3e;
+        margin: 4px;
+        padding: 3px;
+    } // table 最下方的那一列 (每日總計)
+    .table-foot {
+        height: 3.5rem;
+        td {
+            white-space: initial;
+        }
+    }
+    // 員工、日期的表格內容排版
+    table {
+        font-size: 14px;
+        color: #3e3e3e;
+        border: #FFF solid 2px;
+        background: #FFF;
+        font-family: '微軟正黑體', Arial, Helvetica, sans-serif;
+        text-align: center;
+        border-collapse: collapse;
+        table-layout: fixed;
+        td {
+            div {
+                border-radius: 4px;
+                margin: 5px;
+                padding: 4px 0;
+                &.init-margin-padding {
+                    margin: initial;
+                    padding: initial;
+                }
+            }
+        }
+        tbody {
+            .firstCol {
+                min-width: 65px;
+                width: 65px;
+            }
+            th {
+                // color: #909090;
+                height: 3rem;
+                border-bottom: 1px solid #E2E2E2;
+                &.weekends {
+                    color: red;
+                }
+                min-width: 44px;
+                width: 44px;
+            }
+            .weekends {
+                background-color: rgba(248, 177, 193, 0.3);
+            }
+            .today {
+                background-color: rgba(253, 250, 172, 0.5);
+            }
+            tr {
+                &.currentedit {
+                    // background: rgba(84, 174, 75, 0.3);
+                    background: rgba(255, 171, 145, 0.5);
+                }
+                .edit {
+                    background: #bdbdbd;
+                    margin: 10px;
+                    padding: 3px;
+                    cursor: pointer;
+                    display: none;
+                }
+                .editBtn {
+                    background: #bdbdbd;
+                    padding: 3px;
+                    cursor: pointer;
+                }
+            }
+            tr:hover {
+                .edit {
+                    display: block;
+                }
+            }
+            td {
+                text-align: center;
+                overflow: hidden;
+                white-space: nowrap;
+                height: 3.5rem;
+                border: 0;
+                border-bottom: 1px solid #dddddd;
+                &.name {
+                    padding: 5px;
+                    font-weight: bold;
+                    white-space: initial;
+                    margin: 0;
+                } // 當排班重複時，框框會變為紅色
+                &.repeat {
+                    border: 2px solid red;
+                }
+                .shifts {
+                    // text-align: left;
+                    min-width: 30px;
+                    background: #eeeeee; // color: #9e9e9e;
+                    span {
+                        padding: 3px;
+                        line-height: 1.1rem;
+                    }
+                    &.selected {
+                        overflow: hidden;
+                        background: #54AE4B;
+                        color: #fff;
+                        select {
+                            color: #fff;
+                        }
+                    } // &.morning {
+                    //     background: #54AE4B;
+                    //     color: white;
+                    //     select {
+                    //         color: white;
+                    //         option {
+                    //             color:black;
+                    //         }
+                    //     }
+                    // }
+                    // &.afternoon {
+                    //     background: #1B7412;
+                    //     color: white;
+                    //     select {
+                    //         color: white;
+                    //         option {
+                    //             color:black;
+                    //         }
+                    //     }
+                    // }
+                    // &.evening {
+                    //     background: #085100;
+                    //     color: white;
+                    //     select {
+                    //         color: white;
+                    //         option {
+                    //             color:black;
+                    //         }
+                    //     }
+                    // }
+                }
+                .bedGroup {
+                    // text-align: left;
+                    min-width: 30px;
+                    background: #eeeeee; // color: #9e9e9e;
+                    span {
+                        padding: 3px;
+                        line-height: 1.1rem;
+                    }
+                    &.selected {
+                        background: #979797;
+                        color: #fff;
+                        select {
+                            color: #fff;
+                        }
+                    }
+                }
+                .memoContent {
+                    min-width: 30px;
+                    background: #eeeeee; // color: #9e9e9e;
+                    cursor: pointer;
+                    span {
+                        padding: 3px;
+                        line-height: 1.1rem;
+                    }
+                    &.selected {
+                        background: #979797;
+                        color: #fff;
+                        select {
+                            color: #fff;
+                        }
+                    }
+                }
+                select {
+                    width: 30px;
+                    border: 0;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    background: transparent;
+                    padding: 2px;
+                    cursor: pointer; // color:#9e9e9e;
+                    option {
+                        color: black;
+                    }
+                }
+                select:disabled {
+                    cursor: initial;
+                } // 隱藏 arrow for IE10
+                select::-ms-expand {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+.shiftsTotalDialog {
+    .content {
+        line-height: 2rem;
+    }
+}

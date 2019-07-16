@@ -1,0 +1,238 @@
+<div class="peritonealDialysisTabView" layout="column" layout-fill flex class="no-print">
+    <md-toolbar class="no-print">
+        <div class="md-toolbar-tools">
+            <md-button ng-if="$ctrl.smallScreen" class="circular" ng-click="$ctrl.goback()">
+                <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+            </md-button>
+            <!-- <md-button ng-if="!$ctrl.smallScreen" class="circular" ng-click="$ctrl.openLeftMenu()">
+                <md-icon md-svg-icon="static/img/svg/ic_menu_white_24px.svg"></md-icon>
+            </md-button> -->
+
+            <md-button class="md-icon-button" aria-label="Settings" ng-click="$ctrl.openLeftMenu()" hide-gt-md>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <md-button class="md-icon-button first-child" aria-label="Settings" ng-click="$ctrl.toggleSideNav()" hide-md hide-sm
+                hide-xs show-gt-md>
+                <i class="material-icons">menu</i>
+            </md-button>
+
+            <span flex>腹膜透析{{' - ' + $ctrl.currentPatient.Name}}</span>
+
+            <div class="toolbar-function-button" ng-if="!$ctrl.loading">
+                <md-button hide show-gt-xs class="md-icon-button" aria-label="More"
+                    ng-click="$ctrl.gotoState('pdAlbum')">
+                    <i class="material-icons">photo_album</i>
+                    <md-tooltip ng-if="$ctrl.isBrowser" style="font-size: 12px; margin-top: -5px;"
+                        md-direction="bottom">
+                        <span translate>{{'summary.photoAlbum'}}</span>
+                    </md-tooltip>
+                </md-button>
+                <md-button hide show-gt-xs class="md-icon-button" aria-label="More"
+                    ng-click="$ctrl.gotoState('pdLabexam')">
+                    <i class="material-icons">assessment</i>
+                    <md-tooltip ng-if="$ctrl.isBrowser" style="font-size: 12px; margin-top: -5px;"
+                        md-direction="bottom">
+                        <span translate>{{'summary.inspection'}}</span>
+                    </md-tooltip>
+                </md-button>
+            </div>
+        </div>
+    </md-toolbar>
+
+    <loading ng-show="$ctrl.loading">loading...</loading>
+    <!-- for 一般/護理人員 Tabs -->
+    <md-tabs class="tabbar tabbarscroll menuBox no-print" md-stretch-tabs="never" md-center-tabs="true"
+        md-swipe-content="true" md-selected="$ctrl.selectedIndex"
+        ng-if="$ctrl.currentUser.Role === null || $ctrl.currentUser.Role !== 'doctor'">
+        <!-- 腹膜透析植管 -->
+        <md-tab label="歷次植管紀錄">
+        </md-tab>
+        <!-- 腹膜透析治療 -->
+        <md-tab label="治療處方">
+        </md-tab>
+        <!-- APD程式設定 -->
+        <md-tab label="APD設定">
+        </md-tab>
+        <!-- 腹膜及透析量評估 -->
+        <md-tab label="透析量評估">
+        </md-tab>
+        <!-- 腹膜透析相關併發症 -->
+        <md-tab label="併發症記錄">
+        </md-tab>
+        <!-- 腹膜炎感染記錄 -->
+        <md-tab label="腹膜炎感染">
+        </md-tab>
+        <!-- 導管出口感染記錄 -->
+        <md-tab label="導管出口感染">
+        </md-tab>
+        <!-- 護理評估記錄單 -->
+        <md-tab label="腹膜透析記錄">
+        </md-tab>
+        <!-- 透析病人跌倒高危險群 -->
+        <md-tab label="跌倒評估">
+        </md-tab>
+        <!-- 病人自我照護評量表 -->
+        <md-tab label="自我照顧">
+        </md-tab>
+        <!-- 醫療追蹤-長期醫囑 -->
+        <md-tab label="病情摘要">
+        </md-tab>
+        <!-- 醫療追蹤-臨時醫囑 -->
+        <md-tab label="檢驗紀錄表">
+        </md-tab>
+        <!-- CAPD患者訓練課程 -->
+        <!-- <md-tab label="CAPD訓練課程">
+        </md-tab> -->
+        <!-- 開藥記錄/處置 -->
+        <md-tab label="開藥記錄/處置">
+        </md-tab>
+        <!-- 執行記錄 -->
+        <md-tab label="執行記錄">
+        </md-tab>
+        <!-- 歷次用藥記錄 -->
+        <md-tab label="歷次用藥記錄">
+        </md-tab>
+        <!-- 歷次護理記錄 -->
+        <md-tab label="歷次護理記錄">
+        </md-tab>
+        <!-- 歷次病歷摘要 -->
+        <md-tab label="歷次病歷摘要">
+        </md-tab>
+        <!-- 腹膜透析居家訪視 -->
+        <md-tab label="居家訪視評估">
+        </md-tab>
+        <!-- 腹膜透析電話訪談 -->
+        <md-tab label="電話訪談紀錄表">
+        </md-tab>
+        <!-- 透析模式告知書 -->
+        <md-tab label="透析模式告知書">
+        </md-tab>
+    </md-tabs>
+    <!-- for 醫師 Tabs -->
+    <md-tabs class="tabbar tabbarscroll menuBox_doctor no-print" md-stretch-tabs="never" md-center-tabs="true"
+        md-swipe-content="true" md-selected="$ctrl.selectedIndex"
+        ng-if="$ctrl.currentUser.Role !== null && $ctrl.currentUser.Role === 'doctor'">
+        <!-- 開藥記錄/處置 -->
+        <md-tab label="開藥記錄/處置">
+        </md-tab>
+        <!-- 醫療追蹤-長期醫囑 -->
+        <md-tab label="病情摘要">
+        </md-tab>
+        <!-- 腹膜透析治療 -->
+        <md-tab label="治療處方">
+        </md-tab>
+        <!-- 腹膜透析植管 -->
+        <md-tab label="歷次植管紀錄">
+        </md-tab>
+        <!-- APD程式設定 -->
+        <md-tab label="APD設定">
+        </md-tab>
+        <!-- 腹膜及透析量評估 -->
+        <md-tab label="透析量評估">
+        </md-tab>
+        <!-- 腹膜透析相關併發症 -->
+        <md-tab label="併發症記錄">
+        </md-tab>
+        <!-- 腹膜炎感染記錄 -->
+        <md-tab label="腹膜炎感染">
+        </md-tab>
+        <!-- 導管出口感染記錄 -->
+        <md-tab label="導管出口感染">
+        </md-tab>
+        <!-- 護理評估記錄單 -->
+        <md-tab label="腹膜透析記錄">
+        </md-tab>
+        <!-- 透析病人跌倒高危險群 -->
+        <md-tab label="跌倒評估">
+        </md-tab>
+        <!-- 病人自我照護評量表 -->
+        <md-tab label="自我照顧">
+        </md-tab>
+        <!-- 醫療追蹤-臨時醫囑 -->
+        <md-tab label="檢驗紀錄表">
+        </md-tab>
+        <!-- CAPD患者訓練課程 -->
+        <!-- <md-tab label="CAPD訓練課程">
+        </md-tab> -->
+        <!-- 執行記錄 -->
+        <md-tab label="執行記錄">
+        </md-tab>
+        <!-- 歷次用藥記錄 -->
+        <md-tab label="歷次用藥記錄">
+        </md-tab>
+        <!-- 歷次護理記錄 -->
+        <md-tab label="歷次護理記錄">
+        </md-tab>
+        <!-- 歷次病歷摘要 -->
+        <md-tab label="歷次病歷摘要">
+        </md-tab>
+        <!-- 腹膜透析居家訪視 -->
+        <md-tab label="居家訪視評估">
+        </md-tab>
+        <!-- 腹膜透析電話訪談 -->
+        <md-tab label="電話訪談記錄表">
+        </md-tab>
+        <!-- 透析模式告知書 -->
+        <md-tab label="透析模式告知書">
+        </md-tab>
+    </md-tabs>
+
+    <!--病人簡單資訊 start-->
+    <div class="no-print">
+        <div class="head" ng-if="!$ctrl.patientErr && !$ctrl.patientInfoLoading"
+            ng-class="{morePatientInfo: $ctrl.showPatientInfo}">
+            <div layout="row" layout-align="start center">
+                <div
+                    class="{{'patient_name ' + (($ctrl.currentPatient.Gender|gender) == '男' ? 'male ' : '') + (($ctrl.currentPatient.Gender|gender) == '女' ? 'female' : '') }}">
+                    {{ $ctrl.currentPatient.MedicalId + ' - ' + $ctrl.currentPatient.Name }}
+                </div>
+                <img ng-src="static/img/svg/idcard.svg"
+                    class="phone_none"><span>{{ $ctrl.currentPatient.IdentifierId }}</span>
+            </div>
+            <div style="flex: 1">
+                <div style="overflow: hidden; height: 24px; padding-top: 2px">
+                    <patient-tag class="tag" tag="t" ng-repeat="t in $ctrl.currentPatient.Tags track by $index">
+                    </patient-tag>
+                </div>
+            </div>
+            <div layout="row" layout-align="start center">
+                <i class="material-icons headitem expand" ng-if="$ctrl.currentPatient.Memo"
+                    ng-class="{less: $ctrl.showPatientInfo}" ng-click="$ctrl.togglePatientInfo()">keyboard_arrow_up</i>
+                <i class="material-icons headitem" ng-click="$ctrl.gotoPatientDetail($ctrl.patientId)">more_horiz</i>
+            </div>
+        </div>
+        <div class="head" ng-if="$ctrl.patientInfoLoading" style="margin: 0 auto">
+            <span style="margin-right: 8px">取得病人資料中...</span>
+            <md-progress-circular style="margin: 0" md-diameter="20px" md-mode="indeterminate"></md-progress-circular>
+        </div>
+        <div class="head err" style="margin: 0 auto" ng-if="$ctrl.patientErr && !$ctrl.patientInfoLoading" layout="row"
+            layout-align="start center">
+            取得病人資料失敗，請重新整理
+            <md-button class="md-icon-button" ng-click="$ctrl.refreshPatientInfo();">
+                <i class="material-icons">refresh</i>
+            </md-button>
+        </div>
+
+        <div class="animate-show-hide" ng-show="$ctrl.showPatientInfo" ng-class="{remarks:$ctrl.blockHide}">
+            {{ $ctrl.currentPatient.Memo }}
+        </div>
+    </div>
+    <!--病人簡單資訊 end-->
+
+    <md-content ui-view layout="column" flex></md-content>
+
+    <!-- <md-sidenav layout="column" class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
+        <md-content>
+            <md-list flex>
+                <md-list-item ui-sref="labexam({patientId: $ctrl.patientId})">
+                    <md-icon md-svg-icon="static/img/svg/ic_assignment_black_24px.svg"></md-icon>
+                    <p translate>{{'dialysisTabView.labexam'}}</p>
+                </md-list-item>
+                <md-list-item ui-sref="album({patientId: $ctrl.patientId})">
+                    <md-icon md-svg-icon="static/img/svg/ic_assignment_black_24px.svg"></md-icon>
+                    <p translate>{{'dialysisTabView.album'}}</p>
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </md-sidenav> -->
+</div>

@@ -1,0 +1,254 @@
+<div layout="row" class="summary" layout-padding layout-wrap layout-fill>
+    <loading ng-show="$ctrl.loading"></loading>
+    <server-error-page flex ng-if="!$ctrl.loading && $ctrl.isError" refresh="$ctrl.refresh()"></server-error-page>
+    <md-whiteframe ng-show="!$ctrl.loading && !$ctrl.isError" layout="column" class="md-whiteframe-10dp" layout-align="start center" flex>
+        <div style="width: 20cm; text-align: center;" ng-click="$ctrl.gotoOverview()">
+            <h1>血液透析記錄表</h1>
+            <table border="0" cellpadding="0" cellspacing="0" class="table_in" width="100%">
+                <tr>
+                    <td style="text-align: left;">姓名：{{$ctrl.patient.Name}}</td>
+                    <td style="text-align: left;">病歷號碼：{{$ctrl.patient.MedicalId}}</td>
+                    <td style="text-align: left;">透析床號：{{$ctrl.patient.BedNo}}</td><!--$ctrl.patient.AdmissionBedNo-->
+                    <td style="text-align: center;">{{$ctrl.data.DialysisHeader.StartTime | moment: 'YYYY 年 MM 月 DD 日'}}</td>
+                    <td style="text-align: right;">透析次數 第 {{$ctrl.data.DialysisHeader.Numbers.all}} 次</td>
+                </tr>
+            </table>
+        </div>
+        <table border="0" cellpadding="0" cellspacing="0" class="table">
+            <tr>
+                <td>
+    
+        <table border="0" cellpadding="0" cellspacing="0" class="table" style="width:20cm; border: #000 solid 2px; border-bottom: none" align="left" ng-click="$ctrl.gotoOverview()">
+            <tr>
+                <td style="padding: 0" width="50%" valign="top">
+                  <table border="0" cellpadding="0" cellspacing="0" class="table_in"  align="left" width="100%">
+                    <tr>
+                        <td colspan="2">
+                            透析時間：開始<span>{{$ctrl.data.DialysisHeader.DialysisDataFirstTime | moment: 'HH:mm'}}</span>&nbsp;&nbsp;結束<span>{{$ctrl.data.DialysisHeader.DialysisDataLastTime | moment: 'HH:mm'}}</span>
+                        </td>
+                        <td width="45%">體溫： <span class="blood" ng-if="$ctrl.data.DialysisHeader.PreVitalSign[0].Temperature > 37.5">{{$ctrl.data.DialysisHeader.PreVitalSign[0].Temperature}}</span><span ng-if="$ctrl.data.DialysisHeader.PreVitalSign[0].Temperature <= 37.5">{{$ctrl.data.DialysisHeader.PreVitalSign[0].Temperature}}</span> 度</td>
+                    </tr>
+                    <tr>
+                        <td width="10%" rowspan="2" valign="top">血壓：</td>
+                        <td colspan="2" width="90%">開始：<span ng-repeat="pre in $ctrl.data.DialysisHeader.PreVitalSign">{{pre.BloodPressurePosture}} <span class="blood">{{pre.BPS === '' ? '　' : pre.BPS}}</span> / <span class="blood">{{pre.BPD === '' ? '　' : pre.BPD}}</span>，</span>脈搏：{{$ctrl.data.DialysisHeader.PreVitalSign[0].Pulse}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" width="90%">結束：<span ng-repeat="post in $ctrl.data.DialysisHeader.PostVitalSign">{{post.BloodPressurePosture}} <span class="blood">{{post.BPS === '' ? '　' : post.BPS}}</span> / <span class="blood">{{post.BPD === '' ? '　' : post.BPD}}</span>，</span>脈搏：{{$ctrl.data.DialysisHeader.PostVitalSign[0].Pulse}}</td>
+                    </tr>
+                    <tr>
+                        <td width="10%" rowspan="3" valign="top">體重：</td>
+                        <td width="45%">開始：{{$ctrl.data.DialysisHeader.PredialysisWeight}} kg</td>
+                        <td width="45%">結束：{{$ctrl.data.DialysisHeader.WeightAfterDialysis}} kg</td>
+                    </tr>
+                    <tr>
+                        <td width="45%">乾體重：{{$ctrl.data.DialysisHeader.Prescription.StandardWeight}} kg</td>
+                        <td width="45%">實際調水：{{$ctrl.data.DialysisHeader.Dehydration}} kg</td>
+                    </tr>
+                    <tr>
+                        <td width="45%">應調水：{{$ctrl.data.DialysisHeader.DehydrationTarget}} kg</td>
+                        <td width="45%">誤差：{{$ctrl.data.DialysisHeader.Dehydration - $ctrl.data.DialysisHeader.DehydrationTarget}} kg</td>
+                    </tr>
+                  </table>
+                </td>
+                <td style="border-left: #000 solid 2px; " width="50%" valign="top">
+                    <p>機台種類： &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  透析機種類：<span>{{$ctrl.data.DialysisHeader.Prescription.ArtificialKidney}}</span></p>
+                    <p>透析液 Ca/K：{{$ctrl.data.DialysisHeader.Prescription.Dialysate}}</p>
+                    <p>抗凝劑：{{$ctrl.Anticoagulants[0]}}</p>
+                    <p>結束 Hollow Fiber：{{$ctrl.data.DialysisHeader.EndHollowFiber === '+-' ? '&#177;' : $ctrl.data.DialysisHeader.EndHollowFiber}}</p>
+                    <p><span style="visibility: hidden;">結束 </span>Chamber：{{$ctrl.data.DialysisHeader.EndChamber === '+-' ? '&#177;' : $ctrl.data.DialysisHeader.EndChamber}}</p>
+                    <p>皮膚評估： &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 部位：<span></span></p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" style="border-top: #000 solid 2px">
+                    <p>血管通路：<span>{{ $ctrl.VesselAssessmentStr }}</span></p>
+                    <p>A針：{{$ctrl.data.DialysisHeader.VesselAssessments[0].ArteryCatheter}} (cc)&nbsp;&nbsp;V針：{{$ctrl.data.DialysisHeader.VesselAssessments[0].VeinCatheter}} (cc)&nbsp;&nbsp; 長度： {{$ctrl.data.DialysisHeader.VesselAssessments[0].CatheterLength}} (cm)</p>
+                    <p>血管通路合併症紀錄：<span>{{$ctrl.data.DialysisHeader.VACR}}</span></p>
+                    <p>感染徵兆：<span></span></p>
+                    <p>阻塞徵兆：<span></span></p>
+                </td>
+                <td valign="top" style="border-left: #000 solid 2px; border-top: #000 solid 2px">
+                    <p>檢驗：<span></span></p>
+                    <p>透析前採血：<span>{{$ctrl.data.DialysisHeader.BeforeDialysisExsanguinate}}</span>&nbsp;&nbsp;採血者：<span>{{$ctrl.data.DialysisHeader.BeforeBloodTransfusionPerson}}</span></p>
+                    <p>透析後採血：<span>{{$ctrl.data.DialysisHeader.AfterDialysisExsanguinate}}</span>&nbsp;&nbsp;採血者：<span>{{$ctrl.data.DialysisHeader.AfterBloodTransfusionPerson}}</span></p>
+                    <p>血型：<span>{{$ctrl.patient.BloodTypes}}</span>&nbsp;&nbsp;RH：<span>{{$ctrl.patient.RH === null ? '' : 'RH'+$ctrl.patient.RH}} {{$ctrl.patient.RH === null ? '' : $ctrl.patient.RH === '+' ? '(陽性)' : '(陰性)'}}</span></p>
+                    <p>輸血種類：<span>{{$ctrl.bloodData[0].BloodBags[0].PlasmaComponents}}</span>&nbsp;&nbsp;輸血量：<span>{{$ctrl.bloodData[0].BloodBags[0].Volume}}</span>u</p>
+                    <p>血袋條碼：<span>{{$ctrl.bloodData[0].BloodBags[0].Barcode.join()}}</span></p>
+                    <p>淨重：<span></span>&nbsp;&nbsp;&nbsp&nbsp;&nbsp;輸血時間：<span>{{$ctrl.bloodData[0].StartTime | moment: 'HH:mm'}}</span>&nbsp;&nbsp;反應：<span>{{$ctrl.bloodData[0].TransfusionReaction}}</span>&nbsp;&nbsp;核血者：
+                        <seal ng-if="$ctrl.bloodData[0].TherapistName1" label="{{$ctrl.bloodData[0].TherapistName1}}" created="none" modified="none"></seal>
+                        <seal ng-if="$ctrl.bloodData[0].TherapistName2" label="{{$ctrl.bloodData[0].TherapistName2}}" created="none" modified="none"></seal></p>
+                </td>
+            </tr>
+        </table>
+        <table border="0" cellpadding="0" cellspacing="0" align="left" class="table_in_table" style="width:20cm; border: #000 solid 2px; border-top: none">
+            <tr>
+                <td width="62%" style="padding: 0">
+                    <table border="0" cellpadding="0" cellspacing="0" align="left" class="table_in_table" style="width:100%; margin:-1px" ng-click="$ctrl.gotoMachineData()">
+                        <tr>
+                            <th width="19%">時間</th>
+                            <td width="9%" ng-repeat="dData in $ctrl.data.DialysisData">{{dData.DialysisTime | date: 'HH:mm'}}</td>
+                            <td width="9%" ng-repeat="j in $ctrl.columnTd2">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th>血壓</th>
+                            <td ng-repeat="dData in $ctrl.data.DialysisData">{{dData.BPS}} / {{dData.BPD}}</td>
+                            <td ng-repeat="j in $ctrl.columnTd2"></td>
+                        </tr>
+                        <tr>
+                            <th>脈搏/呼吸</th>
+                            <td ng-repeat="dData in $ctrl.data.DialysisData">{{dData.Pulse}} / {{dData.Breath}}</td>
+                            <td ng-repeat="j in $ctrl.columnTd2"></td>
+                        </tr>
+                        <tr>
+                            <th>血液流速<br>(cc/min)</th>
+                            <td ng-repeat="dData in $ctrl.data.DialysisData">{{dData.BloodFlowRate}}</td>
+                            <td ng-repeat="j in $ctrl.columnTd2"></td>
+                        </tr>
+                        <tr>
+                            <th>靜脈壓<br>(mmHg)</th>
+                            <td ng-repeat="dData in $ctrl.data.DialysisData">{{dData.VenousPressure}}</td>
+                            <td ng-repeat="j in $ctrl.columnTd2"></td>
+                        </tr>
+                        <tr>
+                            <th>膜上壓<br>(TMP)</th>
+                            <td ng-repeat="dData in $ctrl.data.DialysisData">{{dData.TMP}}</td>
+                            <td ng-repeat="j in $ctrl.columnTd2"></td>
+                        </tr>
+                        <tr>
+                            <th>UFR/脫水量</th>
+                            <td ng-repeat="dData in $ctrl.data.DialysisData">{{dData.UFRate}} / {{dData.TotalUF}}</td>
+                            <td ng-repeat="j in $ctrl.columnTd2"></td>
+                        </tr>
+                        <tr>
+                            <th>Heparin<br>cc/h</th>
+                            <td ng-repeat="dData in $ctrl.data.DialysisData">{{dData.HeparinOriginal}} / {{dData.HeparinDeliveryRate}}</td>
+                            <td ng-repeat="j in $ctrl.columnTd2"></td>
+                        </tr>
+                        <tr>
+                            <th>透析液流速<br>(cc/h)</th>
+                            <td ng-repeat="dData in $ctrl.data.DialysisData">{{dData.DialysisateFlowRate}}</td>
+                            <td ng-repeat="j in $ctrl.columnTd2"></td>
+                        </tr>
+                        <tr>
+                            <th>透析液濃度</th>
+                            <td ng-repeat="dData in $ctrl.data.DialysisData">{{dData.DialysateA}}</td>
+                            <td ng-repeat="j in $ctrl.columnTd2"></td>
+                        </tr>
+                        <tr>
+                            <th>透析液溫度</th>
+                            <td ng-repeat="dData in $ctrl.data.DialysisData">{{dData.DialysateTemperature}}</td>
+                            <td ng-repeat="j in $ctrl.columnTd2"></td>
+                        </tr>
+                        <tr>
+                            <th>生理食鹽水</th>
+                            <td ng-repeat="dData in $ctrl.data.DialysisData">{{dData.NormalSaline}}</td>
+                            <td ng-repeat="j in $ctrl.columnTd2"></td>
+                        </tr>
+                        <tr>
+                            <th>症狀</th>
+                            <td ng-repeat="dData in $ctrl.data.DialysisData">{{$ctrl.AssessmentItems[$index]}}</td>
+                            <td ng-repeat="j in $ctrl.columnTd2"></td>
+                        </tr>
+                        <tr>
+                            <th>備註</th>
+                            <td ng-repeat="dData in $ctrl.data.DialysisData">{{dData.Memo}}</td>
+                            <td ng-repeat="j in $ctrl.columnTd2"></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td style="border-right: 0" colspan="3">Total UF：<span>{{$ctrl.TotalUF}}</span> kg</td>
+                        </tr>
+                    </table> 
+                </td>
+                <td width="38%" style="padding: 0; border-left: #000 solid 2px" valign="top">
+                    <table border="0" cellpadding="0" cellspacing="0" align="left" class="table_in_table" style="width:100%; margin:-1px">
+                        <tr>
+                            <td style="border-right: 0; padding: 3px 2px">病情紀載</td>
+                        </tr>
+                        <tr>
+                            <td style="border-right: 0; text-align: left;">
+                                透析處方：<br/>
+                                <span ng-click="$ctrl.gotoPrescription()">Status：{{$ctrl.data.DialysisHeader.Prescription.Type}}，Bedridden：{{$ctrl.data.DialysisHeader.Prescription.InBed}}，D.W：{{$ctrl.data.DialysisHeader.Prescription.StandardWeight}}，Frequency：{{$ctrl.data.DialysisHeader.Prescription.Frequency}}，Dialysate：{{$ctrl.data.DialysisHeader.Prescription.Dialysate}} meq/l，HCO3 / NA：{{$ctrl.data.DialysisHeader.Prescription.HCO3}} / {{$ctrl.data.DialysisHeader.Prescription.Na}} meq/l，DialysateTemperature：{{$ctrl.data.DialysisHeader.Prescription.DialysateTemperature}} °C，DialysateFlowRate：{{$ctrl.data.DialysisHeader.Prescription.DialysateFlowRate}} cc/min，Needle：A：{{$ctrl.data.DialysisHeader.Prescription.Needle.ArteryLength}} G / V：{{$ctrl.data.DialysisHeader.Prescription.Needle.VeinLength}} G，Mode：{{$ctrl.data.DialysisHeader.Prescription.Mode.Name}}，Route：{{$ctrl.data.DialysisHeader.Prescription.Route}}，Heparin：{{$ctrl.data.DialysisHeader.Prescription.Anticoagulants.Heparin[0]}}u / {{$ctrl.data.DialysisHeader.Prescription.Anticoagulants.Heparin[1]}}u，HeparinFree：{{$ctrl.data.DialysisHeader.Prescription.Anticoagulants.HeparinFree[0]}}，BF：{{$ctrl.data.DialysisHeader.Prescription.BF}}，Duration：{{$ctrl.data.DialysisHeader.Prescription.Duration.Hours}}：{{$ctrl.data.DialysisHeader.Prescription.Duration.Minutes === null ? '00' : $ctrl.data.DialysisHeader.Prescription.Duration.Minutes === 0 ? '00' : $ctrl.data.DialysisHeader.Prescription.Duration.Minutes }}，ArtificialKidney：{{$ctrl.data.DialysisHeader.Prescription.ArtificialKidney}}</span>
+                                <br/><br/>
+                                病情記載：<br/>
+                                <span ng-repeat="dn in $ctrl.data.DoctorNotes | orderBy:'RecordTime'" ng-click="$ctrl.gotoDoctorNote($event)">
+                                    {{dn.RecordTime | date: 'HH:mm'}} {{dn.Content}} 
+                                    <seal model="dn" ng-if="dn.CreatedUserName && dn.ModifiedUserName === null" modified="none"></seal>
+                                    <seal model="dn" ng-if="dn.ModifiedUserName" created="none"></seal>
+                                    <br/>
+                                </span>
+                                <br/>
+                                醫囑：<br/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0; border-right: 0">
+                                <table border="0" cellpadding="0" cellspacing="0" align="left" class="table_in_table" style="width:100%; margin:-1px" ng-click="$ctrl.gotoExecutionRecord()">
+                                    <tr>
+                                        <td>名稱</td>
+                                        <td>劑量</td>
+                                        <td>給法</td>
+                                        <td>開立<br>時間</td>
+                                        <td>執行<br>時間</td>
+                                        <td style="border-right: 0">簽名</td>
+                                    </tr>
+                                    <tr ng-repeat="OR in $ctrl.data.OrderRecord">
+                                        <td>{{ OR.Name }}</td>
+                                        <td>{{ OR.Quantity }}</td>
+                                        <td>{{ OR.Route }}</td>
+                                        <td>{{ OR.PrescribingTime | date: 'HH:mm' }}</td>
+                                        <td>{{ OR.ProcessTime | date: 'HH:mm' }}</td>
+                                        <td style="border-right: 0">
+                                            <seal model="OR" ng-if="OR.CreatedUserName && OR.ModifiedUserName === null" modified="none"></seal>
+                                            <seal model="OR" ng-if="OR.ModifiedUserName" created="none"></seal>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="padding: 0; border-right: 0; border-top: #000 solid 2px">
+                    <table border="0" cellpadding="0" cellspacing="0" align="left" class="table_in_table" style="width:100%; margin:-1px" ng-click="$ctrl.gotoNursingRecords()">
+                        <tr>
+                            <td width="1%" rowspan="3" style="white-space: inherit;">護理紀錄</td>
+                            <td style="border-right: 0; text-align: left; white-space: inherit">
+                                <span ng-repeat="ns in $ctrl.data.NursingRecord | orderBy:'NursingTime'">
+                                    {{ns.NursingTime | date: 'HH:mm'}} {{ns.Content}} 
+                                    <seal model="ns" ng-if="ns.CreatedUserName && ns.ModifiedUserName === null" modified="none"></seal>
+                                    <seal model="ns" ng-if="ns.ModifiedUserName" created="none"></seal>
+                                    <br>
+                                </span>&nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right; border-right: 0">
+                                <span class="paddingright" ng-repeat="epo in $ctrl.data.EPOExecutions">{{epo.EPOName}}： {{epo.Quantity === null ? epo.Dose : epo.Quantity}} / {{epo.QuantityUnit === null ? epo.DoseUnit : epo.QuantityUnit}} &nbsp;&nbsp;&nbsp; 途徑：{{epo.Route}}　</span>&nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right; border-right: 0; padding: 0">
+                                <table border="0" cellpadding="0" cellspacing="0" align="left" class="table_in_table" style="width:100%; margin:-1px">
+                                    <tr>
+                                        <td width="30%" style="text-align: left;">Puncture nurse：<seal ng-if="$ctrl.data.DialysisHeader.OnUserName" label="{{$ctrl.data.DialysisHeader.OnUserName}}" created="none" modified="none"></seal></td>
+                                        <td width="40%" style="text-align: left;">Care nurse：<span ng-repeat="care in $ctrl.careUser"><seal label="{{care}}" created="none" modified="none"></seal></span></td>
+                                        <td width="30%" style="text-align: left;">Off nurse：<seal ng-if="$ctrl.data.DialysisHeader.OffUserName" label="{{$ctrl.data.DialysisHeader.OffUserName}}" created="none" modified="none"></seal></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <!-- <br />&nbsp; -->
+    </md-whiteframe>
+    </div>

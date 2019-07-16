@@ -1,0 +1,61 @@
+<div layout-fill layout="column" flex style="background:#f3f3f3">
+    <h2 ng-hide="dg.loading" translate="reports.demography.title" translate-values='{selectedYear: dg.selectedYear}' style="margin-top: 25px ; margin-bottom: 0; padding-left: 15px;">
+        <!-- {{ dg.selectedYear }} 年度人口學統計年度統計表 -->
+    </h2>
+    <loading ng-show="dg.loading"></loading>
+    <md-content flex  layout-fill layout-padding layout="column" ng-show="!dg.loading" style="background:#f3f3f3">
+        <div>
+            <!-- {{'reports.demography.ward' | translate}}
+            <md-input-container>
+                <md-select ng-model="dg.selectedWards" ng-change="dg.getdemography()">
+                    <md-option ng-repeat="i in dg.keys" ng-value="i">{{::dg.wards[i]}}</md-option>
+                </md-select>
+            </md-input-container> -->
+            {{'reports.demography.year' | translate}}
+            <md-input-container style="margin:0px">
+                <md-select ng-model="dg.selectedYear">
+                    <md-option ng-repeat="j in dg.optionYear" ng-value="j">{{::j}}</md-option>
+                </md-select>
+            </md-input-container style="margin:0px">
+            <md-card-actions>
+            <md-button class="md-raised md-primary" ng-click="dg.getdemography()">查詢</md-button>
+        </md-card-actions>
+            <md-card-actions class="excel-button">
+                <md-button class="md-raised md-primary" ng-click="dg.exportExcel()" ng-disabled="!dg.searchContent">{{'reports.demography.exportExcel' | translate}}</md-button>
+            </md-card-actions>
+        </div>
+        <loading ng-show="dg.searching"></loading>
+        <div ng-show="dg.searchContent && !dg.isError">
+            <table id="myTable">
+                <tbody>
+                <tr>
+                    <!-- <td class="demography" colspan="33">{{dg.selectedYear}}年</td> -->
+                    <td class="serviceQuality" colspan="33" translate="reports.demography.yearHeading" translate-values='{selectedYear: dg.contentYear}'></td>
+                </tr>
+                <tr>
+                    <td translate>{{'reports.demography.itemAndMonth'}}</td>
+                    <!-- <td class="content" ng-repeat="month in [] | range:12:1">{{::month}}月</td> -->
+                    <td class="content" ng-repeat="month in [] | range:12:1" translate="reports.demography.months" translate-values='{month: month}'></td>
+                    <td translate>{{'reports.demography.total'}}</td>
+                </tr>
+                <tr ng-repeat=" (key,records) in dg.Content ">
+                    <td class="content" ng-class="{notSupport: item.indexOf('糖尿病腎病病人數') > -1}" ng-repeat="item in records track by $index ">{{::item}}</td>
+                </tr>
+                <tr>
+                    <td colspan="14" translate>
+                        {{'reports.demography.deathReason'}}
+                    </td>
+                </tr>
+                <tr ng-repeat=" (key,records) in dg.content2 ">
+                    <td class="content" ng-repeat="item in records track by $index ">{{::item}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div ng-if="!dg.searching && dg.isError" layout-fill flex layout="column" layout-align="center center" style="background:#f3f3f3">
+            <h3>
+                伺服器錯誤，請重新整理
+            </h3>
+        </div>
+    </md-content>
+</div>

@@ -1,0 +1,30 @@
+<md-dialog>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>
+                <span translate>
+                    {{'allExecutionRecord.recordDeleteDialog.checkDeleteTitle'}}
+                </span>
+            </h2>
+            <span flex></span>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div>
+            <div layout="column" style="margin-bottom:0rem;">
+                <div style="margin: 10px; line-height:40px;" translate>
+                    {{'allExecutionRecord.recordDeleteDialog.checkDeleteMessage'}}
+                </div>
+            </div>
+            <md-dialog-actions layout="row" layout-align="end center">
+                <md-button class="md-raised" ng-click="dialog.cancel()">
+                    {{'allExecutionRecord.recordDeleteDialog.cancel' | translate}}
+                </md-button>
+                <md-button class="md-raised md-primary md-btn-white-text" ng-click="dialog.ok()">
+                    {{'allExecutionRecord.recordDeleteDialog.delete' | translate}}
+                </md-button>
+            </md-dialog-actions>
+        </div>
+    </md-dialog-content>
+</md-dialog>

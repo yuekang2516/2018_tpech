@@ -1,0 +1,21 @@
+<md-fab-speed-dial md-open="false" class="md-fab-bottom-right" md-direction="left" ng-class="{'md-fling':true, 'md-hover-full':'true'}"
+    ng-cloak>
+    <md-fab-trigger>
+        <md-button aria-label="menu" class="md-fab">
+            <md-icon class="material-icons">menu</md-icon>
+        </md-button>
+    </md-fab-trigger>
+    <md-fab-actions>
+        <md-button aria-label="Add" class="md-fab md-raised md-mini md-accent" ng-click="$ctrl.add()">
+            <md-icon>
+                <i class="material-icons">add</i>
+            </md-icon>
+        </md-button>
+
+        <md-button aria-label="Insert Link" class="md-fab md-raised md-mini md-accent" ng-click="$ctrl.nfc()">
+            <md-icon>
+                <i class="material-icons">nfc</i>
+            </md-icon>
+        </md-button>
+    </md-fab-actions>
+</md-fab-speed-dial>

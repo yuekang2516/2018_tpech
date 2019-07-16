@@ -1,0 +1,80 @@
+<div flex style="position: relative" layout="column" layout-fill>
+    <summary-toolbar toolbar-title="'dialysisTabView.bloodTransfusion' | translate" cancel="$ctrl.goback()"></summary-toolbar>
+    <div ng-show="!$ctrl.loading && $ctrl.serviceData.length > 0" class="list-header" layout="row" layout-align="center center">
+        <md-switch ng-model="$ctrl.showDeleted" aria-label="Switch data">
+            <!-- 顯示已刪除 ({{$ctrl.deletedItemsLength}}筆) -->
+            <span translate="bloodTransfusion.bloodTransfusions.showDeleted" translate-values='{deletedItemsLength: $ctrl.deletedItemsLength}'></span>
+        </md-switch>
+        <span flex></span>
+        <!-- <h6>共 {{$ctrl.serviceData.length}} 筆</h6> -->
+        <h6 translate="bloodTransfusion.bloodTransfusions.totalRecord" translate-values='{length: $ctrl.serviceData.length}'></h6>
+        <span flex></span>
+        <h6>{{$ctrl.lastRefreshTitle}}</h6>
+        <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+    </div>
+    <md-content layout="column" flex>
+        <loading ng-show="$ctrl.loading"></loading>
+        <div ng-show="!$ctrl.loading && $ctrl.serviceData.length > 0" layout-wrap>
+            <md-list>
+                <md-list-item class="md-2-line" ng-class="{deleted: item.Status == 'Deleted'}" ng-repeat="item in $ctrl.serviceData | orderBy : $ctrl.sortRecord : true"
+                    ng-click="$ctrl.goto(item.Id)" ng-show="item.Status !== 'Deleted' || $ctrl.showDeleted">
+                    <div class="md-list-item-text" layout="column">
+                        <div flex>
+                            <span class="md-title" ng-bind="item.StartTime ? (item.StartTime | moment: 'YYYY-MM-DD (dd) HH:mm') : '{{'bloodTransfusion.bloodTransfusions.unknown' | translate}}'"></span>                            ~
+                            <span class="md-title" ng-bind="item.EndTime ? (item.EndTime | moment: 'YYYY-MM-DD (dd) HH:mm') : '{{'bloodTransfusion.bloodTransfusions.unknown' | translate}}'"></span>
+                        </div>
+                        <seal model="item" modified="hideIfSame" fixed=true></seal>
+                        <div flex>
+                            <span class="md-caption" translate>{{'bloodTransfusion.bloodTransfusions.LeadBlood'}}</span>
+                            <span class="md-caption" ng-bind="item.LeadBlood ? item.LeadBlood : ''"></span>
+                        </div>
+                    </div>
+                    <md-icon class="md-secondary" ng-show="item.Status !== 'Deleted'" ng-click="$ctrl.showDialog($event, item)" md-svg-icon="static/img/svg/ic_delete_black_24px.svg"></md-icon>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-list-item>
+            </md-list>
+        </div>
+        <div flex ng-show="!$ctrl.loading && !$ctrl.showDeleted && $ctrl.deletedItemsLength == $ctrl.serviceData.length" layout="column"
+            layout-fill layout-align="center center">
+            <h1 translate>{{'bloodTransfusion.bloodTransfusions.noData'}}</h1>
+            <h4 translate>{{'bloodTransfusion.bloodTransfusions.clickBottomRight'}}</h4>
+        </div>
+        <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate>{{'bloodTransfusion.bloodTransfusions.serverError'}}</h3>
+        </div>
+    </md-content>
+    <md-button class="md-fab md-fab-bottom-right" ng-click="$ctrl.goto()">
+        <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+    </md-button>
+</div>
+
+<script type="text/ng-template" id="dialog.html">
+    <md-dialog aria-label="刪除確認">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2 translate>{{'bloodTransfusion.bloodTransfusions.confirmDelete'}}</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="vm.cancel()">
+                        <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content" translate>
+                    {{'bloodTransfusion.bloodTransfusions.deleteRecord'}}
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+                <md-button ng-click="vm.cancel()">
+                    {{'bloodTransfusion.bloodTransfusions.cancel' | translate}}
+                </md-button>
+                <md-button ng-click="vm.ok()">
+                    {{'bloodTransfusion.bloodTransfusions.delete' | translate}}
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>

@@ -1,0 +1,101 @@
+<md-dialog class="peritonealDialysisTabView">
+    <form name="editForm" novalidate ng-cloak>
+        <summary-toolbar ng-if="$ctrl.odLRDataObj.isCreate" ng-click="$ctrl.cancel()" toolbar-title="'orderLR.dialog.createTitle' | translate"></summary-toolbar>
+        <summary-toolbar ng-if="!$ctrl.odLRDataObj.isCreate" ng-click="$ctrl.cancel()" toolbar-title="'orderLR.dialog.editTitle' | translate"></summary-toolbar>
+        <!-- <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 ng-if="$ctrl.odLRDataObj.isCreate" translate="orderLR.dialog.createTitle"></h2>
+                <h2 ng-if="!$ctrl.odLRDataObj.isCreate" translate="orderLR.dialog.editTitle"></h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+                    <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar> -->
+        <md-dialog-content>
+            <div class="dialogBoxData">
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem lightblue">
+                        <label>*日期</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.odLRDataObj.Record_Date" type="date"
+                        name="RecordDate" required>
+                        <div ng-messages="editForm.RecordDate.$error" ng-show="editForm.RecordDate.$dirty">
+                            <div ng-message="required" class="clrRequired">必填選項</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem lightblue">
+                        <label>*時間</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.odLRDataObj.Record_Date" type="time"
+                        name="RecordTime" required>
+                        <div ng-messages="editForm.RecordTime.$error" ng-show="editForm.RecordTime.$dirty">
+                            <div ng-message="required" class="clrRequired">必填選項</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>透析液濃度</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input type="text" ng-model="$ctrl.odLRDataObj.Dialysate_Concentration" maxlength="100" />
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>ESA用量</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input type="text" ng-model="$ctrl.odLRDataObj.Epo_Dosage" maxlength="100" />
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>IV Atofen（amp）</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input type="text" ng-model="$ctrl.odLRDataObj.Iv_Atofen_Amp" maxlength="100" />
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>Heparin 用量</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input type="text" ng-model="$ctrl.odLRDataObj.Heparin_Dosage" maxlength="100" />
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>Dialyzer</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input type="text" ng-model="$ctrl.odLRDataObj.Dialyzer" maxlength="100" />
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>Dry BW（kg）</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input type="text" ng-model="$ctrl.odLRDataObj.Dry_Bw_Kg" maxlength="100" />
+                    </div>
+                </div>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <md-button class="md-raised" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.cancel()">
+                {{'orderLR.dialog.cancel' | translate}}
+            </md-button>
+            <md-button class="md-raised md-primary" ng-click="$ctrl.ok()">
+                {{$ctrl.odLRDataObj.isCreate ? 'orderLR.dialog.create' : 'orderLR.dialog.edit' | translate}}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

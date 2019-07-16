@@ -1,0 +1,60 @@
+<style scoped>
+    machine-property {
+        height: 100%;
+    }
+</style>
+<div flex layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.openLeftMenu()" hide-gt-sm>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <h3 translate="property.pageTitle"></h3>
+        </div>
+    </md-toolbar>
+    <div class="list-header" ng-show="!vm.loading && !vm.isError">
+        <span translate="epo.totalRecord" translate-values='{total: (vm.machines|filter:vm.search).length}'></span>
+        <span flex><input type="text" ng-model="vm.search" ng-show="false" /></span>
+        <span flex></span>
+        <span>
+            <md-switch ng-model="vm.showDelete" ng-change="vm.changeSearch()" aria-label="show deleted">
+                <span translate="property.showDelete"></span>
+            </md-switch>
+        </span>
+    </div>
+    <md-content layout-fill flex>
+        <loading ng-show="vm.loading"></loading>
+        <div flex ng-show="vm.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate="customMessage.serverError"></h3>
+        </div>
+        <div ng-show="!vm.loading && !vm.isError" infinite-scroll="vm.loadMore()" infinite-scroll-disabled='vm.loading' infinite-scroll-distance='2'
+            infinite-scroll-parent>
+            <div ng-show="vm.machines && vm.machines.length == 0" layout="column" layout-fill layout-align="center center" flex>
+                <i class="fa fa-file-o"></i>
+                <h3 translate="customMessage.noData"></h3>
+                <h4 translate="property.addNew"></h4>
+            </div>
+            <md-list ng-show="vm.machines && vm.machines.length > 0">
+                <md-list-item>
+                    <div layout="row" layout-fill>
+                        <div flex><label translate="property.brand"></label></div>
+                        <div flex><label translate="property.model"></label></div>
+                        <div flex><label translate="property.propertyNumber"></label></div>
+                    </div>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-list-item>
+                <md-list-item ng-class="{deleted: equ.Status == 'Deleted'}" ng-repeat="equ in vm.showMachines track by equ.Id" ng-click="vm.go(equ)" ng-show="equ.Status !== 'Deleted' || vm.showDelete">
+                    <div layout="row" layout-fill>
+                        <div flex>{{ equ.Brand }}</div>
+                        <div flex>{{ equ.Model }}</div>
+                        <div flex>{{ equ.PropertyNumber }}</div>
+                    </div>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-list-item>
+            </md-list>
+        </div>
+    </md-content>
+    <md-button class="md-fab" ng-click="vm.gotoCreate()" aria-label="Eat cake" style="position:fixed;right:24px;bottom:24px">
+        <md-icon md-font-icon="mdi mdi-plus" style="font-size: 24px;height: 33px">+</md-icon>
+    </md-button>
+</div>

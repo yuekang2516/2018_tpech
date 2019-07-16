@@ -1,0 +1,67 @@
+[
+    {
+      "SupplementVolume": null,
+      "SupplementPosition": null,
+      "DateTimestamp": "2019-03-19T17:34:29.6052518+08:00",
+      "PatientId": "5c8f61ae98584d53f0458527",
+      "InBed": null,
+      "StandardWeight": 66,
+      "Dehydration": null,
+      "BF": 200,
+      "Duration": {
+        "Hours": 4,
+        "Minutes": 0,
+        "Seconds": null
+      },
+      "Frequency": "Tiw",
+      "Anticoagulants": {
+        "Heparin": [
+          "5",
+          "5"
+        ]
+      },
+      "Dialysate": "3.0/2.0",
+      "HCO3": null,
+      "Na": null,
+      "Ca": null,
+      "DialysateTemperature": 36.5,
+      "DialysateFlowRate": 500,
+      "Needle": {
+        "ArteryLength": "15",
+        "VeinLength": "15"
+      },
+      "ArtificialKidney": "FX80",
+      "Mode": {
+        "Name": "HD",
+        "Volumn": null
+      },
+      "Type": "LongTerm",
+      "AnticoagulantFreeCause": null,
+      "Route": "Fistular L",
+      "Memo": null,
+      "DialyzerSurfaceArea": null,
+      "PBP": "",
+      "FluidFlowWate": "",
+      "ACTControl": "",
+      "HospitalId": "56fcc5dd4ead7870942f61c3",
+      "Revision": 1,
+      "HistoryId": null,
+      "Status": "Normal",
+      "CreatedUserId": "5c8f5c9e98584d53f044eac8",
+      "CreatedUserName": "楊昌宏",
+      "CreatedTime": "2019-03-18T09:45:28.711Z",
+      "ModifiedUserId": null,
+      "ModifiedUserName": null,
+      "ModifiedTime": null,
+      "Id": "5c8f68b898584d53f046787f",
+      "CreatedOn": "2019-03-18T09:45:28Z",
+      "ModifiedOn": "0001-01-01T00:00:00Z",
+      "ObjectId": {
+        "Timestamp": 1552902328,
+        "Machine": 9984077,
+        "Pid": 21488,
+        "Increment": 4618367,
+        "CreationTime": "2019-03-18T09:45:28Z"
+      }
+    }
+  ]

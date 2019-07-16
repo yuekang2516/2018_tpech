@@ -1,0 +1,74 @@
+<div flex layout="column" style="position:relative" layout-fill>
+    <summary-toolbar toolbar-title="'dialysisTabView.machine' | translate" cancel="machineData.goback()"></summary-toolbar>
+    <div ng-show="!machineData.loading && machineData.serviceData.length > 0">
+        <div class="list-header" layout="row" layout-align="center center">
+            <!-- <h6>共 {{machineData.serviceData.length}} 筆</h6> -->
+            <h6 translate="machineData.machineData.totalRecord" translate-values='{length: machineData.serviceData.length}'></h6>
+            <span flex></span>
+            <!--component shows last refresh time and the refresh button  -->
+            <last-refresh-time accesstime='machineData.lastAccessTime' refresh='machineData.refresh()'></last-refresh-time>
+        </div>
+    </div>
+
+    <md-content flex layout="column">
+        <loading ng-show="machineData.loading">loading...</loading>
+        <!-- <md-list ng-show="!machineData.loading && machineData.serviceData.length > 0">
+            <md-list-item class="md-2-line" ng-repeat="item in machineData.serviceData | filter:validData | orderBy : ['-DialysisTime', '-CreatedTime']" ng-click="machineData.goto(item.Id)">
+                <div class="md-list-item-text" layout="column">
+                    <p>{{ ::item.DialysisTime | moment:'YYYY/MM/DD (dd) HH:mm'}}</p>
+                    <div layout="row">
+                        <div flex>
+                            <span class="title" translate>{{'machineData.machineData.bloodPressure'}}</span>
+                            <span class="content">{{ ::item.BPS}} / {{ ::item.BPD}}</span>
+                        </div>
+                        <div flex>
+                            <span class="title" translate>{{'machineData.machineData.BloodFlowRate'}}</span>
+                            <span class="content">{{::item.BloodFlowRate}}</span>
+                        </div>
+                        <div flex hide show-gt-xs>
+                            <span class="title" translate>{{'machineData.machineData.VenousPressure'}}</span>
+                            <span class="content">{{::item.VenousPressure}}</span>
+                        </div>
+                        <div flex hide show-gt-xs>
+                            <span class="title" translate>{{'machineData.machineData.TMP'}}</span>
+                            <span class="content">{{::item.TMP}}</span>
+                        </div>
+                        <div flex hide show-gt-xs>
+                            <span class="title" translate>{{'machineData.machineData.BloodLeak'}}</span>
+                            <span class="content">{{::item.BloodLeak }}</span>
+                        </div>
+                        <seal model="item" modified="hideIfSame" fixed="false"></seal>
+                        <div class="seal">
+                            {{::item.CreatedUserName}}
+                        </div>-->
+                    <!-- </div>
+                    <div class="assessment-div">
+                        <ul ng-repeat="(k,v) in item.AssessmentItems" >
+                            <li class="layoutRow" style="line-height: 24px; padding: 0; margin: 0">
+                                <span class="question addcolon" ng-bind="k" ></span>
+                                <span ng-repeat="value in v track by $index" ng-bind="value" class="dataspan" ></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <md-icon class="md-secondary" ng-show="machineData.checkCanAccess(item.CreatedUserId, item.Status)"ng-click="machineData.delete(item.Id)" md-svg-icon="static/img/svg/ic_delete_black_24px.svg"></md-icon>
+                </div>
+                <md-divider></md-divider>
+            </md-list-item>
+        </md-list> --> 
+        <div ag-grid="machineData.gridOptions" ng-show="!machineData.loading && machineData.serviceData.length > 0" class="ag-theme-blue" style="height:100% ;overflow: hidden; white-space: nowrap;"></div>
+        <nodata-page flex ng-show="!machineData.loading && machineData.serviceData.length == 0 && !machineData.isError" nodata-title="{{'machineData.machineData.noData' | translate}}" content="{{ 'machineData.machineData.clickBottomRight' | translate }}"></nodata-page>
+        <!-- <div flex ng-show="!machineData.loading && machineData.serviceData.length == 0" layout="column" layout-fill layout-align="center center">
+            <h1 translate>{{'machineData.machineData.noData'}}</h1>
+            <h4 translate>{{'machineData.machineData.clickBottomRight'}}</h4>
+        </div> -->
+        <server-error-page flex ng-show="!machineData.loading && machineData.isError" refresh="machineData.refresh()"></server-error-page>
+        <!-- <div flex ng-show="!machineData.loading && machineData.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate>{{'machineData.machineData.serverError'}}</h3>
+        </div> -->
+    </md-content>
+    <md-button class="md-fab md-fab-bottom-right" ng-click="goto('create')">
+        <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+    </md-button>
+</div>

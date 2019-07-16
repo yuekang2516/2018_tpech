@@ -1,0 +1,193 @@
+<div flex layout="column" layout-fill class="custom-medcine-content">
+
+    <summary-toolbar ng-if="$ctrl.prescribingId === 'create'"
+        toolbar-title="'prescribingRecord.customMedicine.createPrescription'|translate" cancel="$ctrl.goback()">
+    </summary-toolbar>
+    <summary-toolbar ng-if="$ctrl.prescribingId !== 'create' && $ctrl.serviceData.Status !== 'Deleted'"
+        toolbar-title="'prescribingRecord.customMedicine.editPrescription'|translate" cancel="$ctrl.goback()">
+    </summary-toolbar>
+    <summary-toolbar ng-if="$ctrl.serviceData.Status === 'Deleted'"
+        toolbar-title="'prescribingRecord.customMedicine.showDeleted'|translate" cancel="$ctrl.goback()">
+    </summary-toolbar>
+
+    <!-- <div hide-xs hide-sm ng-show="!$ctrl.loading">
+            <h3 style="float: left; padding-left: 10px">
+                <span ng-show="!$ctrl.prescribingId" translate>{{'prescribingRecord.customMedicine.createPrescription'}}</span>
+                <span ng-show="$ctrl.prescribingId && $ctrl.serviceData.Status !== 'Deleted'" translate>{{'prescribingRecord.customMedicine.editPrescription'}}</span>
+                <span ng-show="$ctrl.serviceData.Status === 'Deleted'" translate>{{'prescribingRecord.customMedicine.showDeleted'}}</span>
+            </h3>
+            <md-button style="float:right; margin-top: 8px" class="md-secondary md-icon-button" ng-click="$ctrl.goback()" aria-label="call">
+                <i class="material-icons">cancel</i>
+            </md-button>
+        </div> -->
+    <span ng-if="$ctrl.checkIsHIS" class="readonly-text" translate>HIS介接資料，唯讀</span>
+    <md-content layout="column" flex>
+        <loading ng-show="$ctrl.loading">loading...</loading>
+
+        <form class="prescribingDetailForm yuekang-input-container" name="regForm" ng-hide="$ctrl.loading">
+
+            <div layout="row">
+                <label translate>{{'prescribingRecord.customMedicine.category'}}</label>
+                <div>
+                    <input type="text" name="CategoryName" ng-model="$ctrl.serviceData.CategoryName" />
+                </div>
+            </div>
+            <div layout="row">
+                <label translate>
+                    {{'prescribingRecord.customMedicine.medicineName'}}
+                </label>
+                <div>
+                    <input required type="text" name="MedicineName" ng-model="$ctrl.serviceData.Name" />
+                </div>
+            </div>
+            <div layout="row">
+                <!-- <label>每次數量 ({{ ::$ctrl.serviceData.QuantityUnit}})</label> -->
+                <!-- <label translate="prescribingRecord.customMedicine.QuantityUnit" translate-values='{QuantityUnit: $ctrl.serviceData.QuantityUnit}'></label> -->
+                <label translate="prescribingRecord.customMedicine.QuantityUnit"></label>
+                <div>
+                    <input required type="number" name="Quantity" ng-model="$ctrl.serviceData.Quantity" min="0"
+                        ng-change="$ctrl.calculationTotal()" />
+                    <div ng-messages="regForm.Quantity.$error" multiple md-auto-hide="false">
+                        <div ng-message="required" translate>{{'prescribingRecord.customMedicine.QuantityRequired'}}
+                        </div>
+                        <div ng-message="min" translate>{{'prescribingRecord.customMedicine.QuantityMin'}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div layout="row">
+                <label translate>
+                    {{'prescribingRecord.customMedicine.Unit'}}
+                </label>
+                <div>
+                    <input type="text" name="QuantityUnit" ng-model="$ctrl.serviceData.QuantityUnit" />
+                </div>
+            </div>
+
+            <div layout="row">
+                <label translate>{{'prescribingRecord.customMedicine.Route'}}</label>
+                <md-select ng-model="$ctrl.serviceData.Route">
+                    <md-option ng-repeat="state in $ctrl.routeOptions" ng-value="state.code">
+                        {{ ::state.text}}
+                    </md-option>
+                </md-select>
+            </div>
+            <div layout="row">
+                <label translate>{{'prescribingRecord.customMedicine.Frequency'}}</label>
+                <md-select required ng-model="$ctrl.serviceData.Frequency" ng-change="$ctrl.calculationTotal()">
+                    <md-option ng-repeat="state in $ctrl.frequencyOptions" ng-value="state.code">
+                        {{ ::state.text}}
+                    </md-option>
+                </md-select>
+            </div>
+            <div layout="row">
+                <label translate>{{'prescribingRecord.customMedicine.StartDate'}}</label>
+                <div>
+                    <input required type="date" name="StartDate" ng-model="$ctrl.StartDate"
+                        ng-change="$ctrl.calculationTotal()" />
+                    <div ng-messages="regForm.StartDate.$error">
+                        <div ng-message="required" translate>{{'prescribingRecord.customMedicine.StartDateRequired'}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div layout="row">
+                    <label translate>{{'prescribingRecord.customMedicine.Infinity'}}</label>
+                    <div>
+                        <md-checkbox ng-model="$ctrl.Infinity" ng-change="$ctrl.changeInfinity($ctrl.Infinity)"></md-checkbox>
+                    </div>
+                </div> -->
+
+            <div layout="row">
+                <label translate>{{'prescribingRecord.customMedicine.usageDays'}}</label>
+                <div>
+                    <input type="number" name="Days" ng-model="$ctrl.serviceData.Days" min="1"
+                        ng-change="$ctrl.calculationTotal()" ng-disabled="$ctrl.serviceData.Frequency == 'ST' || $ctrl.serviceData.Frequency == 'STAT'">
+                    <div ng-messages="regForm.Days.$error">
+                        <div ng-message="required" translate>{{'prescribingRecord.customMedicine.usageDaysRequired'}}
+                        </div>
+                        <div ng-message="min" translate>{{'prescribingRecord.customMedicine.usageDaysMin'}}</div>
+                        <div class="my-message">{{ $ctrl.oMessage.STMessage}}</div>
+                    </div>
+                </div>
+
+                <!-- <div ng-if="$ctrl.Infinity">
+                        <input type="number" name="Days" ng-model="$ctrl.DaysZero" ng-init="$ctrl.DaysZero = 0"
+                            ng-disabled="$ctrl.Infinity">
+                        <div ng-if="$ctrl.serviceData.Frequency === 'ST'">
+                            <div >{{ $ctrl.oMessage.STMessage}}</div>
+                        </div>
+                    </div> -->
+            </div>
+
+            <div layout="row">
+                <label translate>{{'prescribingRecord.customMedicine.TotalQuantity'}}</label>
+                <div>
+                    <input type="number" name="TotalQuantity" ng-model="$ctrl.serviceData.TotalQuantity"
+                        ng-disabled="$ctrl.serviceData.Frequency != 'PRN'" min="0" />
+                    <div ng-messages="regForm.TotalQuantity.$error">
+                        <div ng-message="required" translate>
+                            {{'prescribingRecord.customMedicine.TotalQuantityRequired'}}</div>
+                        <div ng-message="min" translate>{{'prescribingRecord.customMedicine.TotalQuantityMin'}}</div>
+                        <div class="my-message">{{ ::$ctrl.oMessage.PRNMessage}}</div>
+                    </div>
+                </div>
+                <!-- <div ng-if="$ctrl.Infinity">
+                        <input type="number" name="TotalQuantity" ng-model="$ctrl.TotalQuantityZero" ng-init="$ctrl.TotalQuantityZero = 0" ng-disabled="$ctrl.Infinity" />
+                    </div> -->
+            </div>
+
+            <div layout="row">
+                <label translate>{{'prescribingRecord.customMedicine.IsOtherDrug'}}</label>
+                <div>
+                    <md-checkbox ng-model="$ctrl.IsOther" ng-change="$ctrl.changeIsOtherDrug()"></md-checkbox>
+                    <!-- style="font-size:14px; color:red; margin-left:5px;" -->
+                    <span class="execute-no-show" translate>{{'prescribingRecord.customMedicine.ExecuteNoShow'}}</span>
+                </div>
+            </div>
+            <div layout="row" ng-if="$ctrl.IsOther">
+                <label translate>{{'prescribingRecord.customMedicine.OtherDrugContent'}}</label>
+                <div>
+                    <input type="text" name="OtherContent" ng-model="$ctrl.serviceData.OtherContent" />
+                </div>
+            </div>
+
+            <div layout="row">
+                <label translate>{{'prescribingRecord.customMedicine.Memo'}}</label>
+                <md-input-container flex>
+                    <textarea name="Memo" rows="5" ng-model="$ctrl.serviceData.Memo" md-detect-hidden="true"></textarea>
+                </md-input-container>
+            </div>
+
+            <div layout="row" layout-wrap>
+                <div flex="50" flex-xs="100" ng-show="$ctrl.serviceData.CreatedUserName">
+                    <!-- <span>建立: {{ $ctrl.serviceData.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                    <span translate="prescribingRecord.customMedicine.createdTime"
+                        translate-values='{CreatedTime: $ctrl.serviceData.CreatedTime}'></span>
+                    <seal model="$ctrl.serviceData" modified="none"></seal>
+                </div>
+                <div flex="50" flex-xs="100" ng-show="$ctrl.serviceData.ModifiedTime != null">
+                    <!-- <span>修改: {{ $ctrl.serviceData.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                    <span translate="prescribingRecord.customMedicine.editedTime"
+                        translate-values='{ModifiedTime: $ctrl.serviceData.ModifiedTime}'></span>
+                    <seal model="$ctrl.serviceData" created="none"></seal>
+                </div>
+            </div>
+            <!--<div layout="row" ng-show="$ctrl.serviceData.ModifiedUserId">
+                    <div>{{ ::$ctrl.serviceData.ModifiedUserName}} 於 {{ ::$ctrl.serviceData.ModifiedTime | date: 'yyyy-MM-dd HH:mm:ss'}} 修改</div>
+                </div>
+                <div layout="row" ng-show="$ctrl.serviceData.CreatedUserId">
+                    <div>{{ ::$ctrl.serviceData.CreatedUserName}} 於 {{ ::$ctrl.serviceData.CreatedTime | date: 'yyyy-MM-dd HH:mm:ss'}} 建立</div>
+                </div>-->
+            <div layout="row">
+                <md-button ng-click="$ctrl.submit()" ng-show="$ctrl.serviceData.Status != 'Deleted'"
+                    class="md-raised md-primary" ng-disabled="regForm.$invalid || $ctrl.isSaving || $ctrl.checkIsHIS">
+                    {{'prescribingRecord.customMedicine.save' | translate}}</md-button>
+            </div>
+        </form>
+        <div ng-class="{deleted: $ctrl.serviceData.Status == 'Deleted'}"></div>
+        <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate>{{'prescribingRecord.customMedicine.serverError'}}</h3>
+        </div>
+    </md-content>
+</div>

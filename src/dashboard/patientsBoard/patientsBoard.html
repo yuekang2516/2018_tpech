@@ -1,0 +1,55 @@
+<md-content layout-fill>
+    <loading ng-show="$ctrl.loading"></loading>
+    <label class="red" ng-show="$ctrl.serverErr" translate>{{'patientsBoard.serverError'}}</label>
+    <div ng-show="!$ctrl.loading">
+        <div class="box" ng-class="{alertborder: item.alarmAry.length > 0}" style="padding:0" ng-repeat="item in $ctrl.serverData track by $index">
+            <div ng-if="item.Name">
+                <div class="number" ng-class="{abnormal: item.alarmAry.length > 0}" ng-click="$event.stopPropagation(); $ctrl.toggleAlarm(item)" layout="row" layout-wrap>
+                    <span class="bedNo">{{ item.BedNo }}</span>
+                    <span ng-if="item.Group">({{ item.Group }})</span>
+                    <span flex></span>
+                    <div class="right">
+                        <span>{{item.status}}</span>
+                    </div>
+                </div>
+                <div class="boxtxt">
+                    <p class="patientname">{{ item.Name }}</p>
+                    <p class="patientnameh2">{{ item.MedicalId }}</p>
+                    <div class="status">{{ item.DialysisMode || ('patientsBoard.none' | translate) }}</div>
+
+                    <div class="condition" ng-if="!item.PatientSource || item.PatientSource === 'outpatient'">門診－{{ item.BedNo }}</div>
+                    <div class="condition" ng-if="item.PatientSource === 'inpatient'">住院－{{ item.SourceBedNo }}</div>
+                    <div class="emergency-condition" ng-if="item.PatientSource === 'emergency'">急診－{{ item.BedNo }}</div>
+
+                    <div layout="column">
+                        <span>醫師：{{item.Doctor}}</span>
+                        <span>護理師：{{item.NursesAry.join('，')}}</span>
+                    </div>
+                    <div class="tagarea">
+                        <patient-tag ng-repeat="tag in item.Tags track by $index" tag="tag"></patient-tag>
+                    </div>
+
+                </div>
+                <div class="bottomarea">
+                    <div class="bottombox">
+                        <div class="button3" ng-disabled="!item.Memo" ng-click="$ctrl.showMemo(item)" translate>{{'patientsBoard.memo'}}</div>
+                        <span ng-disabled="!item.notifications || item.notifications.length == 0">
+                            <div class="button3" ng-click="$ctrl.showNotifications(item)">
+                                <span translate>{{'patientsBoard.notification'}}</span>
+                                <span ng-show="item.unreadNotificationCount && item.unreadNotificationCount > 0" class="unreadNotification icon-button-badge">{{item.unreadNotificationCount}}</span>
+                            </div>
+                        </span>
+                        <div class="button3" ng-click="$ctrl.showSummaryContent(item)" style="border-right:0" translate>{{'patientsBoard.dialysisRecord'}}</div>
+                    </div>
+                </div>
+                <div layout="column" ng-if="item.alarmAry.length > 0 && !item.toggleAlarm" class="warningArea">
+                    <span ng-repeat="msg in item.alarmAry">{{::msg}}</span>
+                </div>
+            </div>
+
+            <div class="" ng-if="!item.Name" style="padding:0">
+                <div class="whitetxt">{{item.BedNo}}</div>
+            </div>
+        </div>
+    </div>
+</md-content>

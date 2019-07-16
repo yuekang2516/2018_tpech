@@ -1,0 +1,49 @@
+<div layout-fill flex layout="column" style="background:#f3f3f3">
+    <h2 ng-hide="$ctrl.loading" translate="reports.allLabexam.title" style="margin-top: 25px ; margin-bottom: 0; padding-left: 15px;" translate-values='{selectedYear: $ctrl.selectedYear, selectedMonth: $ctrl.selectedMonth}'></h2>
+    <loading ng-show="$ctrl.loading"></loading>
+    <md-content flex layout-fill layout-padding layout="column" ng-show="!$ctrl.loading" style="background:#f3f3f3">
+        <div layout="row" layout-wrap>
+            <div>
+                {{'reports.allLabexam.year' | translate}}
+                <md-input-container>
+                    <md-select ng-model="$ctrl.selectedYear">
+                        <md-option ng-repeat="j in $ctrl.optionYear" ng-value="j">{{::j}}</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div>
+                {{'reports.allLabexam.month' | translate}}
+                <md-input-container>
+                    <md-select ng-model="$ctrl.selectedMonth">
+                        <md-option ng-repeat="k in $ctrl.optionMonth" ng-value="k">{{::k}}</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <!-- TODO 尚未有功能 -->
+            <div>
+                主治醫生查詢：
+                <md-input-container>
+                    <md-select ng-model="$ctrl.doctor">
+                        <md-option ng-value="null">全部</md-option>
+                        <md-option ng-repeat="d in $ctrl.doctorList" ng-value="d.Id">{{d.Name}}</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <md-card-actions style="padding:10px 0;">
+                    <md-button class="md-raised md-primary"  ng-click="$ctrl.getLabexamData()">查詢</md-button>
+            </md-card-actions>
+            <md-card-actions class="excel-button" style="padding:10px 0;">
+                <md-button class="md-raised md-primary" ng-click="$ctrl.exportExcel()" ng-disabled="!$ctrl.searchContent">{{'reports.allLabexam.exportExcel' | translate}}</md-button>
+            </md-card-actions>
+        </div>
+        <loading ng-show="$ctrl.searching"></loading>
+        <div ng-show="$ctrl.searchContent && !$ctrl.isError" id="allLabexamReport" >
+        </div>
+
+        <div ng-if="!$ctrl.searching && $ctrl.isError" layout-fill flex layout="column" layout-align="center center" style="background:#f3f3f3">
+            <h3>
+                伺服器錯誤，請重新整理
+            </h3>
+        </div>
+    </md-content>
+</div>

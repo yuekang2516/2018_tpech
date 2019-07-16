@@ -1,0 +1,339 @@
+album, photo-list, album-list, .addAlbum, .photo-list {
+  height: 100%;
+
+  md-tabs.md-tabs-fixed {
+    position: relative;
+    md-tabs-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+  }
+
+  .list-wrapper {
+    overflow-y: auto;
+    padding: 10px;
+    margin-top: 20px;
+  }
+
+  .f18 {
+    font-size: 18px;
+    line-height: 24px;
+    color: #7a7a7a;
+    vertical-align: top
+  }
+  .maintab {
+    text-align: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 85px;
+    z-index: 999;
+    background: #fff
+  }
+  .maintabbar {
+    clear: both;
+    overflow: hidden;
+    line-height: 50px;
+    border-bottom: #ccc solid 1px;
+    margin-bottom: 4px
+  }
+  .maintab a {
+    float: left;
+    width: 50%;
+    text-align: center;
+    color: #7a7a7a;
+    font-size: 20px;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .maintab .active {
+    color: #53b059;
+    border-bottom: #ccc solid 3px
+  }
+
+  .container {
+    padding:0 10px;
+  }
+  .container b {
+    font-size: 18px
+  }
+  .container b span {
+    padding: 0 3px
+  }
+  .photobox {
+    clear: both;
+    overflow: hidden;
+  }
+  .photobox .photo {
+    width: 9.5%;
+    float: left;
+    margin-right: 0.5555%;
+    margin-bottom: 12px;
+    position: relative;
+    background: url(./static/img/Loading_icon.gif) no-repeat center center;
+    background-color: #c2c2c2;
+    border-radius: 6px
+  }
+  .photobox .photo:nth-child(10n+10){
+    margin-right: 0!important;
+  }
+  @media only screen and (max-width: 1400px) {
+    .photobox .photo{
+      width: 16%!important;
+      margin-right: 0.8%!important
+    }
+    .photobox .photo:nth-child(10n+10){
+      margin-right: 0.8%!important;
+    }
+    .photobox .photo:nth-child(6n+6){
+      margin-right: 0!important;
+    }
+  }
+  @media only screen and (max-width: 900px) {
+    .photobox .photo{
+      width: 33%!important;
+      margin-right: 0.5%!important
+    }
+    .photobox .photo:nth-child(10n+10){
+      margin-right: 0.5%!important;
+    }
+    .photobox .photo:nth-child(6n+6){
+      margin-right: 0.5%!important;
+    }
+    .photobox .photo:nth-child(3n+3){
+      margin-right: 0%!important;
+    }
+  }
+  @media only screen and (max-width: 600px) {
+    .photobox .photo{
+      width: 49.5%!important;
+      margin-right: 0.5%!important
+    }
+    .photobox .photo:nth-child(10n+10){
+      margin-right: 0.5%!important;
+    }
+    .photobox .photo:nth-child(6n+6){
+      margin-right: 0.5%!important;
+    }
+    .photobox .photo:nth-child(3n+3){
+      margin-right: 0.5%!important;
+    }
+    .photobox .photo:nth-child(2n+2){
+      margin-right: 0%!important;
+    }
+  }
+
+
+  .photobox .photo_in {
+    height: 140px;
+    border-radius: 4px;
+    background-size: cover !important;
+    background-position: center !important;
+    cursor: pointer;
+    border: #b8b8b8 solid 1px
+  }
+
+  .albumbox {
+    padding-top: 20px;
+    color: #7a7a7a;
+    font-size: 16px;
+    clear: both;
+    overflow: hidden;
+  }
+  .albumbox a {
+    text-decoration: none;
+  }
+  .albumbox .album {
+    // width: 185px;
+    float: left;
+    // margin-right: 6px;
+    margin-bottom: 33px;
+    background: #ccc;
+    border-radius: 4px;
+    text-align: center;
+    position: relative;
+    padding: 6px 0 3px 0
+  }
+  .albumbox .album a {
+    color: #333
+  }
+  .albumbox .album_photo {
+    text-decoration: none;
+    color: #606060;
+    height: 140px;
+    border-radius: 4px;
+    background-size: cover !important;
+    background-position: center !important;
+    display: inline-block;
+    margin: 0 2px;
+  }
+  .albumbox .album .bottom {
+    position: absolute;
+    bottom: -28px;
+    left: 0;
+    right: 0;
+    font-size: 18px;
+  }
+
+  .albumbox span {
+    color: #333;
+    padding-left: 4px
+  }
+  .albumbox span::before {
+    content: "(";
+  }
+  .albumbox span::after {
+    content: ")";
+  }
+
+  .checkbox {
+    width: 20px;
+    height: 20px;
+    display: inline;
+    margin-left: 8px
+  }
+  .checkbox1 {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: -2px
+  }
+  .lefttop {
+    position: absolute;
+    top: 5px;
+    left: 0px
+  }
+
+  .albumbox .album {
+    width: 13.5%;
+    margin-right: 0.7%!important;
+  }
+
+  @media only screen and (max-width: 1400px) {
+    .albumbox .album {
+      width: 16%;
+      margin-right: 0.65%!important;
+    }
+
+  }
+  @media only screen and (max-width: 1000px) {
+    .albumbox .album {
+      width: 19%;
+      margin-right: 0.8%!important;
+    }
+  }
+  @media only screen and (max-width: 800px) {
+    .albumbox .album {
+      width: 24%;
+      margin-right: 0.8%!important;
+    }
+  }
+  @media only screen and (max-width: 600px) {
+    .albumbox .album {
+      width: 32.5%;
+      margin-right: 0.8%!important;
+    }
+  }
+  @media only screen and (max-width: 500px) {
+    .albumbox .album {
+      width: 49.3%;
+      margin-right: 0.5%!important;
+    }
+  }
+  .center {
+    text-align: center;
+    background: url(./static/img/Loading_icon.gif) no-repeat center center;
+    margin: auto;
+    min-height: 300px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+  }
+
+  .center div {
+    width:100%;
+    max-width:750px;
+    min-height: 500px;
+  }
+  /*camera*/
+  .cameralist {
+    padding: 0 15px
+  }
+  .cameralist p {
+    font-size: 14px;
+    margin: 4px 0
+  }
+  .cameralist input, select, textarea {
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+  }
+  .fw50 {
+    width: 49.5%;
+    float: left;
+    margin-right: 1%;
+    margin-bottom: 15px
+  }
+  .fw100 {
+    width: 100%;
+    //float: left;
+    margin-right: 1%;
+    margin-bottom: 15px
+  }
+
+  .memo-text {
+    // background:#FAFAFA; 
+    color:#4CAF50;
+    // line-height: 1em;
+    // height: 2em;
+    overflow: hidden;
+    text-overflow: ellipsis; // 省略...
+    -webkit-line-clamp: 2; // 第二行
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+
+
+  }
+ 
+  // .memo-text-null {
+  //   background:#FAFAFA;
+  // }
+
+  .background-white {
+    background:white;
+  }
+
+  .background-whiteFA {
+    background:#FAFAFA;
+  }
+
+  .button-label {
+    display: inline-block;
+    padding-left: 0px;
+    padding-right: 10px;
+    margin-top: -15px;
+    height: 24px;
+    vertical-align: middle;
+    font-size: 15px;
+  }
+
+  .button-label-green {
+    color:#4CAF50;
+  }
+
+  .button-label-red {
+    color:red;
+  }
+
+
+
+}
+

@@ -1,0 +1,178 @@
+[
+  {
+    "DateTimestamp": "2019-03-24T15:54:50.1159157+08:00",
+    "PatientId": "5c8f61ae98584d53f0458527",
+    "DialysisId": "5c9080ae20c32b17a4c56a3a",
+    "Type": "post",
+    "RecordTime": "2019-03-24T07:54:00Z",
+    "Items": {
+      "紀錄透析機紀錄": [
+        "脫水量"
+      ],
+      "血管通路": [
+        "動靜脈瘻管穿刺傷口止血情形"
+      ]
+    },
+    "Version": "47",
+    "Description": null,
+    "HospitalId": "56fcc5dd4ead7870942f61c3",
+    "Revision": 1,
+    "HistoryId": null,
+    "Status": "Normal",
+    "CreatedUserId": "5c8f677698584d53f04650a7",
+    "CreatedUserName": "蔡凡意",
+    "CreatedTime": "2019-03-24T07:54:33.936Z",
+    "ModifiedUserId": null,
+    "ModifiedUserName": null,
+    "ModifiedTime": null,
+    "Id": "5c9737b92497df15bc8954f9",
+    "CreatedOn": "2019-03-24T07:54:33Z",
+    "ModifiedOn": "0001-01-01T00:00:00Z",
+    "ObjectId": {
+      "Timestamp": 1553414073,
+      "Machine": 2398175,
+      "Pid": 5564,
+      "Increment": 9000185,
+      "CreationTime": "2019-03-24T07:54:33Z"
+    }
+  },
+  {
+    "DateTimestamp": "2019-03-24T15:54:50.1159157+08:00",
+    "PatientId": "5c8f61ae98584d53f0458527",
+    "DialysisId": "5c9080ae20c32b17a4c56a3a",
+    "Type": "post",
+    "RecordTime": "2019-03-19T06:19:00Z",
+    "Items": {
+      "Nursing Intervention": [
+        "Notified physician",
+        "Psychological support"
+      ],
+      "Health Education": [
+        "Nutrition"
+      ],
+      "意識": [
+        "嗜睡"
+      ],
+      "呼吸": [
+        "慢"
+      ],
+      "皮膚顏色": [
+        "蒼白"
+      ],
+      "水腫": [
+        "有"
+      ],
+      "外傷": [
+        "無"
+      ],
+      "活動力": [
+        "正常"
+      ],
+      "身體狀況": [
+        "肌肉痙攣"
+      ]
+    },
+    "Version": "44",
+    "Description": null,
+    "HospitalId": "56fcc5dd4ead7870942f61c3",
+    "Revision": 1,
+    "HistoryId": null,
+    "Status": "Deleted",
+    "CreatedUserId": "5c8f5c9e98584d53f044eac8",
+    "CreatedUserName": "楊昌宏",
+    "CreatedTime": "2019-03-19T06:20:27.053Z",
+    "ModifiedUserId": "5c8f677698584d53f04650a7",
+    "ModifiedUserName": "蔡凡意",
+    "ModifiedTime": "2019-03-24T07:53:47.618Z",
+    "Id": "5c908a2b20c32b17a4c5bf9e",
+    "CreatedOn": "2019-03-19T06:20:27Z",
+    "ModifiedOn": "0001-01-01T00:00:00Z",
+    "ObjectId": {
+      "Timestamp": 1552976427,
+      "Machine": 2147115,
+      "Pid": 6052,
+      "Increment": 12959646,
+      "CreationTime": "2019-03-19T06:20:27Z"
+    }
+  },
+  {
+    "DateTimestamp": "2019-03-24T15:54:50.1315328+08:00",
+    "PatientId": "5c8f61ae98584d53f0458527",
+    "DialysisId": "5c9080ae20c32b17a4c56a3a",
+    "Type": "pre",
+    "RecordTime": "2019-03-19T06:04:00Z",
+    "Items": {
+      "呼吸": [
+        "淺"
+      ],
+      "皮膚顏色": [
+        "發紺"
+      ]
+    },
+    "Version": "262",
+    "Description": null,
+    "HospitalId": "56fcc5dd4ead7870942f61c3",
+    "Revision": 1,
+    "HistoryId": null,
+    "Status": "Deleted",
+    "CreatedUserId": "5c8f5c9e98584d53f044eac8",
+    "CreatedUserName": "楊昌宏",
+    "CreatedTime": "2019-03-19T06:05:50.296Z",
+    "ModifiedUserId": "5c8f677698584d53f04650a7",
+    "ModifiedUserName": "蔡凡意",
+    "ModifiedTime": "2019-03-24T07:53:50.294Z",
+    "Id": "5c9086be20c32b17a4c58cd5",
+    "CreatedOn": "2019-03-19T06:05:50Z",
+    "ModifiedOn": "0001-01-01T00:00:00Z",
+    "ObjectId": {
+      "Timestamp": 1552975550,
+      "Machine": 2147115,
+      "Pid": 6052,
+      "Increment": 12946645,
+      "CreationTime": "2019-03-19T06:05:50Z"
+    }
+  },
+  {
+    "DateTimestamp": "2019-03-24T15:54:50.1315328+08:00",
+    "PatientId": "5c8f61ae98584d53f0458527",
+    "DialysisId": "5c9080ae20c32b17a4c56a3a",
+    "Type": "pre",
+    "RecordTime": "2019-03-24T07:53:00Z",
+    "Items": {
+      "上次透析返家後情形": [],
+      "透析用物準備": [
+        "正確裝置人工腎臟、迴路管及外管，確認功能正"
+      ],
+      "查看病人檢驗報告": [
+        "HBsAg、 Anti-HBs",
+        "Anti-HCV、HCV RNA"
+      ],
+      "病人身體評估": [
+        "意識狀況",
+        "生命徵象"
+      ]
+    },
+    "Version": "270",
+    "Description": null,
+    "HospitalId": "56fcc5dd4ead7870942f61c3",
+    "Revision": 1,
+    "HistoryId": null,
+    "Status": "Normal",
+    "CreatedUserId": "5c8f677698584d53f04650a7",
+    "CreatedUserName": "蔡凡意",
+    "CreatedTime": "2019-03-24T07:54:18.122Z",
+    "ModifiedUserId": null,
+    "ModifiedUserName": null,
+    "ModifiedTime": null,
+    "Id": "5c9737aa2497df15bc8954f1",
+    "CreatedOn": "2019-03-24T07:54:18Z",
+    "ModifiedOn": "0001-01-01T00:00:00Z",
+    "ObjectId": {
+      "Timestamp": 1553414058,
+      "Machine": 2398175,
+      "Pid": 5564,
+      "Increment": 9000177,
+      "CreationTime": "2019-03-24T07:54:18Z"
+    }
+  }
+]

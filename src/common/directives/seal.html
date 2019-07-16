@@ -1,0 +1,24 @@
+
+<span class="seal" ng-if="$ctrl.created != 'none'">
+    <span ng-class="{fixed:$ctrl.fixed, floated:!$ctrl.fixed}" ng-style="$ctrl.myStyle">
+        {{::$ctrl.model.CreatedUserName.split('-')[0]}}
+    </span>
+</span>
+
+<span class="seal" ng-if="($ctrl.modified != 'none' && $ctrl.modified != 'hideIfSame' && $ctrl.model.ModifiedUserName != null) || ( $ctrl.modified == 'hideIfSame' && $ctrl.model.ModifiedUserName != null && $ctrl.model.CreatedUserName != $ctrl.model.ModifiedUserName )">
+    <span ng-class="{fixedMiddle:$ctrl.fixed, floated:!$ctrl.fixed}" ng-style="$ctrl.myStyle">
+        {{$ctrl.model.ModifiedUserName.split('-')[0]}}
+    </span>
+</span>
+
+<span class="seal" ng-if="$ctrl.label">
+    <span class="label" ng-class="{fixedTop:$ctrl.fixed, floated:!$ctrl.fixed}" ng-style="$ctrl.myStyle">
+        {{::$ctrl.label}}
+    </span>
+</span>
+
+<span class="seal" ng-if="$ctrl.name">
+    <span class="label" ng-class="{fixedTop:$ctrl.fixed == 'true', fixed:$ctrl.fixed == 'bottom', floated:!$ctrl.fixed}" ng-style="$ctrl.myStyle">
+        {{$ctrl.name}}
+    </span>
+</span>

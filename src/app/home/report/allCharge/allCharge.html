@@ -1,0 +1,49 @@
+<md-content layout-fill flex style="background:#f3f3f3">
+    <h2 ng-hide="allChar.loading" translate="reports.allCharge.title" translate-values='{selectedYear: allChar.selectedYear, selectedMonth: allChar.selectedMonth}' style="margin-top: 25px ; margin-bottom: 0; padding-left: 15px;">
+        <!-- {{ allChar.selectedYear }} 年 {{ allChar.selectedMonth}} 月計價項目統計表 -->
+    </h2>
+    <loading ng-show="allChar.loading"></loading>
+    <md-content flex layout-padding ng-show="!allChar.loading" style="background:#f3f3f3">
+        <div>
+            {{'reports.allCharge.ward' | translate}}
+            <md-input-container style="margin:0px">
+                <md-select ng-model="allChar.selectedWards" ng-change="allChar.getAllCharge()">
+                    <md-option ng-repeat="i in allChar.keys" ng-value="i">{{::allChar.wards[i]}}</md-option>
+                </md-select>
+            </md-input-container>
+            {{'reports.allCharge.year' | translate}}
+            <md-input-container style="margin:0px">
+                <md-select ng-model="allChar.selectedYear" ng-change="allChar.getAllCharge()">
+                    <md-option ng-repeat="j in allChar.optionYear" ng-value="j">{{::j}}</md-option>
+                </md-select>
+            </md-input-container>
+            {{'reports.allCharge.month' | translate}}
+            <md-input-container style="margin:0px">
+                <md-select ng-model="allChar.selectedMonth" ng-change="allChar.getAllCharge()">
+                    <md-option ng-repeat="k in allChar.optionMonth" ng-value="k">{{::k}}</md-option>
+                </md-select>
+            </md-input-container style="margin:0px">
+            <md-card-actions style="position: absolute; right: 8px; top: 1px">
+                <md-button class="md-raised md-primary" ng-click="allChar.exportExcel()">{{'reports.allCharge.exportExcel' | translate}}</md-button>
+            </md-card-actions>
+        </div>
+        <div style="overflow-y:auto">
+            <table id="myTable">
+                <tbody>
+                    <tr>
+                        <!-- <td class="allCharge" colspan="33">{{allChar.selectedYear}}年 {{allChar.selectedMonth}}月</td> -->
+                        <td class="serviceQuality" colspan="33" translate="reports.allCharge.yearMonthHeading" translate-values='{selectedYear: allChar.selectedYear, selectedMonth: allChar.selectedMonth}'></td>
+                    </tr>
+                    <tr>
+                        <td translate>{{'reports.allCharge.itemAndDay'}}</td>
+                        <td class="content" ng-repeat="day in [] | range : allChar.daysOfMonth:1">{{::day}}</td>
+                        <td translate>{{'reports.allCharge.total'}}</td>
+                    </tr>
+                    <tr ng-repeat="(key,records) in allChar.Content">
+                        <td class="content" ng-repeat="item in records track by $index">{{::item}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </md-content>
+</md-content>

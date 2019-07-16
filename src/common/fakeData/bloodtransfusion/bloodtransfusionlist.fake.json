@@ -1,0 +1,49 @@
+[
+    {
+        "DateTimestamp": "2019-03-24T14:32:07.5521497+08:00",
+        "PatientId": "5c8f61ae98584d53f0458527",
+        "DialysisId": "5c9080ae20c32b17a4c56a3a",
+        "LeadBlood": null,
+        "TherapistId1": "n001",
+        "TherapistName1": "蔡凡意",
+        "TherapistId2": "n002",
+        "TherapistName2": "林秋玉",
+        "StartTime": "2019-03-24T06:30:00Z",
+        "EndTime": "2019-03-24T09:00:00Z",
+        "BloodBags": [
+            {
+                "PlasmaComponentsCode": "120",
+                "PlasmaComponents": "血小板",
+                "BloodType": "A",
+                "RH": "Plus",
+                "Quantity": 1.0,
+                "Volume": null,
+                "Barcode": [
+                    "1234"
+                ],
+                "ExpirationDate": null
+            }
+        ],
+        "TransfusionReaction": null,
+        "HospitalId": "56fcc5dd4ead7870942f61c3",
+        "Revision": 1,
+        "HistoryId": null,
+        "Status": "Normal",
+        "CreatedUserId": "5c8f664c98584d53f0462983",
+        "CreatedUserName": "林秋玉",
+        "CreatedTime": "2019-03-24T06:31:15.493Z",
+        "ModifiedUserId": "5c8f664c98584d53f0462983",
+        "ModifiedUserName": "林秋玉",
+        "ModifiedTime": "2019-03-24T06:31:45.232Z",
+        "Id": "5c9724332497df15bc88d4f5",
+        "CreatedOn": "2019-03-24T06:31:15Z",
+        "ModifiedOn": "0001-01-01T00:00:00Z",
+        "ObjectId": {
+            "Timestamp": 1553409075,
+            "Machine": 2398175,
+            "Pid": 5564,
+            "Increment": 8967413,
+            "CreationTime": "2019-03-24T06:31:15Z"
+        }
+    }
+]

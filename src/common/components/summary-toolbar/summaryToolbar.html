@@ -1,0 +1,16 @@
+<!-- 大畫面才需顯示 -->
+<div class="summary-toolbar" layout="row" layout-align="start center">
+    <md-button class="md-fab" aria-label="Settings" ng-click="$ctrl.cancel()">
+        <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+    </md-button>
+    <h3 style="float: left; padding-left: 10px">
+        <span>{{$ctrl.toolbarTitle}}</span>
+    </h3>
+    <span flex></span>
+    <button ng-if="$ctrl.showRefresh" class="md-icon-button md-button" type="button" ng-click="$ctrl.refresh()">
+        <i class="material-icons">refresh</i>
+    </button>
+    <md-button class="md-secondary md-icon-button" ng-click="$ctrl.gotoSummary()">
+        <i class="material-icons">cancel</i>
+    </md-button>
+</div>

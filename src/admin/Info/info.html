@@ -1,0 +1,110 @@
+<style>
+    info {
+        height: 100%;
+    }
+
+    .padding {
+        padding: 10px;
+    }
+
+    .mdcardpadding {
+        padding: 10px;
+    }
+</style>
+
+<div flex layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.openLeftMenu()" hide-gt-sm>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <h3 translate="info.pageTitle"></h3>
+        </div>
+    </md-toolbar>
+
+    <md-content layout-fill flex>
+        <loading ng-show="vm.loading"></loading>
+        <div flex ng-show="vm.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate="customMessage.serverError"></h3>
+        </div>
+        <form name="editForm" class="padding" ng-show="!vm.loading">
+            <md-subheader class="md-no-sticky"><span translate="info.prescription"></span></md-subheader>
+            <md-card class="mdcardpadding">
+                <md-input-container class="md-block" ng-repeat="(idx, pair) in vm.category">
+                    <label translate="info.pairName" translate-values='{name: pair.name}'></label>
+                    <textarea ng-model="vm.hospitalSetting[pair.key]" md-detect-hidden="true" md-select-on-focus></textarea>
+                </md-input-container>
+            </md-card>
+            <md-subheader class="md-no-sticky"><span translate="info.catheter"></span></md-subheader>
+            <md-card class="mdcardpadding">
+                <md-input-container class="md-block" ng-repeat="(idx, pair) in vm.category3">
+                    <label translate="info.pairName" translate-values='{name: pair.name}'></label>
+                    <textarea ng-model="vm.hospitalSetting[pair.key]" md-detect-hidden="true" md-select-on-focus></textarea>
+                </md-input-container>
+            </md-card>
+            <md-subheader class="md-no-sticky"><span translate="info.custom"></span></md-subheader>
+            <md-card class="mdcardpadding">
+                <md-input-container class="md-block" flex>
+                <label translate="info.customs"></label>
+                <md-select ng-model="vm.selfitem" ng-change="vm.selfitemChange(vm.selfitem)">
+                    <md-option ng-repeat="a in vm.category2" value="{{ a.key }}">{{ a.name }}</md-option>
+                </md-select>
+                <!--
+                <md-select ng-model="vm.selfitem" ng-change="vm.selfitemChange(vm.selfitem)">
+                    <md-option ng-selected="{{ idx1 == 'Shifts' }}" ng-repeat="(idx1, pair1) in vm.defSetting" value="{{ idx1 }}">{{ idx1 }}</md-option>
+                </md-select>
+                -->
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label translate="info.pairName" translate-values='{name: vm.selfname}'></label>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <textarea ng-model="vm.selfdata" md-detect-hidden="true" md-select-on-focus></textarea>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label translate="info.dead"></label>
+                <textarea ng-model="vm.DeathReasonSetting" md-detect-hidden="true" md-select-on-focus></textarea>
+            </md-input-container>
+            <!--
+            <md-input-container class="md-block" ng-repeat="(idx1, pair1) in vm.defSetting">
+                <label>{{ idx1 }} (每行代表一個項目)</label>
+                <textarea ng-model="vm.defSetting[idx1]" md-detect-hidden="true" md-select-on-focus></textarea>
+            </md-input-container>
+            -->
+            </md-card>
+            <md-subheader class="md-no-sticky"><span translate="info.bloodSetting"></span></md-subheader>
+            <md-card class="mdcardpadding">
+            <!--<md-subheader class="md-no-sticky">血品設定 (血品代碼需與血袋血品條碼一致)</md-subheader>-->
+            <label translate="info.bloodSettings"></label>
+            <div layout="row" layout-xs="column">
+                <md-input-container flex="40">
+                    <label translate="info.bloodCode"></label>
+                    <input type="text" name="bloodSettingKey" ng-model="vm.bloodSettingKey" />
+                </md-input-container>
+                <md-input-container flex="40">
+                    <label translate="info.bloodName"></label>
+                    <input type="text" name="bloodSettingName" ng-model="vm.bloodSettingName" />
+                </md-input-container>
+                <div flex="20" style="margin-top:0.7em">
+                    <md-button class="md-raised md-primary" ng-click="vm.bloodSettingKey && vm.bloodSettingName && vm.addBloodSetting(vm.bloodSettingKey, vm.bloodSettingName)" ng-disabled="!vm.bloodSettingKey || !vm.bloodSettingName"><span translate>{{'info.addbutton'}}</span></md-button>
+                </div>
+            </div>
+            <div layout="column">
+                <div style="border-bottom: 1px #e2e2e2 solid" layout="row" layout-align="start center" ng-repeat="(key, value) in vm.bloodSetting.PlasmaComponents track by $index">
+                    <div flex="40">
+                        <span translate="info.bloodCodes" translate-values='{key: key}'></span>
+                    </div>
+                    <div flex="40">
+                        <span translate="info.bloodNames" translate-values='{value: value}'></span>
+                    </div>
+                    <div flex="20">
+                        <md-button class="md-raised md-warn" ng-click="vm.removeBloodSetting($event, key, value)"><span translate>{{'info.deletebutton'}}</span></md-button>
+                    </div>
+                </div>
+            </div>
+            </md-card>
+            <md-button class="md-raised" ng-click="vm.recover()" ng-disabled="vm.isSaving"><span translate>{{'info.recoverbutton'}}</span></md-button>
+            <md-button type="submit" class="md-raised md-primary" ng-click="vm.edit()" ng-disabled="vm.isSaving"><span translate>{{'info.savebutton'}}</span></md-button>
+        </form>
+    </md-content>
+</div>

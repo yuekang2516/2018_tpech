@@ -1,0 +1,98 @@
+<md-dialog class="ward-event-dialog-container">
+    <form name="eventForm" ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools" layout="row">
+
+                <p flex ng-if="dialog.editType === 'new'">新增記事</p>
+                <p flex ng-if="dialog.editType === 'update'">修改記事</p>
+
+                <md-button class="md-icon-button" ng-click="dialog.cancel()">
+                    <i class="material-icons">clear</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div class="md-dialog-content">
+
+                <div layout="row" class="row">
+                    <label class="label-margin">記事標題</label>
+                    <input required ng-model="dialog.title">
+                </div>
+
+                <div layout="row" class="row">
+                    <label class="label-margin">開始日期</label>
+                    <input name="date" class="calendar" type="date" ng-model="dialog.startDate" ng-change="dialog.dateChanged()" required/>
+                </div>
+
+                <div layout="row" class="row">
+                    <label class="label-margin">全天時段</label>
+                    <md-checkbox ng-model="dialog.allDay" ng-change="dialog.changeAllDay(dialog.allDay)" class="all-day"></md-checkbox>
+                </div>
+
+                <div layout="row" class="row" ng-if="!dialog.allDay">
+                    <label class="label-margin">開始時間</label>
+                    <input name="time" class="calendar" type="time" ng-model="dialog.startTime" ng-change="dialog.dateChanged()" required/>
+                </div>
+
+                <div layout="row" class="row" ng-if="!dialog.allDay">
+                    <label class="label-margin">結束日期</label>
+                    <input id="endDate" name="date" class="calendar" type="date" ng-model="dialog.endDate" ng-change="dialog.dateChanged()" required/>
+                </div>
+
+                <div layout="row" class="row" ng-if="!dialog.allDay">
+                    <label class="label-margin">結束時間</label>
+                    <input id="endTime" name="time" class="calendar" type="time" ng-model="dialog.endTime" ng-change="dialog.dateChanged()" required/>
+                </div>
+
+                <div layout="row" layout-align="end center" class="row" ng-show="dialog.timeMessage !== ''">
+                    <span class="error-message-text">{{dialog.timeMessage}}</span>
+                </div>
+
+                <div layout="row" class="row">
+                    <label class="label-margin">標籤顏色</label>
+                    <md-radio-group class="radioGroup" ng-model="dialog.tagColor" layout="column" required>
+                        <div layout="row">
+                            <md-radio-button value="#039BE5" class="md-primary">
+                                <div class="color-div color-div-lightblue"></div>
+                            </md-radio-button>
+                            <md-radio-button value="#7986CB" class="md-primary margin-left">
+                                <div class="color-div color-div-purple"></div>
+                            </md-radio-button>
+                            <md-radio-button value="#33B679" class="md-primary margin-left">
+                                <div class="color-div color-div-green"></div>
+                            </md-radio-button>
+                            <md-radio-button value="#F4511E" class="md-primary margin-left">
+                                <div class="color-div color-div-orange"></div>
+                            </md-radio-button>
+                        </div>
+                    </md-radio-group>
+                </div>
+
+                <div layout="row" class="row">
+                    <label class="label-margin">記事內容</label>
+                    <md-input-container md-no-float md-no-asterisk>
+                        <textarea ng-model="dialog.content" style="min-height: 80px;" rows="2" placeholder="請填寫記事內容"></textarea>
+                    </md-input-container>
+                </div>
+
+                <md-dialog-actions layout-align="end end">
+                    <md-button class="md-raised" ng-click="dialog.cancel()">
+                        取消
+                    </md-button>
+                    <md-button ng-if="dialog.editType === 'update'" class="md-raised md-warn md-btn-white-text" ng-click="dialog.deleteEvent()" ng-disabled="">
+                        刪除記事
+                    </md-button>
+                    <md-button ng-if="dialog.editType === 'update'" class="md-raised md-primary md-btn-white-text" ng-click="dialog.editEvent(eventForm)" ng-disabled="eventForm.$invalid || dialog.timeError">
+                        修改記事
+                    </md-button>
+                    <md-button ng-if="dialog.editType === 'new'" class="md-raised md-primary md-btn-white-text" ng-click="dialog.newEvent(eventForm)" ng-disabled="eventForm.$invalid || dialog.timeError">
+                        新增記事
+                    </md-button>
+                    <!-- <md-progress-circular md-diameter="20px" md-mode="indeterminate" ng-show="dialog.isLoading"></md-progress-circular> -->
+                </md-dialog-actions>
+            </div>
+        </md-dialog-content>
+
+    </form>
+</md-dialog>

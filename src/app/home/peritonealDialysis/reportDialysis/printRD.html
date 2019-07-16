@@ -1,0 +1,299 @@
+<style>
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td{margin:0;padding:0;border:0;outline:0;font-family:  "微軟正黑體","Arial";}
+
+h1 {
+    font-size: 20pt;
+    line-height: 40px;
+    letter-spacing: 5px;
+}
+h2{  font-size: 18pt;
+    line-height: 36px; }
+
+.thin{ font-weight: normal; color: #ccc }
+
+p,span {
+    font-size: 20px;
+    line-height: 36px;
+}
+#printdiv{
+        width: 250px; margin:auto; margin-top: 20px;
+    }
+#printdiv ul li {
+    margin-left: 20px;
+    list-style-type: none;
+    font-size: 22pt;
+    line-height: 50px;
+    color: #ccc
+}
+#printdiv .square {
+    list-style-type: square;
+    color: #000;
+    font-weight: bold;
+    font-size: 26pt;
+    line-height: 50px;
+}
+
+.table_in {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.table_in tr td {
+    border-collapse: collapse;
+    padding: 2px;
+    font-size: 20px;
+    line-height: 36px;
+}
+.blank{ display: inline-block; width: 50px }
+
+
+.border {
+    border: #000 solid 2px;
+    margin-bottom: -1px;
+    width: 20cm;
+    box-sizing: border-box;
+}
+
+.center {
+    text-align: center;
+}
+.width70 {
+    width: 70px
+}
+
+.writinghr {
+    text-align: center;
+}
+.labprint {
+    width:180px;
+    word-wrap:break-word;
+    display:none;
+}
+.peritonealDialysisTabView.pgRdEdit h2 {
+    text-align: center;
+    font-size: 1.2em;
+    padding: 0px;
+    margin: 0px;
+}
+.all-referral-sheet-form-container .inputborder {
+    border:2px!important;  
+    border-bottom-style: solid!important;
+    border-top-style: none!important;
+    border-left-style:none!important;
+    border-right-style:none!important;
+    background-color: #FAFAFA !important;
+    -webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.0)!important;
+}
+@media print {
+    body {
+        padding: 0;
+        padding-left: 1cm !important;
+    }
+    .md-whiteframe-10dp {
+        box-shadow:none;        
+    }
+    #printdiv{
+        width: 250px; margin:auto; margin-top: 20px;
+        display: block !important;
+    }
+    #printdiv ul li {
+        display: block !important;
+        margin-left: 20px;
+        list-style-type: none;
+        font-size: 22pt;
+        line-height: 50px;
+        color: #ccc
+    }
+    #printdiv .square {
+        display: block !important;
+        list-style-type: square !important;
+        color: #000;
+        font-weight: bold;
+        font-size: 26pt;
+        line-height: 50px;
+    }
+    #print_bottom {
+        position: absolute; bottom: 15px; width: 20cm;
+    }
+    .all-referral-sheet-form-container{
+        height: 100%;
+    }
+}
+
+/* @media print {
+    .md-whiteframe-10dp {
+        box-shadow:none;        
+    }
+    md-checkbox.md-checked .md-icon:after {
+        border-color: rgba(0,0,0,0.54)!important;
+        left: 4px!important;
+        top: 0px!important;
+    }
+    md-checkbox.md-checked .md-icon {
+        border-radius: 2px!important;
+        border: rgba(0,0,0,0.54) solid 2px !important;
+    }
+    body {
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+    }
+    .labprint {
+        display: block;
+        width:180px;
+        word-wrap:break-word;
+    }
+} */
+</style>
+<md-toolbar layout="row" class="disablePrint no-print">
+    <div class="md-toolbar-tools">
+        <md-button class="md-secondary md-icon-button" ng-click="$ctrl.back()" aria-label="call">
+            <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+        </md-button>
+
+        <h3 flex>
+            <span ng-show="!$ctrl.referralSheetId">透析模式告知書</span>
+        </h3>
+        <span ng-show="$ctrl.rdDataObj.Status == 'Deleted'" class="readonly-text" title="{{ 'customMessage.readonlyTitle' | translate }}" translate>{{ 'customMessage.readonly' }}</span>
+        <md-button ng-show="!$ctrl.rdDataObj.isCreate" ng-if="$ctrl.isBrowser" class="md-icon-button" aria-label="More" ng-click="$ctrl.print()">
+            <i class="material-icons" ng-hide="$ctrl.rdDataObj.Status == 'Deleted'">print</i>
+        </md-button>
+        <!-- <md-button class="md-icon-button" aria-label="More" ng-click="$ctrl.gotoHomePage()">
+            <i class="material-icons">home</i>
+        </md-button> -->
+    </div>
+</md-toolbar>
+<md-content layout="column" flex class="all-referral-sheet-form-container" layout-align="center center">
+    <form flex class="out-form" ng-if="!$ctrl.loading && !$ctrl.isError" layout="column" name="referralSheetForm">
+        <md-whiteframe class="md-whiteframe-10dp" layout-align="center center" style="width: 21.4cm; padding: 18px;">
+            <div style="width: 20.2cm;">
+                <!-- <div class="inputbox" ng-show="$ctrl.rdDataObj.isCreate">
+                    <div class="lightblue" style="min-width:10em;text-align:right;margin-right:4px;height:30px;">
+                        <label>*日期</label>
+                    </div>
+                    <div class="inputboxflex">
+                        <input ng-model="$ctrl.rdDataObj.Record_Date" type="date"
+                        name="RecordDate" required>
+                        <div ng-messages="editForm.RecordDate.$error" ng-show="editForm.RecordDate.$dirty">
+                            <div ng-message="required" class="clrRequired">必填選項</div>
+                        </div>
+                    </div>
+                </div> -->
+                <table border="0" cellpadding="0" cellspacing="0" class="table_in" style="margin-bottom: 4px" align="left">
+                    <tr>
+                        <td width="8%"></td>
+                        <td width="65%" style="text-align: center" valign="top">
+                            <h1>臺北市立聯合醫院&nbsp;&nbsp;&nbsp;&nbsp;{{$ctrl.reportHospitaArea}}</h1>
+                            <h1>透析模式說明暨同意書</h1>
+                        </td>
+                        <td width="" valign="top">
+                            <p style="line-height: 30px">
+                                病歷號碼：{{$ctrl.currentPatient.MedicalId}}<br>
+                                姓　　名：{{$ctrl.currentPatient.Name}}
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <br>
+                            病人 {{$ctrl.currentPatient.Name}} 因尿毒症需接受長期透析治療，立同意書人已看過錄影帶介紹及相關衛教資料，並經貴醫院主治醫師
+                                <select ng-model="$ctrl.rdDataObj.Doctor" class="no-print" >
+                                    <option ng-repeat="state in $ctrl.doctors" ng-value="state.Name">{{state.Name}}</option>
+                                </select>
+                                <sapn class="print-only">{{$ctrl.rdDataObj.Doctor}}</sapn>
+                                、護理師
+                                <select ng-model="$ctrl.rdDataObj.Nurse"  class="no-print">
+                                    <option ng-repeat="state in $ctrl.nurses" ng-value="state.Name">{{state.Name}}</option>
+                                </select>
+                                <span class="print-only">{{$ctrl.rdDataObj.Nurse}}</span>
+                                詳盡說明，立同意書人已充分了解腹膜透析、血液透析、腎移植及安寧治療之方式及優劣。 立同意書選擇接受：
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <md-radio-group class="no-print" ng-model="$ctrl.rdDataObj.Notification_Book"  layout="column" layout-align="center center">
+                                <md-radio-button value="長期腹膜透析">長期腹膜透析</md-radio-button>
+                                <md-radio-button value="長期血液透析">長期血液透析</md-radio-button>  
+                                <md-radio-button value="腎移植">腎移植&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</md-radio-button>
+                                <md-radio-button value="轉安寧治療" >轉安寧治療&nbsp;&nbsp;&nbsp;</md-radio-button>
+                            </md-radio-group>
+                            <div layout="row" layout-align="center center" class="no-print">
+                                <md-radio-group ng-model="$ctrl.rdDataObj.Notification_Book"  layout="column" >
+                                    <md-radio-button value="其他" >其他</md-radio-button>
+                                </md-radio-group>
+                                <input type="text" style="width:80px;" ng-show="$ctrl.rdDataObj.Notification_Book =='其他'" class="txtName input no-print" ng-model="$ctrl.rdDataObj.Notification_Book_Name" />
+                            </div>
+                            <div id="printdiv" class="print-only">
+                                <ul>
+                                    <li ng-class="($ctrl.rdDataObj.Notification_Book == '長期腹膜透析') ? 'square':''">長期腹膜透析</li>
+                                    <li ng-class="($ctrl.rdDataObj.Notification_Book == '長期血液透析') ? 'square':''">長期血液透析</li>
+                                    <li ng-class="($ctrl.rdDataObj.Notification_Book == '腎移植') ? 'square':''">腎移植</li>
+                                    <li ng-class="($ctrl.rdDataObj.Notification_Book == '轉安寧治療') ? 'square': ''">轉安寧治療</li>
+                                    <li ng-class="($ctrl.rdDataObj.Notification_Book == '其他') ? 'square':''">
+                                        其他
+                                        <span style="margin-right: 20px;" class="print-only">{{$ctrl.rdDataObj.Notification_Book_Name}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div id="print_bottom">
+                                <p>
+                                    立同意書人簽章：<u style="letter-spacing: 80px">&nbsp;&nbsp;</u>
+                                </p>
+                                <p>
+                                    <md-radio-group ng-model="$ctrl.rdDataObj.Book_Consent_Relation" class="no-print"  layout="row">
+                                        關係：
+                                        <md-radio-button value="本人" >本人</md-radio-button>
+                                        <md-radio-button value="病人之">病人之</md-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input ng-hide="$ctrl.rdDataObj.Book_Consent_Relation == '本人' || $ctrl.rdDataObj.Book_Consent_Relation == null " ng-show="$ctrl.rdDataObj.Book_Consent_Relation != '本人' && $ctrl.rdDataObj.Book_Consent_Relation != null " type="text"  ng-model="$ctrl.Book_Consent_RelationElse">
+                                    </md-radio-group>
+                                    <sapn class="print-only">關係：</sapn>
+                                    <span ng-show="$ctrl.rdDataObj.Book_Consent_Relation == '本人'" class="print-only">{{$ctrl.rdDataObj.Book_Consent_Relation}}</span>
+                                    <span ng-hide="$ctrl.rdDataObj.Book_Consent_Relation == '本人' || $ctrl.rdDataObj.Book_Consent_Relation == null " class="print-only">病人之 {{$ctrl.Book_Consent_RelationElse}}</span>
+                                    <!-- <input type="text" class="input"> -->
+                                </p>
+                                <p>
+                                    <span>身分證統一編號/居留證或護照號碼：
+                                        <input type="text" style="width:140px;" class="inputborder no-print"  ng-model="$ctrl.rdDataObj.Book_Consent_Id">
+                                    </span>
+                                    <span class="print-only">{{$ctrl.rdDataObj.Book_Consent_Id}}</span>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span>電話：
+                                        <input type="text" style="width:140px;" class="inputborder no-print" ng-model="$ctrl.rdDataObj.Book_Consent_Phone">
+                                    </span>
+                                    <span class="print-only">{{$ctrl.rdDataObj.Book_Consent_Phone}}</span>
+                                </p>
+                                <p>
+                                    住址：
+                                    <input class="inputborder no-print" style="width: 645px!important;" ng-model="$ctrl.rdDataObj.Book_Consent_Address"/>
+                                    <span class="print-only">{{$ctrl.rdDataObj.Book_Consent_Address}}</span>
+                                </p>
+                                <br><br>
+                                <div style="text-align: center;" ng-show="!$ctrl.rdDataObj.isCreate">
+                                    <span>日期：
+                                            {{$ctrl.rdDataObj.Record_Date | moment:'YYYY'}}年
+                                            {{$ctrl.rdDataObj.Record_Date | moment:'MM'}}月
+                                            {{$ctrl.rdDataObj.Record_Date | moment:'DD'}}日
+                                    </span>
+                                    <div class="blank"></div>
+                                    <span>
+                                        時間：
+                                        {{$ctrl.rdDataObj.Record_Date | moment:'HH'}}時
+                                        {{$ctrl.rdDataObj.Record_Date | moment:'mm'}}分
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </md-whiteframe>
+        <div layout="row" layout-align="end center " class="no-print" ng-hide="$ctrl.rdDataObj.Status == 'Deleted'"> 
+            <md-button class="md-raised md-primary" ng-click="$ctrl.Save()">
+                    {{'reportDialysis.dialog.edit' | translate}}
+            </md-button>
+        </div>
+    </form>
+</md-content>

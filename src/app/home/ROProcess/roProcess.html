@@ -1,0 +1,31 @@
+<div layout="column" layout-fill flex>
+    <md-toolbar>
+        <div layout="row" class="md-toolbar-tools">
+            <div>
+                <md-button id="menu" class="md-icon-button" aria-label="Settings" ng-click="$ctrl.openLeftMenu()" hide-gt-md>
+                    <i class="material-icons">menu</i>
+                    <span ng-show="$ctrl.notificationCount > 0" class="icon-button-badge">{{$ctrl.notificationCount}}</span>
+                </md-button>
+                <md-button class="md-icon-button" aria-label="Settings" ng-click="$ctrl.toggleSideNav()" hide-md hide-sm hide-xs show-gt-md>
+                    <i class="material-icons">menu</i>
+                    <span ng-show="$ctrl.notificationCount > 0" class="icon-button-badge">{{$ctrl.notificationCount}}</span>
+                </md-button>
+            </div>
+            <h2>
+                <span translate="roprocess.title"></span>
+            </h2>
+            <span flex></span>
+        </div>
+    </md-toolbar>
+    <md-tabs md-stretch-tabs="always" md-center-tabs="false" md-swipe-content="true">
+        <md-tab ui-sref="{{item.uiSref}}" ui-sref-opts="{{item.uiSrefOpts}}" md-active="currentName === item.active" ng-repeat="item in $ctrl.allTabs track by $index">
+            <md-tab-label>
+                {{ item.label }}{{ (item.uiSref === 'roProcessPending' && $ctrl.roAbnormalCount > 0) ? ' ('+ $ctrl.roAbnormalCount + ')' : ''}}
+            </md-tab-label>
+        </md-tab>
+    </md-tabs>
+    <ui-view layout="column" layout-fill flex></ui-view>
+    <md-button class="md-fab md-fab-bottom-right" style="position: fixed;" ng-click="$ctrl.add()">
+        <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+    </md-button>
+</div>

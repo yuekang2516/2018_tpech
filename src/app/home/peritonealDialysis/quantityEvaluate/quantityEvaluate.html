@@ -1,0 +1,174 @@
+
+<style>
+    quantity-evaluate {
+        height: 100%;
+    }
+    @media print{
+        .md-dialog-container {
+            display: inline-table;
+        }
+        @page{
+            size: A4 portrait;
+            margin: 0.5cm;
+            orphans:4;
+            widows:2;
+        }
+        div,input,table,select,md-select{
+            page-break-inside :avoid;
+            page-break-after: avoid;
+        }
+    }
+</style>
+<md-content layout="column" layout-fill>
+    <loading ng-show="$ctrl.loading && $ctrl.evaluateList.length == 0"></loading>
+    <div class="list-header" ng-show="!$ctrl.loading && $ctrl.evaluateList.length > 0" layout="row" layout-align="center center">
+        <md-switch ng-model="$ctrl.showDeleted" aria-label="Switch data">
+            <span translate="highRiskFaller.Records.showDeleted" translate-values='{deletedItemsLength: $ctrl.deletedItemsLength}'></span>
+        </md-switch>
+        <span flex></span>
+        <h6 translate="highRiskFaller.Records.totalRecord" translate-values='{totalCnt: $ctrl.totalCnt}'></h6>
+        <span flex></span>
+        <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+        <md-button class="btnSearch md-button md-primary md-raised" type="button" ng-click="$ctrl.exportExcel($event, ei)">
+            <span>轉Excel</span>
+        </md-button>
+    </div>
+    <div layout="column" ng-show="!$ctrl.loading" style="position: relative;" layout-fill flex>
+        <md-content layout="column" flex>
+            <div ng-show="$ctrl.evaluateList.length > 0" infinite-scroll-disabled='$ctrl.loading' infinite-scroll-distance='2'
+                infinite-scroll-parent>
+                <md-content>
+                    <md-list><!-- | orderBy:['-Record_Date', '-CreatedTime']-->
+                        <md-list-item class="md-2-line" ng-class="{deleted: item.Status == 'Deleted'}" ng-repeat="item in $ctrl.evaluateList" ng-click="$ctrl.openEditDialog(item)" ng-show="item.Status !== 'Deleted' || $ctrl.showDeleted">
+                            <div class="md-list-item-text" layout="column">
+                                <h3 ng-bind="item.Recorddate | moment:'YYYY/MM/DD (dd) HH:mm'"></h3>
+                                <seal model="item" modified="hideIfSame" fixed="true"></seal>
+                            </div>
+                            <div  style="position: absolute; right: 6px; top: 20px">
+                                <md-button  class="md-icon-button" ng-click="$ctrl.deleteOne($event,item)" ng-hide="item.Status == 'Deleted'">
+                                    <i class="material-icons">delete</i>
+                                    <md-tooltip style="margin-top: -5px;">
+                                        刪除
+                                    </md-tooltip>
+                                </md-button>
+                            </div>
+                        </md-list-item>
+                    </md-list>
+                </md-content>
+            </div>
+            <!-- <div flex ng-show="!$ctrl.loading && $ctrl.compList.length === 0" layout="column" layout-fill layout-align="top center">
+                <h2>{{'complication.component.noData' | translate}}</h2>
+            </div>  -->
+            <!-- <div flex ng-show="$ctrl.loading && $ctrl.compList.length == 0 && $ctrl.isError" layout="column" layout-fill
+                layout-align="center center">
+                <h1 translate>尚無併發症記錄</h1>
+            </div> -->
+            <md-progress-circular ng-show="$ctrl.loadingMore" class="loadmore" md-diameter="40" md-mode="indeterminate">
+            </md-progress-circular>
+            <div flex ng-show="!$ctrl.loading && $ctrl.evaluateList.length == 0 " layout="column" layout-fill
+                layout-align="center center">
+                <h1 translate>{{'quantityEvaluate.component.noData'}}</h1>
+            </div>
+        </md-content>
+        <md-button class="no-print md-fab md-fab-bottom-right" style="position: fixed;" ng-click="$ctrl.openCreateDialog()">
+            <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+        </md-button>
+    </div>
+</md-content> 
+    <!-- 專門 for Excel 的 Table, 不呈現 -->
+    <table id="excelTable" style="z-index:-999;position:fixed" class="no-print">
+        <thead>
+            <tr>
+                <th>檢驗日期</th>
+                <th>體重</th>
+                <th>身高</th>
+                <th>體表面積(m^2)</th>
+                <th>Corrention Factor</th>
+                <th>透析液Glucose_0小時</th>
+                <th>透析液Creatinine_0小時</th>
+                <th>Glucose D/D0_0小時</th>｀
+                <th>Creatinine D/P_0小時</th>
+                <th>血清Glucose_2小時</th>
+                <th>血清Creatinine_2小時</th>
+                <th>透析液Glucose_2小時</th>
+                <th>透析液Creatinine_2小時</th>
+                <th>Glucose D/D0_2小時</th>｀
+                <th>Creatinine D/P_2小時</th>
+                <th>透析液Glucose_4小時</th>
+                <th>透析液Creatinine_4小時</th>
+                <th>Glucose D/D0_4小時</th>
+                <th>4小時Glucose D/D0結果</th>
+                <th>Creatinine D/P_4小時</th>
+                <th>Creatinine D/P結果</th>
+                <th>Inflow Vol(cc)</th>
+                <th>Outflow Vol(cc)</th>
+                <th>Net Vol(cc)</th>
+                <th>BUN(mg/dl)</th>
+                <th>血清肌酸酐(mg/dl)</th>
+                <th>24小時透析液總量(L)</th>
+                <th>24小時尿液總量(L)</th>
+                <th>24小時透析液尿素氮(mg/dl)</th>
+                <th>24小時尿液尿素氮(mg/dl)</th>
+                <th>24小時透析液肌酸酐(mg/dl)</th>
+                <th>24小時尿液肌酸酐(mg/dl)</th>
+                <th>腹膜 Kt/V</th>
+                <th>殘餘腎功能Kt/V</th>
+                <th>總和Kt/V</th>
+                <th>腹膜廓清率（升/星期）</th>
+                <th>殘餘腎功能（升/星期）</th>
+                <th>總和廓清率（升/星期）</th>
+                <th>標準化總和廓清率（升/星期）</th>
+                <th>nPCR (gm/KgBW/day)</th>
+                <th>UNA (gm/day)</th>
+                <th>PNA (gm/day)</th>
+                <th>nPNA</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="ei in $ctrl.ExportDataList">
+                <th>{{ei.Recorddate | moment:'YYYY/MM/DD'}}</th>
+                <th>{{ei.Weight}}</th>
+                <th>{{ei.Height}}</th>
+                <th>{{ei.Body_Area}}</th>
+                <th>{{ei.Correction_Factor}}</th>
+                <th>{{ei.Dialysate_Glucose_Hour_0}}</th>
+                <th>{{ei.Dialysate_Creatinine_Hour_0}}</th>
+                <th>{{ei.Glucose_D0_Hour_0}}</th>｀
+                <th>{{ei.Creatinine_Dp_Hour_0}}</th>
+                <th>{{ei.Serum_Glucose_Hour_2}}</th>
+                <th>{{ei.Serum_Creatinine_Hour_2}}</th>
+                <th>{{ei.Dialysate_Glucose_Hour_2}}</th>
+                <th>{{ei.Dialysate_Creatinine_Hour_2}}</th>
+                <th>{{ei.Glucose_D0_Hour_2}}</th>｀
+                <th>{{ei.Creatinine_Dp_Hour_2}}</th>
+                <th>{{ei.Dialysate_Glucose_Hour_4}}</th>
+                <th>{{ei.Dialysate_Creatinine_Hour_4}}</th>
+                <th>{{ei.Glucose_D0_Hour_4}}</th>
+                <th>{{ei.Glucose_D0_Hour_4_Result}}</th>
+                <th>{{ei.Creatinine_Dp_Hour_4}}</th>
+                <th>{{ei.Glucose_Dp_Hour_4_Result}}</th>
+                <th>{{ei.Inflow_Vol}}</th>
+                <th>{{ei.Outflow_Vol}}</th>
+                <th>{{ei.Net_Vol}}</th>
+                <th>{{ei.Bun}}</th>
+                <th>{{ei.Serumcreatinine}}</th>
+                <th>{{ei.Dialysate_Total_Hour_24}}</th>
+                <th>{{ei.Urea_Total_Hour_24}}</th>
+                <th>{{ei.Dialysate_Urea_Hour_24}}</th>
+                <th>{{ei.Urea_Nitrogen_Hour_24}}</th>
+                <th>{{ei.Dialysate_Creatinine_Hour_24}}</th>
+                <th>{{ei.Creatinine_Hour_24}}</th>
+                <th>{{ei.KTV1}}</th>
+                <th>{{ei.KTV2}}</th>
+                <th>{{ei.KTV3}}</th>
+                <th>{{ei.CCR1}}</th>
+                <th>{{ei.CCR2}}</th>
+                <th>{{ei.CCRSUM}}</th>
+                <th>{{ei.Wcc_Total}}</th>
+                <th>{{ei.Npcr}}</th>
+                <th>{{ei.Una}}</th>
+                <th>{{ei.Pna}}</th>
+                <th>{{ei.Npna}}</th>
+            </tr>
+        </tbody>
+    </table>

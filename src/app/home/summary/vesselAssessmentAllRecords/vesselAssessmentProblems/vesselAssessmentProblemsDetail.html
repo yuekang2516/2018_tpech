@@ -1,0 +1,163 @@
+<style scoped>
+    .tubingposition {
+        background-color: #fff;
+        padding: 15px 0;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+    .tubingposition-div {
+        margin: 0 auto;
+        height: 400px;
+        width: 280px;
+        background-color: white;
+        text-align: center;
+        position: relative;
+    }
+
+    .tubingposition-div .tubingposition-image {
+        display: table;
+        background-color: white;
+        height: 100%;
+        width: 100%;
+    }
+
+    .material-icons.color {
+        color: #969696;
+    }
+</style>
+<!-- <md-content layout="column"> -->
+<div layout="column" layout-fill>
+    <summary-toolbar ng-if="!$ctrl.vesselAssessmentProblemsId" toolbar-title="'vesselAssessmentProblems.problemsDetail.createVesselProblem'|translate" cancel="$ctrl.goback()"></summary-toolbar>
+    <summary-toolbar ng-if="$ctrl.vesselAssessmentProblemsId && $ctrl.data.Status !== 'Deleted'" toolbar-title="'vesselAssessmentProblems.problemsDetail.editVesselProblem'|translate" cancel="$ctrl.goback()"></summary-toolbar>
+    <summary-toolbar ng-if="$ctrl.data.Status === 'Deleted'" toolbar-title="'vesselAssessmentProblems.problemsDetail.showVesselPrblem'|translate" cancel="$ctrl.goback()"></summary-toolbar>
+    <!-- <div hide-xs hide-sm ng-show="!$ctrl.loading">
+        <h3 style="float: left; padding-left: 10px">
+            <span ng-show="!$ctrl.vesselAssessmentProblemsId" translate="vesselAssessmentProblems.problemsDetail.createVesselProblem"></span>
+            <span ng-show="$ctrl.vesselAssessmentProblemsId && $ctrl.data.Status !== 'Deleted'" translate="vesselAssessmentProblems.problemsDetail.editVesselProblem"></span>
+            <span ng-show="$ctrl.data.Status === 'Deleted'" translate="vesselAssessmentProblems.problemsDetail.showVesselPrblem" ></span>
+        </h3>
+        <md-button style="float:right; margin-top: 8px" class="md-secondary md-icon-button" ng-click="$ctrl.goback()" aria-label="call">
+            <i class="material-icons">cancel</i>
+        </md-button>
+    </div> -->
+    <loading ng-show="$ctrl.loading"></loading>
+    <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+        <h3 translate>{{'vesselAssessmentProblems.problemsList.serverError'}}</h3>
+    </div>
+    <md-content layout-padding layout="column" ng-show="!$ctrl.loading && !$ctrl.isError">
+        <div layout="column">
+            <form name="data" class="yuekang-input-container">
+
+                <div layout="row">
+                    <label translate>{{'vesselAssessmentProblems.problemsDetail.RecordDate'}}</label>
+                    <input type="datetime-local" max="{{$ctrl.today}}" ng-model="$ctrl.data.RecordDate">
+                </div>
+                <div layout="row">
+                    <label translate>{{'vesselAssessmentProblems.problemsDetail.VenousPressure'}}</label>
+                    <input ng-model="$ctrl.data.Venouspressure">
+                    <i class="material-icons color" style="margin-right: 5px" ng-click="$ctrl.plus('Venouspressure')">add_circle_outline</i>
+                    <i class="material-icons color" ng-click="$ctrl.minus('Venouspressure')">remove_circle_outline</i>
+                </div>
+                <div layout="row">
+                    <label translate>{{'vesselAssessmentProblems.problemsDetail.BF'}}</label>
+                    <input ng-model="$ctrl.data.Bloodflowrate">
+                    <i class="material-icons color" style="margin-right: 5px" ng-click="$ctrl.plus('Bloodflowrate')">add_circle_outline</i>
+                    <i class="material-icons color" ng-click="$ctrl.minus('Bloodflowrate')">remove_circle_outline</i>
+                </div>
+                <div layout="row">
+                    <label translate>{{'vesselAssessmentProblems.problemsDetail.NoBloodFlow'}}</label>
+                    <input ng-model="$ctrl.data.Nobloodflowvoice">
+                    <i class="material-icons color" style="margin-right: 5px" ng-click="$ctrl.plus('Nobloodflowvoice')">add_circle_outline</i>
+                    <i class="material-icons color" ng-click="$ctrl.minus('Nobloodflowvoice')">remove_circle_outline</i>
+                </div>
+                <div layout="row">
+                    <label translate>{{'vesselAssessmentProblems.problemsDetail.Infection'}}</label>
+                    <input ng-model="$ctrl.data.Infection">
+                    <i class="material-icons color" style="margin-right: 5px" ng-click="$ctrl.plus('Infection')">add_circle_outline</i>
+                    <i class="material-icons color" ng-click="$ctrl.minus('Infection')">remove_circle_outline</i>
+                </div>
+                <div layout="row">
+                    <label translate>{{'vesselAssessmentProblems.problemsDetail.Venousneedledislodgement'}}</label>
+                    <input ng-model="$ctrl.data.Bloodleak">
+                    <i class="material-icons color" style="margin-right: 5px" ng-click="$ctrl.plus('Bloodleak')">add_circle_outline</i>
+                    <i class="material-icons color" ng-click="$ctrl.minus('Bloodleak')">remove_circle_outline</i>
+                </div>
+                <div layout="row">
+                    <label translate>{{'vesselAssessmentProblems.problemsDetail.tubeappearancechange'}}</label>
+                    <input ng-model="$ctrl.data.Shapechange">
+                    <i class="material-icons color" style="margin-right: 5px" ng-click="$ctrl.plus('Shapechange')">add_circle_outline</i>
+                    <i class="material-icons color" ng-click="$ctrl.minus('Shapechange')">remove_circle_outline</i>
+                </div>
+                <div layout="row">
+                    <label translate>{{'vesselAssessmentProblems.problemsDetail.StopBleedingOver20minutes'}}</label>
+                    <input ng-model="$ctrl.data.NotEasyStopBleeding">
+                    <i class="material-icons color" style="margin-right: 5px" ng-click="$ctrl.plus('NotEasyStopBleeding')">add_circle_outline</i>
+                    <i class="material-icons color" ng-click="$ctrl.minus('NotEasyStopBleeding')">remove_circle_outline</i>
+                </div>
+                <div layout="row">
+                    <label translate>{{'vesselAssessmentProblems.problemsDetail.cholesterol'}}</label>
+                    <input ng-model="$ctrl.data.Cholesterol">
+                    <i class="material-icons color" style="margin-right: 5px" ng-click="$ctrl.plus('Cholesterol')">add_circle_outline</i>
+                    <i class="material-icons color" ng-click="$ctrl.minus('Cholesterol')">remove_circle_outline</i>
+                </div>
+                <div layout="row">
+                    <label translate>{{'vesselAssessmentProblems.problemsDetail.Triglyceride'}}</label>
+                    <input ng-model="$ctrl.data.Triglyceride">
+                    <i class="material-icons color" style="margin-right: 5px" ng-click="$ctrl.plus('Triglyceride')">add_circle_outline</i>
+                    <i class="material-icons color" ng-click="$ctrl.minus('Triglyceride')">remove_circle_outline</i>
+                </div>
+                <div layout="row">
+                    <label translate>{{'vesselAssessmentProblems.problemsDetail.Other'}}</label>
+                    <input ng-model="$ctrl.data.Other">
+                    <i class="material-icons color" style="margin-right: 5px" ng-click="$ctrl.plus('Other')">add_circle_outline</i>
+                    <i class="material-icons color" ng-click="$ctrl.minus('Other')">remove_circle_outline</i>
+                </div>
+
+            </form>
+        </div>
+
+        <div layout="row" layout-wrap>
+            <div flex="50" flex-xs="100" ng-show="$ctrl.data.CreatedUserName">
+                <!-- <span>建立: {{ $ctrl.data.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                <span translate="vesselAssessmentProblems.problemsDetail.createdTime" translate-values='{CreatedTime: $ctrl.data.CreatedTime}'></span>
+                <seal model="$ctrl.data" modified="none"></seal>
+            </div>
+            <div flex="50" flex-xs="100" ng-show="$ctrl.data.ModifiedTime != null">
+                <!-- <span>修改: {{ $ctrl.data.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                <span translate="vesselAssessmentProblems.problemsDetail.editedTime" translate-values='{ModifiedTime: $ctrl.data.ModifiedTime}'></span>
+                <seal model="$ctrl.data" created="none"></seal>
+            </div>
+        </div>
+        <div layout="row" layout-margin layout-align="start center">
+            <md-button ng-show="$ctrl.data.Status !== 'Deleted'" ng-click="$ctrl.submit($event)" class="md-raised md-primary" ng-disabled="data.$invalid || $ctrl.isSaving">{{'vesselAssessmentProblems.problemsDetail.save' | translate}}</md-button>
+            <md-progress-circular md-diameter="20px" md-mode="indeterminate" ng-show="$ctrl.isSaving"></md-progress-circular>
+        </div>
+        <div ng-class="{deleted: $ctrl.data.Status == 'Deleted'}"></div>
+    </md-content>
+    <!-- </md-content> -->
+</div>
+<script type="text/ng-template" id="dialog.html">
+    <md-dialog aria-label="刪除確認">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2 translate>{{'vesselAssessmentProblems.problemsDetail.confirmDelete'}}</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="vm.cancel()">
+                        <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>           
+            <md-dialog-actions layout="row">
+                <md-button ng-click="vm.cancel()">
+                    {{'vesselAssessmentProblems.problemsDetail.cancel' | translate}}
+                </md-button>
+                <md-button ng-click="vm.ok()">
+                    {{'vesselAssessmentProblems.problemsDetail.delete' | translate}}
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>
+<!-- <pre>{{$ctrl.data | json}}</pre> -->

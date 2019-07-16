@@ -1,0 +1,115 @@
+<style scoped>
+    contract-detail {
+        height: 100%;
+    }
+    
+    .padding {
+        padding: 20px;
+    }
+    
+    .warning {
+        color: red;
+    }
+
+    div.deleted {
+        background-color: rgba(10, 10, 10, 0.2);
+        position: absolute;
+        width: 100%;
+    }
+</style>
+<md-content layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.back()">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <h4 translate="contract.detailpageTitle" translate-values='{name: vm.contract.Name}'></h4>
+        </div>
+    </md-toolbar>
+    <md-content layout-fill flex>
+        <loading ng-show="vm.loading"></loading>
+        <div flex ng-show="vm.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate="customMessage.serverError"></h3>
+        </div>
+        <div ng-show="!vm.loading && !vm.isError">
+            <form name="editForm" class="padding">
+                <div>
+                <md-grid-list md-cols="2" md-row-height="70px" flex>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="contract.name"></label>
+                            <input type="text" name="Name" ng-model="vm.formData.Name" ng-readonly="true" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="contract.number"></label>
+                            <input type="text" name="Number" ng-model="vm.formData.Number" ng-readonly="true" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="contract.person"></label>
+                            <input type="text" name="Person" ng-model="vm.formData.Person" ng-readonly="true" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="contract.phone"></label>
+                            <input type="text" name="Phone" ng-model="vm.formData.Phone" ng-readonly="true" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="contract.address"></label>
+                            <input type="text" name="Address" ng-model="vm.formData.Address" ng-readonly="true" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="contract.state"></label>
+                            <input type="text" name="State" ng-model="vm.formData.State" ng-readonly="true" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="contract.start"></label>
+                            <input type="date" min="1900-01-01" max="2999-12-31" name="StartDate" ng-model="vm.formData.StartDate" ng-readonly="true" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="contract.end"></label>
+                            <input type="date" min="1900-01-01" max="2999-12-31" name="EndDate" ng-model="vm.formData.EndDate" ng-readonly="true" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="contract.billingMethod"></label>
+                            <input type="text" name="BillingMethod" value="{{vm.showMethod(vm.formData.BillingMethod)}}" ng-readonly="true" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="contract.price"></label>
+                            <input type="text" name="Price" ng-model="vm.formData.Price" ng-readonly="true" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="contract.companyId"></label>
+                            <input type="text" name="Invoice" ng-model="vm.formData.Invoice" ng-readonly="true" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="contract.invoice"></label>
+                            <input type="text" name="CompanyId" ng-model="vm.formData.CompanyId" ng-readonly="true" />
+                        </md-input-container>
+                    </md-grid-tile>
+                </md-grid-list>
+                </div>
+            </form>
+        </div>
+    </md-content>
+</md-content>

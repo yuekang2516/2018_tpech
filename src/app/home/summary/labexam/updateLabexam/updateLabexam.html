@@ -1,0 +1,131 @@
+<md-content layout="column" layout-fill>
+    
+    <summary-toolbar ng-if="!$ctrl.labexamId" toolbar-title="'labexam.createLabexam.createLabexam'|translate" cancel="$ctrl.goback()"></summary-toolbar>
+    <summary-toolbar ng-if="$ctrl.labexamId && $ctrl.form.Status !== 'Deleted'" toolbar-title="'labexam.createLabexam.editLabexam'|translate" cancel="$ctrl.goback()"></summary-toolbar>
+    <summary-toolbar ng-if="$ctrl.form.Status === 'Deleted'" toolbar-title="'labexam.createLabexam.showDeleted'|translate" cancel="$ctrl.goback()"></summary-toolbar>
+
+    <!-- <div hide-xs hide-sm ng-show="!$ctrl.loading">
+        <h3 style="float: left; padding-left: 10px">
+            <span ng-show="!$ctrl.labexamId" translate="labexam.updateLabexam.createLabexam" ></span>
+            <span ng-show="$ctrl.labexamId && $ctrl.form.Status !== 'Deleted'" translate="labexam.updateLabexam.editLabexam" ></span>
+            <span ng-show="$ctrl.form.Status === 'Deleted'" translate>{{'labexam.updateLabexam.showDeleted'}}</span>
+        </h3>
+        <md-button style="float:right; margin-top: 8px" class="md-secondary md-icon-button" ng-click="$ctrl.goback()"
+            aria-label="call">
+            <i class="material-icons">cancel</i>
+        </md-button>
+    </div> -->
+
+    <md-content flex >
+        <loading ng-show="$ctrl.loading"></loading>
+        <body style="background:#fafafa; padding:10px">
+            <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+                <h3 translate>{{'labexam.labexam.serverError'}}</h3>
+            </div>
+            <div class="container">
+                <form ng-show="!$ctrl.loading && !$ctrl.isError" layout="column" name="form" class="form-group">
+                    <div class="labelbox">
+                        <div class="labelbox100 control-label" translate>{{'labexam.updateLabexam.labCode'}}</div>
+                        <div class="labelboxflex">
+                            <input name="user_name" id="user_name"  type="text" placeholder="{{'labexam.updateLabexam.labCode' | translate}}" class="form-control" ng-model="$ctrl.form.Code"/>
+                        </div>
+                    </div>
+                    <div class="labelbox">
+                        <div class="labelbox100 control-label" translate>{{'labexam.updateLabexam.labName'}}</div>
+                        <div class="labelboxflex">
+                            <input name="Name" id="user_name" type="text" placeholder="{{'labexam.updateLabexam.labName' | translate}}" class="form-control" ng-model="$ctrl.form.Name"  required/>
+                            <div ng-messages="form.Name.$error" role="alert">
+                                <div class="ng" ng-message="required" translate>{{'labexam.updateLabexam.labNameRequired'}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="labelbox">
+                        <div class="labelbox100 control-label" translate>{{'labexam.updateLabexam.labValue'}}</div>
+                        <div class="labelboxflex">
+                            <input name="Value" id="user_name" type="text" placeholder="{{'labexam.updateLabexam.labValue' | translate}}" class="form-control" ng-model="$ctrl.form.Value" ng-pattern="/^\d{0,9}(?:\.\d{0,9}){0,1}$/" required/>
+                            <div ng-messages="form.Value.$error" role="alert">
+                                <div class="ng" ng-message="required" translate>{{'labexam.updateLabexam.labValueRequired'}}</div>
+                                <div class="ng" ng-message="pattern" translate>{{'labexam.updateLabexam.labValueDigit'}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="labelbox">
+                        <div class="labelbox100 control-label" translate>{{'labexam.updateLabexam.NormalUpper'}}</div>
+                        <div class="labelboxflex">
+                            <input name="NormalUpper" id="user_name" type="text" placeholder="{{'labexam.updateLabexam.NormalUpper' | translate}}" class="form-control" ng-model="$ctrl.form.NormalUpper" ng-pattern="/^\d{0,9}(?:\.\d{0,9}){0,1}$/"/>
+                            <div ng-messages="form.NormalUpper.$error" role="alert">
+                                <div class="ng" ng-message="pattern" translate>{{'labexam.updateLabexam.NormalUpperDigit'}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="labelbox">
+                        <div class="labelbox100 control-label" translate>{{'labexam.updateLabexam.NormalDown'}}</div>
+                        <div class="labelboxflex">
+                            <input name="NormalDown" id="user_name" type="text" placeholder="{{'labexam.updateLabexam.NormalDown' | translate}}" class="form-control" ng-model="$ctrl.form.NormalDown"  ng-pattern="/^\d{0,9}(?:\.\d{0,9}){0,1}$/"/>
+                            <div ng-messages="form.NormalDown.$error" role="alert">
+                                <div class="ng" ng-message="pattern" translate>{{'labexam.updateLabexam.NormalDownDigit'}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="labelbox">
+                        <div class="labelbox100 control-label" translate>{{'labexam.updateLabexam.unit'}}</div>
+                        <div class="labelboxflex">
+                            <input name="user_name" id="user_name" type="text" placeholder="{{'labexam.updateLabexam.unit' | translate}}" class="form-control" ng-model="$ctrl.form.Unit"/>
+                        </div>
+                    </div>
+                    <div class="labelbox">
+                        <div class="labelbox100 control-label"></div>
+                        <div class="labelboxflex">
+                            <p class="f12" translate>{{'labexam.updateLabexam.IsNormal'}}</p>
+                            <md-radio-group ng-model="$ctrl.form.IsNormal" layout="row" aria-label="IsNormal">
+                                <md-radio-button  ng-value="true">{{'labexam.updateLabexam.normal' | translate}}</md-radio-button>
+                                <md-radio-button  ng-value="false">{{'labexam.updateLabexam.abnormal' | translate}}</md-radio-button>
+                            </md-radio-group>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="labelbox">
+                        <div class="labelbox100 control-label" translate>{{'labexam.updateLabexam.CheckTime'}}</div>
+                        <div class="labelboxflex">
+                            <input name="CheckTime"
+                                   id="user_name"
+                                   type="datetime-local"
+                                   placeholder="{{'labexam.updateLabexam.CheckTime' | translate}}"
+                                   class="form-control"
+                                   ng-model="$ctrl.form.CheckTime"
+                                   max="$ctrl.checkMaxTime" required/>
+                            <div ng-messages="form.CheckTime.$error" role="alert">
+                                <div ng-message="required" translate>{{'labexam.updateLabexam.CheckTimeRequired'}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="labelbox">
+                        <div class="labelbox100 control-label">群組代碼</div>
+                        <div class="labelboxflex">
+                            <md-select ng-model="$ctrl.form.Group">
+                                <md-option value="none">手動輸入群組代碼</md-option>
+                                <md-option ng-repeat="state in $ctrl.defaultGroup" ng-value="state">
+                                    {{state}}
+                                </md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                    <div class="labelbox" ng-show="$ctrl.form.Group === 'none'">
+                        <div class="labelbox100 control-label">手動輸入群組代碼</div>
+                        <div class="labelboxflex">
+                            <input name="UserKeyIn" type="text" placeholder="手動輸入群組代碼" class="form-control" ng-model="$ctrl.useGroupKeyIn" ng-required="$ctrl.form.Group === 'none'" type="text">
+                            <div ng-messages="form.UserKeyIn.$error" role="alert">
+                                <div ng-message="required">手動輸入群組代碼不能為空白</div>
+                            </div>
+                        </div>
+                    </div> -->
+                    <textarea name="" id="" cols="30" rows="10" placeholder="{{'labexam.updateLabexam.Memo' | translate}}" class="form-control" ng-model="$ctrl.form.Memo"></textarea>
+                    <div class="form-group" layout="row" layout-margin layout-align="start center">
+                        <md-button type="submit" class="md-raised md-primary" ng-show="$ctrl.form.Status !== 'Deleted'" ng-click="$ctrl.submit($event)" ng-disabled="form.$invalid">{{'labexam.updateLabexam.save' | translate}}</md-button>
+                        <md-progress-circular md-diameter="20px" md-mode="indeterminate" ng-show="$ctrl.isSaving"></md-progress-circular>
+                    </div>
+                </form>
+            </div>
+        </body>
+    </md-content>
+</md-content>

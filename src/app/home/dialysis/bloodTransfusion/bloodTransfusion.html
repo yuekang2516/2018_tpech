@@ -1,0 +1,227 @@
+<div flex layout="column" layout-fill>
+
+    <summary-toolbar ng-if="!$ctrl.bloodTransfusionId" toolbar-title="'bloodTransfusion.bloodTransfusion.createBloodTransfusion'|translate" cancel="$ctrl.goback()"></summary-toolbar>
+    <summary-toolbar ng-if="$ctrl.bloodTransfusionId && $ctrl.regform.Status !== 'Deleted'" toolbar-title="'bloodTransfusion.bloodTransfusion.editBloodTransfusion'|translate" cancel="$ctrl.goback()"></summary-toolbar>
+    <summary-toolbar ng-if="$ctrl.regform.Status === 'Deleted'" toolbar-title="'bloodTransfusion.bloodTransfusion.showDeleted'|translate" cancel="$ctrl.goback()"></summary-toolbar>
+    
+    <!-- <div hide-xs hide-sm ng-show="!$ctrl.loading">
+        <h3 style="float: left; padding-left: 10px">
+            <span ng-show="!$ctrl.bloodTransfusionId" translate>{{'bloodTransfusion.bloodTransfusion.createBloodTransfusion'}}</span>
+            <span ng-show="$ctrl.bloodTransfusionId && $ctrl.regform.Status !== 'Deleted'" translate>{{'bloodTransfusion.bloodTransfusion.editBloodTransfusion'}}</span>
+            <span ng-show="$ctrl.regform.Status === 'Deleted'" translate>{{'bloodTransfusion.bloodTransfusion.showDeleted'}}</span>
+        </h3>
+        <md-button style="float:right; margin-top: 8px" class="md-secondary md-icon-button" ng-click="$ctrl.goback('bloodTransfusion')" aria-label="call">
+            <i class="material-icons">cancel</i>
+        </md-button>
+    </div> -->
+
+    <md-content layout="column" flex>
+        <loading ng-show="$ctrl.loading"></loading>
+        <div class="readonly-container">
+            <form ng-show="!$ctrl.loading && $ctrl.BloodSettings" class="md-padding" layout="column" name="form" novalidate>
+
+                <h4 class="md-title" translate>{{'bloodTransfusion.bloodTransfusion.basicInfo'}}</h4>
+                <br>
+                <div layout="row">
+                    <div flex style="padding-right:8px">
+                        <date-time-picker-standard my-model="$ctrl.regform.StartTime" text="'bloodTransfusion.bloodTransfusion.start' | translate" required="true"></date-time-picker-standard>
+                    </div>
+                    <div flex>
+                        <date-time-picker-standard my-model="$ctrl.regform.EndTime" min="$ctrl.regform.StartTime" text="'bloodTransfusion.bloodTransfusion.end' | translate"></date-time-picker-standard>
+                    </div>
+                </div>
+                <!-- <h4 translate>{{'bloodTransfusion.bloodTransfusion.TherapistId1'}}</h4> -->
+                <div layout="row" layout-align="start center">
+                    <h4 translate>{{'bloodTransfusion.bloodTransfusion.TherapistId1'}}</h4>
+                    <span ng-if="!$ctrl.isBrowser" class="qrcodeSign-btn-text">QRcode</span>
+                    <i ng-if="!$ctrl.isBrowser" class="material-icons qrcodeSign-btn" ng-click="$ctrl.scanTherapistBarCode(1)">graphic_eq</i>
+                </div>
+                <div layout="row">
+                    <div flex style="padding-right:8px">
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label translate>{{'bloodTransfusion.bloodTransfusion.TherapistId1Code'}}</label>
+                            <input type="text" name="TherapistId1" ng-model="$ctrl.regform.TherapistId1" search-User id-Match="$ctrl.regform.TherapistId2" on-Change-Name="$ctrl.onChangeName1(user)" autocomplete="false" required>
+                            <div ng-messages="form.TherapistId1.$error" role="alert">
+                                <div ng-message="required" translate>{{'bloodTransfusion.bloodTransfusion.TherapistId1Required'}}</div>
+                                <div ng-message="disMatch" translate>{{'bloodTransfusion.bloodTransfusion.TherapistId1Dismatch'}}</div>
+                                <div ng-message="therapistId1Error" translate>{{'bloodTransfusion.bloodTransfusion.TherapistId1Error'}}</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div flex>
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label translate>{{'bloodTransfusion.bloodTransfusion.TherapistName1'}}</label>
+                            <input type="text" name="TherapistName1" ng-model="$ctrl.regform.TherapistName1" disabled required>
+                            <div ng-messages="form.TherapistName1.$error" role="alert">
+                                <div ng-message="required" translate>{{'bloodTransfusion.bloodTransfusion.TherapistName1Required'}}</div>
+                                <div ng-message="therapistId1Error" translate>{{'bloodTransfusion.bloodTransfusion.TherapistName1Error'}}</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </div>
+
+                <!-- <h4 translate>{{'bloodTransfusion.bloodTransfusion.TherapistId2'}}</h4> -->
+                <div layout="row" layout-align="start center">
+                    <h4 translate>{{'bloodTransfusion.bloodTransfusion.TherapistId2'}}</h4>
+                    <span ng-if="!$ctrl.isBrowser" class="qrcodeSign-btn-text">QRcode</span>
+                    <i ng-if="!$ctrl.isBrowser" class="material-icons qrcodeSign-btn" ng-click="$ctrl.scanTherapistBarCode(2)">graphic_eq</i>
+                </div>
+                <div layout="row">
+                    <div flex style="padding-right:8px">
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label translate>{{'bloodTransfusion.bloodTransfusion.TherapistId2Code'}}</label>
+                            <input type="text" name="TherapistId2" ng-model="$ctrl.regform.TherapistId2" search-User id-Match="$ctrl.regform.TherapistId1" on-Change-Name="$ctrl.onChangeName2(user)" autocomplete="false" required>
+                            <div ng-messages="form.TherapistId2.$error" role="alert">
+                                <div ng-message="required" translate>{{'bloodTransfusion.bloodTransfusion.TherapistId2Required'}}</div>
+                                <div ng-message="disMatch" translate>{{'bloodTransfusion.bloodTransfusion.TherapistId2Dismatch'}}</div>
+                                <div ng-message="therapistId2Error" translate>{{'bloodTransfusion.bloodTransfusion.TherapistId2Error'}}</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div flex>
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label translate>{{'bloodTransfusion.bloodTransfusion.TherapistName2'}}</label>
+                            <input type="text" name="TherapistName2" ng-model="$ctrl.regform.TherapistName2" disabled required>
+                            <div ng-messages="form.TherapistName2.$error" role="alert">
+                                <div ng-message="required" translate>{{'bloodTransfusion.bloodTransfusion.TherapistName2Required'}}</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </div>
+                <div layout="row">
+                    <div flex style="padding-right:8px">
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label translate>{{'bloodTransfusion.bloodTransfusion.LeadBlood'}}</label>
+                            <input type="text" name="LeadBlood" ng-model="$ctrl.regform.LeadBlood">
+                        </md-input-container>
+                    </div>
+                    <div flex>
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label translate>{{'bloodTransfusion.bloodTransfusion.TransfusionReaction'}}</label>
+                            <input type="text" name="TransfusionReaction" ng-model="$ctrl.regform.TransfusionReaction">
+                        </md-input-container>
+                    </div>
+                </div>
+                <div layout="row">
+                    <div flex>
+                        <h4 class="md-title" translate style="display:inline">{{'bloodTransfusion.bloodTransfusion.bloodBagInfo'}}</h4>
+                        <md-button type="submit" class="md-raised md-primary" ng-click="$ctrl.bloodBag($event, $ctrl)" ng-disabled="form.$invalid" ng-show="$ctrl.regform.Status !== 'Deleted'">{{'bloodTransfusion.bloodTransfusion.create' | translate}}</md-button>
+                    </div>
+                </div>
+
+                <md-list flex>
+                    <!-- <md-list-item layout="row" class="secondary-button-padding">
+                        <md-button type="submit" class="md-raised md-primary" ng-click="$ctrl.bloodBag($event, $ctrl)" ng-disabled="form.$invalid"
+                            ng-show="$ctrl.regform.Status !== 'Deleted'" flex="50">{{'bloodTransfusion.bloodTransfusion.create' | translate}}</md-button>
+                        <md-button ng-click="$ctrl.submit($event)" ng-show="$ctrl.regform.Status !== 'Deleted'" class="md-raised md-primary" ng-disabled="form.$invalid"
+                            flex="50">{{'bloodTransfusion.bloodTransfusion.save' | translate}}</md-button>
+                    </md-list-item> -->
+
+                    <md-list-item ng-show="$ctrl.regform.BloodBags.length === 0" class="md-1-line">
+                        <md-subheader class="md-no-sticky">{{'bloodTransfusion.bloodTransfusion.noBloodBagInfo' | translate}}</md-subheader>
+                    </md-list-item>
+                    <md-list-item ng-show="$ctrl.regform.BloodBags.length > 0" class="md-3-line">
+                        <div class="md-list-item-text" layout="row">
+                            <div flex style="text-align: center;">
+                                <h4 translate>{{'bloodTransfusion.bloodTransfusion.bloodProduct'}}</h4>
+                            </div>
+                            <div flex style="text-align: center;">
+                                <h4 translate>{{'bloodTransfusion.bloodTransfusion.bloodType'}}</h4>
+                            </div>
+                            <div flex style="text-align: center;">
+                                <h4 translate>{{'bloodTransfusion.bloodTransfusion.quantity'}}</h4>
+                            </div>
+                            <div flex style="text-align: center;">
+                                <h4 translate>{{'bloodTransfusion.bloodTransfusion.validDate'}}</h4>
+                            </div>
+                            <div flex style="text-align: center;">
+                                <h4 translate>{{'bloodTransfusion.bloodTransfusion.delete'}}</h4>
+                            </div>
+                        </div>
+                        <!-- <div class="md-secondary-container" translate>{{'bloodTransfusion.bloodTransfusion.delete'}}</div> -->
+                        <md-divider></md-divider>
+                    </md-list-item>
+                    <md-list-item ng-show="$ctrl.regform.BloodBags.length > 0" class="md-3-line" ng-repeat="item in $ctrl.regform.BloodBags track by $index">
+                        <div class="md-list-item-text" layout="row">
+                            <div flex style="padding:20px 0; text-align: center;" ng-click="$ctrl.bloodBag($event, $ctrl, $index)">
+                                <h4 ng-bind="item.PlasmaComponents"></h4>
+                            </div>
+                            <div flex style="padding:20px 0; text-align: center;" ng-click="$ctrl.bloodBag($event, $ctrl, $index)">
+                                <h4 ng-bind="item.BloodType"></h4>
+                            </div>
+                            <div flex style="padding:20px 0; text-align: center;" ng-click="$ctrl.bloodBag($event, $ctrl, $index)">
+                                <h4 ng-bind="item.Quantity"></h4>
+                            </div>
+                            <div flex style="padding:20px 0; text-align: center;" ng-click="$ctrl.bloodBag($event, $ctrl, $index)">
+                                <h4 ng-bind="item.ExpirationDate ? (item.ExpirationDate | moment: 'YYYY/MM/DD') : ''" ng-disabled="true"></h4>
+                            </div>
+                            <div flex style="padding:20px 0; text-align: center;" ng-click="$ctrl.showDelDialog($event, $index)">
+                                <md-icon md-svg-icon="static/img/svg/ic_delete_black_24px.svg"></md-icon>
+                            </div>
+                        </div>
+                        <!-- <md-icon class="md-secondary" ng-click="$ctrl.showDelDialog($event, $index)" md-svg-icon="static/img/svg/ic_delete_black_24px.svg"></md-icon> -->
+                        <md-divider ng-if="!$last"></md-divider>
+                    </md-list-item>
+                    <div layout="row" layout-wrap>
+                        <div flex="50" flex-xs="100" ng-show="$ctrl.regform.CreatedUserName">
+                            <!-- <span>建立: {{ $ctrl.regform.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                            <span translate="bloodTransfusion.bloodTransfusion.createdTime" translate-values='{CreatedTime: $ctrl.regform.CreatedTime}'></span>
+                            <seal model="$ctrl.regform" modified="none"></seal>
+                        </div>
+                        <div flex="50" flex-xs="100" ng-show="$ctrl.regform.ModifiedTime != null">
+                            <!-- <span>修改: {{ $ctrl.regform.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                            <span translate="bloodTransfusion.bloodTransfusion.editedTime" translate-values='{ModifiedTime: $ctrl.regform.ModifiedTime}'></span>
+                            <seal model="$ctrl.regform" created="none"></seal>
+                        </div>
+                    </div>
+                </md-list>
+                <!-- <div ng-show="!$ctrl.loading" layout="row">
+                    <md-button ng-click="$ctrl.submit()" class="md-raised md-primary" ng-disabled="$ctrl.isSaving || !$ctrl.dialysisHeader.WardId"
+                        style="margin:0">{{'overview.save' | translate}}</md-button>
+                        
+                    <md-progress-circular md-diameter="20px" md-mode="indeterminate" ng-show="$ctrl.isSaving"></md-progress-circular>
+                </div> -->
+            </form>
+        </div>
+    </md-content>
+    <div ng-show="!$ctrl.loading" layout="row" style="padding:8px" layout-margin layout-align="start center">
+        <md-button ng-click="$ctrl.submit($event)" ng-show="$ctrl.regform.Status !== 'Deleted'" class="md-raised md-primary" ng-disabled="form.$invalid || $ctrl.isSaving">{{'bloodTransfusion.bloodTransfusion.save' | translate}}</md-button>
+        <md-progress-circular md-diameter="20px" md-mode="indeterminate" ng-show="$ctrl.isSaving"></md-progress-circular>
+    </div>
+    <div ng-class="{deleted: $ctrl.regform.Status == 'Deleted'}"></div>
+    <div ng-show="!$ctrl.loading && !$ctrl.BloodSettings" layout="column" layout-fill layout-align="center center">
+        <h3 translate>{{'bloodTransfusion.bloodTransfusion.noBloodProduct'}}</h3>
+    </div>
+    <!--<input type="button" value="Rfid" ng-click="$ctrl.changeRfid('paul')">-->
+</div>
+<mask-loading ng-show="$ctrl.barcodeValidating" style="z-index:99" is-show-title="true" title-text="驗證血袋條碼中"></mask-loading>
+
+<script type="text/ng-template" id="delBloodBagdialog.html">
+        <md-dialog aria-label="刪除確認">
+            <form ng-cloak>
+                <md-toolbar>
+                    <div class="md-toolbar-tools">
+                        <h2 translate>{{'bloodTransfusion.bloodTransfusion.confirmDelete'}}</h2>
+                        <span flex></span>
+                        <md-button class="md-icon-button" ng-click="vm.cancel()">
+                            <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                        </md-button>
+                    </div>
+                </md-toolbar>
+                <md-dialog-content>
+                    <div class="md-dialog-content" translate>
+                        {{'bloodTransfusion.bloodTransfusion.deleteRecord'}}
+                    </div>
+                </md-dialog-content>
+
+                <md-dialog-actions layout="row">
+                    <md-button ng-click="vm.cancel()">
+                        {{'bloodTransfusion.bloodTransfusion.cancel' | translate}}
+                    </md-button>
+                    <md-button ng-click="vm.ok()">
+                        {{'bloodTransfusion.bloodTransfusion.delete' | translate}}
+                    </md-button>
+                </md-dialog-actions>
+            </form>
+        </md-dialog>
+    </script>

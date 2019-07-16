@@ -1,0 +1,29 @@
+[
+    {
+      "DateTimestamp": "2019-03-19T17:50:41.9085027+08:00",
+      "RecordTime": "2019-03-18T10:16:00Z",
+      "DialysisId": "5c8f6a2a98584d53f046ca4b",
+      "PatientId": "5c8f61ae98584d53f0458527",
+      "Content": "今日本班內交班事項編輯01.洗前\n洗前S：無特殊之主訴,O：BP / mmHg,I：HD duration hrs,UF set Kg。",
+      "HospitalId": "56fcc5dd4ead7870942f61c3",
+      "Revision": 1,
+      "HistoryId": null,
+      "Status": "Normal",
+      "CreatedUserId": "5c8f664c98584d53f0462983",
+      "CreatedUserName": "林秋玉",
+      "CreatedTime": "2019-03-18T10:16:35.832Z",
+      "ModifiedUserId": null,
+      "ModifiedUserName": null,
+      "ModifiedTime": null,
+      "Id": "5c8f700398584d53f0478e6c",
+      "CreatedOn": "2019-03-18T10:16:35Z",
+      "ModifiedOn": "0001-01-01T00:00:00Z",
+      "ObjectId": {
+        "Timestamp": 1552904195,
+        "Machine": 9984077,
+        "Pid": 21488,
+        "Increment": 4689516,
+        "CreationTime": "2019-03-18T10:16:35Z"
+      }
+    }
+  ]

@@ -1,0 +1,57 @@
+.shifts-container {
+    .bk{ color: #000; font-weight: bold; }
+    // table 上方的工具列 (日期、透析室、儲存...)
+    .table-head{
+        overflow: auto;
+        // white-space: nowrap;
+        font-size: 20px;
+        font-weight: bold;
+        margin: 10px 0 0px 16px;
+        border-bottom: 1px solid #eeeeee;
+
+        .scroll {
+            min-width: 1008px;
+            margin-bottom: 10px;
+        }
+
+        .scroll-smaller {
+            min-width: 300px;
+            margin-bottom: 10px;
+        }
+
+        .calendar-btn {
+            .md-button {
+                min-height: initial;
+                min-width: initial;
+                &.square {
+                    height: 36px;
+                    width: 36px;
+                    margin: 0;
+                }
+            }
+        }
+
+        .ward {
+            margin: 0 42px 0 50px;
+            .title {
+                color:black;
+                margin-left: 5px;
+                min-width: 45px;
+                padding: 5px;
+                background-color: lightgoldenrodyellow;
+                border: 1px solid rgba(0,0,0,0.12);
+                height: 1.8em;
+            }
+            md-select {
+                margin: 0;
+                margin-left: 5px;
+                width: auto;
+                min-width: 45px;
+                padding: 0 3px;
+            }
+        }
+
+
+    }
+
+}

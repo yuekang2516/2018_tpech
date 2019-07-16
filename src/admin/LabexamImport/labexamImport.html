@@ -1,0 +1,79 @@
+<style scoped>
+    labexam-import {
+        height: 100%;
+    }
+
+    .padding {
+        padding: 10px;
+    }
+</style>
+<md-content layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.openLeftMenu()" hide-gt-sm>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <h3 translate="labexamImport.pageTitle"></h3>
+        </div>
+    </md-toolbar>
+    <md-content>
+        <!--資料匯入功能改寫需要import angular-file-upload-shim-->
+        <md-card>
+            <div class="padding">
+                <input type="file" onchange="angular.element(this).scope().vm.importf(this)" accept=".txt, .csv, .xls, .xlsx" ngf-select ng-model="vm.Photo1" name="Photo1" ngf-fix-orientation="true" />
+                <md-checkbox ng-model="vm.havetitle" aria-label="{{'labexamImport.desc20' | translate}}">
+                    <span translate="labexamImport.desc20"></span>
+                </md-checkbox>
+                <!--<input type="file" ngf-change="vm.handleChangeBase64()" ngf-select ng-model="vm.Photo" name="Photo" accept=".txt, .csv, .xls, .xlsx" ngf-fix-orientation="true" />-->
+                <div layout="row" layout-sm="column" layout-align="space-around" id="loading" ng-show="vm.loading">
+                    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                </div>
+                <pre ng-show="vm.Message.length > 0">{{vm.Message}}</pre>
+                <p><span translate="labexamImport.inputDesc"></span></p>
+                <p><span translate="labexamImport.desc1"></span></p>
+                <p><span translate="labexamImport.desc2"></span></p>
+                <p><span translate="labexamImport.desc3"></span></p>
+                <p><span translate="labexamImport.desc4"></span></p>
+                <p><span translate="labexamImport.desc5"></span></p>
+                <p><span translate="labexamImport.desc6"></span></p>
+                <p><span translate="labexamImport.desc7"></span> 
+                    <a download href="./static/LabexamImportSample.xlsx" ng-if="vm.lang==='zh-tw'"> <span translate="labexamImport.download"></span> </a>
+                    <a download href="./static/LabexamImportSample_cn.xlsx" ng-if="vm.lang==='zh-cn'"> <span translate="labexamImport.download"></span> </a>
+                    <a download href="./static/LabexamImportSample_us.xlsx" ng-if="vm.lang==='en-us'"> <span translate="labexamImport.download"></span> </a></p>
+                <!--downloadURI('data:application/octet-stream;base64,' + result.data, "大宗郵件表-郵局掛號清單.xlsx");-->
+                <!--<p>1. 請確認內容格式且編碼為UTF-8。</p>-->
+                <!--<p>5. 新增病人，優先以病歷碼，再來是身份證，當二個都不存在則新增。</p>
+                <p>6. 系統會異動的基本資料有:姓名、病人類別、生日、身份證號、性別、電話、病歷號、地址、血型、狀態、首次治療日期、透析室。</p>-->
+            </div>
+        </md-card>
+    </md-content>
+    <md-content flex layout-fill>
+        <div ng-show="vm.LabExamResult.length > 0" flex=75>
+            <md-list>
+                <md-list-item>
+                    <div layout="row" layout-fill>
+                        <span flex=20 translate="labexamImport.patientCode"></span>
+                        <span flex=25 translate="labexamImport.labexamItem"></span>
+                        <span flex=30 translate="labexamImport.labexamResult"></span>
+                        <span flex=20 translate="labexamImport.unit"></span>
+                        <span flex=5 translate="labexamImport.result"></span>
+                    </div>
+                </md-list-item>
+                <md-list-item ng-repeat="rec in vm.LabExamResult">
+                    <div layout="row" layout-fill>
+                        <span flex=20>{{rec.MedicalId}}</span>
+                        <span flex=25>{{rec.Name}}</span>
+                        <span flex=30>{{rec.Value}}</span>
+                        <span flex=20>({{rec.Unit}})</span>
+                        <span flex=5 style="color:blue;">{{rec.Result}}</span>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </div>
+    </md-content>
+    <div layout="row" ng-show="vm.LabExamResult.length > 0">
+        <md-button class="md-raised md-primary" ng-click="vm.sendFile()">
+            <span translate>{{'labexamImport.importbutton'}}</span>
+        </md-button>
+    </div>
+</md-content>

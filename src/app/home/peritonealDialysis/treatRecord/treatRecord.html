@@ -1,0 +1,95 @@
+<style>
+    treat-record {
+        height: 100%;
+    }
+    @media print{
+        .md-dialog-container {
+            display: table;
+        }
+        @page{
+            size: A4 portrait;
+            margin: 0.5cm;
+            orphans:4;
+            widows:3;
+        }
+    }
+</style>
+<md-content layout="column" layout-fill>
+    <loading ng-show="$ctrl.loading && $ctrl.treatList.length == 0"></loading>    
+    <div class="list-header" ng-show="!$ctrl.loading && $ctrl.treatList.length > 0" layout="row" layout-align="center center">
+        <md-switch ng-model="$ctrl.showDeleted" aria-label="Switch data">
+            <span translate="highRiskFaller.Records.showDeleted" translate-values='{deletedItemsLength: $ctrl.deletedItemsLength}'></span>
+        </md-switch>
+        <span flex></span>
+        <h6 translate="highRiskFaller.Records.totalRecord" translate-values='{totalCnt: $ctrl.totalCnt}'></h6>
+        <span flex></span>
+        <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+    </div>
+    
+    <div class="contentDetail">        
+        <md-list ng-show="!$ctrl.loading"><!-- ng-if="ti.Status == 'Normal'"   | orderBy:['-Prescription_Startdate']  | orderBy:['-Prescription_Startdate']-->
+            <md-list-item ng-repeat="ti in $ctrl.treatList" 
+            ng-show="ti.Status !== 'Deleted' || $ctrl.showDeleted"
+            ng-class="{deleted: ti.Status == 'Deleted'}"
+            ng-click="$ctrl.openEditDialog(ti,false)" class="md-2-line">
+                <div class="md-list-item-text" layout="row">
+                    <div ng-class="ti.Status == 'Deleted' ? 'tempDelText' : ''">
+                        <h3 ng-bind="ti.Prescription_Startdate | moment:'YYYY/MM/DD (dd) HH:mm'"></h3>
+                        <!-- <h3>{{ti.Prescription_Startdate === null ? (ti.Prescription_Startdate | moment:'YYYY/MM/DD') : (ti.Prescription_Startdate | moment:'YYYY/MM/DD')}}</h3>-->
+                        <p>
+                            <label>透析類別:</label> {{ti.Dialysis_Type}} 
+                            <label>透析液系統:</label> {{ti.Dialysis_System.replace('_oher_','').replace('oher_','')}}
+                            <label ng-show="ti.Total_Dose !== null">總劑量:</label> {{ti.Total_Dose}}
+                        </p>
+                        <p>
+                            <label ng-if="ti.Esa_Types !== '0'  && ti.Esa_Types !== null">ESA種類:</label> 
+                            <span ng-if="ti.Esa_Types !== '0' && ti.Esa_Types !== null">{{ti.Esa_Types}} </span>
+                            <label ng-if="ti.Frequency !== '0' && ti.Frequency !== null">頻率:</label>
+                            <span ng-if="ti.Frequency !== '0' && ti.Frequency !== null">{{ti.Frequency}} </span>
+                        </p>
+                        <seal my-style="$ctrl.myStyle" model="ti" modified="hideIfSame" fixed="true"></seal>
+                        <div  style="position: absolute; right: 6px; top: 20px" ng-hide="ti.Status == 'Deleted'">
+                            <!-- <button class="md-icon-button md-button no-print" ng-click="$ctrl.printPaper(ti)" ng-show="$ctrl.isBrowser">
+                                <i class="material-icons ng-scope">print</i>
+                                <md-tooltip style="margin-top: -5px;">
+                                        列印
+                                </md-tooltip>
+                            </button> -->
+                            <md-button class="md-icon-button" ng-click="$ctrl.openEditDialog(ti,true)">
+                                <i class="material-icons">
+                                    content_copy
+                                </i>
+                                <md-tooltip style="margin-top: -5px;">
+                                    複製
+                                </md-tooltip>
+                            </md-button>
+                            <md-button  class="md-icon-button" ng-click="$ctrl.deleteOne($event,ti)">
+                                <i class="material-icons">delete</i>
+                                <md-tooltip style="margin-top: -5px;">
+                                    刪除
+                                </md-tooltip>
+                            </md-button>
+                        </div>
+                        <!-- <div class="btnGrp" ng-if="ti.Status !== 'Deleted'">
+                            <seal model="ti" modified="hideIfSame" fixed="true"></seal>
+                            <md-button class="md-icon-button" ng-click="$ctrl.deleteOne($event, ti)">
+                                <i class="material-icons">delete</i>
+                                <md-tooltip style="margin-top: -5px;">
+                                    刪除
+                                </md-tooltip>
+                            </md-button>
+                        </div> -->
+                    </div>
+                </div>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+        </md-list>
+    </div>
+    <md-content ng-show="!$ctrl.loading && $ctrl.treatList.length == 0" flex layout="column" layout-align="center center">
+        <h1 translate>{{'treatRecord.component.noData'}}</h1>
+        <h4></h4>
+    </md-content>
+</md-content>
+<md-button class="no-print md-fab md-fab-bottom-right" style="position: fixed;" ng-click="$ctrl.openCreateDialog()">
+    <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+</md-button>

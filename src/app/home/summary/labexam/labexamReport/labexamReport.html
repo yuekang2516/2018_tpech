@@ -1,0 +1,91 @@
+<div class="dialysisForm-container" layout="column" flex>
+    <md-toolbar class="no-print md-toolbar-tools">
+        <h2>檢驗紀錄</h2>
+        <span flex></span>
+        <md-button ng-if="$ctrl.isBrowser && !$ctrl.loading && !$ctrl.isErr" class="md-icon-button" aria-label="More" ng-click="$ctrl.print()">
+            <i class="material-icons">print</i>
+
+        </md-button>
+        <md-button class="md-icon-button" ng-click="$ctrl.goback()">
+            <i class="material-icons">clear</i>
+        </md-button>
+    </md-toolbar>
+
+
+
+    <loading ng-if="$ctrl.loading" flex></loading>
+    <server-error-page ng-if="!$ctrl.loading && $ctrl.isErr" refresh="$ctrl.refresh()" flex></server-error-page>
+
+    <div layout="row"  layout-align="start center" style="padding: 15px;">
+        <span class="nowrap-text margin-left-5">起：</span>
+        <div style="margin-right: 10px;">
+            <input type="date" ng-model="$ctrl.StartDate" ng-change="$ctrl.changeQueryCondition()"/>
+        </div>
+        <span class="nowrap-text margin-left-5">訖：</span>
+        <div>
+                <input type="date" ng-model="$ctrl.EndDate" ng-change="$ctrl.changeQueryCondition()"/>
+        </div>
+        <!-- <div layout="row" layout-align="center center" ng-click="$ctrl.getLabData($ctrl.MedicalId)" class="search-btn">
+            <span style="color: white;">
+                查詢
+            </span>
+        </div> -->
+
+        <div>
+            <md-button class="md-raised md-primary" ng-click="$ctrl.getLabData()">查詢</md-button>
+        </div>
+
+    </div>
+
+    <md-content ng-if="!$ctrl.loading && !ctrl.isErr" layout="column" flex class="labexam-report-container" layout-align="center center">
+        <!-- <md-content flex ng-if="!$ctrl.loading && !ctrl.isErr"> -->
+        <form flex class="out-form" ng-if="!$ctrl.loading && !$ctrl.isError" layout="column" name="labReportForm">
+
+            <md-whiteframe class="md-whiteframe-10dp " layout-align="center center" style="width: 21.4cm; padding: 18px;">
+
+                <div style="width: 21.4cm; clear: both;">
+
+                    <div style="text-align: center;">
+                        <h3>檢驗紀錄表</h3>
+                        <!-- <h4>Referral Sheet from Hemodialysis unit of Taipei Veterans General Hospital</h4> -->
+                    </div>
+                    <div style="clear: both;"></div>
+
+                    <table class="table_content" style=" margin-top: 0px" width="100%" border="1">
+                        <tbody>
+                       
+                            <tr>
+                                <td colspan="2" style="font-weight: bold;">
+                                    <h5>檢驗起訖日：</h5>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            姓名 Name：{{$ctrl.referralSheetForm.Name}}
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            病歷號碼 Chart No.：{{$ctrl.referralSheetForm.MedicalId}}
+                                        </li>
+                                    </ul>
+                                </td>
+                               
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                </div>
+
+            </md-whiteframe>
+
+        </form>
+
+    </md-content>
+</div>

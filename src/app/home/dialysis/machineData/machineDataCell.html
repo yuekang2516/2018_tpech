@@ -1,0 +1,18 @@
+<div class="ui-grid-cell-contents" ng-if="row.entity.Id" ng-click="grid.appScope.goto(row.entity.Id)" layout="column"
+    layout-align="center center">
+    <div ng-if="col.field === 'DialysisTime'">{{COL_FIELD | moment:'YYYY/MM/DD'}}</div>
+    <div ng-if="col.field === 'DialysisTime'">{{COL_FIELD | moment:'(dd) HH:mm:ss'}}</div>
+
+
+    <span class="content" ng-if="col.field !== 'bloodPressure'&& col.field !== 'DialysisTime'&& col.field !== 'Status'&&col.field != 'AssessmentItems'">{{
+        COL_FIELD }}</span>
+    <span class="content" ng-if="col.field === 'bloodPressure'">{{ row.entity.BPS}} / {{ row.entity.BPD}}</span>
+    <div class="custom" ng-if="col.field == 'AssessmentItems'">
+        <span ng-repeat="value in row.entity.AssessmentItems track by $index" ng-bind="value" class="dataspan"></span>
+    </div>
+    <div ng-if="col.field == 'Status'" ng-click="false" layout="row" layout-align="start center">
+        <md-icon class="md-secondary" ng-show="grid.appScope.checkCanAccess(row.entity.CreatedUserId,row.entity.Status,row.entity.ModifiedUserId)"
+            ng-click="$event.stopPropagation();grid.appScope.delete(row.entity.Id)" md-svg-icon="static/img/svg/ic_delete_black_24px.svg"></md-icon>
+    </div>
+
+</div>

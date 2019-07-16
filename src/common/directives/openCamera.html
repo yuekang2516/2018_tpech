@@ -1,0 +1,21 @@
+<input type="file"
+       ng-if="vm.device"
+       ngf-select="vm.handleChangeBase64()"
+       ng-model="vm.photo"
+       name="photo"
+       accept="image/*"
+       ngf-fix-orientation="true"
+       ngf-resize="vm.reSize" />
+<button type="submit"
+        ng-if="!vm.device"
+        ng-click="vm.handleChangeBase64()"
+        style="width: 39px;
+        height: 33px;
+        border: none;
+        position: absolute;
+        bottom: 4px;
+        right: 4px;
+        background: url(./static/img/camerabtn.png);
+        z-index: 99;">
+
+</button>

@@ -1,0 +1,2214 @@
+<style type="text/css">
+    .peritonealDialysisTabView .inputbox .inputBoxTit{min-width:223px;}
+    .peritonealDialysisTabView .radioGroup md-radio-button{min-width:30px;}
+    .h2{text-align: center;}
+    .h3{margin:3px 0px;}
+    .ulVt{margin:0;padding:0;list-style-type: none;}
+    .ulVt li{margin:0;padding:0;list-style-type:none;}
+    .ulVt li h3{margin:3px 10px;}
+    .ulVt li h4{margin:3px 10px;}
+
+    @media only screen and (max-width: 1280px) {
+        .peritonealDialysisTabView .tbApdSetting2 .freezeTb {
+            min-width: 700px;
+            width: 100%;
+        }
+        /*table layout */
+        .peritonealDialysisTabView .tbApdSetting2 .freezeTb td:nth-child(1), .peritonealDialysisTabView .tbApdSetting2 .freezeTb th:nth-child(1) {
+            width: 25px;
+            text-align: center;
+        }
+        .peritonealDialysisTabView .tbApdSetting2 .freezeTb td:nth-child(2), .peritonealDialysisTabView .tbApdSetting2 .freezeTb th:nth-child(2) {
+            width: 15px;
+            text-align: center;
+        }
+        .peritonealDialysisTabView .tbApdSetting2 .freezeTb td:nth-child(3), .peritonealDialysisTabView .tbApdSetting2 .freezeTb th:nth-child(3) {
+            width: 20px;
+            text-align: center;
+        }
+        .peritonealDialysisTabView .tbApdSetting2 .freezeTb td:nth-child(4), .peritonealDialysisTabView .tbApdSetting2 .freezeTb th:nth-child(4) {
+            width: 6.5px;
+            text-align: center;
+        }
+        .peritonealDialysisTabView .tbApdSetting2 .freezeTb td:nth-child(5), .peritonealDialysisTabView .tbApdSetting2 .freezeTb th:nth-child(5) {
+            width: 10px;
+            text-align: center;
+        }
+        .peritonealDialysisTabView .tbApdSetting2 .freezeTb td:nth-child(6), .peritonealDialysisTabView .tbApdSetting2 .freezeTb th:nth-child(6) {
+            width: 29px;
+            text-align: center;
+        }
+        .peritonealDialysisTabView .tbApdSetting2 .freezeTb td:nth-child(7), .peritonealDialysisTabView .tbApdSetting2 .freezeTb th:nth-child(7) {
+            width: 70px;
+            text-align: center;
+        }
+    }
+    @media screen and (max-width:1024px){
+        .peritonealDialysisTabView .tbApdSetting2 .freezeTb {
+            min-width: 700px;
+            width: 100%;
+        }
+        /*table layout */
+        .peritonealDialysisTabView .tbApdSetting2 .freezeTb th:nth-child(1) {
+            width: 12.5px;
+            text-align: center;
+        }
+        .peritonealDialysisTabView .tbApdSetting2 .freezeTb td:nth-child(2), .peritonealDialysisTabView .tbApdSetting2 .freezeTb th:nth-child(2) {
+            width: 8px;
+            text-align: center;
+        }
+        .peritonealDialysisTabView .tbApdSetting2 .freezeTb td:nth-child(3), .peritonealDialysisTabView .tbApdSetting2 .freezeTb th:nth-child(3) {
+            width: 10px;
+            text-align: center;
+        }
+        .peritonealDialysisTabView .tbApdSetting2 .freezeTb td:nth-child(4), .peritonealDialysisTabView .tbApdSetting2 .freezeTb th:nth-child(4) {
+            width: 2px;
+            text-align: center;
+        }
+        .peritonealDialysisTabView .tbApdSetting2 .freezeTb td:nth-child(5), .peritonealDialysisTabView .tbApdSetting2 .freezeTb th:nth-child(5) {
+            width: 7px;
+            text-align: center;
+        }
+        .peritonealDialysisTabView .tbApdSetting2 .freezeTb td:nth-child(6), .peritonealDialysisTabView .tbApdSetting2 .freezeTb th:nth-child(6) {
+            width: 15px;
+            text-align: center;
+        }
+        .peritonealDialysisTabView .tbApdSetting2 .freezeTb td:nth-child(7), .peritonealDialysisTabView .tbApdSetting2 .freezeTb th:nth-child(7) {
+            width: 23px;
+            text-align: center;
+        }
+    }
+    @media screen and (max-width:960px){
+        .peritonealDialysisTabView .tbApdSetting2 .freezeTb td:nth-child(8), .peritonealDialysisTabView .tbApdSetting2 .freezeTb th:nth-child(8) {
+            display:none;
+        }
+    }
+    #esatable {
+        font-family: '\5FAE\8EDF\6B63\9ED1\9AD4',"Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width:750px;
+    }
+
+    #esatable td, #esatable th {
+        border: 1px solid #ddd;
+        padding: 5px;
+    }
+
+    #esatable tr:nth-child(even){background-color: #f2f2f2;}
+
+    #esatable th {
+        padding:3px;
+        text-align: left;
+        background-color: #7e90a0;
+        color: white;
+    }
+    ul li{ margin-left: 0px; list-style-type:none; margin:0px;  }
+    .word-break--break-all{
+        word-break: break-all;
+        white-space: normal;
+    }
+    @media print{
+        * {
+            -webkit-print-color-adjust: exact !important;
+        }
+        .peritonealDialysisTabView{
+            display: inline-table; /* Not really needed in all cases */
+        }
+        md-dialog{
+            box-shadow: none;
+            width:100%;
+        }
+        div,input,table,select,md-select{
+            page-break-inside :avoid;
+            page-break-after: avoid;
+        }
+    }
+    .patient_name{
+        position: absolute;
+        left: 240px;
+        top: 12px;
+    }
+</style>
+<md-dialog class="peritonealDialysisTabView">
+    <form name="editForm" novalidate ng-cloak>
+        <md-toolbar hide-gt-xs>
+            <div class="md-toolbar-tools">
+                <md-button class="circular md-button ng-scope md-ink-ripple" aria-label="Settings" ng-click="$ctrl.cancel()">
+                    <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+                </md-button>
+                <h3>
+                    <span ng-if="$ctrl.vtHomeDataObj.isCreate">{{'visitHome.dialog.createTitle' | translate}}</span>
+                    <span ng-if="!$ctrl.vtHomeDataObj.isCreate">{{'visitHome.dialog.editTitle' | translate}}</span>
+                </h3>
+                <div
+                    class="{{'patient_name ' + (($ctrl.currentPatient.Gender|gender) == '男' ? 'male ' : '') + (($ctrl.currentPatient.Gender|gender) == '女' ? 'female' : '') }}">
+                    {{ $ctrl.currentPatient.MedicalId + ' - ' + $ctrl.currentPatient.Name }}
+                </div>
+                <span flex></span>
+                <span style="font-size:16px;" ng-show="$ctrl.vtHomeDataObj.Status == 'Deleted'" class="readonly-text" title="{{ 'customMessage.readonlyTitle' | translate }}" translate>{{ 'customMessage.readonly' }}</span>
+            </div>
+        </md-toolbar>
+        <summary-toolbar ng-if="$ctrl.vtHomeDataObj.isCreate" ng-click="$ctrl.cancel()" toolbar-title="'visitHome.dialog.createTitle' | translate"></summary-toolbar>
+        <summary-toolbar ng-if="!$ctrl.vtHomeDataObj.isCreate" ng-click="$ctrl.cancel()" toolbar-title="'visitHome.dialog.editTitle' | translate"></summary-toolbar>
+        <div
+            class="{{'patient_name ' + (($ctrl.currentPatient.Gender|gender) == '男' ? 'male ' : '') + (($ctrl.currentPatient.Gender|gender) == '女' ? 'female' : '') }}">
+            {{ $ctrl.currentPatient.MedicalId + ' - ' + $ctrl.currentPatient.Name }}
+        </div>
+        <span ng-show="$ctrl.vtHomeDataObj.Status == 'Deleted'" class="readonly-text" title="{{ 'customMessage.readonlyTitle' | translate }}" translate>{{ 'customMessage.readonly' }}</span>
+        <!-- <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 ng-if="$ctrl.vtHomeDataObj.isCreate" translate="visitHome.dialog.createTitle"></h3>
+                <h2 ng-if="!$ctrl.vtHomeDataObj.isCreate" translate="visitHome.dialog.editTitle"></h3>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+                    <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar> -->
+        <md-dialog-content>
+            <div class="dialogBoxData">
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem lightblue">
+                        <label>*日期</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.date" type="date" min="1900-01-01" max="2999-12-31"
+                        name="RecordDate" required ng-disabled="$ctrl.Record_Date_disabled">
+                        <div ng-messages="editForm.RecordDate.$error" ng-show="editForm.RecordDate.$dirty">
+                            <div ng-message="required" class="clrRequired">必填選項</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem lightblue">
+                        <label>*時間</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.time" type="time"
+                        name="RecordTime" required>
+                        <div ng-messages="editForm.RecordTime.$error" ng-show="editForm.RecordTime.$dirty">
+                            <div ng-message="required" class="clrRequired">必填選項</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>評估者</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtHomeDataObj.Evaluator" maxlength="300" type="text">
+                    </div>
+                </div> -->
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>家訪次數</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtHomeDataObj.Number_Of_Visits" maxlength="300" type="text" ng-disabled="$ctrl.Record_Date_disabled">
+                    </div>
+                </div>
+                <div class="cardContent">
+                    <div class="cardTit">
+                        <h3 class="h3">基本資料</h3>
+                    </div>
+                    <div layout="row" layout-xs="column" style="margin-top: 5px;">
+                        <span style="margin-right: 20px; font-size: 15px; color: darkgray;">姓名：
+                            <input style="width:80px;background-color: lightgray !important;color: black;opacity: 1; height: 20px;" readonly type="text" value="{{$ctrl.currentPatient.Name}}"></input>
+                        </span>
+                        <span style="margin-right: 20px; font-size: 15px; color: darkgray;">性別：
+                            <input style="width:35px;background-color: lightgray !important;color: black;opacity: 1; height: 20px;" readonly type="text" value="{{$ctrl.currentPatient.Gender === 'M' ? '男' : '女'}}"></input>
+                        </span>
+                        <span style="margin-right: 20px; font-size: 15px; color: darkgray;">年齡：
+                            <input style="width:50px;background-color: lightgray !important;color: black;opacity: 1; height: 20px;" readonly type="text" value="{{$ctrl.currentPatient.Birthday | age}}"></input>
+                        </span>
+                        <span style="margin-right: 20px; font-size: 15px; color: darkgray;">體重：
+                            <input style="width:50px;background-color: lightgray !important;color: black;opacity: 1; height: 20px;" readonly type="text" value="{{$ctrl.currentPatient.Weight}}"></input>
+                            <span ng-hide="$ctrl.currentPatient.Weight == null">kg</span>
+                        </span>
+                        <span style="margin-right: 20px; font-size: 15px; color: darkgray;">身高：
+                            <input style="width:50px;background-color: lightgray !important;color: black;opacity: 1; height: 20px;" readonly type="text" value="{{$ctrl.currentPatient.Height}}"></input>
+                            <span ng-hide="$ctrl.currentPatient.Height == null">cm</span>
+                        </span>
+                    </div>
+                    <div layout="row" layout-xs="column" style="margin-top: 5px;">
+                        <div style=" color: darkgray;">
+                            現居地址：
+                        </div>
+                        <div style="margin-right: 20px; font-size: 15px;" flex-gt-sm flex-xs flex-sm>
+                            <input style="background-color: lightgray !important;color: black;opacity: 1; height: 20px;" readonly maxlength="300"  type="text" value="{{$ctrl.currentPatient.CurrentAddress}}"></input >
+                        </div>
+                        <div style=" color: darkgray;">
+                            電話：
+                        </div>
+                        <div>
+                            <input type="text" style="background-color: lightgray !important;color: black;opacity: 1; height: 20px;" readonly value="{{$ctrl.currentPatient.Phone[0]}}"></input>
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>首次腹膜透析日期</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <input style="background-color: lightgray !important;color: black;opacity: 1; height: 20px;" readonly ng-model="$ctrl.currentPatient.FirstPDDate" type="date"
+                            placeholder="yyyy-MM-ddTHH:mm:ss">
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem ">
+                            <label>曾接受血液透析</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group class="radioGroup" ng-model="$ctrl.vtHomeDataObj.Hemo_Dialysis_Yn">
+                                <md-radio-button value="無">無</md-radio-button>
+                                <md-radio-button value="有">有</md-radio-button>
+                            </md-radio-group>
+                            <div class="inputboxflex itemList autoWidth" ng-if="$ctrl.vtHomeDataObj.Hemo_Dialysis_Yn == '有'">
+                                <input type="tel" ng-model="$ctrl.vtHomeDataObj.Hemo_Dialysis_Year">年<input type="tel" ng-model="$ctrl.vtHomeDataObj.Hemo_Dialysis_Month" >月
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem ">
+                            <label>使用系統</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group class="radioGroup" ng-model="$ctrl.vtHomeDataObj.Using_System">
+                                <md-radio-button value="CAPD">CAPD</md-radio-button>
+                                <md-radio-button value="APD">APD</md-radio-button>
+                                <md-radio-button value="其他">其他</md-radio-button>
+                            </md-radio-group>
+                            <div class="inputboxflex autoWidth">
+                                <input type="text" ng-show="$ctrl.vtHomeDataObj.Using_System =='其他'" ng-model="$ctrl.vtHomeDataObj.Using_System_Other">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cardContent">
+                    <loading ng-show="$ctrl.getDetailList_load"></loading>
+                    <div class="cardContent">
+                        <div class="cardTit">
+                            <div layout="row">
+                                <h2>治療處方</h2>
+                                <h5 ng-if="$ctrl.treatDetailTypes.Prescription_Startdate" style="
+                                    margin-left: 20px;margin-top: 0px;margin-bottom: 0px;margin-right: 20px;margin-right:20px;">
+                                    (日期: {{$ctrl.treatDetailTypes.Prescription_Startdate | moment: 'YYYY/MM/DD'}})
+                                </h5>
+                                <h5 ng-if="$ctrl.treatDetailTypes.Dialysis_Type" style="
+                                margin-left: 20px;margin-top: 0px;margin-bottom: 0px;margin-right: 20px;margin-right:20px;">
+                                腹膜透析類別: {{$ctrl.treatDetailTypes.Dialysis_Type}}
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="flexCenter"><h4 ng-show="$ctrl.treatDetailTypes.Count == 0">暫無資料！</h4></div>
+                        <!-- <loading ng-show="$ctrl.getDetailList_load"></loading> -->
+                        <div class="freezeDiv tbApdSetting2">
+                            <div class="cardContent">
+                                <div class="cardTit">
+                                    <h2 style="margin-right: 5px;">ESA</h2>
+                                </div>
+                                <div>
+                                    <table id="esatable" ng-show="$ctrl.treatDetailTypes.ESA.length > 0">
+                                        <thead>
+                                            <tr>
+                                                <th>種類</th>
+                                                <th>頻率</th>
+                                                <th>劑量</th>
+                                                <th>天數</th>
+                                                <th>總量</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="esaitem in $ctrl.treatDetailTypes.ESA">
+                                                <td>
+                                                    {{esaitem.Esa_Types}}
+                                                </td>
+                                                <td>
+                                                    {{esaitem.Frequency}}
+                                                </td>
+                                                <td>
+                                                    {{esaitem.Esa_Dose_U}}{{esaitem.esaUnit}}
+                                                </td>
+                                                <td>
+                                                    {{esaitem.Used_Days}}
+                                                </td>
+                                                <td>
+                                                    {{esaitem.Total_Dose}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- 換液處方 start-->
+                            <div ng-if="$ctrl.vtHomeDataObj.Dialysis_Type === 'CAPD'" class="cardContent">
+                                <div class="cardTit">
+                                    <h2 style="margin-right: 30px;">換液處方</h2>
+                                </div>
+                                <div>
+                                    <!-- Dianeal-->
+                                    <div layout="row">
+                                        <h4 style="color:#0e99dc; margin-right: 10px;">Dianeal</h4>
+                                    </div>
+                                    <div style="margin-bottom: 8px;">
+                                        <table id="esatable">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width:12%;">葡萄糖濃度(%)</th>
+                                                    <th style="width:16%;">鈣離子濃度(mEq/L)</th>
+                                                    <th style="width:12.5%;">每次注入量</th>
+                                                    <th style="width:11%;">藥水體積(L)</th>
+                                                    <th style="width:10%;">袋數</th>
+                                                    <th style="width:5%;">PRN</th>
+                                                    <th>備註</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="item in $ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Dianeal'}">
+                                                    <td>
+                                                        {{item.Glucoseconcentration}}
+                                                    </td>
+                                                    <td>
+                                                        {{item.Calciumconcentration}}
+                                                    </td>
+                                                    <td>
+                                                        {{item.Esa_Dose_U}}
+                                                    </td>
+                                                    <td>
+                                                        {{item.Baglitre}}
+                                                    </td>
+                                                    <td>
+                                                        {{item.Bagnumber}}
+                                                    </td>
+                                                    <td>
+                                                        <md-switch style="margin: 0px;" ng-model="item.Esa_Dose_Ug" ng-disabled="true" ></md-switch>
+                                                    </td>
+                                                    <td>
+                                                        <div  class="word-break--break-all">
+                                                            {{item.Remark}}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- Dianeal-->
+                                    <div layout="row" layout-xs="column">
+                                        <h4 style="color:#0e99dc;margin-right:42px;">Nutrineal</h4>
+                                        <ul layout="row" style="padding: 0px;margin: 0px;">
+                                            <li ng-repeat=" ii in $ctrl.PaymentconditionsCheck | filter:{ Type:'Nutrineal'}">
+                                                    <img ng-src="static/img/blank.png" alt="" class="tick"
+                                                    ng-hide="ii.Check">
+                                                    <img ng-src="static/img/tick.png" alt="" class="tick"
+                                                    ng-show="ii.Check">
+                                                {{ii.Text}}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div style="margin-bottom: 8px;">
+                                        <table id="esatable">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width:12%;">胺基酸濃度(%)</th>
+                                                    <!-- <th style="width:16%;">鈣離子濃度(mEq/L)</th> -->
+                                                    <th style="width:16%;">每次注入量</th>
+                                                    <th style="width:6.25%;">袋數</th>
+                                                    <th style="width:6.25%;">PRN</th>
+                                                    <th>備註</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="item in $ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Nutrineal'}">
+                                                    <td>1.10</td>
+                                                    <td>
+                                                        {{item.Esa_Dose_U}}
+                                                    </td>
+                                                    <!-- <td>2.5</td> -->
+                                                    <!-- <td>2.0</td> -->
+                                                    <td>1</td>
+                                                    <td>
+                                                        <md-switch style="margin: 0px;" ng-model="item.Esa_Dose_Ug" ng-disabled="true" ></md-switch>
+                                                    </td>
+                                                    <td>
+                                                        <div  class="word-break--break-all">
+                                                            {{item.Remark}}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div layout="row" layout-xs="column">
+                                        <h4 style="color:#0e99dc;margin-right:5px;">Extraneal</h4>
+                                        <ul layout="row"  style="margin: 0px;">
+                                            <li ng-repeat=" ii in $ctrl.PaymentconditionsCheck | filter:{ Type:'Extraneal'}">
+                                                    <img ng-src="static/img/blank.png" alt="" class="tick"
+                                                    ng-hide="ii.Check">
+                                                    <img ng-src="static/img/tick.png" alt="" class="tick"
+                                                    ng-show="ii.Check">
+                                                {{ii.Text}}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div style="margin-bottom: 8px;">
+                                        <table id="esatable">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width:12%;">lcodextrin<br/>(%)</th>
+                                                    <!-- <th style="width:16%;">鈣離子濃度(mEq/L)</th> -->
+                                                    <th style="width:16%;">每次注入量</th>
+                                                    <th style="width:6.25%;">袋數</th>
+                                                    <th style="width:6.25%;">PRN</th>
+                                                    <th>備註</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="item in $ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Extraneal'}">
+                                                    <td>7.5</td>
+                                                    <td>
+                                                        {{item.Esa_Dose_U}}
+                                                    </td>
+                                                    <!-- <td>3.5</td> -->
+                                                    <!-- <td>2.0</td> -->
+                                                    <td>1</td>
+                                                    <td>
+                                                        <md-switch style="margin: 0px;" ng-model="item.Esa_Dose_Ug" ng-disabled="true"></md-switch>
+                                                    </td>
+                                                    <td>
+                                                        <div  class="word-break--break-all">
+                                                            {{item.Remark}}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div ng-show="$ctrl.treatDetailTypes.CAPD.Treat.length > 0" layout="row" layout-align="end center" style="background-color: #BBDEFB; width:750px;">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="width:30%; text-align: left;">每日換袋次數</th>
+                                                <th style="width:30%; text-align: left;">總治療量(L)</th>
+                                                <th style="width:40%; text-align: left;">總處方量(L)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <input disabled type="number" min="0" ng-model="$ctrl.Daily_Changed_Bag_Times">
+                                                </td>
+                                                <td>
+                                                    <input disabled type="number" min="0" ng-model="$ctrl.CAPD_Total_Treatment">
+                                                </td>
+                                                <td>
+                                                    <input disabled type="number" min="0" ng-model="$ctrl.CAPD_Total_Prescription">
+                                                    <!-- <input type="number" min="0"
+                                                    style="ime-mode:disabled" onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                                    ng-model="$ctrl.treatDataObj.Day_Changed_Bag_Times"> -->
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- 換液處方 ends-->
+                            <!-- 機器處方 start-->
+                            <div ng-if="$ctrl.vtHomeDataObj.Dialysis_Type == 'APD'">
+                                    <div class="cardContent">
+                                        <div class="cardTit" layout="row">
+                                            <h2>機器處方</h2>
+                                            <div class="inputBoxTit titItem" style="margin-left:20px;margin-right: 20px;">
+                                                <label>每次注入量</label>
+                                            </div>
+                                            <div class="inputboxflex" style="flex:none;margin-right:10px;">
+                                                {{($ctrl.Pd_Injection_Volume == '-999') ? $ctrl.PdInjectionVolumeOther : $ctrl.Pd_Injection_Volume }}
+                                            </div>
+                                            <div class="inputBoxTit titItem" style="margin-left:20px;margin-right: 20px;">
+                                                <label>週期數</label>
+                                            </div>
+                                            <div class="inputboxflex" style="flex:none;margin-right:10px;">
+                                                {{($ctrl.Pd_Period_Number == '-999') ? $ctrl.PdPeriodNumberOther : $ctrl.Pd_Period_Number }}
+                                                <!-- <md-select ng-model="$ctrl.treatDataObj.Pd_Period_Number" style="width:100px;" ng-change="$ctrl.CalculationAPDTreat()">
+                                                    <md-option ng-repeat="PdPNum in $ctrl.PdPeriodNumber" value="{{PdPNum.Value}}">{{PdPNum.Text}}
+                                                    </md-option>
+                                                </md-select>
+                                                <input type="number" min="0" ng-model="$ctrl.PdPeriodNumberOther"
+                                                    onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                                    ng-if="$ctrl.treatDataObj.Pd_Period_Number == '-999'"
+                                                    ng-disabled="$ctrl.editViewMode" ng-change="$ctrl.CalculationAPDTreat()"> -->
+                                            </div>
+                                        </div>
+                                        <div layout="row">
+                                            <h4 style="color:#0e99dc;margin-right: 10px;">Dianeal</h4>
+                                        </div>
+                                        <div ng-show="$ctrl.treatDetailTypes.APD.Machine.length > 0">
+                                            <table id="esatable">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width:12%">葡萄糖濃度(%)</th>
+                                                        <th style="width:16%">鈣離子濃度(mEq/L)</th>
+                                                        <th style="width:12%">藥水體積(L)</th>
+                                                        <th style="width:11%">袋數</th>
+                                                        <th style="width:5%">PRN</th>
+                                                        <th>備註</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="item in $ctrl.treatDetailTypes.APD.Machine | filter:{ Potiontypes:'Dianeal'}">
+                                                        <td>
+                                                            {{item.Glucoseconcentration}}
+                                                        </td>
+                                                        <td>
+                                                            {{item.Calciumconcentration}}
+                                                        </td>
+                                                        <td>
+                                                            {{(item.Baglitre == '其他') ? item.Baglitre : item.BaglitreOther }}
+                                                        </td>
+                                                        <td>
+                                                            {{item.Bagnumber}}
+                                                        </td>
+                                                        <td><md-switch style="margin: 0px;" ng-model="item.Esa_Dose_Ug" ng-disabled="true" ></md-switch></td>
+                                                        <td>
+                                                            <div  class="word-break--break-all">
+                                                                {{item.Remark}}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                            </div>
+                            <!-- 機器處方 end-->
+                            <!-- 最末袋處方 statrt-->
+                            <div ng-if="$ctrl.vtHomeDataObj.Dialysis_Type == 'APD'">
+                                <div class="cardContent">
+                                    <div class="cardTit">
+                                        <div layout="row">
+                                            <h2>最末袋處方</h2>
+                                            <md-switch class="md-primary" style="margin:0px; margin-left: 20px;" md-no-ink ng-model="$ctrl.LastBagShow" ng-disabled="true"></md-switch>
+                                            <div class="inputBoxTit titItem" style="margin-left:20px;margin-right: 20px;" ng-if="$ctrl.LastBagShow" ng-disabled="true">
+                                                <label>濃度</label>
+                                            </div>
+                                            <div class="inputboxflex" style="flex:none;margin-right:10px;"  layout="row" ng-if="$ctrl.LastBagShow">
+                                                <md-radio-group class="radioGroupInline" ng-model="$ctrl.Pd_Ismatch_Last_Bag_Concn" ng-disabled="true">
+                                                    <md-radio-button value="Y">相同</md-radio-button>
+                                                    <md-radio-button value="N">不同</md-radio-button>
+                                                </md-radio-group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div layout="row" ng-show="$ctrl.LastBagShow && $ctrl.Pd_Ismatch_Last_Bag_Concn =='Y' ">
+                                        <h4 style="color:#0e99dc;margin-right: 10px;">Dianeal</h4>
+                                    </div>
+                                    <div ng-show="$ctrl.LastBagShow && $ctrl.Pd_Ismatch_Last_Bag_Concn =='Y'">
+                                        <table id="esatable">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width:12%">注入量(Ｌ)</th>
+                                                    <th style="width:5%">PRN</th>
+                                                    <th>備註</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="item in $ctrl.treatDetailTypes.APD.ListBage | filter:{ Potiontypes:'Dianeal'}">
+                                                    <td>
+                                                        {{item.Esa_Dose_U}}
+                                                    </td>
+                                                    <td><md-switch style="margin: 0px;" ng-model="item.Esa_Dose_Ug" ng-disabled="true"></md-switch></td>
+                                                    <td>
+                                                        <div  class="word-break--break-all">
+                                                            {{item.Remark}}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <md-radio-group ng-show="$ctrl.LastBagShow && $ctrl.Pd_Ismatch_Last_Bag_Concn == 'N'" class="radioGroupInline" ng-model="$ctrl.LastBageConcnSelect">
+                                        <md-radio-button value="Dianeal">Dianeal</md-radio-button>
+                                        <md-radio-button value="Extraneal ">Extraneal </md-radio-button>
+                                    </md-radio-group>
+                                    <!-- CAPD_Dianeal-->
+                                    <div layout="row" ng-show="$ctrl.LastBagShow && $ctrl.Pd_Ismatch_Last_Bag_Concn  == 'N' && $ctrl.LastBageConcnSelect =='Dianeal'">
+                                            <h4 style="color:#0e99dc;margin-right: 10px;">Dianeal</h4>
+                                    </div>
+                                    <div ng-show="$ctrl.LastBagShow && $ctrl.Pd_Ismatch_Last_Bag_Concn  == 'N' && $ctrl.LastBageConcnSelect =='Dianeal'">
+                                            <table id="esatable">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width:12%;">葡萄糖濃度(%)</th>
+                                                        <th style="width:16%;">鈣離子濃度(mEq/L)</th>
+                                                        <th style="width:12%;">注入量(L)</th>
+                                                        <th style="width:11%;">藥水體積(L)</th>
+                                                        <th style="width:5%">PRN</th>
+                                                        <th>備註</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="item in $ctrl.treatDetailTypes.APD.ListBage | filter:{ Potiontypes:'Dianeal'}">
+                                                        <td>
+                                                            {{item.Glucoseconcentration}}
+                                                        </td>
+                                                        <td>
+                                                            {{item.Calciumconcentration}}
+                                                        </td>
+                                                        <td>
+                                                            {{item.Esa_Dose_U}}
+                                                        </td>
+                                                        <td><md-switch style="margin: 0px;" ng-model="item.Esa_Dose_Ug" ng-disabled="true" ></md-switch></td>
+                                                        <td>
+                                                            <div  class="word-break--break-all">
+                                                                {{item.Remark}}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                    </div>
+                                    <!-- CAPD_Extraneal-->
+                                    <div layout="row" layout-xs="column" ng-show="$ctrl.LastBagShow && $ctrl.Pd_Ismatch_Last_Bag_Concn && $ctrl.LastBageConcnSelect =='Extraneal'">
+                                        <h4 style="color:#0e99dc;margin-right:10px;">Extraneal</h4>
+                                        <md-checkbox id="CAPD_Extraneal"  ng-repeat="Ex in $ctrl.ListBage_PaymentconditionsCheck" ng-if="Ex.Type == 'Extraneal'"
+                                            ng-checked="Ex.Check" ng-click="$ctrl.checkTheBox('ListBage_PaymentconditionsCheck', $index)">
+                                            {{Ex.Text}}
+                                        </md-checkbox>
+                                    </div>
+                                    <div ng-show="$ctrl.LastBagShow && $ctrl.Pd_Ismatch_Last_Bag_Concn && $ctrl.LastBageConcnSelect =='Extraneal'">
+                                        <table id="esatable">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width:12%;">lcodextrin(%)</th>
+                                                    <!-- <th style="width:16%;">鈣離子濃度(mEq/L)</th> -->
+                                                    <th style="width:12%;">注入量(L)</th>
+                                                    <th style="width:11%;">藥水體積(L)</th>
+                                                    <th style="width:5%;">PRN</th>
+                                                    <th>備註</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="item in $ctrl.treatDetailTypes.APD.ListBage | filter:{ Potiontypes:'Extraneal'}">
+                                                    <td>
+                                                        {{item.Glucoseconcentration}}
+                                                    </td>
+                                                    <!-- <td>
+                                                        {{item.Calciumconcentration}}
+                                                    </td> -->
+                                                    <td>
+                                                        {{item.Esa_Dose_U}}
+                                                    </td>
+                                                    <td>
+                                                        {{item.Baglitre}}
+                                                    </td>
+                                                    <td><md-switch style="margin: 0px;" ng-model="item.Esa_Dose_Ug" ng-disabled="true" ></md-switch></td>
+                                                    <td>
+                                                        <div  class="word-break--break-all">
+                                                            {{item.Remark}}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 最末袋處方 end -->
+                            <div ng-if="$ctrl.vtHomeDataObj.Dialysis_Type == 'APD'" layout="row" layout-align="end center" style="background-color: #BBDEFB;width:750px;">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th style="width:30%; text-align: left;">機器總治療量(L)</th>
+                                            <th style="width:40%; text-align: left;">機器總處方量(L)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <input type="number" min="0" disabled
+                                                    onkeypress="if (event.keyCode!=46 && event.keyCode!=45 && (event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                                    ng-model="$ctrl.APD_Total_Treatment">
+                                            </td>
+                                            <td>
+                                                <input type="number" min="0" disabled
+                                                    onkeypress="if (event.keyCode!=46 && event.keyCode!=45 && (event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                                    ng-model="$ctrl.APD_Total_Prescription">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- 白天換液處方 start-->
+                            <div ng-if="$ctrl.vtHomeDataObj.Dialysis_Type == 'APD'">
+                                <div class="cardContent">
+                                    <div class="cardTit">
+                                        <div layout="row" layout-sm="column" layout-xs="column">
+                                            <h2 style="margin-right: 50px;">白天換液處方</h2>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <!-- Dianeal -->
+                                        <div layout="row">
+                                            <h4 style="color:#0e99dc; margin-right: 10px;">Dianeal</h4>
+                                        </div>
+                                        <div ng-show="$ctrl.treatDetailTypes.APD.TwinBage.length > 0">
+                                            <table id="esatable">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width:15%;">葡萄糖濃度(%)</th>
+                                                        <th style="width:15.5%;">鈣離子濃度(mEq/L)</th>
+                                                        <th style="width:12.5%;">每次注入量(L)</th>
+                                                        <th style="width:11%;">藥水體積(L)</th>
+                                                        <th style="width:10%;">袋數</th>
+                                                        <th style="width:5%;">PRN</th>
+                                                        <th>備註</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="item in $ctrl.treatDetailTypes.APD.TwinBage | filter:{ Potiontypes:'Dianeal'}">
+                                                        <td>
+                                                            {{item.Glucoseconcentration}}
+                                                        </td>
+                                                        <td>
+                                                            {{item.Calciumconcentration}}
+                                                        </td>
+                                                        <td>
+                                                            {{item.Esa_Dose_U}}
+                                                        </td>
+                                                        <td>
+                                                            {{(item.Baglitre == '其他') ? item.Baglitre : item.BaglitreOther }}
+                                                        </td>
+                                                        <td>
+                                                            {{item.Bagnumber}}
+                                                        </td>
+                                                        <td><md-switch style="margin: 0px;" ng-model="item.Esa_Dose_Ug" ng-disabled="true" ></md-switch></td>
+                                                        <td>
+                                                            <div  class="word-break--break-all">
+                                                                {{item.Remark}}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- Dianeal -->
+                                        <!-- Nutrineal-->
+                                        <div layout="row" layout-xs="column">
+                                            <h4 style="color:#0e99dc;margin-right:10px;">Nutrineal</h4>
+                                            <ul layout="row" style="padding: 0px;margin: 0px;">
+                                                <li ng-repeat=" ii in $ctrl.TwinBage_PaymentconditionsCheck | filter:{ Type:'Nutrineal'}">
+                                                        <img ng-src="static/img/blank.png" alt="" class="tick"
+                                                        ng-hide="ii.Check">
+                                                        <img ng-src="static/img/tick.png" alt="" class="tick"
+                                                        ng-show="ii.Check">
+                                                    {{ii.Text}}
+                                                </li>
+                                            </ul>
+                                            <!-- <md-checkbox ng-repeat="Ex in $ctrl.TwinBage_PaymentconditionsCheck" ng-if="Ex.Type == 'Nutrineal'"
+                                                ng-checked="Ex.Check" ng-click="$ctrl.checkTheBox('TwinBage_PaymentconditionsCheck', $index)">
+                                                {{Ex.Text}}
+                                            </md-checkbox> -->
+                                        </div>
+                                        <div style="margin-bottom: 8px;">
+                                            <table id="esatable">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width:15%;">胺基酸濃度(%)</th>
+                                                        <th style="width:15.5%;">每次注入量</th>
+                                                        <th style="width:6.25%;">袋數</th>
+                                                        <th style="width:6.25%;">PRN</th>
+                                                        <th>備註</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="item in $ctrl.treatDetailTypes.APD.TwinBage | filter:{ Potiontypes:'Nutrineal'}">
+                                                        <td>1.10</td>
+                                                        <td>
+                                                            {{item.Esa_Dose_U}}
+                                                        </td>
+                                                        <td>1</td>
+                                                        <td><md-switch style="margin: 0px;" ng-model="item.Esa_Dose_Ug" ng-disabled="true" ></md-switch></td>
+                                                        <td>
+                                                            <div  class="word-break--break-all">
+                                                                {{item.Remark}}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- Nutrineal-->
+                                        <div layout="row" layout-xs="column">
+                                            <h4 style="color:#0e99dc;margin-right:10px;">Extraneal</h4>
+                                            <ul layout="row" style="padding: 0px;margin: 0px;">
+                                                <li ng-repeat=" ii in $ctrl.TwinBage_PaymentconditionsCheck | filter:{ Type:'Extraneal'}">
+                                                    <img ng-src="static/img/blank.png" alt="" class="tick"
+                                                    ng-hide="ii.Check">
+                                                    <img ng-src="static/img/tick.png" alt="" class="tick"
+                                                    ng-show="ii.Check">
+                                                    {{ii.Text}}
+                                                </li>
+                                            </ul>
+                                            <!-- <md-checkbox ng-repeat="Ex in $ctrl.TwinBage_PaymentconditionsCheck" ng-if="Ex.Type == 'Extraneal'"
+                                                ng-checked="Ex.Check" ng-click="$ctrl.checkTheBox('TwinBage_PaymentconditionsCheck', $index)">
+                                                {{Ex.Text}}
+                                            </md-checkbox> -->
+                                        </div>
+                                        <div style="margin-bottom: 8px;">
+                                            <table id="esatable">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width:12%;">lcodextrin(%)</th>
+                                                        <th style="width:16%;">每次注入量</th>
+                                                        <th style="width:6.25%;">袋數</th>
+                                                        <th style="width:6.25%;">PRN</th>
+                                                        <th>備註</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="item in $ctrl.treatDetailTypes.APD.TwinBage | filter:{ Potiontypes:'Extraneal'}">
+                                                        <td>7.5</td>
+                                                        <td>
+                                                            {{item.Esa_Dose_U}}
+                                                        </td>
+                                                        <td>1</td>
+                                                        <td><md-switch style="margin: 0px;" ng-model="item.Esa_Dose_Ug" ng-disabled="true" ></md-switch></td>
+                                                        <td>
+                                                            <div  class="word-break--break-all">
+                                                                {{item.Remark}}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 白天換液處方 end -->
+                        </div>
+                    </div>
+                </div>
+                <div class="cardContent">
+                    <loading ng-show="$ctrl.getPeritonitisList_load"></loading>
+                    <div ng-show="!$ctrl.getPeritonitisList_load">
+                        <div layout="row">
+                            <h3 style="margin-right:20px;">腹膜炎</h3>
+                            <h5 ng-show="$ctrl.last_peritonitis_item != null">
+                                (最後一次發生日期: {{$ctrl.last_peritonitis_item.Recorddate | moment: 'YYYY/MM/DD'}})
+                            </h5>
+                            <h3 ng-show="$ctrl.last_peritonitis_item == null">(無)</h4>
+                        </div>
+                        <div ng-show="$ctrl.last_peritonitis_item != null" layout="row" layout-xs="column" style="margin-top: 5px;">
+                            <div style=" color: darkgray;">
+                                菌種：
+                            </div>
+                            <div style="margin-right: 20px; font-size: 15px;" flex-gt-sm flex-xs flex-sm>
+                                <input style="background-color: lightgray !important;color: black;opacity: 1; height: 20px;" maxlength="300" readonly  type="text" value="{{$ctrl.germArystr}}"></input >
+                            </div>                            
+                        </div>
+                        <div ng-show="$ctrl.last_peritonitis_item != null" layout="row" layout-xs="column" style="margin-top: 5px;">
+                            <div style=" color: darkgray;">
+                                原因：
+                            </div>
+                            <div style="margin-right: 20px; font-size: 15px;" flex-gt-sm flex-xs flex-sm>
+                                <input style="background-color: lightgray !important;color: black;opacity: 1; height: 20px;" maxlength="300" readonly  type="text" value="{{$ctrl.Occurrence}}"></input >
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+                <div class="cardContent">
+                    <loading ng-show="$ctrl.getCatheterinfectList_load"></loading>
+                    <div ng-show="!$ctrl.getCatheterinfectList_load">
+                        <div layout="row">
+                            <h3 style="margin-right:20px;">導管出口感染</h3>
+                            <h5 ng-show="$ctrl.last_catheter_item != null">
+                                (最後一次發生日期: {{$ctrl.last_catheter_item.Recorddate | moment: 'YYYY/MM/DD'}})
+                            </h5>
+                            <h3 ng-show="$ctrl.last_catheter_item == null">(無)</h4>
+                        </div>
+                        <div ng-show="$ctrl.last_catheter_item != null" layout="row" layout-xs="column" style="margin-top: 5px;">
+                            <div style=" color: darkgray;">
+                                菌種：
+                            </div>
+                            <div style="margin-right: 20px; font-size: 15px;" flex-gt-sm flex-xs flex-sm>
+                                <input style="background-color: lightgray !important;color: black;opacity: 1; height: 20px;" maxlength="300" readonly  type="text" value="{{$ctrl.catheterstr}}"></input >
+                            </div>                            
+                        </div>
+                        <div ng-show="$ctrl.last_catheter_item != null" layout="row" layout-xs="column" style="margin-top: 5px;">
+                            <div style=" color: darkgray;">
+                                原因：
+                            </div>
+                            <div style="margin-right: 20px; font-size: 15px;" flex-gt-sm flex-xs flex-sm>
+                                <input style="background-color: lightgray !important;color: black;opacity: 1; height: 20px;" maxlength="300" readonly  type="text" value="{{$ctrl.caOccurrence}}"></input >
+                            </div>                            
+                        </div>
+                    </div>
+
+                </div>
+                <div class="cardContent">
+                    <div class="cardTit">
+                        <h3 class="h3">目前情形</h3>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>行動程度</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-checkbox ng-repeat="nsad in $ctrl.Now_Status_Action_Degree" ng-checked="nsad.Check"
+                                ng-click="$ctrl.checkTheBox('Now_Status_Action_Degree', $index)" ng-disabled="nsad.disabled">
+                                {{nsad.Text}}
+                            </md-checkbox>
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>意識狀態</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-checkbox ng-repeat="nsc in $ctrl.Now_Status_Consciousness" ng-checked="nsc.Check"
+                                ng-click="$ctrl.checkTheBox('Now_Status_Consciousness', $index)" ng-disabled="nsc.disabled">
+                                {{nsc.Text}}
+                            </md-checkbox>
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>不適症狀</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <input ng-model="$ctrl.vtHomeDataObj.Now_Status_Discomfort" maxlength="300" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="cardContent">
+                    <div class="cardTit">
+                        <h3 class="h3">換液情形</h3>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>換液操作者</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-checkbox ng-repeat="fxe in $ctrl.Fluid_Xch_Exchanger" ng-checked="fxe.Check"
+                                ng-click="$ctrl.checkTheBox('Fluid_Xch_Exchanger', $index)" ng-disabled="fxe.disabled">
+                                {{fxe.Text}}
+                            </md-checkbox>
+                            <div class="inputboxflex autoWidth">
+                                <md-checkbox ng-model="$ctrl.Fluid_Xch_Exchanger_Other" aria-label="其他">
+                                    其他
+                                </md-checkbox>
+                                <input type="text" ng-if="$ctrl.Fluid_Xch_Exchanger_Other" ng-model="$ctrl.vtHomeDataObj.Fluid_Xch_Exchanger_Other">
+                            </div>
+                        </div>                    
+                    </div>
+                    <!-- <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>每日平均脫水量</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <input ng-model="$ctrl.vtHomeDataObj.Fluid_Xch_Avg_Dehydration" maxlength="300" type="text">
+                        </div><label>ml</label>
+                    </div> -->
+                    <div class="inputbox" row-warp layout="row" layout-sm="column" layout-xs="column">
+                        <div class="inputBoxTit titItem">
+                            <label translate>平均留置時間</label>
+                        </div>                        
+                        <md-select ng-model="$ctrl.vtHomeDataObj.Retention_Time_Hh">
+                            <md-option value="">請選擇</md-option>
+                            <md-option ng-repeat="MSTHr in $ctrl.RetentionTimeHh" value="{{MSTHr}}">{{MSTHr}}</md-option>
+                        </md-select>
+                        <input flex="10" flex-xs="100"  ng-if="$ctrl.vtHomeDataObj.Retention_Time_Hh === '其他'" ng-model="$ctrl.vtHomeDataObj.Retention_Hh_Other">
+                        <label>小時</label>
+                        <md-select ng-model="$ctrl.vtHomeDataObj.Retention_Time_Mm">
+                            <md-option value="">請選擇</md-option>
+                            <md-option ng-repeat="MSTMm in $ctrl.RetentionTimeMm" value="{{MSTMm}}">{{MSTMm}}</md-option>
+                        </md-select>
+                        <input flex="10" flex-xs="100"  ng-if="$ctrl.vtHomeDataObj.Retention_Time_Mm === '其他'" ng-model="$ctrl.vtHomeDataObj.Retention_Mm_Other">
+                        <label>分鐘</label>
+                    </div>
+                    <!-- <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>平均留置時間</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <input ng-model="$ctrl.vtHomeDataObj.Fluid_Xch_Avg_Retente_Time" maxlength="300" type="text">
+                        </div>
+                    </div> -->
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>加藥狀況</label>
+                        </div>
+                        <div class="inputboxflex itemList autoWidth">
+                            <md-checkbox ng-repeat="fxads in $ctrl.Fluid_Xch_Add_Drug_Status" ng-checked="fxads.Check"
+                                ng-click="$ctrl.checkTheBox('Fluid_Xch_Add_Drug_Status', $index)" ng-disabled="fxads.disabled">
+                                {{fxads.Text}}
+                            </md-checkbox>
+                            <div class="inputboxflex autoWidth">
+                                <md-checkbox ng-model="$ctrl.Fluid_Xch_Add_Drug_Other" aria-label="其他">
+                                    其他
+                                </md-checkbox>
+                                <input type="text" ng-if="$ctrl.Fluid_Xch_Add_Drug_Other" ng-model="$ctrl.vtHomeDataObj.Fluid_Xch_Add_Drug_Other">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cardContent">
+                    <div class="cardTit">
+                        <h3 class="h3">生活狀況</h3>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>復健情形</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-checkbox ng-repeat="lcr in $ctrl.Live_Cond_Rehabilitation" ng-checked="lcr.Check"
+                                ng-click="$ctrl.checkTheBox('Live_Cond_Rehabilitation', $index)" ng-disabled="lcr.disabled">
+                                {{lcr.Text}}
+                            </md-checkbox>
+                            <div class="inputboxflex autoWidth">
+                                <md-checkbox ng-model="$ctrl.Live_Cond_Therapy_Other" aria-label="其他">
+                                    其他
+                                </md-checkbox>
+                                <input type="text" ng-if="$ctrl.Live_Cond_Therapy_Other" ng-model="$ctrl.vtHomeDataObj.Live_Cond_Therapy_Other">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>與家人互動</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-checkbox ng-repeat="lcfi in $ctrl.Live_Cond_Family_Interact" ng-checked="lcfi.Check"
+                                ng-click="$ctrl.checkTheBox('Live_Cond_Family_Interact', $index)" ng-disabled="lcfi.disabled">
+                                {{lcfi.Text}}
+                            </md-checkbox>
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>睡眠習慣</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-checkbox ng-repeat="lcsh in $ctrl.Live_Cond_Sleep_Habits" ng-checked="lcsh.Check"
+                                ng-click="$ctrl.checkTheBox('Live_Cond_Sleep_Habits', $index)" ng-disabled="lcsh.disabled">
+                                {{lcsh.Text}}
+                            </md-checkbox>
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>睡眠時數</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <input type="text" ng-model="$ctrl.vtHomeDataObj.Live_Cond_Sleeping_Hours">
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>飲食種類</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-checkbox ng-repeat="lcdt in $ctrl.Live_Cond_Dietary_Types" ng-checked="lcdt.Check"
+                                ng-click="$ctrl.checkTheBox('Live_Cond_Dietary_Types', $index)" ng-disabled="lcdt.disabled">
+                                {{lcdt.Text}}
+                            </md-checkbox>
+                            <div class="inputboxflex autoWidth">
+                                <md-checkbox ng-model="$ctrl.Live_Cond_Dietary_Other" aria-label="其他">
+                                    其他
+                                </md-checkbox>
+                                <input type="text" ng-if="$ctrl.Live_Cond_Dietary_Other" ng-model="$ctrl.vtHomeDataObj.Live_Cond_Dietary_Other">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>營養補充品</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group class="radioGroup" ng-model="$ctrl.vtHomeDataObj.Live_Cond_Supplements">
+                                <md-radio-button value="無">無</md-radio-button>
+                                <md-radio-button value="有">有</md-radio-button>
+                            </md-radio-group>
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>中藥</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-radio-group class="radioGroup" ng-model="$ctrl.vtHomeDataObj.Live_Cond_Cht_Drug">
+                                <md-radio-button value="無">無</md-radio-button>
+                                <md-radio-button value="有">有</md-radio-button>
+                            </md-radio-group>
+                            <input type="text" placeholder="中藥說明" ng-show="$ctrl.vtHomeDataObj.Live_Cond_Cht_Drug == '有'" ng-model="$ctrl.vtHomeDataObj.Live_Cond_Cht_Drug_Explan">
+                            <!-- <md-input-container-flat class="md-block">
+                                <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                            </md-input-container-flat> -->
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>食慾</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-checkbox ng-repeat="lca in $ctrl.Live_Cond_Appetite" ng-checked="lca.Check"
+                                ng-click="$ctrl.checkTheBox('Live_Cond_Appetite', $index)" ng-disabled="lca.disabled">
+                                {{lca.Text}}
+                            </md-checkbox>
+                        </div>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>每日水分攝取量</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <input type="text" ng-model="$ctrl.vtHomeDataObj.Live_Cond_Daily_Take_Water">
+                            <!-- <md-input-container-flat class="md-block">
+                                <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                            </md-input-container-flat> -->
+                        </div><label>ml</label>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>尿量</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <input type="text" ng-model="$ctrl.vtHomeDataObj.Live_Cond_Urine_Volume">
+                            <!-- <md-input-container-flat class="md-block">
+                                <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                            </md-input-container-flat> -->
+                        </div><label>ml</label>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label>排便情形</label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-checkbox ng-repeat="lcd in $ctrl.Live_Cond_Defecation" ng-checked="lcd.Check"
+                                ng-click="$ctrl.checkTheBox('Live_Cond_Defecation', $index)" ng-disabled="lcd.disabled">
+                                {{lcd.Text}}
+                            </md-checkbox>
+                            <div class="inputboxflex autoWidth">
+                                <md-checkbox ng-model="$ctrl.Live_Cond_Defecation_Other" aria-label="其他">
+                                    其他
+                                </md-checkbox>
+                                <input type="text" ng-if="$ctrl.Live_Cond_Defecation_Other" ng-model="$ctrl.vtHomeDataObj.Live_Cond_Defecation_Other">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h2 class="h2">居家護理評估表</h2>
+                <ul class="ulVt">
+                    <li><h3 class="h3">換液環境</h3>                     
+                        <div class="cardContent">
+                            <div class="cardTit">
+                                <h4 class="h4">換液環境</h4>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>地面清潔</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Fluid_Xch_Ground_Cleaning" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value="0">0分</md-radio-button>
+                                        <md-radio-button value="1">1分</md-radio-button> 
+                                        <md-radio-button value="2">2分</md-radio-button> 
+                                    </md-radio-group>
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>飼養寵物</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Fluid_Xch_Pet_Raising" ng-change="$ctrl.setTotal()"  layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button>                                         
+                                    </md-radio-group>
+                                    <!-- <md-input-container-flat class="md-block">
+                                        <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                        <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                        <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                        <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                    </md-input-container-flat> -->
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>舖設地毯</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Fluid_Xch_Carpet_Laying" ng-change="$ctrl.setTotal()"  layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button>  
+                                    </md-radio-group>
+                                    <!-- <md-input-container-flat class="md-block">
+                                        <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                        <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                        <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                        <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                    </md-input-container-flat> -->
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row"> 
+                                <div class="inputBoxTit titItem">
+                                    <label>有特定的換液房間</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Fluid_Xch_Has_Fluid_Xch_Room" ng-change="$ctrl.setTotal()"  layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-input-container-flat class="md-block">
+                                        <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                        <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                        <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                        <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                    </md-input-container-flat> -->
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>特定的換液桌面</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Fluid_Xch_Env_Spec_Xch_Desk" ng-change="$ctrl.setTotal()"  layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>乾淨的換液桌面無多餘物</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Fluid_Xch_Env_No_Redundancy" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-input-container-flat class="md-block">
+                                        <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                        <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                        <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                        <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                    </md-input-container-flat> -->
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>換液桌靠近門窗口</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Fluid_Xch_Env_Close_To_Door" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>                                
+                                    <!-- <md-input-container-flat class="md-block">
+                                        <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                        <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                        <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                        <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                    </md-input-container-flat> -->
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>天花板無灰/蜘蛛網</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Fluid_Xch_Env_Ashless_Ceiling" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>冷氣口/風扇無灰塵</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Fluid_Xch_Env_Air_Cooler" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>室內擺設整齊</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Fluid_Xch_Env_Neat_Decoration" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>窗簾上無灰塵</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Fluid_Xch_Env_Curtain_No_Dust" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>牆壁清潔乾燥</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Fluid_Xch_Env_Wall_Clean_Dry" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>承接引流袋的容器</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Fluid_Xch_Env_Containers_Bags" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>  
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>                            
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>洗手台鄰近換液室</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Fluid_Xch_Env_Close_Washstand" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>洗手台清潔</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Fluid_Xch_Env_Clean_Washstand" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li><h3 class="h3">換液技術執行狀況</h3>
+                        <div class="cardContent">
+                            <div class="cardTit">
+                                <h4 class="h4">準備環境</h4>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>關閉門窗</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Prepare_Env_Close_Doors" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>關閉冷氣/電風扇</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Prepare_Env_Turnoff_Air_Mach" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>用物準備齊全</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Prepare_Env_Material_Complete" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                </div>
+                            </div>                            
+                        </div>
+                        <div class="cardContent">
+                            <div class="cardTit">
+                                <h4 class="h4">換液技術</h4>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>清潔桌面</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Xch_Tech_Clean_Desk" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>洗手</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                        <div class="inputBoxTit titItem">
+                                            <label>使用洗手乳、流動的水龍頭</label>
+                                        </div>
+                                        <div class="inputboxflex itemList">
+                                            <md-radio-group ng-model="$ctrl.vtHomeDataObj.Xch_Tech_Handwash_Faucet" ng-change="$ctrl.setTotal()" layout="row">
+                                                <md-radio-button value=0 >0分</md-radio-button>
+                                                <md-radio-button value=1 >1分</md-radio-button>  
+                                                <md-radio-button value=2 >2分</md-radio-button> 
+                                            </md-radio-group>
+                                            <!-- <md-radio-group class="radioGroup">
+                                                <md-radio-button value="Yes">有</md-radio-button>
+                                                <md-radio-button value="No">無</md-radio-button>
+                                            </md-radio-group> -->
+                                        </div>
+                                    </div>
+                                    <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                        <div class="inputBoxTit titItem">
+                                            <label>正確洗手步驟</label>
+                                        </div>
+                                        <div class="inputboxflex itemList">
+                                            <md-radio-group ng-model="$ctrl.vtHomeDataObj.Xch_Tech_Wash_Hands_Step" ng-change="$ctrl.setTotal()" layout="row">
+                                                <md-radio-button value=0 >0分</md-radio-button>
+                                                <md-radio-button value=1 >1分</md-radio-button>  
+                                                <md-radio-button value=2 >2分</md-radio-button>                                                
+                                            </md-radio-group>
+                                            <!-- <md-radio-group class="radioGroup">
+                                                <md-radio-button value="Yes">有</md-radio-button>
+                                                <md-radio-button value="No">無</md-radio-button>
+                                            </md-radio-group> -->
+                                        </div>
+                                    </div>                                    
+                                    <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row"> 
+                                        <div class="inputBoxTit titItem">
+                                            <label>以紙巾關水龍頭、門</label>
+                                        </div>
+                                        <div class="inputboxflex itemList">
+                                            <md-radio-group ng-model="$ctrl.vtHomeDataObj.Xch_Tech_Closefaucet_Usepaper" ng-change="$ctrl.setTotal()" layout="row">
+                                                <md-radio-button value=0 >0分</md-radio-button>
+                                                <md-radio-button value=1 >1分</md-radio-button>  
+                                                <md-radio-button value=2 >2分</md-radio-button>  
+                                            </md-radio-group>
+                                            <!-- <md-radio-group class="radioGroup">
+                                                <md-radio-button value="Yes">有</md-radio-button>
+                                                <md-radio-button value="No">無</md-radio-button>
+                                            </md-radio-group> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>戴口罩(包括周遭人)</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Xch_Tech_All_Man_Wear_Masks" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button>  
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>檢查透析液(五項)</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Xch_Tech_Examinate_Fluids_5" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>遵守無菌技術</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Xch_Tech_Aseptic_Technology" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>標準換液步驟</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Xch_Tech_Standard_Xch_Steps" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                        <md-radio-button value="No">有所改變</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>正確加溫</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Xch_Tech_Correct_Heating_Step" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cardContent">
+                            <div class="cardTit">
+                                <h4 class="h4">善後處理</h4>
+                            </div>                            
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>檢查引流袋及稱重（磅秤）</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Aftercare_Drainage_Bag_Weigh" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>引流液倒入馬桶</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Aftercare_Poured_Into_Toilet" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>正確管組或引流袋善後</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Aftercare_Correct_Rehabilitat" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cardContent">
+                            <div class="cardTit">
+                                <h4 class="h4">紀錄</h4>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>每次引流量</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Record_Each_Drainage" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>每次葡萄糖濃度</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Record_Glucose_Concentration" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>每天血壓</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Record_Daily_Blood_Pressure" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>每天體重</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Record_Daily_Weight" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>異常狀況</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Record_Abnormal_Conditions" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li><h3 class="h3">導管出口處護理</h3>                     
+                        <div class="cardContent">
+                            <div class="cardTit">
+                                <h4 class="h4">導管出口處護理</h4>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>足量照明</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Catheter_Nurse_Adequate_Light" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>每天執行一次</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Catheter_Nurse_Daily_Excute_1" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>                            
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>檢查管隧及導管出口處</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Catheter_Nurse_Check_Catheter" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                </div>
+                            </div>                            
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>正確消毒傷口、包裹紗布</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Catheter_Nurse_Disinfecte" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                </div>
+                            </div>                            
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>正確固定導管</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Catheter_Nurse_Fix_Catheter" ng-change="$ctrl.setTotal()"layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>淋浴後及敷料濕了立即更換</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Catheter_Nurse_After_Shower" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                </div>
+                            </div>                            
+                        </div>
+                    </li>
+                    <li><h3 class="h3">透析液儲藏方式</h3>                        
+                        <div class="cardContent">
+                            <div class="cardTit">
+                                <h4 class="h4">透析液儲藏方式</h4>
+                            </div>                            
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>通風、堆放整齊</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Storage_Mode_Ventilation" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>                            
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>避免潮濕、日曬</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Storage_Mode_Avoid_Dampness" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>無螞蟻、蟑螂、蜘蛛</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Storage_Mode_No_Bugs" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li><h3 class="h3">遵從性</h3>                        
+                        <div class="cardContent">
+                            <div class="cardTit">
+                                <h4 class="h4">遵從性</h4>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>口服藥過量庫存</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Compliance_Overstock_Oraldrug" ng-change="$ctrl.setTotal()" layout="row">
+                                            <md-radio-button value=0 >0分</md-radio-button>
+                                            <md-radio-button value=1 >1分</md-radio-button>  
+                                            <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>磷結合劑的正確/按時使用</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Compliance_Phosphorus_Binders" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>正確的換液次數</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Compliance_Correct_Xch_Times"  ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row"> 
+                                <div class="inputBoxTit titItem">
+                                    <label>過多的透析液庫存</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Compliance_Overstock_Dialys" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>正確使用降血壓藥</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Compliance_Hypotensive_Drug" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>
+                            <div class="inputbox" row-wrap layout-sm="column" layout-xs="column" layout="row">
+                                <div class="inputBoxTit titItem">
+                                    <label>正確使用EPO及放置冰箱冷藏</label>
+                                </div>
+                                <div class="inputboxflex itemList">
+                                    <md-radio-group ng-model="$ctrl.vtHomeDataObj.Compliance_Use_Epo" ng-change="$ctrl.setTotal()" layout="row">
+                                        <md-radio-button value=0 >0分</md-radio-button>
+                                        <md-radio-button value=1 >1分</md-radio-button>  
+                                        <md-radio-button value=2 >2分</md-radio-button> 
+                                    </md-radio-group>
+                                    <!-- <md-radio-group class="radioGroup">
+                                        <md-radio-button value="Yes">有</md-radio-button>
+                                        <md-radio-button value="No">無</md-radio-button>
+                                    </md-radio-group> -->
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <ul>
+                    <li>評分標隼0-2分：0分-完全沒做到，1分-部分有做到，2分-非常好(完全做到)</li>
+                    <li>備註：總分低於50分，則需再安排時間作家訪。</li>
+                </ul>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>總分</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input type="text" ng-model="$ctrl.vtHomeDataObj.Total_Score" disabled readonly placeholder="總分">
+                    </div>
+                </div>
+                <!-- <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>考核人</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input type="text" ng-model="$ctrl.vtHomeDataObj.Assessor">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>日期</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input type="date" ng-model="$ctrl.vtHomeDataObj.Visit_Date">
+                    </div>
+                </div> -->
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>建議事項</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input type="text" ng-model="$ctrl.vtHomeDataObj.Recommendations">
+                    </div>
+                </div>
+                <!-- <div class="cardContent">
+                    <div class="cardTit">
+                        <h3 class="h3"></h3>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputBoxTit titItem">
+                            <label></label>
+                        </div>
+                        <div class="inputboxflex itemList">
+                            <md-input-container-flat class="md-block">
+                                <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                                <md-checkbox ng-checked="skinEC.Check" ng-click="$ctrl.checkTheBox('occurrence', $index)"></md-checkbox>
+                            </md-input-container-flat>
+                        </div>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>疾病診斷</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtHomeDataObj.Disease_Diagnosis" maxlength="300" type="text">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>病人病史</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtHomeDataObj.Patient_History" maxlength="300" type="text">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>訪視醫囑</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtHomeDataObj.Visit_Doctor_Advice" maxlength="300" type="text">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>導管檢視-皮膚評估</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtHomeDataObj.Catheter_Skin_Assessment" maxlength="100" type="text">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>導管檢視-感染情況</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtHomeDataObj.Catheter_Infection" maxlength="100" type="text">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>導管檢視-傷口情況</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtHomeDataObj.Catheter_Wound" maxlength="100" type="text">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>身體評估-水腫</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtHomeDataObj.Assessment_Edema" maxlength="100" type="text">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>身體評估-皮膚情況</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtHomeDataObj.Assessment_Skin_Condition" maxlength="100" type="text">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>身體評估-胸腔</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtHomeDataObj.Assessment_Thoracic_Cavity" maxlength="100" type="text">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>身體評估-肌肉</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtHomeDataObj.Assessment_Muscles" maxlength="100" type="text">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>身體評估-腸胃</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtHomeDataObj.Assessment_Stomach" maxlength="100" type="text">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>日常生活照顧評值-飲食狀況</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtHomeDataObj.Daily_Assessment_Dietary_Info" maxlength="100" type="text">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>日常生活照顧評值-運動指導</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtHomeDataObj.Daily_Assessment_Exercise" maxlength="100" type="text">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>日常生活照顧評值-飲食指導</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtHomeDataObj.Daily_Assessment_Dietary" maxlength="100" type="text">
+                    </div>
+                </div> -->
+                <div row-warp layout="row" layout-sm="column" layout-xs="column" style="margin-top:10px;">
+                    <div flex="50" flex-xs="100"  ng-show="$ctrl.vtHomeDataObj.CreatedUserName">
+                        <!-- <span>建立: {{ $ctrl.regForm.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                        <span translate="visitHome.createdTime"
+                                translate-values='{CreatedTime: $ctrl.vtHomeDataObj.CreatedTime}'></span>
+                        <seal model="$ctrl.vtHomeDataObj" modified="none"></seal>
+                    </div>
+                    <div flex="50" flex-xs="100"  ng-show="$ctrl.vtHomeDataObj.ModifiedTime != null">
+                        <!-- <span>修改: {{ $ctrl.regForm.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                        <span translate="visitHome.editedTime"
+                                translate-values='{ModifiedTime: $ctrl.vtHomeDataObj.ModifiedTime}'></span>
+                        <seal model="$ctrl.vtHomeDataObj" created="none"></seal>
+                    </div>
+                </div>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row" ng-hide="$ctrl.vtHomeDataObj.Status == 'Deleted'" class="no-print">
+            <div layout="row" layout-align="end center">
+                <md-button class="md-raised" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.cancel()">
+                    {{'visitHome.dialog.cancel' | translate}}
+                </md-button>
+                <md-button class="md-raised md-primary" ng-click="$ctrl.ok()">
+                    {{$ctrl.vtHomeDataObj.isCreate ? 'visitHome.dialog.create' : 'visitHome.dialog.edit' | translate}}
+                </md-button>
+            </div>
+        </md-dialog-actions>  
+
+        <!-- <md-dialog-actions layout="row">
+            <md-button class="md-raised" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.cancel()">
+                {{'visitHome.dialog.cancel' | translate}}
+            </md-button>
+            <md-button class="md-raised md-primary" ng-click="$ctrl.ok()">
+                {{$ctrl.vtHomeDataObj.isCreate ? 'visitHome.dialog.create' : 'visitHome.dialog.edit' | translate}}
+            </md-button>
+        </md-dialog-actions> -->
+    </form>
+</md-dialog>

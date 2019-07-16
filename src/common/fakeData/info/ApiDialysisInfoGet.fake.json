@@ -1,0 +1,266 @@
+{
+    "DialysisSetting": {
+        "DateTimestamp": "2019-03-21T11:13:36.761677+08:00",
+        "Module": "DialysisSetting",
+        "Records": {
+            "CatheterHospitals": [
+                "測試用",
+                "台大醫院",
+                "馬偕醫院",
+                "不明醫院",
+                "Hospital AAA",
+                "長庚",
+                "台大",
+                "愛的醫院",
+                "雲基",
+                "關渡醫院",
+                "台北榮總",
+                "桃園敏盛",
+                "振興醫院",
+                "陽明醫院",
+                "恩主公醫院",
+                "23232",
+                "測使用",
+                "hhh",
+                "123",
+                "9999",
+                "AA醫院",
+                "全新"
+            ],
+            "ArtificialKidneys": [
+                "F7HPS",
+                "F8HPS",
+                "F10HPS",
+                "FX80",
+                "65-K2",
+                "AK-11",
+                "AK-47",
+                "Fx-60",
+                "Fx-86"
+            ],
+            "Dialysates": [
+                "2.5/1.0",
+                "3.0/1.0",
+                "3.5/1.0",
+                "2.5/2.0",
+                "3.0/2.0",
+                "3.5/2.0"
+            ],
+            "PrescriptionModes": [
+                "HD",
+                "HDF",
+                "HF",
+                "UF",
+                "CVVH",
+                "CVVHD",
+                "SCUF"
+            ],
+            "Anticoagulants": [
+                "Heparin",
+                "Non-Heparin ",
+                "Heparin Free",
+                "Innohep",
+                "Fragmin",
+                "外循環量"
+            ],
+            "Frequencies": [
+                "Tiw",
+                "Biw",
+                "Qw"
+            ],
+            "DialysateFlowRates": [
+                "300",
+                "500",
+                "800"
+            ],
+            "NeedleArteries": [
+                "15",
+                "16",
+                "17"
+            ],
+            "NeedleVeins": [
+                "15",
+                "16",
+                "17"
+            ],
+            "Routes": [
+                "Fistular L",
+                "Fistular R",
+                "D.L R`t",
+                "D.L L`t",
+                "Perm-cath R",
+                "Perm-cath L"
+            ]
+        },
+        "HospitalId": "56fcc5dd4ead7870942f61c3",
+        "Revision": 1,
+        "HistoryId": null,
+        "Status": "Normal",
+        "CreatedUserId": "56d8e8f6a78c4980ec1859cf",
+        "CreatedUserName": "Ken",
+        "CreatedTime": "2016-04-20T03:00:00.168Z",
+        "ModifiedUserId": "59478096d8d3321118c6678a",
+        "ModifiedUserName": "Yuting",
+        "ModifiedTime": "2019-03-21T02:52:34.192Z",
+        "Id": "56b433af1865df14e0320228",
+        "CreatedOn": "2016-02-05T05:31:27Z",
+        "ModifiedOn": "0001-01-01T00:00:00Z",
+        "ObjectId": {
+            "Timestamp": 1454650287,
+            "Machine": 1598943,
+            "Pid": 5344,
+            "Increment": 3277352,
+            "CreationTime": "2016-02-05T05:31:27Z"
+        }
+    },
+    "BloodSetting": {
+        "DateTimestamp": "2019-03-21T11:13:36.8241908+08:00",
+        "Module": "BloodSetting",
+        "Records": {
+            "PlasmaComponents": {
+                "100": "AAAAA",
+                "120": "血小板",
+                "123": "test123",
+                "132": "血型陰性",
+                "135": "紅血球",
+                "146": "全血",
+                "182": "血漿",
+                "225": "顆粒球",
+                "043": "紅血球濃液體"
+            }
+        },
+        "HospitalId": "56fcc5dd4ead7870942f61c3",
+        "Revision": 1,
+        "HistoryId": null,
+        "Status": "Normal",
+        "CreatedUserId": null,
+        "CreatedUserName": null,
+        "CreatedTime": "2016-06-20T07:06:11.206Z",
+        "ModifiedUserId": "59478096d8d3321118c6678a",
+        "ModifiedUserName": "Yuting",
+        "ModifiedTime": "2019-03-21T02:52:34.27Z",
+        "Id": "576761221620c6cb6ba1c632",
+        "CreatedOn": "2016-06-20T03:21:06Z",
+        "ModifiedOn": "0001-01-01T00:00:00Z",
+        "ObjectId": {
+            "Timestamp": 1466392866,
+            "Machine": 1450182,
+            "Pid": -13461,
+            "Increment": 10602034,
+            "CreationTime": "2016-06-20T03:21:06Z"
+        }
+    },
+    "DeathReasonSetting": {
+        "DateTimestamp": "2019-03-21T11:13:36.8866879+08:00",
+        "Module": "DeathReasonSetting",
+        "Records": {
+            "Items": [
+                "心衰竭(heart failure)",
+                "冠狀動脈疾病(coronary artery disease)",
+                "左心室功能不良(left ventricular dysfunction)",
+                "高血壓(hypertension)",
+                "感染",
+                "原因不詳"
+            ]
+        },
+        "HospitalId": "56fcc5dd4ead7870942f61c3",
+        "Revision": 1,
+        "HistoryId": null,
+        "Status": "Normal",
+        "CreatedUserId": null,
+        "CreatedUserName": null,
+        "CreatedTime": "2017-10-19T03:07:40.022Z",
+        "ModifiedUserId": "59478096d8d3321118c6678a",
+        "ModifiedUserName": "Yuting",
+        "ModifiedTime": "2019-03-21T02:52:34.332Z",
+        "Id": "59e812af79f57a8e3fe62000",
+        "CreatedOn": "2017-10-19T02:49:19Z",
+        "ModifiedOn": "0001-01-01T00:00:00Z",
+        "ObjectId": {
+            "Timestamp": 1508381359,
+            "Machine": 7992698,
+            "Pid": -29121,
+            "Increment": 15081472,
+            "CreationTime": "2017-10-19T02:49:19Z"
+        }
+    },
+    "DefinitionSetting": {
+        "DateTimestamp": "2019-03-21T11:13:36.949198+08:00",
+        "Module": "DefinitionSetting",
+        "Records": {
+            "Categories": {
+                "Shifts": [
+                    "早班",
+                    "中班",
+                    "晚班",
+                    "小夜班",
+                    "大夜班",
+                    "OnCall班",
+                    "早晚班",
+                    "AB班"
+                ],
+                "Test": [
+                    "Test1",
+                    "Test2"
+                ],
+                "ShiftGroups": [
+                    "A Team",
+                    "B Team",
+                    "C Team"
+                ],
+                "BloodCollection": [
+                    "全血",
+                    "血小板",
+                    "PRPC"
+                ],
+                "EndHollowFiber": [
+                    "-",
+                    "±",
+                    "+",
+                    "++",
+                    "+++",
+                    "clot",
+                    "Clear",
+                    "部份Clot",
+                    "全部Clot"
+                ],
+                "EndChamber": [
+                    "-",
+                    "±",
+                    "+",
+                    "++",
+                    "+++",
+                    "clot",
+                    "Clear",
+                    "部份Clot",
+                    "全部Clot"
+                ],
+                "MedicineLiquidKind" :[
+                    "Dianeal LOW CALCIUM",
+                    "Nutrineal",
+                    "Extraneal"
+                ]
+            }
+        },
+        "HospitalId": "56fcc5dd4ead7870942f61c3",
+        "Revision": 1,
+        "HistoryId": null,
+        "Status": "Normal",
+        "CreatedUserId": "570600fdd53d3c61d6794f95",
+        "CreatedUserName": "Admin",
+        "CreatedTime": "2017-11-07T03:57:15.168Z",
+        "ModifiedUserId": "570600fdd53d3c61d6794f95",
+        "ModifiedUserName": "Admin",
+        "ModifiedTime": "2019-03-21T02:52:34.457Z",
+        "Id": "5a012f1a792e5e0468db560f",
+        "CreatedOn": "2017-11-07T03:57:14Z",
+        "ModifiedOn": "0001-01-01T00:00:00Z",
+        "ObjectId": {
+            "Timestamp": 1510027034,
+            "Machine": 7941726,
+            "Pid": 1128,
+            "Increment": 14374415,
+            "CreationTime": "2017-11-07T03:57:14Z"
+        }
+    }
+}

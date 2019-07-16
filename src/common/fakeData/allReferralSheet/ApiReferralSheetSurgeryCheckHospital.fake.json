@@ -1,0 +1,40 @@
+[
+    {
+        "PAT_NO": "41583080",
+        "HDEPT_CODE": "BB00",
+        "HDEPT_NAME": "心臟血管外科",
+        "DR_CODE": "DAK47",
+        "DR_NAME": "劉亮廷",
+        "IN_OR_DATE": "1080402",
+        "OP_ODR_CODE1": "69039",
+        "ODR_NAME": "內頸靜脈切開，永久導管放置術"
+    }, {
+        "PAT_NO": "41583080",
+        "HDEPT_CODE": "BB00",
+        "HDEPT_NAME": "心臟血管外科",
+        "DR_CODE": "DAK32",
+        "DR_NAME": "阮月嬌",
+        "IN_OR_DATE": "1080122",
+        "OP_ODR_CODE1": "69039",
+        "ODR_NAME": "內頸靜脈切開，永久導管放置術"
+    },
+    {
+        "PAT_NO": "41583080",
+        "HDEPT_CODE": "BB00",
+        "HDEPT_NAME": "皮膚科",
+        "DR_CODE": "DAK32",
+        "DR_NAME": "阮月嬌",
+        "IN_OR_DATE": "1080501",
+        "OP_ODR_CODE1": "69039",
+        "ODR_NAME": "清除病毒疣"
+    }, {
+        "PAT_NO": "41583080",
+        "HDEPT_CODE": "BB00",
+        "HDEPT_NAME": "乳房外科",
+        "DR_CODE": "DAK21",
+        "DR_NAME": "曾薰緻",
+        "IN_OR_DATE": "1080122",
+        "OP_ODR_CODE1": "69039",
+        "ODR_NAME": "纖維囊腫摘除"
+    }
+]

@@ -1,0 +1,437 @@
+<style>
+    
+    @media print{
+        * {
+            -webkit-print-color-adjust: exact !important;
+        }
+        .peritonealDialysisTabView{
+            display: inline-table; /* Not really needed in all cases */
+        }
+        md-dialog{
+            box-shadow: none;
+            max-width: 100%;
+        }
+        div,input,table,select,md-select{
+            page-break-inside :avoid;
+            page-break-after: avoid;
+        }
+    }
+</style>
+<md-dialog class="peritonealDialysisTabView">
+    <form name="editForm" novalidate ng-cloak>
+        <md-dialog-toolbar>
+            <div class="md-toolbar-tools"  layout="row">
+                <md-button class="md-fab" aria-label="Settings" ng-click="$ctrl.cancel()">
+                    <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+                </md-button>
+                <h2 ng-if="$ctrl.fiDataObj.isCreate" translate="frequencyImplantation.dialog.createTitle"></h2>
+                <h2 ng-if="!$ctrl.fiDataObj.isCreate" translate="frequencyImplantation.dialog.editTitle"></h2>
+                <div
+                    class="{{'patient_name ' + (($ctrl.currentPatient.Gender|gender) == '男' ? 'male ' : '') + (($ctrl.currentPatient.Gender|gender) == '女' ? 'female' : '') }}">
+                    {{ $ctrl.currentPatient.MedicalId + ' - ' + $ctrl.currentPatient.Name }}
+                </div>
+                <span flex></span>
+                <span ng-show="$ctrl.fiDataObj.Status == 'Deleted' || $ctrl.apdDataObj.Status == 'tempDeleted'" class="readonly-text" title="{{ 'customMessage.readonlyTitle' | translate }}" translate>{{ 'customMessage.readonly' }}</span>
+                <md-button class="md-secondary md-icon-button" ng-click="$ctrl.cancel()">
+                    <i class="material-icons">cancel</i>
+                </md-button>
+            </div>
+        </md-dialog-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content" layout="column" style="padding-top: 0">
+                <div layout="column">
+                    <div class="dataList">
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem lightblue">
+                                <label>腹透植管次數:</label>
+                            </div>
+                            <div class="inputboxflex itemList autoWidth">
+                                第<input type="text" class="txtSS" ng-model="$ctrl.fiDataObj.Frequency_Implantation"
+                                    readonly />次
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem lightblue">
+                                <label>*導管植入日期</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <input ng-model="$ctrl.fiDataObj.Catheter_Implantation_Date" type="date" min="1900-01-01" max="2999-12-31" 
+                                    ng-disabled="!$ctrl.fiDataObj.isCreate" name="catheterImplantationDate" required>
+                                <div ng-messages="editForm.catheterImplantationDate.$error"
+                                    ng-show="editForm.catheterImplantationDate.$dirty">
+                                    <div ng-message="required" class="clrRequired">必填選項</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>植管醫院</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <!--血管通路-造管醫院-->
+                                <md-select ng-model="$ctrl.fiDataObj.Frequency_Implanate_Hospital">
+                                    <md-option value="">請選擇</md-option>
+                                    <md-option ng-repeat="fiH in $ctrl.fiHospital" value="{{fiH}}">{{fiH}}</md-option>
+                                    <md-option value="Other">自行輸入植管醫院</md-option>
+                                </md-select>
+                                <input type="text" ng-if="$ctrl.fiDataObj.Frequency_Implanate_Hospital == 'Other'"
+                                    ng-model="$ctrl.fiDataObj.FrequencyImplanateHospitalOther" />
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>植管醫師</label>
+                                <!--植管醫師科別-->
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <md-radio-group class="radioGroup" ng-model="$ctrl.fiDataObj.Doctor_Section"
+                                    aria-label="植管醫師">
+                                    <md-radio-button ng-repeat="DName in $ctrl.DoctorName" value="{{DName}}">{{DName}}
+                                    </md-radio-button>
+                                </md-radio-group>
+                                <input placeholder="請輸入醫師姓名" ng-model="$ctrl.fiDataObj.Doctor_Name" type="text">
+                            </div>
+                        </div>
+                        <!-- <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>植管醫師姓名</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <input ng-model="$ctrl.fiDataObj.Doctor_Name" type="text">
+                            </div>
+                        </div> -->
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>植管方式</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <md-radio-group class="radioGroup" ng-model="$ctrl.fiDataObj.Implantation_Method"
+                                    aria-label="植管方式">
+                                    <md-radio-button ng-repeat="IM in $ctrl.ImplantationMethod" value="{{IM}}">{{IM}}
+                                    </md-radio-button>
+                                </md-radio-group>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>麻醉方式</label>
+                                <!--Anesthesia_mode-->
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <md-input-container-flat class="md-block">
+                                    <md-checkbox ng-repeat="AM in $ctrl.AnesthesiaModeCheck" ng-checked="AM.Check"
+                                        ng-click="$ctrl.checkTheBox('AnesthesiaMode', $index)">
+                                        {{AM.Text}}
+                                    </md-checkbox>
+                                </md-input-container-flat>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>植入位置</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <md-radio-group class="radioGroup" ng-model="$ctrl.fiDataObj.Implantation_Location"
+                                    aria-label="植入位置">
+                                    <md-radio-button ng-repeat="iLocation in $ctrl.ImplantationLocation"
+                                        value="{{iLocation}}">{{iLocation}}</md-radio-button>
+                                    <input ng-if="$ctrl.fiDataObj.Implantation_Location == '其他'"
+                                        ng-model="$ctrl.fiDataObj.ImplantationLocationOther" type="text">
+                                </md-radio-group>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>導管出口</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <md-radio-group class="radioGroup" ng-model="$ctrl.fiDataObj.Catheter_Outlet"
+                                    layout="row" aria-label="導管出口">
+                                    <md-radio-button ng-repeat="CO in $ctrl.CatheterOutlet" value="{{CO}}">{{CO}}
+                                    </md-radio-button>
+                                </md-radio-group>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>導管型式(種類)</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <md-radio-group class="radioGroup" ng-model="$ctrl.fiDataObj.Catheter_Type" layout="row"
+                                    aria-label="導管型式(種類)">
+                                    <md-radio-button ng-repeat="CType in $ctrl.CatheterType" value="{{CType}}">{{CType}}
+                                    </md-radio-button>
+                                    <input ng-if="$ctrl.fiDataObj.Catheter_Type == '其他'"
+                                        ng-model="$ctrl.fiDataObj.CatheterTypeOther" type="text">
+                                </md-radio-group>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>CUFF數</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <md-radio-group class="radioGroup" ng-model="$ctrl.fiDataObj.Cuff_Amount"
+                                    aria-label="CUFF數">
+                                    <md-radio-button ng-repeat="CA in $ctrl.CuffAmount" value="{{CA}}">{{CA}}
+                                    </md-radio-button>
+                                </md-radio-group>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>前端型態</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <md-radio-group class="radioGroup" ng-model="$ctrl.fiDataObj.Front_Type"
+                                    aria-label="前端型態">
+                                    <md-radio-button ng-repeat="FT in $ctrl.FrontType" value="{{FT}}">{{FT}}
+                                    </md-radio-button>
+                                    <input type="text" ng-if="$ctrl.fiDataObj.Front_Type == '其他'"
+                                        ng-model="$ctrl.fiDataObj.FrontTypeOther">
+                                </md-radio-group>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>植管併發症</label>
+                                <!--Implantation_Complications-->
+                            </div>
+                            <div class="inputboxflex itemList autoWidth">
+                                <label>併發症日期</label>
+                                <input type="date" min="1900-01-01" max="2999-12-31" ng-model="$ctrl.fiDataObj.Complications_Date">
+                                <br />
+                                <md-input-container-flat class="md-block">
+                                    <md-checkbox ng-repeat="fiCC in $ctrl.ImplantationComplicationsCheck"
+                                        ng-checked="fiCC.Check"
+                                        ng-click="$ctrl.checkTheBox('ImplantationComplications', $index)"
+                                        ng-disabled="fiCC.disabled">
+                                        {{fiCC.Text}}
+                                    </md-checkbox>
+                                    <input ng-show="$ctrl.ImplantationComplicationsCheck[11].Check" type="text"
+                                        ng-model="$ctrl.fiDataObj.ImplantationComplicationsCheckOther">
+                                </md-input-container-flat>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>重新植管原因</label>
+                                <!--Re_Implantation_Reason-->
+                            </div>
+                            <div class="inputboxflex itemList autoWidth">
+                                <!-- <label>重新植管日期</label>
+                                <input type="date" ng-model="$ctrl.fiDataObj.Re_Implantation_Date">
+                                <br/> -->
+                                <md-input-container-flat class="md-block">
+                                    <md-checkbox ng-repeat="fiRC in $ctrl.ReImplantationReasonCheck"
+                                        ng-checked="fiRC.Check"
+                                        ng-click="$ctrl.checkTheBox('ReImplantationReason', $index)"
+                                        ng-disabled="fiRC.disabled">
+                                        {{fiRC.Text}}
+                                    </md-checkbox>
+                                    <input ng-show="$ctrl.ReImplantationReasonCheck[8].Check" type="text"
+                                        ng-model="$ctrl.fiDataObj.ReImplantationReasonCheckOther">
+                                </md-input-container-flat>
+                            </div>
+                        </div>
+                        <!-- <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>手術方式</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <md-radio-group class="radioGroup" ng-model="$ctrl.fiDataObj.Operative_Method" layout="row" aria-label="手術方式">
+                                    <md-radio-button ng-repeat="OM in $ctrl.OperativeMethod" value="{{OM}}">{{OM}}</md-radio-button>
+                                    <input type="text" ng-if="$ctrl.fiDataObj.Operative_Method == '其他'" ng-model="$ctrl.fiDataObj.OperativeMethodOther">
+                                </md-radio-group>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>手術初期合併症</label>
+                            </div>
+                            <div class="inputboxflex itemList autoWidth">
+                                <md-input-container-flat class="md-block">
+                                    <md-checkbox ng-repeat="ECS in $ctrl.EarlyComplicationsSurgeryCheck" ng-checked="ECS.Check"
+                                        ng-click="$ctrl.checkTheBox('EarlyComplicationsSurgery', $index)">
+                                        {{ECS.Text}}
+                                    </md-checkbox>
+                                    <input style="display:inline-block;" ng-show="$ctrl.EarlyComplicationsSurgeryCheck[7].Check" type="text" ng-model="$ctrl.fiDataObj.EarlyComplicationsSurgeryCheckOther">
+                                </md-input-container-flat>
+                            </div>
+                        </div> -->
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <!-- <label>PD開始日期</label> -->
+                                <label>首次腹透日期</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <input ng-model="$ctrl.fiDataObj.Pd_Date" type="date" name="Pd_Date" disabled required>
+                                <div ng-messages="editForm.Pd_Date.$error" ng-show="editForm.Pd_Date.$dirty">
+                                    <div ng-message="required" class="clrRequired">必填選項</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>首次透析模式</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <md-radio-group class="radioGroup" ng-model="$ctrl.fiDataObj.Liquid_Exchange_System"
+                                    layout="row" aria-label="首次透析模式">
+                                    <md-radio-button ng-repeat="LES in $ctrl.LiquidExchangeSystem" value="{{LES}}">
+                                        {{LES}}</md-radio-button>
+                                    <input type="text" ng-if="$ctrl.fiDataObj.Liquid_Exchange_System =='其他'"
+                                        ng-model="$ctrl.fiDataObj.LiquidExchangeSystemOther">
+                                </md-radio-group>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>PET日期</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <input ng-model="$ctrl.fiDataObj.Pet_Date" min="1900-01-01" max="2999-12-31" type="date">
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>PET結果</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <md-radio-group class="radioGroup" ng-model="$ctrl.fiDataObj.Pet_Results" layout="row"
+                                    aria-label="PET結果">
+                                    <md-radio-button ng-repeat="PET in $ctrl.PETResults" value="{{PET}}">{{PET}}
+                                    </md-radio-button>
+                                </md-radio-group>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>終止治療日期</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <input ng-model="$ctrl.fiDataObj.Treatment_Termination_Date" min="1900-01-01" max="2999-12-31" type="date">
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>終止治療原因</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <md-select ng-model="$ctrl.fiDataObj.Termination_Reasons">
+                                    <md-option value="">請選擇</md-option>
+                                    <md-option ng-repeat="TR in $ctrl.TerminationReasons" value="{{ TR }}">{{ TR }}
+                                    </md-option>
+                                </md-select>
+                                <input ng-if="$ctrl.fiDataObj.Termination_Reasons == '其他'"
+                                    ng-model="$ctrl.fiDataObj.TerminationReasonsOther" type="text">
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>拔管日期</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <input ng-model="$ctrl.fiDataObj.Extubation_Date" min="1900-01-01" max="2999-12-31" type="date">
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>轉血液透析原因</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <md-select ng-model="$ctrl.fiDataObj.Transhemodialysis_Reasons">
+                                    <md-option value="">請選擇</md-option>
+                                    <md-option ng-repeat="TransR in $ctrl.TranshemodialysisReasons"
+                                        value="{{ TransR }}">{{ TransR }}</md-option>
+                                </md-select>
+                                <input ng-if="$ctrl.fiDataObj.Transhemodialysis_Reasons == '其他'"
+                                    ng-model="$ctrl.fiDataObj.TranshemodialysisReasonsOther" type="text">
+                            </div>
+                        </div>
+                        <!-- <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>死亡原因</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <md-select ng-model="$ctrl.fiDataObj.Death_Reasons">
+                                    <md-option value="0">--請選擇--</md-option>
+                                    <md-option ng-repeat="DRs in $ctrl.DeathReasons" value="{{DRs}}">{{DRs}}</md-option>
+                                </md-select>
+                                死亡原因-心肺系統 Death_CIS
+                                <md-select ng-model="$ctrl.fiDataObj.Death_Reasons_CardiopulmonarySystem" ng-if="$ctrl.fiDataObj.Death_Reasons == '心肺系統'">
+                                    <md-option ng-repeat="DeathCIS in $ctrl.DeathReasonsCardiopulmonarySystem" value="{{DeathCIS}}">{{DeathCIS}}</md-option>
+                                </md-select>
+                                死亡原因-中樞神經系統 Death_CNS
+                                <md-select ng-model="$ctrl.fiDataObj.Death_Reasons_CentralNervousSystem" ng-if="$ctrl.fiDataObj.Death_Reasons == '中樞神經系統'">
+                                    <md-option ng-repeat="DeathCNS in $ctrl.DeathReasonsCentralNervousSystem" value="{{DeathCNS}}">{{DeathCNS}}</md-option>
+                                </md-select>
+                                死亡原因-感染 Death_Infection
+                                <md-select ng-model="$ctrl.fiDataObj.Death_Reasons_Infection" ng-if="$ctrl.fiDataObj.Death_Reasons == '感染'">
+                                    <md-option ng-repeat="DeathInfection in $ctrl.DeathReasonsInfection" value="{{DeathInfection}}">{{DeathInfection}}</md-option>
+                                </md-select>
+                                死亡原因-惡性腫瘤 Death_MT
+                                <md-select ng-model="$ctrl.fiDataObj.Death_Reasons_MalignantTumor" ng-if="$ctrl.fiDataObj.Death_Reasons == '惡性腫瘤'">
+                                    <md-option ng-repeat="DeathMT in $ctrl.DeathReasonsMalignantTumor" value="{{DeathMT}}">{{DeathMT}}</md-option>
+                                </md-select>
+                                死亡原因-其他 Dath_Other
+                                <md-select ng-model="$ctrl.fiDataObj.Death_Reasons_Other" ng-if="$ctrl.fiDataObj.Death_Reasons == '其他'">
+                                    <md-option ng-repeat="DathRO in $ctrl.DeaReroule" value="{{DathRO}}">{{DathRO}}</md-option>
+                                </md-select>
+                                <input ng-model="$ctrl.fiDataObj.DeathReasonsInfectionOther" ng-if="$ctrl.fiDataObj.Death_Reasons == '感染' && $ctrl.fiDataObj.Death_Reasons_Infection == '其它之感染症'" placeholder="其它之感染症" type="text">
+                                <input ng-model="$ctrl.fiDataObj.DeathReasonsMalignantTumorOther" ng-if="$ctrl.fiDataObj.Death_Reasons == '惡性腫瘤' && $ctrl.fiDataObj.Death_Reasons_MalignantTumor == '其他惡性腫瘤'" placeholder="其他惡性腫瘤" type="text">
+                                <input ng-model="$ctrl.fiDataObj.DeathReasonsOtherOther" ng-if="$ctrl.fiDataObj.Death_Reasons == '其他' && $ctrl.fiDataObj.Death_Reasons_Other == '其他'" placeholder="其他" type="text">
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>死亡地點</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <md-select ng-model="$ctrl.fiDataObj.Death_Location">
+                                    <md-option value="0">--請選擇--</md-option>
+                                    <md-option ng-repeat="DeathAddr in $ctrl.DeathAddress" value="{{DeathAddr}}">{{DeathAddr}}</md-option>
+                                </md-select>
+                                <input ng-model="$ctrl.fiDataObj.DeathLocationOther" ng-if="$ctrl.fiDataObj.Death_Location == '其他'" type="text">
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="inputbox">
+                <div class="signinGroup" ng-show="!$ctrl.fiDataObj.isCreate"> 
+                    <label class="signinTime">建立:{{$ctrl.fiDataObj.CreatedTime | moment:'YYYY/MM/DD (dd) HH:mm'}}</label>
+                    <label class="signinNm"><span class="fixed">{{$ctrl.fiDataObj.CreatedUserName}}</span></label>          
+                </div>
+                <div class="signinGroup" ng-show="!$ctrl.fiDataObj.isCreate && $ctrl.fiDataObj.ModifiedTime !== null">  
+                    <label class="signinTime">修改:{{$ctrl.fiDataObj.ModifiedTime | moment:'YYYY/MM/DD (dd) HH:mm'}}</label>
+                    <label class="signinNm"><span class="fixed">{{$ctrl.fiDataObj.ModifiedUserName}}</span></label>         
+                </div>
+            </div> -->
+            <div row-warp layout="row" layout-sm="row" layout-xs="column" style="margin-left:5px;margin-top:5px;">
+                <div flex="50" flex-xs="100" ng-show="$ctrl.fiDataObj.CreatedUserName">
+                    <!-- <span>建立: {{ $ctrl.regForm.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                    <span translate="frequencyImplantation.createdTime"
+                        translate-values='{CreatedTime: $ctrl.fiDataObj.CreatedTime}'></span>
+                    <seal model="$ctrl.fiDataObj" modified="none"></seal>
+                </div>
+                <div flex="50" flex-xs="100" ng-show="$ctrl.fiDataObj.ModifiedTime != null">
+                    <!-- <span>修改: {{ $ctrl.regForm.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                    <span translate="frequencyImplantation.editedTime"
+                        translate-values='{ModifiedTime: $ctrl.fiDataObj.ModifiedTime}'></span>
+                    <seal model="$ctrl.fiDataObj" created="none"></seal>
+                </div>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions class="no-print" layout="row" ng-hide="$ctrl.fiDataObj.Status == 'Deleted'">
+            <div class="mdDialogActions">
+                <md-button class="md-raised" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.cancel()">
+                    {{'catheterInfect.dialog.cancel' | translate}}
+                </md-button>
+                <md-button class="md-raised md-primary" ng-click="$ctrl.ok()">
+                    {{$ctrl.fiDataObj.isCreate ? 'catheterInfect.dialog.create' : 'catheterInfect.dialog.edit' | translate}}
+                </md-button>
+            </div>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

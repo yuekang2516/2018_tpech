@@ -1,0 +1,74 @@
+<md-content layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="$ctrl.back();">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <div layout="row">
+                個人資料
+            </div>
+            <span flex></span>
+        </div>
+    </md-toolbar>
+    <md-content layout-padding flex>
+        <form name="signupForm">
+            <div class="profile-container">
+                <div class="image-container">
+                    <img ng-show="$ctrl.loadingPicture" height="16px" width="16px" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+                    />
+                    <img ng-show="!$ctrl.user.Photo" ng-src="static/img/avatar.png" />
+                    <img ng-show="$ctrl.user.Photo" ng-src="{{$ctrl.user.Photo}}" />
+                    <button-Camera ng-model="$ctrl.user.Photo"
+                                   callback="$ctrl.getPicture(getPicture)"
+                                   re-size="{width: 160, height: 160, centerCrop: true}">
+                    </button-Camera>
+                </div>
+                <md-input-container class="md-block">
+                    <label>姓名</label>
+                    <input name="Name" ng-model="$ctrl.user.Name"/>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>權限</label>
+                    <input ng-model="$ctrl.user.Access" disabled/>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>RFID</label>
+                    <input ng-model="$ctrl.user.RFID" />
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Barcode</label>
+                    <input ng-model="$ctrl.user.BarCode" />
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>帳號</label>
+                    <input ng-model="$ctrl.user.Account" disabled/>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>變更密碼 (如果不要變更，就不用輸入)</label>
+                    <input type="password" name="password1" ng-model="$ctrl.password1" ng-minlength="4">
+                </md-input-container>
+                <div ng-messages="signupForm.password1.$error" ng-if="signupForm.password1.$touched">
+                    <p ng-message="required" class="help-block">密碼不能為空白</p>
+                    <p ng-message="minlength" class="help-block">密碼不能小於4字元</p>
+                </div>
+                <md-input-container class="md-block">
+                    <label>請輸入第二次新密碼</label>
+                    <input type="password" name="password2" ng-model="$ctrl.password2" match-password="$ctrl.password1">
+                </md-input-container>
+                <div ng-messages="signupForm.password2.$error" ng-if="signupForm.password2.$touched">
+                    <p ng-message="required" class="help-block">第二次密碼不能為空白</p>
+                    <p ng-message="matchPassword" ng-show="signupForm.password2.$error.matchPassword && !signupForm.password2.$error.required" class="help-block">密碼不一致</p>
+                </div>
+                <div class="warning" layout="row" layout-align="end none">
+                    <span>更改資料後，其他裝置須重新登入才會生效</span>
+                </div>
+                <div layout="row" layout-align="end none">
+                    <md-button class="md-raised md-primary" ng-click="$ctrl.save()" ng-disabled="signupForm.$invalid || $ctrl.isSaving">
+                        儲存
+                    </md-button>
+                </div>
+                <span flex></span>
+            </div>
+        </form>
+    </md-content>
+</md-content>

@@ -1,0 +1,105 @@
+<md-dialog class="roDetail-dialog">
+    <form name="roEditForm" novalidate ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 translate="roprocess.title"></h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+                    <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <!-- <div class="md-dialog-content" translate> -->
+            <div class="md-dialog-content" layout="column" style="padding-top: 0">
+                <h3>{{'roprocess.dataSource' | translate}}：{{$ctrl.selectedItem.Source | ROSource}}</h3>
+                <div>
+                    <div class="widthlable" ng-class="{system:$ctrl.selectedItem.Source !== 'manual'}">{{'roprocess.machineNo' | translate}}：<span ng-if="$ctrl.selectedItem.Source !== 'manual'">{{$ctrl.selectedItem.MachineNo}}</span></div>
+                    <div class="widthinput"><input flex ng-if="$ctrl.selectedItem.Source === 'manual'" type="text" ng-model="$ctrl.selectedItem.MachineNo"></div>
+                </div>
+                <div>
+                    <div class="widthlable" ng-class="{system:$ctrl.selectedItem.Source !== 'manual'}">{{'roprocess.propertyNo' | translate}}：<span ng-if="$ctrl.selectedItem.Source !== 'manual'">{{$ctrl.selectedItem.PropertyNo}}</span></div>
+                    <div class="widthinput"><input ng-if="$ctrl.selectedItem.Source === 'manual'" type="text" ng-model="$ctrl.selectedItem.PropertyNo"></div>
+                </div>
+                <div>
+                    <div class="widthlable" ng-class="{system:$ctrl.selectedItem.Source !== 'manual'}">{{'roprocess.reportValue' | translate}}：<span ng-if="$ctrl.selectedItem.Source !== 'manual'">{{$ctrl.selectedItem.Value}}</span></div>
+                    <div class="widthinput"><input ng-if="$ctrl.selectedItem.Source === 'manual'" type="text" ng-model="$ctrl.selectedItem.Value"></div>
+                </div>
+                <div>
+                    <div class="widthlable" ng-class="{system:$ctrl.selectedItem.Source !== 'manual'}">{{'roprocess.abnormalTime' | translate}}：<span ng-if="$ctrl.selectedItem.Source !== 'manual'">{{$ctrl.selectedItem.AbnormalTime
+                            | moment: "YYYY/MM/DD HH:mm"}}</span></div>
+                    <div class="widthinput"><input ng-if="$ctrl.selectedItem.Source === 'manual'" type="datetime-local" max="{{$ctrl.today}}" ng-model="$ctrl.selectedItem.AbnormalTime" ng-change="$ctrl.checkResolvedTimeValid()" required></div>
+                </div>
+                <div ng-if="$ctrl.selectedItem.Source !== 'manual'" layout="column">
+                    <span class="widthlable">{{'roprocess.abnormalReason' | translate}}：</span>
+                    <div style="max-width:470px">
+                        {{::$ctrl.selectedItem.AbnormalReason || '--'}}
+                    </div>
+                    <br>
+
+                </div>
+                <md-input-container ng-if="$ctrl.selectedItem.Source === 'manual'" class="md-block" style="margin-bottom:0; margin-top: 0">
+                    <span class="widthlable" translate>{{'roprocess.abnormalReason'}}：</span>
+                    <textarea id="AbnormalReasonContent" ng-focus="$ctrl.saveElement()" rows="3" ng-model="$ctrl.selectedItem.AbnormalReason"></textarea>
+                    <md-button class="md-primary"  ng-click="$ctrl.isOpenRight('AbnormalReasonContent')">{{'roprocess.dialog.phrase' | translate}}</md-button>
+                </md-input-container>
+                <div ng-class="{errMsg:roEditForm.resolvedTime.$invalid}">
+                    <div class="widthlable" translate>{{'roprocess.resolvedTime'}}：</div>
+                    <div class="widthinput">
+                        <input name="resolvedTime" id="resolvedTime" type="datetime-local" min="{{$ctrl.selectedItem.AbnormalTime | moment: 'YYYY-MM-DDTHH:mm'}}" max="{{$ctrl.today}}" ng-model="$ctrl.selectedItem.ResolvedTime">
+                        <div ng-show="roEditForm.resolvedTime.$invalid" class="errMsg" translate>{{'roprocess.dialog.resolvedTimeInvalid'}}</div>
+                    </div>
+                    <seal label="{{$ctrl.selectedItem.ResolvedUserName}}" created="none" style="float:right"></seal>
+                </div>
+                <md-input-container class="md-block" style="margin-bottom:0; margin-top: 0">
+                    <span class="widthlable" translate>{{'roprocess.resolvedWay'}}：</span>
+                    <textarea id="ResolvedWayContent" ng-change="$ctrl.checkNeedAutoResolvedTime()" ng-focus="$ctrl.saveElement()" rows="3" ng-model="$ctrl.selectedItem.ResolvedWay"></textarea>
+                    <md-button class="md-primary"  ng-click="$ctrl.isOpenRight('ResolvedWayContent')">{{'roprocess.dialog.phrase' | translate}}</md-button>
+                </md-input-container>
+                <div layout="row" layout-wrap>
+                    <div flex="50" flex-xs="100" ng-show="$ctrl.selectedItem.CreatedUserName">
+                        <!-- <span>建立: {{ $ctrl.regForm.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                        <span translate="roprocess.createdTime" translate-values='{CreatedTime: $ctrl.selectedItem.CreatedTime}'></span>
+                        <seal model="$ctrl.selectedItem" modified="none"></seal>
+                    </div>
+                    <div flex="50" flex-xs="100" ng-show="$ctrl.selectedItem.ModifiedTime">
+                        <!-- <span>修改: {{ $ctrl.regForm.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                        <span translate="roprocess.editedTime" translate-values='{ModifiedTime: $ctrl.selectedItem.ModifiedTime}'></span>
+                        <seal model="$ctrl.selectedItem" created="none"></seal>
+                    </div>
+                </div>
+            </div>
+            <!-- </div> -->
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <md-button class="md-raised" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.cancel()">
+                {{'roprocess.dialog.cancel' | translate}}
+            </md-button>
+            <md-button class="md-raised md-primary" ng-disabled="roEditForm.$invalid || $ctrl.isSaving || !roEditForm.$dirty" ng-click="$ctrl.ok()">
+                {{$ctrl.isCreate ? 'roprocess.dialog.create' : 'roprocess.dialog.edit' | translate}}
+            </md-button>
+            <md-progress-circular ng-show="$ctrl.isSaving" style="margin: 15px" md-diameter="20px" md-mode="indeterminate"></md-progress-circular>
+        </md-dialog-actions>
+        <!-- <div class="buttom0">
+            <div class="floatbuttomleft">
+                <md-checkbox ng-model="$ctrl.selectedItem.IsResolved" ng-change="$ctrl.isResolvedChange()" style="margin-left:15px">
+                    <span flex style="white-space:nowrap">已處理</span>
+                </md-checkbox>
+                <seal label="{{$ctrl.selectedItem.ResolvedUserName}}" created="none"></seal>
+                <span flex></span>
+            </div>
+            <div class="floatbuttomright">
+                <md-button class="md-primary" ng-click="$ctrl.isOpenRight()">片語</md-button>
+                <md-button class="md-warn md-raised" ng-click="$ctrl.cancel()">
+                    {{'assessment.assessments.cancel' | translate}}
+                </md-button>
+                <md-button class="md-raised md-primary" ng-disabled="roEditForm.$invalid" ng-click="$ctrl.ok()">
+                    儲存
+                </md-button>
+            </div>
+        </div> -->
+    </form>
+    <phrase id="phrase" callback="$ctrl.phraseInsertCallback(word)"></phrase>
+</md-dialog>

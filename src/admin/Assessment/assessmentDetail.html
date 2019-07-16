@@ -1,0 +1,62 @@
+<style scoped>
+    assessment-detail {
+        height: 100%;
+    }
+    .padding {
+        padding: 20px
+    }
+</style>
+<md-content layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.back()">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <h4>
+                <span ng-show="vm.type === 'create'" translate="assessment.detailpageTitleAdd"></span>
+                <span ng-show="vm.type !== 'create'" translate="assessment.detailpageTitle" translate-values='{name: vm.Assessment.Item}'></span>
+            </h4>
+        </div>
+    </md-toolbar>
+
+    <md-content layout="column" flex>
+        <loading ng-show="vm.loading"></loading>
+        <div flex ng-show="vm.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate="customMessage.serverError"></h3>
+        </div>
+        <div ng-show="!vm.loading && !vm.isError" flex>
+            <form name="assessmentForm" class="padding" novalidate>
+                <md-input-container class="md-block" flex>
+                    <label translate="assessment.type"></label>
+                    <md-select ng-model="vm.AssessmentType" name="Type" ng-disabled="vm.type !== 'create'" required>
+                        <md-option ng-repeat="t in vm.optType" value="{{ t.value }}">{{ t.name }}</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container class="md-block" flex>
+                    <label translate="assessment.name"></label>
+                    <input type="text" name="Item" ng-model="vm.Assessment.Item" required />
+                    <div ng-messages="assessmentForm.Item.$error"><div ng-message="required"><span translate="customMessage.dataRequired"></span></div></div>
+                </md-input-container>
+                <md-input-container class="md-block" flex>
+                    <label translate="assessment.options"></label>
+                    <textarea ng-model="vm.Options" md-detect-hidden="true"></textarea>
+                    <!--<md-chips ng-model="vm.Assessment.Options" name="Options" readonly="false" md-removable="true">
+                        <md-button class="chip-button md-icon-button" md-chip-remove ng-click="vm.removeModule($index)">
+                            <i class="material-icons">close</i>
+                        </md-button>
+                    </md-chips>-->
+                </md-input-container>
+                <md-input-container class="md-block" flex>
+                        <span translate="assessment.other"></span><md-switch ng-model="vm.Assessment.IncludeOther" aria-label="include other"></md-switch>
+                </md-input-container>
+                <md-input-container class="md-block" flex>
+                    <span translate="assessment.formShow"></span>
+                    <md-checkbox  ng-model="vm.IsformShow"></md-checkbox>
+                </md-input-container>
+                <md-button class="md-raised" ng-show="vm.editMode" ng-click="vm.recover()" ng-disabled="vm.isSaving"><span translate>{{'assessment.recoverbutton'}}</span></md-button>
+                <md-button type="submit" class="md-raised md-primary" ng-click="vm.save(vm.Assessment)" ng-disabled="(vm.type == 'edit' && vm.Assessment.Item == null) || (vm.type == 'create' && vm.Assessment.Item == null) || vm.isSaving"><span translate>{{'assessment.savebutton'}}</span></md-button>
+                <md-button class="md-warn md-raised" ng-click="vm.delete($event)" ng-if="vm.type==='edit'" ng-disabled="vm.isSaving"><span translate>{{'assessment.deletebutton'}}</span></md-button>
+            </form>
+        </div>
+    </md-content>
+</md-content>

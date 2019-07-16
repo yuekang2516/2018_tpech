@@ -1,0 +1,44 @@
+<style scoped>
+    statistic {
+        height: 100%;
+    }
+</style>
+<div flex layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.openLeftMenu()" hide-gt-sm>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <h3 translate="statistic.pageTitle"></h3>
+        </div>
+    </md-toolbar>
+    <md-content layout-fill flex>
+        <div ng-show="!vm.isError">
+            <div layout="row" layout-align="space-around center" flex>
+                <div>
+                    <md-input-container>
+                        <label translate="statistic.startDate"></label>
+                        <input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.statisticStartDate" ng-change="vm.changeDate()" />
+                    </md-input-container>
+                    <md-input-container>
+                        <label translate="statistic.endDate"></label>
+                        <input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.statisticEndDate" ng-change="vm.changeDate()"/>
+                    </md-input-container>
+                </div>
+            </div>
+        </div>
+
+        <loading ng-show="vm.loading"></loading>
+
+        <div flex ng-show="vm.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate="customMessage.serverError"></h3>
+        </div>
+        <div>
+            <div layout="row" layout-align="space-around center">
+                <div>
+                    <canvas id="myChart" Width="800" height="600"></canvas>
+                </div>
+            </div>
+        </div>
+    </md-content>
+</div>

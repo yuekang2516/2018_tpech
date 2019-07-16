@@ -1,0 +1,66 @@
+<md-dialog class="addAlbum" aria-label="{{vm.title}}"
+           style="max-width: 100% !important;
+                    max-height: 100% !important;
+                    width: 100% !important;
+                    height: auto !important;
+                    border-radius: 0 !important;">
+    <form name="dform" ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{{::vm.title}}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="vm.cancel()">
+                    <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <loading ng-show="vm.loading"></loading>
+        <md-dialog-content ng-show="!vm.loading">
+            <div class="center">
+                <div ng-style="{'background': 'url({{vm.pictureSrc}}) no-repeat center center',
+                                    'background-size': 'contain'}"></div>
+            </div>
+            <div class="cameralist">
+                <!-- ng-if="vm.data.AlbumName === vm.other" -->
+                <div layout="row" layout-align="start center" style="margin-right: 0; margin-bottom: 0px;">
+                    <label ng-if="!vm.showAddNewAlbum" translate>{{'album.showPhoto.selectAlbum'}}</label>
+                    <label ng-if="vm.showAddNewAlbum" translate>{{'album.showPhoto.addAlbumDo'}}</label>
+                    <div style="margin-left: 5px;">
+                        <md-button class="md-list-item-content" ng-click="vm.addNewAlbum()" >
+                            <md-icon ng-if="!vm.showAddNewAlbum" style="color:#4CAF50;">add_box</md-icon>
+                            <span ng-if="!vm.showAddNewAlbum" class="button-label button-label-green" translate>{{'album.showPhoto.addAlbum'}}</span>
+                            <md-icon ng-if="vm.showAddNewAlbum" style="color:red;">cancel</md-icon>
+                            <span ng-if="vm.showAddNewAlbum" class="button-label button-label-red" translate>{{'album.showPhoto.cancelAddAlbum'}}</span>
+                        </md-button>
+                    </div>
+                </div>
+                <div class="fw100" style="margin-right: 0; margin-bottom: 10px;">
+                    <md-select ng-if="!vm.showAddNewAlbum" style="margin: 0" name="" class="" ng-model="vm.data.AlbumName">
+                        <md-option ng-repeat="item in vm.defaultGroup" ng-value="item.AlbumName">
+                            {{::item.AlbumName}}
+                        </md-option>
+                    </md-select>
+                    <input ng-if="vm.showAddNewAlbum" type="text" ng-model="vm.newAlbum" name="browser" placeholder="{{'album.showPhoto.addAlbum' | translate}}">
+                </div>
+
+                <div style="margin-right: 0; margin-bottom: 10px;">
+                    <label>{{'album.showPhoto.photoName' | translate}}</label>    
+                    <input type="text" ng-model="vm.data.PhotoName">
+                </div>
+                
+
+                <div style="margin-right: 0; margin-bottom: 10px;">
+                    <label>{{'album.showPhoto.photoDescription' | translate}}</label>
+                    <textarea ng-model="vm.data.Description" cols="30" rows="4" ></textarea>
+                </div>
+
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row" ng-show="!vm.loading">
+            <md-button ng-click="vm.ok()">
+                {{'album.showPhoto.uploadOk' | translate}}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

@@ -1,0 +1,57 @@
+<style scoped>
+    medicine {
+        height: 100%;
+    }
+</style>
+<div flex layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.openLeftMenu()" hide-gt-sm>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <h3 translate="medicine.pageTitle"></h3>
+        </div>
+    </md-toolbar>
+    <div class="list-header" ng-show="!vm.loading && !vm.isError">
+        <span translate="medicine.totalRecord" translate-values='{total: vm.medicines.length}'></span>
+        <span flex></span>
+        <md-icon>
+            <i class="material-icons">search</i>
+        </md-icon>
+        <input type="text" ng-model="vm.searchStr" ng-change="vm.searchMedicine(vm.searchStr)" placeholder="{{'medicine.search' | translate}}" />
+    </div>
+    <md-content layout-fill flex>
+        <loading ng-show="vm.loading"></loading>
+        <div flex ng-show="vm.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate="customMessage.serverError"></h3>
+        </div>
+        <div ng-show="!vm.loading && !vm.isError" infinite-scroll="vm.loadMore()" infinite-scroll-disabled='vm.loading' infinite-scroll-distance='2' infinite-scroll-parent>
+            <div ng-show="vm.medicines && vm.medicines.length == 0" layout="column" layout-fill layout-align="center center" flex>
+                <i class="fa fa-file-o"></i>
+                <h3 translate="customMessage.noData"></h3>
+                <h4 translate="medicine.addNew"></h4>
+            </div>
+            <md-list ng-show="vm.medicines && vm.medicines.length > 0">
+                <md-list-item>
+                    <div layout="row" layout-fill>
+                        <div flex=70><span translate="medicine.kind"></span> - <span translate="medicine.name"></span></div>
+                        <div flex=15><span translate="medicine.NHICode"></span></div>
+                        <div flex=15><span translate="medicine.code"></span></div>
+                    </div>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-list-item>
+                <md-list-item ng-repeat="med in vm.showMedicines" ng-click="vm.go(med)">
+                    <div layout="row" layout-fill>
+                        <div flex=70>{{ med.CategoryName }} - {{ med.Name }}</div>
+                        <div flex=15>{{ med.NHICode }}</div>
+                        <div flex=15>{{ med.MedicineCode }}</div>
+                    </div>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-list-item>
+            </md-list>
+        </div>
+    </md-content>
+    <md-button class="md-fab" ng-click="vm.gotoCreate()" aria-label="Eat cake" style="position:fixed;right:24px;bottom:24px">
+        <md-icon md-font-icon="mdi mdi-plus" style="font-size: 24px;height: 33px">+</md-icon>
+    </md-button>
+</div>

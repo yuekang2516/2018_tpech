@@ -1,0 +1,99 @@
+<md-toolbar layout="row">
+    <div class="md-toolbar-tools">
+        <md-button class="md-secondary md-icon-button" ng-click="$ctrl.goback('allReferralSheetForm')" aria-label="call">
+            <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+        </md-button>
+
+        <div layout="row" hide-xs>
+            檢驗紀錄表{{!$ctrl.loading ? '-' + $ctrl.patientName : null }}
+        </div>
+        <div layout="column" hide-gt-xs>
+            <span style="font-size: 18px;">檢驗紀錄表</span>
+            <!-- <span style="font-size: 18px;">{{!$ctrl.loading ? $ctrl.patient.Name + '(' + $ctrl.patient.MedicalId + ')' : null }}</span> -->
+        </div>
+
+        <!-- <h3 flex >
+            <span>檢驗紀錄表{{!$ctrl.loading ? '-' + $ctrl.patient.Name : null }} </span>
+        </h3> -->
+        <!-- <md-button ng-if="$ctrl.isBrowser" class="md-icon-button" aria-label="More" ng-click="$ctrl.print()">
+                <i class="material-icons">print</i>
+            </md-button> -->
+    </div>
+</md-toolbar>
+
+<loading ng-if="$ctrl.loading" flex layout="column" layout-align="center center"></loading>
+
+<md-content ng-if="!$ctrl.isError" flex class="labexam-check-container">
+
+    <div layout="row" layout-align="start center">
+        <b>時間條件：</b>
+        <md-select ng-model="$ctrl.queryCondition" ng-model-options="{trackBy: '$value.name'}" ng-change="$ctrl.changeQueryCondition()">
+            <md-option ng-repeat="(key, item) in $ctrl.conditionTypes" ng-value="item">{{ item.name | labexamQueryName }}</md-option>
+        </md-select>
+
+    </div>
+
+    <div layout="row" layout-align="start center" ng-if="$ctrl.queryCondition.name === 'times'" class="margin-bottom-10">
+        <b>天數查詢：</b>
+        <md-select ng-model="$ctrl.queryCondition.value.days" ng-change="$ctrl.changeQueryCondition()">
+            <md-option ng-repeat="item in $ctrl.queryCondition.conditions" ng-value="item">{{::item | labexamTimes}}</md-option>
+        </md-select>
+        <div class="margin-left-10">
+            <span class="timeSearchBtn-span" ng-click="$ctrl.getCheckItems()">天數查詢</span>
+        </div>
+    </div>
+
+    <!-- 小畫面 -->
+    <div layout="column" class="search-area-hide-gtxs" ng-if="$ctrl.queryCondition.name === 'duration'" >
+        <div layout="row" layout-align="start center" class="margin-bottom-5">
+            <b>期間查詢：</b>
+            <div class="margin-left-10">
+                <span class="timeSearchBtn-span" ng-click="$ctrl.getCheckItems()">期間查詢</span>
+            </div>
+        </div>
+        <div layout="row" layout-align="start center" class="margin-bottom-5">
+            <span class="nowrap-text ">起：</span>
+            <div style="margin-right: 10px;">
+                <!-- ng-model="$ctrl.StartDate" -->
+                <input type="date" ng-model="$ctrl.queryCondition.value.startDate" ng-change="$ctrl.changeQueryDate()"/>
+            </div>
+            <span class="nowrap-text ">訖：</span>
+            <div>
+                <!-- ng-model="$ctrl.EndDate" -->
+                <input type="date" ng-model="$ctrl.queryCondition.value.endDate" ng-change="$ctrl.changeQueryDate()"/>
+            </div>
+        </div>
+    </div>
+
+    <!-- 大畫面 -->
+    <div layout="row" layout-align="start center" class="search-area-hide-xs margin-bottom-10" ng-if="$ctrl.queryCondition.name === 'duration'">
+        <div><b>期間查詢：</b></div>
+        <span class="nowrap-text margin-left-5">起：</span>
+        <div style="margin-right: 10px;">
+            <!-- ng-model="$ctrl.StartDate" -->
+            <input type="date" ng-model="$ctrl.queryCondition.value.startDate" ng-change="$ctrl.changeQueryDate()"/>
+        </div>
+        <span class="nowrap-text margin-left-5">訖：</span>
+        <div>
+            <!-- ng-model="$ctrl.EndDate" -->
+            <input type="date" ng-model="$ctrl.queryCondition.value.endDate" ng-change="$ctrl.changeQueryDate()"/>
+        </div>
+        <div class="margin-left-10">
+            <span class="timeSearchBtn-span" ng-click="$ctrl.getCheckItems()">期間查詢</span>
+        </div>
+    </div>
+
+    <div layout="row" layout-align="start center" class="margin-bottom-10">
+        <div><b>搜尋：</b></div>
+        <input type="text" class="lab-search-input" ng-disabled="$ctrl.labData.length == 0" ng-model="$ctrl.searchText" ng-change="$ctrl.onQuickFilterChanged()" placeholder="請輸入要查詢的內容..." />
+        <span flex></span>
+    </div>
+    <!-- ng-if="$ctrl.labData.length > 0" -->
+    <div ag-grid="$ctrl.gridOptions" class="mygrid ag-theme-balham" flex></div>
+</md-content>
+<div ng-if="$ctrl.isError" layout="column" flex layout-align="center center">
+    <h3>伺服器錯誤，請重新整理</h3>
+</div>
+<div ng-if="!$ctrl.isError"  class="labCheckBtn-div" layout="row" layout-align="end center">
+    <span ng-class="{disabled: $ctrl.labData.length == 0, 'labCheckBtn-span': $ctrl.labData.length > 0}" ng-click="$ctrl.saveChecked()">勾選完畢儲存</span>
+</div>

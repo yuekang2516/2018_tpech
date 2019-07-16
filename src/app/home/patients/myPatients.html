@@ -1,0 +1,61 @@
+<style scoped="scoped">
+    my-patients {
+        height: 100%;
+    }
+    /*patient-list {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+    }*/
+    /* 淡入淡出 */
+
+    .patient-list .ng-enter {
+        transition: all ease-in-out 1s;
+        opacity: 0;
+    }
+
+    .patient-list .ng-enter-active {
+        opacity: 1;
+    }
+
+    .badge {
+        color: white;
+        padding: 2px 4px;
+        border-radius: 4px;
+        background-color: springgreen;
+        height: 20px;
+        line-height: 20px;
+        margin: 0 4px;
+    }
+</style>
+<md-content layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button id="menu" class="md-icon-button" aria-label="Settings" ng-click="vm.openLeftMenu()" hide-gt-md>
+                <i class="material-icons">menu</i>
+                <span ng-show="vm.notificationCount > 0" class="icon-button-badge">{{vm.notificationCount}}</span>
+            </md-button>
+            <h2>
+                <span translate>{{'myPatients.todayPatients'}}</span>
+            </h2>
+            <span flex></span>
+        </div>
+    </md-toolbar>
+
+    <md-content layout="column" flex>
+        <loading ng-show="vm.loading"></loading>
+        <!-- <div flex ng-show="vm.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate="customMessage.serverError1"></h3>
+        </div> -->
+        <server-error-page flex ng-show="!vm.loading && vm.isError" refresh="vm.refresh()"></server-error-page>
+        <md-list class="patient-list" ng-if="!vm.loading && vm.patients.length > 0">
+            <patient-list ng-if="vm.patients.length > 0" patients="vm.patients"></patient-list>
+        </md-list>
+        <div flex ng-show="vm.patients.length === 0 && !vm.loading && !vm.isError" layout="column" layout-fill layout-align="center center">
+            <h1 translate>{{'myPatients.msg1'}}</h1>
+            <h3 translate>{{'myPatients.msg2'}}</h3>
+            <h3>{{'myPatients.goto' | translate}}<a ui-sref="allPatients" translate>{{'myPatients.patients'}}</a>{{'myPatients.msg3' | translate}}</h3>
+        </div>
+    </md-content>
+</md-content>

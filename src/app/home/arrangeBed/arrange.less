@@ -1,0 +1,130 @@
+// arrange.dialog
+.arrange-container {
+    &.notDayoff {
+        height: 100%;
+    }
+
+    // virtual-repeat
+    #vertical-container {
+        height: 100%;
+    }
+
+    // 顯示請假的病人
+    .dayoff {
+        cursor: pointer;
+        margin-bottom: 16px;
+    }
+
+    md-dialog-content {
+        &.notDayoff {
+            height: 100vh;
+        }
+    }
+    md-input-container {
+        &.textarea {
+            margin: 0;
+        }
+    }
+    .margin-top {
+        margin-top: 10px;
+    }
+    .md-dialog-content {
+        padding: 15px;
+    }
+    .removeMdErr {
+        .md-block {
+            margin: 0;
+        }
+        .md-errors-spacer {
+            display: none;
+        }
+    }
+    .widthlable {
+        // width: 40%;
+        line-height: 26px;
+        float: left;
+    }
+    .bedNo {
+        .md-block {
+            margin: 15px 0 10px 0;
+        }
+        .md-errors-spacer {
+            display: none;
+        }
+    }
+    .Days {
+        p {
+            margin: 10px 0 10px 0;
+            md-checkbox {
+                margin: 0 16px 0 0;
+            }
+        }
+        md-checkbox {
+            margin: 0;
+        }
+    }
+    .title {
+        color: #3949ab;
+        margin: 10px 0 10px 0;
+    }
+    .radioGroup {
+        md-radio-button {
+            margin-bottom: 10px;
+            &.margin-left {
+                margin-left: 15px;
+            }
+        }
+    }
+    #errMsg {
+        padding: 1em;
+        margin: 1em 0 0 0;
+        background: #ffe6e6;
+        color: #d92018;
+        p {
+            margin: 0 0 0.3em 0;
+        }
+        span {
+            padding: 0.2em;
+        }
+    }
+    md-progress-circular {
+        margin: 0 8px;
+    }
+    .nurse {
+        cursor: pointer;
+    }
+    .active {
+        background-color: #b3e5fc !important;
+    }
+    .searchNurse {
+        background: url(../../static/img/ic_search.png) no-repeat scroll 2.5px 2.5px;
+        padding-left: 25px; // margin: 0 0 4px 4px;
+        // width: 145px;
+        border-radius: 5px;
+        font-size: 13px;
+    }
+    .searchDoc {
+        background: url(../../static/img/ic_search.png) no-repeat scroll 2.5px 2.5px;
+        padding-left: 25px; // margin: 0 0 4px 4px;
+        // width: 145px;
+        border-radius: 5px;
+        font-size: 13px;
+    }
+    .md-dialog-content {
+        overflow: auto;
+    }
+
+    md-autocomplete input:not(.md-input) {
+        padding: 0 3px;
+    }
+
+    .warning {
+        color: #d92018;
+        margin-top: 4px;
+    }
+
+    .hint-message {
+        // padding: 5px;
+        color: #d92018;
+    }
+}

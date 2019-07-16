@@ -1,0 +1,41 @@
+
+<md-content style="height:100%">
+    <div ui-grid="gridOptions" id="i18nGrid" class="grid" ui-grid-auto-resize ui-grid-pinning ui-grid-resize-columns></div>
+    <!-- <div class="main_card">
+        <div class="card" ng-repeat="data in $ctrl.data">
+            <md-card flex style="position: relative; margin: 0; cursor: pointer; height: 100%; box-sizing: border-box" ng-click="$ctrl.showDialog(data)">
+                <md-card-title layout="column" style="padding: 8px 8px; margin: 0">
+                    <div>
+                        <h3 style="padding: 0px; margin: 0; font-size: 18px; display: inline;" ng-class="{alertcolor:!data.ResolvedTime}">{{::data.AbnormalTime | moment: "YYYY/MM/DD HH:mm"}}</h3>
+                        <i class="material-icons" ng-if="data.Source === 'manual'" ng-click="$event.stopPropagation(); $ctrl.delete(data)" style="outline:none; vertical-align: bottom; color: rgb(110, 110, 110)">
+                            delete
+                        </i>
+                        <div style="height: 5px;"></div>
+                        <div layout="row" layout-wrap>
+                            <div flex="50" layout="row">
+                                <span class="title" translate>{{'roprocess.machineNo'}}</span>
+                                <span class="content">{{data.MachineNo}}</span>
+                            </div>
+                            <div flex="50" layout="row">
+                                <span class="title" translate>{{'roprocess.reportValue'}}</span>
+                                <span class="content">{{data.Value}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div layout="row" layout-wrap>
+                        <div flex="50" flex-xs="100" ng-class="{flex100:!data.IsResolved}" layout="row" layout-wrap>
+                            <span class="title" translate>{{'roprocess.abnormalReason'}}</span>
+                            <span class="content">{{data.AbnormalReason}}</span>
+                        </div>
+                        <div flex="50" flex-xs="100" layout="row" layout-wrap ng-if="data.IsResolved">
+                            <span class="title" translate>{{'roprocess.resolvedWay'}}</span>
+                            <span class="content">{{data.ResolvedWay}}</span>
+                        </div>
+                    </div>
+                    <seal name="{{data.ResolvedUserName}}" created="none" fixed="bottom" my-style="$ctrl.sealStyle"></seal>
+                </md-card-title>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-card>
+        </div>
+    </div> -->
+</md-content>

@@ -1,0 +1,20 @@
+<md-dialog class="shiftsTotalDialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 ng-if="vm.day">{{vm.day.format('YYYY-MM-DD(dd)')}} 班別總計</h2>
+            <h2 ng-if="vm.employee">{{vm.employee.Name}} ({{vm.employee.EmployeeId}}) {{vm.month}}月 班別總計</h2>
+            <md-button class="md-icon-button" ng-click="vm.cancel()">
+                <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <div class="content" ng-repeat="item in vm.shiftOptions track by $index">
+                <span ng-if="vm.day">{{::item}}: {{vm.day.Counts[item]}}</span>
+                <span ng-if="vm.employee">{{::item}}: {{vm.employee.Counts[item]}}</span>
+            </div>
+        </div>
+    </md-dialog-content>
+</md-dialog>

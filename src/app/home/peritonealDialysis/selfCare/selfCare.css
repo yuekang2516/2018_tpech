@@ -1,0 +1,22 @@
+.tbSelfCare ul {
+  margin: 0;
+  padding-left: 10;
+}
+.tbSelfCare ul li {
+  line-height: 30px;
+}
+.tbSelfCare ul label {
+  color: #757575;
+}
+.tbSelfCare .signinNm .fixed {
+  border: 1px solid red;
+  transform: rotate(-10deg);
+  padding: 3px;
+  width: 3em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  color: #e20000;
+}

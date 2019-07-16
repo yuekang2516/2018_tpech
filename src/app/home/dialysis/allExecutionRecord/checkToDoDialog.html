@@ -1,0 +1,36 @@
+<md-dialog>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>
+                <span translate>
+                    {{'allExecutionRecord.checkToDoDialog.checkExecuteTitle'}}
+                </span>
+            </h2>
+            <span flex></span>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div>
+            <div layout="column" style="margin-bottom:0rem;">
+                <div ng-if="dialog.type === 'Performed'"  style="margin: 10px; line-height:40px;" translate>
+                    {{'allExecutionRecord.checkToDoDialog.checkExecuteMessagaForExecute'}}
+                </div>
+                <div ng-if="dialog.type === 'Neglect'" style="margin: 10px; line-height:40px;" translate>
+                    {{'allExecutionRecord.checkToDoDialog.checkExecuteMessagaForDontExecute'}}
+                </div>
+            </div>
+            <md-dialog-actions layout="row" layout-align="end center">
+                <md-button class="md-raised" ng-click="dialog.cancel()">
+                    {{'allExecutionRecord.checkToDoDialog.cancel' | translate}}
+                </md-button>
+                <md-button ng-if="dialog.type === 'Performed'" class="md-raised md-primary md-btn-white-text" ng-click="dialog.ok()">
+                    {{'allExecutionRecord.checkToDoDialog.execute' | translate}}
+                </md-button>
+                <md-button ng-if="dialog.type === 'Neglect'" class="md-raised md-warn md-btn-white-text" ng-click="dialog.ok()">
+                    {{'allExecutionRecord.checkToDoDialog.dontExecute' | translate}}
+                </md-button>
+            </md-dialog-actions>
+        </div>
+    </md-dialog-content>
+</md-dialog>

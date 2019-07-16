@@ -1,0 +1,94 @@
+<div layout="column" style="position:relative" layout-fill ui-view flex>
+
+    <summary-toolbar toolbar-title="'apo.apos.apoAbnormal' | translate" cancel="$ctrl.goback()"></summary-toolbar>
+
+    <!-- <md-toolbar hide-gt-sm>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="$ctrl.goback()">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <div layout="row">
+                {{'apo.apos.apoAbnormal' | translate}}
+            </div>
+            <span flex></span>
+        </div>
+    </md-toolbar> -->
+
+    <div class="list-header" layout="row" layout-align="center center">
+        <md-switch ng-model="$ctrl.showDeleted" aria-label="Switch data">
+            <!-- 顯示已刪除 ({{$ctrl.deletedItemsLength}}筆) -->
+            <span translate="apo.apos.showDeleted" translate-values='{deletedItemsLength: $ctrl.deletedItemsLength}'></span>
+        </md-switch>
+        <span flex></span>
+        <!-- <h6>共 {{$ctrl.serviceData.length}} 筆</h6> -->
+        <h6 translate="apo.apos.totalRecord" translate-values='{length: $ctrl.serviceData.length}'></h6>
+        <span flex></span>
+        <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+    </div>
+    <loading ng-show="$ctrl.loading"></loading>
+    <md-content ng-show="!$ctrl.loading && $ctrl.serviceData.length > 0" layout="column" flex>
+        <md-list >
+            <md-list-item class="md-2-line" ng-class="{deleted: item.Status == 'Deleted'}" ng-repeat="item in $ctrl.serviceData | orderBy: $ctrl.sortRecord :true" ng-click="$ctrl.goto(item.Time, item.Status)" ng-show="item.Status !== 'Deleted' || $ctrl.showDeleted">
+                <div class="md-list-item-text" layout="column">
+                    <h3 ng-bind="item.Time ? (item.Time | moment: 'YYYY/MM/DD (dd) HH:mm') : '{{'apo.apos.unknown' | translate}}'"></h3>
+                    <div class="shift-div">
+                        <span ng-if="item.Shift === 'morning' || item.Shift === '白班'">{{'apo.apos.morningShift' | translate}}</span>
+                        <span ng-if="item.Shift === 'afternoon' || item.Shift === '中班'">{{'apo.apos.afternoonShift' | translate}}</span>
+                        <span ng-if="item.Shift === 'evening' || item.Shift === '晚班'">{{'apo.apos.eveningShift' | translate}}</span>
+                        <span ng-if="item.Shift === 'null'"></span>
+                        <span ng-bind="item.PatientName"></span>
+                        <!-- 修改後暫存檔內的 item.AbnormalItemId 是個物件，要往內再取 Id-->
+                        <!--<span ng-if="!item.AbnormalItemId.Id" ng-bind="item.PatientName + ' ' + $ctrl.handleTransformAbnormalItemId(item.AbnormalItemId)"></span>
+                        <span ng-if="item.AbnormalItemId.Id" ng-bind="item.PatientName + ' ' + $ctrl.handleTransformAbnormalItemId(item.AbnormalItemId.Id)"></span>-->
+                    </div>
+                    <seal model="item" modified="hideIfSame" fixed="true"></seal>
+                </div>
+                <md-icon class="md-secondary" ng-show="item.Status !== 'Deleted'" ng-click="$ctrl.showDialog($event, item)" md-svg-icon="static/img/svg/ic_delete_black_24px.svg"></md-icon>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+        </md-list>
+        <div flex ng-show="!$ctrl.loading && !$ctrl.isError && !$ctrl.showDeleted && $ctrl.deletedItemsLength == $ctrl.serviceData.length" layout="column" layout-fill layout-align="center center">
+            <h1 translate>{{'apo.apos.noData'}}</h1>
+            <h4 translate>{{'apo.apos.clickBottomRight'}}</h4>
+        </div>
+        <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate>{{'apo.apos.serverError'}}</h3>
+        </div>
+
+    </md-content>
+    <md-button class="md-fab md-fab-bottom-right" ng-click="$ctrl.goto()">
+        <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+    </md-button>
+</div>
+
+
+<script type="text/ng-template" id="dialog.html">
+    <md-dialog aria-label="刪除確認">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2 translate>{{'apo.apos.confirmDelete'}}</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content" translate>
+                    {{'apo.apos.deleteRecord'}}
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+                <md-button ng-click="cancel()">
+                    {{'apo.apos.no' | translate}}
+                </md-button>
+                <md-button ng-click="ok()">
+                    {{'apo.apos.yes' | translate}}
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>

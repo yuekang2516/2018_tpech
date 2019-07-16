@@ -1,0 +1,84 @@
+blood-transfusion {
+    height: 100%;
+}
+
+;
+blood-transfusion-detail {
+    height: 100%;
+    .readonly-container {
+        position: relative;
+        display: inline-block;
+    }
+    div.deleted {
+        background-color: rgba(10, 10, 10, 0.2);
+        position: absolute;
+        height: 100%;
+        width: 100%;
+    }
+    /*50-50*/
+    .col-sm-5box {
+        overflow: hidden;
+        clear: both
+    }
+    .col-sm-5box .col-sm-5 {
+        width: 49.5%;
+        float: left;
+        margin-right: 1%
+    }
+    .col-sm-5box .col-sm-5:nth-child(2n+2) {
+        margin-right: 0
+    }
+    h4 {
+        margin: 0
+    }
+    md-input-container {
+        margin-bottom: 0!important
+    }
+
+    .fullscreenMask {
+        z-index:99;
+    }
+
+    .invalidMsg {
+        color: red;
+    }
+
+    md-toolbar {
+        background: #fff !important;
+        color: black !important;
+        font-weight: bold !important;
+        border-bottom: 1px #e2e2e2 solid;
+    }
+
+    md-dialog-content {
+        i {
+            cursor: pointer;
+            outline: none;
+        }
+    }
+
+    .nfcSign-btn-text {
+        margin-left:10px;
+        color: #4CAF50;
+    }
+
+    .qrcodeSign-btn-text {
+        margin-left:10px;
+        color: #5c6bc0;
+    }
+
+    .qrcodeSign-btn {
+        cursor: pointer;
+        border-radius: 14px;
+        font-size: 28px;
+        background: #5c6bc0;
+        color: white;
+        padding: 1px;
+        margin-left: 5px;
+    }
+
+    .qrcodeSign-btn:hover {
+        // background: rgb(95, 95, 95);
+        background: #3949ab;
+    }
+}

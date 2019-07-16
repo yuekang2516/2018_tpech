@@ -1,0 +1,28 @@
+<md-bottom-sheet class="md-list md-has-header dot-menu-container" >
+    <md-subheader>{{ dotMenu.fileObj.name }}</md-subheader>
+    <md-list style="margin-top:5px;">
+            <div layout="column" layout-align="center start">
+                <md-button
+                    style="min-width: 0px;"
+                    ng-click="dotMenu.reName(dotMenu.fileObj)"
+                    class="md-list-item-content in-dot-menu-button" >
+                    <md-icon style="color:#747474">edit</md-icon>
+                    <span class="button-label">重新命名</span>
+                </md-button>
+                <md-button
+                    style="min-width: 0px;"
+                    ng-click="dotMenu.moveTo(dotMenu.fileObj)"
+                    class="md-list-item-content in-dot-menu-button" ng-disabled="false" >
+                    <md-icon style="color:#747474">swap_horizontal_circle</md-icon>
+                    <span class="button-label">移至...</span>
+                </md-button>
+                <md-button
+                    style="min-width: 0px;"
+                    ng-click="dotMenu.deleteOneFile($index, dotMenu.fileObj, dotMenu.fullObj)"
+                    class="md-list-item-content in-dot-menu-button" >
+                    <md-icon style="color:#747474">delete</md-icon>
+                    <span class="button-label">刪除</span>
+                </md-button>
+            </div>
+    </md-list>
+</md-bottom-sheet>

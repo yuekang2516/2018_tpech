@@ -1,0 +1,243 @@
+<style scoped>
+    user-detail {
+        height: 100%;
+    }
+
+    .padding {
+        padding: 20px;
+    }
+
+    .warning {
+        color: red;
+    }
+</style>
+<md-content layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.back()">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <h4>
+                <span ng-show="vm.type === 'create'" translate="user.detailpageTitleAdd"></span>
+                <span ng-show="vm.type !== 'create'" translate="user.detailpageTitle"
+                    translate-values='{username: vm.user.Name}'></span>
+            </h4>
+            <span flex></span>
+            <md-button ng-show="vm.type === 'create'" class="md-icon-button" ng-click="vm.addUser()">
+                <i class="material-icons">cloud_download</i>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-content layout-fill flex>
+        <loading ng-show="vm.loading"></loading>
+        <div flex ng-show="vm.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate="customMessage.serverError"></h3>
+        </div>
+        <div ng-show="!vm.loading && !vm.isError">
+            <form name="editForm" class="padding">
+                <md-grid-list md-cols="2" md-row-height="70px" flex>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="user.account"></label>
+                            <input type="text" name="Account" ng-model="vm.formData.Account" required
+                                unique-check="vm.user_account()" />
+                            <div ng-messages="editForm.Account.$error">
+                                <div ng-message="required"><span translate="customMessage.dataRequired"></span></div>
+                                <div ng-show="editForm.Account.$error.uniqueCheck">
+                                    <font color="red" style="font-size: 12px;"><span
+                                            translate="customMessage.existedAccount"></span></font>
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="user.name"></label>
+                            <input type="text" name="Name" ng-model="vm.formData.Name" required />
+                            <div ng-messages="editForm.Name.$error">
+                                <div ng-message="required"><span translate="customMessage.dataRequired"></span></div>
+                            </div>
+                        </md-input-container>
+                    </md-grid-tile>
+                </md-grid-list>
+                <!-- <md-grid-list md-cols="2.2" md-row-height="25px" ng-show="vm.editMode" flex>
+                    <md-grid-tile>
+                        <div style="margin-top:-0.9em" flex><span translate="user.passowrdEmpty"></span></div>123
+                    </md-grid-tile>
+                </md-grid-list> -->
+                <md-grid-list md-cols="2" md-row-height="70px" flex>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label>身分證號</label>
+                            <input type="text" name="Identifier" ng-model="vm.formData.Identifier" readonly/>
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label>醫師/護理師證號</label>
+                            <input type="text" name="License" ng-model="vm.formData.License"/>
+                        </md-input-container>
+                    </md-grid-tile>
+
+                    <md-grid-tile ng-if="vm.isSmartEcare">
+                        <div flex>
+                            <md-input-container class="md-block">
+                                <label translate="user.password"></label>
+                                <!-- ng-required="!vm.editMode" -->
+                                <input type="password" name="Password" ng-model="vm.password" ng-required="!vm.editMode && vm.isSmartEcare" />
+                                <div ng-messages="editForm.Password.$error">
+                                    <div ng-message="required"><span translate="customMessage.dataRequired"></span></div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </md-grid-tile>
+                    <md-grid-tile ng-if="vm.isSmartEcare">
+                        <div ng-show="vm.editMode"></div>
+                        <md-input-container class="md-block" flex>
+                            <label translate="user.passwordConfirm"></label>
+                            <!-- ng-required="!vm.editMode" -->
+                            <input type="password" name="passwordConfirm" ng-model="vm.passwordConfirm" ng-required="!vm.editMode && vm.isSmartEcare" />
+                            <div ng-messages="editForm.passwordConfirm.$error">
+                                <div ng-message="required"><span translate="customMessage.dataRequired"></span></div>
+                            </div>
+                            <div>
+                                <span ng-show="vm.password!==vm.passwordConfirm && vm.passwordConfirm"><font color="#F54437" style="font-size: 12px;">密碼不相同</font></span>
+                            </div>
+                        </md-input-container>
+                    </md-grid-tile>
+
+
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <div style="margin-top:-0.9em">
+                                <label translate="user.gender"></label>
+                                <md-select ng-model="vm.formData.Gender">
+                                    <md-option ng-repeat="g in vm.optGender" value="{{ g.value }}">{{ g.name }}
+                                    </md-option>
+                                </md-select>
+                            </div>
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="user.employeeId"></label>
+                            <input type="text" name="EmployeeId" ng-model="vm.formData.EmployeeId"
+                                oldvalue="{{ vm.oldFormData.EmployeeId }}" readonly ng-required="!vm.isSmartEcare" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="user.phone"></label>
+                            <input type="text" name="Phone" ng-model="vm.formData.PhoneNumber" ng-change="vm.checkSmartEcare()"/>
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="user.mobile"></label>
+                            <input type="text" name="Mobile" ng-model="vm.formData.MobilePhoneNumber" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label>Email</label>
+                            <input type="text" name="Email" ng-model="vm.formData.Email" ng-change="vm.checkSmartEcare()"/>
+                            <!--<div ng-messages="editForm.Email.$error.email">
+                                <div ng-message="editForm.Email.$error.email">Email格式錯誤</div>
+                            </div>-->
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <div style="margin-top:-1.1em" flex>
+                            <md-input-container class="md-block" flex>
+                                <label translate="user.accesses"></label>
+                                <md-select name="Access" ng-model="vm.formData.Access">
+                                    <md-option ng-selected="{{ a.value == 1 }}" ng-repeat="a in vm.optAccess"
+                                        value="{{ a.value }}">{{ a.name }}</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label>BarCode</label>
+                            <input type="text" name="BarCode" ng-model="vm.formData.BarCode"
+                                oldvalue="{{ vm.oldFormData.BarCode }}" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label>RFID</label>
+                            <input type="text" name="RFID" ng-model="vm.formData.RFID"
+                                oldvalue="{{ vm.oldFormData.RFID }}" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <div style="margin-top:-1.1em" flex>
+                            <md-input-container class="md-block" flex>
+                                <label translate="user.role"></label>
+                                <md-select name="Role" ng-model="vm.formData.Role">
+                                    <md-option ng-repeat="r in vm.optRole" value="{{ r.value }}">{{ r.name }}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                    </md-grid-tile>
+                </md-grid-list>
+                <!--<div layout="row" flex>
+                    <md-input-container class="md-block" flex>
+                        <label translate="user.module"></label>
+                        <md-select ng-model="vm.selectedModule" ng-change="vm.addModule(vm.selectedModule)" style="background-color: lightpink !important;">
+                            <md-option value=""><span translate="user.select"></span></md-option>
+                            <md-option ng-repeat="m in vm.newHospitalMods">{{ m }}</md-option>
+                        </md-select>
+                        <md-chips ng-model="vm.moduleChips" name="modulechip" readonly="true" md-removable="true" md-on-remove="vm.removeModule($index)">
+                            </md-chips>
+                        </md-input-container>
+                    </md-input-container>
+                </div>-->
+                <!--
+                        <div class="item-select" ng-repeat="m in vm.formData.Modules">
+                            <span style="width: 140px; display: inline-block;" ng-bind="m"></span>
+                            <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" ng-click="vm.removeModule($index)" />
+                        </div>
+                        -->
+                <!--<md-chips ng-model="vm.formData.Modules" name="moduleschip" readonly="true" md-removable="true">
+                            <md-button class="chip-button md-icon-button" md-chip-remove ng-click="vm.removeModule($index)">
+                                <i class="material-icons">close</i>
+                            </md-button>
+                        </md-chips>-->
+
+                <div layout="row" flex>
+                    <md-input-container class="md-block" flex>
+                        <label translate="user.ward"></label>
+                        <md-select ng-model="vm.Ward" ng-change="vm.addWard(vm.Ward);"
+                            style="background-color: lightpink !important;">
+                            <md-option value=""><span translate="user.select"></span></md-option>
+                            <md-option ng-repeat="w in vm.Wards | filter: { showItem: true }" ng-value="w">{{ w.Name }}
+                            </md-option>
+                        </md-select>
+                        <!--
+                        <div class="item-select" ng-repeat="w in vm.formData.Ward">
+                            <span style="width: 140px; display: inline-block;" ng-bind="w"></span>
+                            <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" ng-click="vm.removeWard($index, this.w)" />
+                        </div>
+                        -->
+                        <md-chips ng-model="vm.wardChips" name="wardchip" readonly="true" md-removable="true"
+                            md-on-remove="vm.removeWard($index)">
+                        </md-chips>
+                    </md-input-container>
+                </div>
+                <div class="warning" layout="row" layout-align="start none">
+                    <span translate="user.afterUpdate"></span>
+                </div>
+                <md-button class="md-raised" ng-show="vm.editMode" ng-click="vm.recover()" ng-disabled="vm.isSaving">
+                    <span translate>{{'user.recoverbutton'}}</span></md-button>
+                <md-button type="submit" class="md-raised md-primary" ng-click="vm.showSimpleToast()"
+                    ng-disabled="editForm.$invalid || vm.isSaving"><span translate>{{'user.savebutton'}}</span>
+                </md-button>
+            </form>
+        </div>
+    </md-content>
+</md-content>
+<mask-loading ng-show="vm.downloading" style="z-index:99" is-show-title="true" title-text="讀取使用者資料中"></mask-loading>

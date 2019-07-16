@@ -1,0 +1,68 @@
+[
+    {
+        "AssignTime": "2019/01/02",
+        "PatientName": "林春嬌",
+        "MedicalId": "123458",
+        "Machine": "NIKKISO"
+    },
+    {
+        "AssignTime": "2019/01/10",
+        "PatientName": "林春嬌",
+        "MedicalId": "123458",
+        "Machine": "NIKKISO"
+    },
+    {
+        "AssignTime": "2019/01/13",
+        "PatientName": "林春嬌",
+        "MedicalId": "123458",
+        "Machine": "TR8000"
+    },
+    {
+        "AssignTime": "2019/01/19",
+        "PatientName": "林春嬌",
+        "MedicalId": "123458",
+        "Machine": "NCU12"
+    },
+    {
+        "AssignTime": "2019/01/11",
+        "PatientName": "林春嬌",
+        "MedicalId": "123458",
+        "Machine": "TR8000"
+    },
+    {
+        "AssignTime": "2019/01/21",
+        "PatientName": "林春嬌",
+        "MedicalId": "123458",
+        "Machine": "TR8000"
+    },
+    {
+        "AssignTime": "2019/01/18",
+        "PatientName": "林春嬌",
+        "MedicalId": "123458",
+        "Machine": "NIKKISO"
+    },
+    {
+        "AssignTime": "2019/01/14",
+        "PatientName": "林春嬌",
+        "MedicalId": "123458",
+        "Machine": "NCU18"
+    },
+    {
+        "AssignTime": "2019/01/29",
+        "PatientName": "林春嬌",
+        "MedicalId": "123458",
+        "Machine": "TR8000"
+    },
+    {
+        "AssignTime": "2019/01/31",
+        "PatientName": "林春嬌",
+        "MedicalId": "123458",
+        "Machine": "NCU12"
+    },
+    {
+        "AssignTime": "2019/01/03",
+        "PatientName": "林春嬌",
+        "MedicalId": "123458",
+        "Machine": "TR8000"
+    }
+]

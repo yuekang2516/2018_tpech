@@ -1,0 +1,121 @@
+summary-list {
+    .item {
+        border: 1px solid black;
+    }
+
+    .border {
+        border: 1px solid grey;
+
+        &.content {
+            min-height: 5em;
+        }
+    }
+
+    // .machine table {
+    //     width: 100%;
+    //     border-collapse: separate;
+    //     border-spacing: 0;
+    //     border-top: 1px solid grey;
+    // }
+
+    // .machine td,
+    // .machine th {
+    //     margin: 0;
+    //     border: 1px solid grey;
+    //     white-space: nowrap;
+    //     border-top-width: 0px;
+    // }
+    .away {
+        position: fixed;
+        top: -999px;
+    }
+
+    .machine {
+        overflow-x: auto;
+        margin-left: 136px;
+        overflow-y: visible;
+        padding: 0;
+
+        // 避免於 ios 上 th 會被蓋住
+        // https://benfrain.com/z-index-stacking-contexts-experimental-css-and-ios-safari/
+        -webkit-overflow-scrolling: initial;
+
+        .headcol {
+            font-size: 14px;
+            margin-left: 16px;
+            width: 130px;
+            white-space: normal;
+            position: absolute;
+            left: 0;
+            top: auto;
+            line-height: 20.8px; // border-top-width: 1px;
+            /*only relevant for first row*/
+            margin-top: -1px;
+            /*compensate for top border*/
+        }
+
+        td,
+        th {
+            padding: 0 2px;
+            margin: 0;
+            border: 1px solid grey;
+            // white-space: nowrap;
+            white-space: normal;
+            max-width: 175px;
+            border-top-width: 0px;
+            line-height: 1.4em;
+            div {
+                max-height: 90px;
+                overflow: auto;
+            }
+        }
+    }
+
+    .order-table,
+    .machine,
+    .nursing-record,
+    .shift-issue {
+        table {
+            width: 100%;
+            border-spacing: 0;
+        }
+    }
+
+    // 开药
+    .order-table,
+    .nursing-record,
+    .shift-issue {
+        overflow-x: auto;
+        padding: 0;
+
+        thead td,
+        th {
+            font-size: small;
+            color: gray;
+            white-space: nowrap;
+        }
+
+        tbody td {
+            text-align: center;
+        }
+
+        tbody td:first-child {
+            text-align: left;
+            max-width: 200px;
+        }
+    }
+
+    .order-table tbody td,
+    .order-table thead td,
+    .nursing-record tbody td,
+    .nursing-record thead td,
+    .shift-issue tbody td,
+    .shift-issue thead td {
+        text-align: left;
+        border: 1px solid gray;
+    }
+
+    .heading {
+        text-align: center;
+    }
+}

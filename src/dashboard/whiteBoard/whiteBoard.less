@@ -1,0 +1,62 @@
+.white-board-content {
+    background-color: #f2f2f2;
+    // tinymce 編輯畫面
+    .tinymces {
+        width: 100%;
+        height: 100%;
+
+        .mce-tinymce,.mce-stack-layout, .mce-edit-area{
+            display: flex !important;
+            flex-direction: column;
+            height: 100%;
+        }
+    }
+
+    // 切換編輯/唯獨模式的按鈕，當hover 經過時才顯示
+    .edit-btn {
+        .md-icon-button {
+            top: auto;
+            right: 20px;
+            bottom: 30px;
+            left: auto;
+            position: fixed;
+            z-index: 1000;
+        }
+        display: none;
+    }
+    .textarea {
+        // hover 進去仍是滿畫面
+        height: 100%;
+    }
+    .textarea:hover {
+        .edit-btn {
+            display: block;
+        }
+    }
+
+    // 唯讀畫面
+    .readonly {
+        div {
+            border: 1px solid black;
+            overflow: auto;
+        }
+        .top {
+            margin-top: 8px;
+            border-top: 1.5px solid black;
+        }
+        .bottom {
+            margin-bottom: 8px;
+            border-bottom: 1.5px solid black;
+        }
+        .left {
+            margin-left: 5px;
+            padding: 8px;
+            border-left: 1.5px solid black;
+        }
+        .right {
+            margin-right: 5px;
+            padding: 8px;
+            border-right: 1.5px solid black;
+        }
+    }
+}

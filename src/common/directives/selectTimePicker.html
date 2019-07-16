@@ -1,0 +1,10 @@
+<div layout="row">
+    <md-select ng-model="$ctrl.selectedHour" flex ng-change="$ctrl.afterSelected()" placeholder="時" ng-required="$ctrl.required">
+        <md-option>請選擇</md-option>
+        <md-option ng-value="h" ng-repeat="h in $ctrl.hours track by $index">{{::h}}時</md-option>
+    </md-select>
+    <md-select ng-model="$ctrl.selectedMinute" flex ng-change="$ctrl.afterSelected()" placeholder="分" ng-required="$ctrl.required">
+        <md-option>請選擇</md-option>
+        <md-option ng-value="m" ng-repeat="m in $ctrl.minutes">{{::m}}分</md-option>
+    </md-select>
+</div>

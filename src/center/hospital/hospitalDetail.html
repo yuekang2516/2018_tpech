@@ -1,0 +1,118 @@
+<style scoped>
+    hospital-detail {
+        height: 100%;
+    }
+    
+    .padding {
+        padding: 20px;
+    }
+
+    .warning {
+        color: red;
+    }
+</style>
+<div layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.back()">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <h4>
+                <span>醫院管理 / </span>
+                <span ng-show="vm.type === 'create'">新增</span>
+                <span ng-bind="vm.formData.HospitalName"></span> 資料
+            </h4>            
+        </div>
+    </md-toolbar>
+    <md-content>
+        <loading ng-show="vm.loading"></loading>
+        <div ng-show="!vm.loading">
+            <md-content layout-padding>
+                <form name="editForm" class="padding" ng-show="!vm.loading">
+
+                    <div layout-gt-xs="row" layout="column">
+                        <md-card flex>
+                            <md-card-content class="yuekang-input-container">
+                                <div layout="row">
+                                    <label translate>醫院代碼</label>
+                                    <input name="SystemCode" ng-model="vm.formData.SystemCode" required ng-readonly="{{vm.type == 'edit'}}">
+                                </div>
+                                <div ng-messages="editForm.SystemCode.$error">
+                                    <div ng-message="required" translate>必填選項</div>
+                                    <div ng-show="editForm.SystemCode.$error.uniqueCheck"><font color="red" style="font-size: 12px;">此帳號已註冊</font></div>
+                                </div>
+                                <div layout="row">
+                                    <label translate>醫院名稱</label>
+                                    <input name="HospitalName" ng-model="vm.formData.HospitalName" required>
+                                </div>
+                                <div ng-messages="editForm.HospitalName.$error">
+                                    <div ng-message="required" translate>必填選項</div>
+                                </div>
+                                <div layout="row">
+                                    <label translate>表單標題</label>
+                                    <input name="FormTitle" ng-model="vm.formData.FormTitle">
+                                </div>
+                                <div layout="row">
+                                    <label translate>網域</label>
+                                    <textarea name="HostName" ng-model="vm.HostName" md-detect-hidden="true" required></textarea>
+                                </div>
+                                <div ng-messages="editForm.HostName.$error">
+                                    <div ng-message="required" translate>必填選項</div>
+                                </div>
+                                <div layout="row">
+                                    <label translate>版本</label>
+                                    <input name="Version" ng-model="vm.formData.Version">
+                                </div>
+                            </md-card-content>
+                        </md-card>
+                        <md-card flex>
+                            <md-card-content class="yuekang-input-container">
+                                <div class="logo-container"><!--<div class="image-container">-->
+                                    <img ng-show="vm.loadingPicture" height="16px" width="16px" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                                    <img ng-if="!vm.formData.Logo" height="160" width="160" ng-src="static/img/Unknown.png" />
+                                    <img ngf-thumbnail="vm.formData.Logo" />
+                                    <input type="file" ngf-change="vm.handleChangeBase64()" ngf-select ng-model="vm.formData.Logo" name="Logo" accept="image/*" ngf-fix-orientation="true" ngf-resize="{width: 200px, height: 200px, centerCrop: false}" />
+                                </div>
+                                <div layout="row">
+                                    <label translate>模組</label>
+                                    <div>
+                                    <md-checkbox ng-model="vm.MachineType">　 使用連續型</md-checkbox>　
+                                    <md-checkbox ng-model="vm.BloodTransfusion">　 輸血</md-checkbox>　
+                                    <md-checkbox ng-model="vm.Charge">　 計價</md-checkbox>　
+                                    <md-checkbox ng-model="vm.Scheduling">　 排班</md-checkbox>　
+                                    <md-checkbox ng-model="vm.SettingBed">　 排床</md-checkbox>　
+                                    <md-checkbox ng-model="vm.ElectronicBoard">　 電子白板</md-checkbox>　
+                                    <md-checkbox ng-model="vm.Epo">　 EPO</md-checkbox>　
+                                    <md-checkbox ng-model="vm.Assessment">　 評估</md-checkbox>　
+                                    <md-checkbox ng-model="vm.BloodPressure">　 血壓</md-checkbox>　
+                                    <md-checkbox ng-model="vm.HealthEducation">　 衛教作業</md-checkbox>　
+                                    <md-checkbox ng-model="vm.ROAlert">　 RO異常</md-checkbox>　
+                                    <md-checkbox ng-model="vm.PatientYearPlan">　 病人年度計畫表</md-checkbox>　
+                                </div>
+                                    <!--<md-select ng-model="vm.selectedModule" ng-change="vm.addModule(vm.selectedModule)">
+                                        <md-option value="">請選擇......</md-option>
+                                        <md-option ng-repeat="m in vm.newHospitalMods">{{ m }}</md-option>
+                                    </md-select>
+                                    <md-chips ng-model="vm.moduleChips" name="moduleChips" readonly="true" md-removable="true" md-on-remove="vm.removeModule($index)">
+                                    </md-chips>-->
+                                </div>
+                            </md-card-content>
+                        </md-card>
+                    </div>
+                    <div>
+                        <md-button class="md-raised md-primary" ng-click="vm.save()" ng-disabled="editForm.$invalid || vm.isSaving">儲存</md-button>
+                    </div>
+                </form>
+            </md-content>
+        </div>
+    </md-content>
+    <span ng-show="vm.type !== 'create'">
+    <md-tabs md-selected="vm.selectedIndex" md-border-bottom md-dynamic-height="true" class="no-print">
+        <md-tab md-on-select="" label="合約資料"></md-tab>
+        <md-tab md-on-select="" label="帳單資料"></md-tab>
+    </md-tabs>
+    <md-content flex layout-fill>
+        <ui-view layout="column" flex></ui-view>
+    </md-content>
+    </span>
+</div>

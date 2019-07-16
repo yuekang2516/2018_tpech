@@ -1,0 +1,118 @@
+<md-content layout="column" style="height:100%" flex>
+
+  <section ng-show="!vm.loading">
+    <summary-toolbar ng-if="vm.serviceData.IsExecute" toolbar-title="'epoRecord.epoExecute.executeMedicine'|translate" cancel="vm.goback()"></summary-toolbar>
+    <summary-toolbar ng-if="!vm.serviceData.IsExecute" toolbar-title="'epoRecord.epoExecute.conformDontExecute'|translate" cancel="vm.goback()"></summary-toolbar>
+    <summary-toolbar ng-if="!vm.isModify" toolbar-title="'epoRecord.epoExecute.isModify'|translate" cancel="vm.goback()"></summary-toolbar>
+  </section>
+
+  <!-- <div hide-xs hide-sm ng-show="!vm.loading">
+        <h3 style="float: left; padding-left: 10px" ng-show="vm.serviceData.IsExecute && !vm.loading" translate>{{'epoRecord.epoExecute.executeMedicine'}}</h3>
+        <h3 style="float: left; padding-left: 10px; color: red" ng-show="!vm.serviceData.IsExecute && !vm.loading" translate>{{'epoRecord.epoExecute.conformDontExecute'}}</h3>
+        <h3 ng-show="!vm.isModify && !vm.loading" style="float: left; padding-left: 10px; color: red" translate>{{'epoRecord.epoExecute.isModify'}}</h3>
+        <md-button style="float:right; margin-top: 8px" class="md-secondary md-icon-button" ng-click="vm.goback()" aria-label="call">
+          <i class="material-icons">cancel</i>
+        </md-button>
+      </div> -->
+
+  <loading ng-show="vm.loading">loading...</loading>
+  <md-content flex layout-padding ng-hide="vm.loading">
+
+    <form name="regForm" class="yuekang-input-container" ng-show="!vm.loading && !vm.isError">
+      <!-- <date-time-picker-standard my-model="vm.serviceData.ProcessTime" required="true" />  -->
+      <div layout="row">
+        <label translate>{{'epoRecord.epoExecute.date'}}</label>
+        <!-- <select-date-picker ng-model="vm.serviceData.ProcessTime" on-change="$ctrl.dateChanged(date)" required></select-date-picker> -->
+        <input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.serviceData.ProcessTime" on-change="$ctrl.dateChanged(date)" required />
+      </div>
+      <div layout="row">
+        <label translate>{{'epoRecord.epoExecute.time'}}</label>
+        <!-- <select-time-picker ng-model="vm.serviceData.ProcessTime" on-change="$ctrl.timeChanged(time)" required></select-time-picker> -->
+        <input type="time" ng-model="vm.serviceData.ProcessTime" on-change="$ctrl.dateChanged(time)" required />
+      </div>
+      <div ng-if="vm.timeMessage" style="color: red">
+        {{vm.timeMessage}}
+      </div>
+      <div layout="row">
+        <label translate>{{'epoRecord.epoExecute.medicine'}}</label>
+        <div>
+          <strong>{{::vm.serviceData.EPOName}}</strong>
+        </div>
+      </div>
+      <div layout="row">
+        <label translate>{{'epoRecord.epoExecute.route'}}</label>
+        <div>{{::vm.serviceData.Route}}</div>
+      </div>
+      <div layout="row">
+        <label translate>{{'epoRecord.epoExecute.Quantity'}}</label>
+        <div>
+          <span>
+            {{::vm.serviceData.Quantity}}
+            <span ng-if="vm.serviceData.QuantityUnit">({{::vm.serviceData.QuantityUnit}})</span>
+          </span>
+          <span ng-if="vm.serviceData.Dose" translate>
+            {{'epoRecord.epoExecute.Dosage'}}
+            <span ng-if="vm.serviceData.DoseUnit">({{::vm.serviceData.DoseUnit}})</span>
+          </span>
+        </div>
+      </div>
+      <div layout="row" ng-if="vm.serviceData.IsExecute">
+        <!-- <label>使用數量 ({{::vm.serviceData.QuantityUnit}})</label> -->
+        <label translate="epoRecord.epoExecute.ActualQuantity" translate-values='{QuantityUnit: vm.serviceData.QuantityUnit}'></label>
+        <input required type="number" name="Quantity" ng-model="vm.serviceData.ActualQuantity" min="0" ng-change="vm.CalculateDose()" />
+      </div>
+      <div ng-messages="regForm.Quantity.$error" multiple md-auto-hide="false">
+        <div ng-message="required" translate>{{'epoRecord.epoExecute.QuantityRequired'}}</div>
+        <div ng-message="min" translate>{{'epoRecord.epoExecute.QuantityMin'}}</div>
+      </div>
+      <div layout="row" ng-if="vm.serviceData.Dose">
+        <!-- <label>使用劑量 {{ ::vm.serviceData.DoseUnit}}</label> -->
+        <label translate="epoRecord.epoExecute.ActualDose" translate-values='{DoseUnit: vm.serviceData.DoseUnit}'></label>
+        <input type="text" name="Dose" ng-model="vm.serviceData.ActualDose" ng-disabled="true" />
+      </div>
+
+      <div layout="row" ng-show="vm.serviceData.IsExecute">
+        <label translate>{{'epoRecord.epoExecute.Type'}}</label>
+        <md-select ng-model="vm.serviceData.Type">
+          <md-option translate>{{'epoRecord.epoExecute.choose'}}</md-option>
+          <md-option value="Public" translate>{{'epoRecord.epoExecute.Public'}}</md-option>
+          <md-option value="Self" translate>{{'epoRecord.epoExecute.Self'}}</md-option>
+        </md-select>
+      </div>
+      <div layout="row" ng-show="vm.serviceData.IsExecute">
+        <label>Hb</label>
+        <input type="text" name="Hb" ng-model="vm.serviceData.Hb" />
+      </div>
+      <div layout="row" ng-if="vm.serviceData.IsExecute">
+        <label translate>{{'epoRecord.epoExecute.Memo'}}</label>
+        <textarea name="Memo" ng-model="vm.serviceData.Memo" rows="3" md-detect-hidden="true"></textarea>
+      </div>
+      <div layout="row" ng-if="!vm.serviceData.IsExecute">
+        <label translate>{{'epoRecord.epoExecute.reason'}}</label>
+        <textarea required name="Memo" ng-model="vm.serviceData.Memo" md-detect-hidden="true"></textarea>
+        <div ng-messages="regForm.Memo.$error" multiple md-auto-hide="false">
+          <div ng-message="required" translate>{{'epoRecord.epoExecute.reasonRequired'}}</div>
+        </div>
+      </div>
+      <div class="action-area" layout="row" ng-show="vm.isModify"  layout-margin layout-align="start center">
+        <md-button ng-click="vm.submit()" class="md-raised md-primary" ng-disabled="regForm.$invalid || vm.isSaving">{{'epoRecord.epoExecute.save' | translate}}</md-button>
+        <md-progress-circular md-diameter="20px" md-mode="indeterminate" ng-show="vm.isSaving"></md-progress-circular>
+      </div>
+    </form>
+    <div layout="row" layout-wrap>
+      <div flex="50" flex-xs="100" ng-show="vm.serviceData.CreatedUserName">
+        <!-- <span>建立: {{ vm.serviceData.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+        <span translate="epoRecord.epoExecute.createdTime" translate-values='{CreatedTime: vm.serviceData.CreatedTime}'></span>
+        <seal model="vm.serviceData" modified="none"></seal>
+      </div>
+      <div flex="50" flex-xs="100" ng-show="vm.serviceData.ModifiedTime != null">
+        <!-- <span>修改: {{ vm.serviceData.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+        <span translate="epoRecord.epoExecute.editedTime" translate-values='{ModifiedTime: vm.serviceData.ModifiedTime}'></span>
+        <seal model="vm.serviceData" created="none"></seal>
+      </div>
+    </div>
+    <div flex ng-show="!vm.loading && vm.isError" layout="column" layout-fill layout-align="center center">
+      <h3 translate>{{'epoRecord.epoExecute.serverError'}}</h3>
+    </div>
+  </md-content>
+</md-content>

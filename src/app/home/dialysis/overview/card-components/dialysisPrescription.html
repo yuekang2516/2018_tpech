@@ -1,0 +1,126 @@
+<md-card ng-if="$ctrl.dialysisHeader.Id">
+    <md-card-content>
+        <h3 translate>{{'overview.dialysisPrescription'}}</h3>
+        <div ng-if="$ctrl.prescriptionLength > 0">
+            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.Type">
+                <label translate>{{'overview.Type'}}</label>
+                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.Type === 'LongTerm' ? '{{'overview.longTerm' | translate}}' : '{{'overview.temporary' | translate}}'" disabled />
+            </md-input-container-flat>
+            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.InBed">
+                <label translate>{{'overview.InBed'}}</label>
+                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.InBed || '--'" disabled />
+            </md-input-container-flat>
+            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.StandardWeight">
+                <label translate>{{'overview.StandardWeight'}}</label>
+                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.StandardWeight || '--'" disabled />
+            </md-input-container-flat>
+            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.Frequency">
+                <label translate>{{'overview.Frequency'}}</label>
+                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.Frequency || '--'" disabled />
+            </md-input-container-flat>
+            <md-input-container-flat class="md-block" ng-repeat="(key, value) in $ctrl.dialysisHeader.Prescription.Anticoagulants" ng-if="$ctrl.dialysisHeader.Prescription.Anticoagulants && $ctrl.anticoagulantsLength > 0">
+                <label>
+                    <span ng-if="$first" translate>{{'overview.anticoagulants'}}</span>
+                </label>
+                <input type="text" ng-value="key + ' ' + (value[0] || '{{'overview.none' | translate}}') + ', ' + (value[1] || '{{'overview.none' | translate}}')" disabled />
+            </md-input-container-flat>
+            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.Dialysate">
+                <label translate>{{'overview.Dialysate'}}</label>
+                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.Dialysate || '--'" disabled />
+            </md-input-container-flat>
+            <!-- <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.HCO3">
+                <label translate>{{'overview.HCO3'}}</label>
+                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.HCO3 || '--'" disabled />
+            </md-input-container-flat> -->
+            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.Na">
+                <label translate>{{'overview.Na'}}</label>
+                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.Na || '--'" disabled />
+            </md-input-container-flat>
+            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.DialysateTemperature">
+                <label translate>{{'overview.DialysateTemperature'}}</label>
+                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.DialysateTemperature || '--'" disabled />
+            </md-input-container-flat>
+            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.DialysateFlowRate">
+                <label translate>{{'overview.DialysateFlowRate'}}</label>
+                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.DialysateFlowRate || '--'" disabled />
+            </md-input-container-flat>
+            <!-- <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.Needle.ArteryLength">
+                <label translate>{{'overview.ArteryLength'}}</label>
+                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.Needle.ArteryLength || '--'" disabled />
+            </md-input-container-flat>
+            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.Needle.VeinLength">
+                <label translate>{{'overview.VeinLength'}}</label>
+                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.Needle.VeinLength || '--'" disabled />
+            </md-input-container-flat> -->
+            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.DialysisMode.Name">
+                <label translate>{{'overview.DialysisMode'}}</label>
+                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.DialysisMode.Name || '--'" disabled />
+            </md-input-container-flat>
+            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.DialysisMode.Name === 'HDF' || $ctrl.dialysisHeader.Prescription.DialysisMode.Name === 'OHDF'">
+                <label translate>{{'overview.SupplementVolume'}}</label>
+                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.SupplementVolume || '--'" disabled />
+            </md-input-container-flat>
+            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.DialysisMode.Name === 'HDF' || $ctrl.dialysisHeader.Prescription.DialysisMode.Name === 'OHDF'">
+                <label translate>{{'overview.SupplementPosition'}}</label>
+                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.SupplementPosition" disabled />
+            </md-input-container-flat>
+            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.Route">
+                <label translate>{{'overview.Route'}}</label>
+                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.Route || '--'" disabled />
+            </md-input-container-flat>
+            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.BF">
+                <label translate>{{'overview.BF'}}</label>
+                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.BF || '--'" disabled />
+            </md-input-container-flat>
+            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.Duration.Hours || $ctrl.dialysisHeader.Prescription.Duration.Minutes">
+                <label translate>{{'overview.Duration'}}</label>
+                <input type="text" ng-value="($ctrl.dialysisHeader.Prescription.Duration.Hours || '--') + 'H' + ($ctrl.dialysisHeader.Prescription.Duration.Minutes || '--') + 'M'" disabled />
+            </md-input-container-flat>
+            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.ArtificialKidney">
+                <label translate>{{'overview.ArtificialKidney'}}</label>
+                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.ArtificialKidney || '--'" disabled />
+            </md-input-container-flat>
+            <md-input-container-flat class="md-block" ng-if="$ctrl.dialysisHeader.Prescription.Memo">
+                <label translate>{{'overview.Memo'}}</label>
+                <input type="text" ng-value="$ctrl.dialysisHeader.Prescription.Memo || '--'" disabled />
+            </md-input-container-flat>
+
+            <div layout="row" layout-align="end center" ng-if="!$ctrl.isSelector" class="seal-out-div">
+                <div class="sign-title" translate>{{'overview.signNurseNfcTitle'}}</div>
+                <div ng-show="!$ctrl.showNfcBtn" layout="row" layout-align="end center">
+                    <seal created="none" modified="none" name="{{$ctrl.signNurse.Name}}" ng-click="$ctrl.nfcSign($ctrl.iosNFCSupport)" class="seal-div"></seal>
+                    <i ng-if="$ctrl.signNurse === ''" class="material-icons nfcSign-btn" ng-click="$ctrl.nfcSign($ctrl.iosNFCSupport)">person</i>
+                </div>
+                <div ng-show="$ctrl.showNfcBtn">
+                    <i class="material-icons nfcSign-btn" ng-click="$ctrl.nfcSign($ctrl.iosNFCSupport)">person</i>
+                </div>
+            </div>
+
+            <div layout="row" layout-align="end center" ng-if="$ctrl.isSelector" class="seal-out-div">
+                <div class="sign-title" translate>{{'overview.signNurseTitle'}}</div>
+                <div ng-show="!$ctrl.showSelect" layout="row" layout-align="end center" class="seal-div">
+                    <seal created="none" modified="none" name="{{$ctrl.signNurse.Name}}" ng-click="$ctrl.reSelectNurse()"></seal>
+                    <!-- <i ng-if="$ctrl.signNurse === ''" class="material-icons delete-sign-btn" ng-click="$ctrl.reSelectNurse()" >person</i> -->
+                </div>
+                <md-input-container ng-show="$ctrl.showSelect" class="md-block">
+                    <label translate>{{'overview.signNurse'}}</label>
+                    <md-select id="sign-select" ng-model="$ctrl.signNurse" ng-model-options="{trackBy: '$value.Id'}" md-on-close="$ctrl.clearSearch($ctrl.signNurse)" ng-change="$ctrl.selectSignNurse($ctrl.signNurse)">
+                        <md-select-header>
+                            <input style="background: url(../../static/img/ic_search.png) no-repeat scroll 2.5px 2.5px;padding-left: 25px;border-radius: 5px;font-size: 13px;" ng-model="$ctrl.searchStr" type="search" ng-keydown="$event.stopPropagation()" ng-change="$ctrl.searchNurse($ctrl.searchStr)" placeholder="{{'overview.signName' | translate}}">
+                        </md-select-header>
+                        <md-option ng-repeat="nurse in $ctrl.allSignNurses track by nurse.Id" ng-value="nurse">
+                            <span ng-if="nurse.Name !== 'NoSign'">{{::nurse.Name}}</span>
+                            <span ng-if="nurse.Name === 'NoSign'" translate>{{'overview.noSign'}}</span>
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+
+
+        </div>
+
+        <div style="color : red" ng-if="$ctrl.prescriptionLength === 0">
+            <h4 translate>{{'overview.noData'}}</h4>
+        </div>
+    </md-card-content>
+</md-card>

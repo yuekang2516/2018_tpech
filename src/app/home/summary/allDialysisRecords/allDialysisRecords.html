@@ -1,0 +1,89 @@
+<div style="position:relative" layout="column" layout-fill ui-view flex>
+    <summary-toolbar toolbar-title="'allDialysisRecords.dialysisRecordHistory' | translate" cancel="$ctrl.goback()"></summary-toolbar>
+
+    
+    <!-- <md-toolbar hide-gt-sm>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="$ctrl.goback()">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <div layout="row">
+                {{'allDialysisRecords.dialysisRecordHistory' | translate}}
+            </div>
+            <span flex></span>
+            <md-button hide show-gt-xs class="md-icon-button" aria-label="More" ng-click="$ctrl.gotoMonthlyView()">
+                <i class="material-icons">date_range</i>
+            </md-button>
+        </div>
+    </md-toolbar> -->
+
+    <div class="list-header" ng-show="!$ctrl.loading" layout="row" layout-align="center center">
+        <!--<md-switch ng-model="$ctrl.showDeleted" aria-label="Switch data">
+            顯示已刪除 ({{$ctrl.deletedItemsLength}}筆)
+        </md-switch>
+        <span flex></span>-->
+        <!-- <h6 ng-show="$ctrl.serviceData.length > 0">共 {{$ctrl.totalCnt}} 筆</h6> -->
+        <h6 ng-show="$ctrl.serviceData.length > 0" translate="allDialysisRecords.totalRecord" translate-values='{totalCnt: $ctrl.totalCnt}'></h6>
+        <span flex></span>
+        <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+    </div>
+    <md-content layout="column" flex>
+        <loading ng-show="$ctrl.loading"></loading>
+        <div ng-class="{away:$ctrl.loading}" infinite-scroll="$ctrl.loadMore()" infinite-scroll-disabled='$ctrl.loadingMore' infinite-scroll-distance='2' infinite-scroll-parent>
+            <md-content>
+                <md-list ng-style="$ctrl.loadingMore || $ctrl.loading ? {'margin-bottom':'0'} : {}">
+                    <md-list-item class="md-2-line" ng-class="{deleted: item.Status == 'Deleted'}" ng-repeat="item in $ctrl.serviceData | orderBy: sortRecord:reverse :true"
+                        ng-click="$ctrl.goto(item.Id, ($ctrl.totalCnt-$index), item.StartTime)">
+                        <!-- ng-show="$ctrl.serviceData.length > 0"-->
+                        <div class="md-list-item-text" layout="column">
+                            <h3 ng-bind="item.StartTime | moment:'YYYY/MM/DD (dd) HH:MM'"></h3>
+                            <!-- 第 {{item.Number}}次 在 {{item.Location}} -->
+                            <span translate="allDialysisRecords.numberOfTimes" translate-values='{Number: item.Numbers.all, Location: item.Location}'></span>
+                            <seal model="item" modified="hideIfSame" fixed="true"></seal>
+                        </div>
+                        <md-icon class="md-secondary" ng-show="item.Status !== 'Deleted'" ng-click="$ctrl.showDeleteDialog($event, item)" md-svg-icon="static/img/svg/ic_delete_black_24px.svg"></md-icon>
+                        <md-divider ng-if="!$last"></md-divider>
+                    </md-list-item>
+                </md-list>
+            </md-content>
+        </div>
+        <div flex ng-show="!$ctrl.loading && !$ctrl.isError && $ctrl.totalCnt === 0" layout="column" layout-fill layout-align="center center">
+            <div flex layout="column" layout-align="center center">
+                <h1 translate>{{'allDialysisRecords.noData'}}</h1>
+                <h4 translate>{{'allDialysisRecords.clickBottomRight'}}</h4>
+            </div>
+        </div>
+        <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate>{{'allDialysisRecords.serverError'}}</h3>
+        </div>
+    </md-content>
+    <md-progress-circular ng-show="$ctrl.loadingMore" class="loadmore" md-diameter="40" md-mode="indeterminate"></md-progress-circular>
+    <md-button class="md-fab md-fab-bottom-right" ng-if="$ctrl.canCreate" ng-click="$ctrl._handleCreateCheck($event)">
+        <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+    </md-button>
+</div>
+
+
+<script type="text/ng-template" id="confirm.html">
+    <md-dialog aria-label="開表確認">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2 translate>{{'allDialysisRecords.createTable'}}</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="vm.cancel()">
+                        <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-dialog-actions layout="row">
+                <md-button ng-click="vm.cancel()">
+                    {{'allDialysisRecords.cancel' | translate}}
+                </md-button>
+                <md-button ng-click="vm.ok()">
+                    {{'allDialysisRecords.ok' | translate}}
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>

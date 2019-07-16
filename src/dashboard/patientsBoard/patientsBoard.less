@@ -1,0 +1,276 @@
+patients-board {
+    // 通知上方的數目
+    .icon-button-badge {
+        position: absolute;
+        color: white;
+        background-color: red;
+        right: 0.5em;
+        top: 0.5em;
+        height: 1em;
+        width: 1em;
+        border-radius: 50%;
+        line-height: 1em;
+    }
+    .patients-board-content {
+        background-color: #f2f2f2;
+    }
+    height: 100%;
+    html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+        font-family: '微軟正黑體', Arial, Helvetica, sans-serif;
+    }
+    md-content {
+        background-color: #e9eaec;
+    }
+    // 主要畫面 (ui-view)
+    .main {
+        float: right;
+        width: calc(~"100% - 116px");
+        margin-top: 10px;
+        padding-right: 6px
+    }
+    .main .box {
+        width: 9.6%;
+        margin-right: 0.444444%;
+        height: 300px;
+        float: left;
+        margin-bottom: 8px;
+        box-shadow: 1px 1px 2px #aaaaaa;
+        background-color: #fff;
+        position: relative;
+    }
+    .main .box:nth-child(10n+10) {
+        margin-right: 0
+    }
+    .main .box .whitetxt {
+        font-family: 'Arial Black';
+        font-size: 56px;
+        color: #e7e7e7;
+        margin-top: 110px;
+        text-align: center;
+    }
+    .main .box .number {
+        font-family: 'Arial Black'!important;
+        color: #fff;
+        font-size: 23px;
+        line-height: 36px;
+        padding-left: 6px;
+        margin-bottom: 4px;
+        position: relative;
+        background-color: #4886e7!important;
+        &.abnormal {
+            background-color: #b71c1c!important;
+            cursor: pointer;
+        }
+    }
+    .main .activearea {
+        height: 206px;
+        overflow: hidden;
+    }
+    .main .box .exclamation {
+        position: absolute;
+        padding: 3px 8px;
+        border-radius: 100px;
+        text-align: center;
+        background: #ff0000;
+        top: 10px;
+        left: 10px;
+        color: #fff;
+        font-size: 20px;
+        line-height: 20px;
+        font-family: 'Arial Black'
+    }
+    .main .box .dot {
+        border-radius: 20px;
+        width: 10px;
+        height: 10px;
+        display: inline-block;
+        margin-right: 6px;
+        border: #fff solid 1px;
+        position: relative;
+    }
+    .status {
+        position: absolute;
+        top: 39px;
+        right: -1px;
+        border: #acabab solid 1px;
+        color: #8d8c8c;
+        font-size: 18px;
+        line-height: 38px;
+        padding: 0 6px;
+        font-weight: bold;
+        letter-spacing: -2px;
+        margin-top: 2px;
+        border-top-left-radius: 50px;
+        border-top-right-radius: 0px;
+        border-bottom-left-radius: 50px;
+        border-bottom-right-radius: 0px;
+    }
+    .main .box .dot_active {
+        background: #fff
+    }
+    .condition {
+        padding: 5px;
+        border-radius: 4px;
+        color: #fff;
+        font-size: 16px;
+        margin-bottom: 3px;
+        text-align: center;
+        margin-top: 0px;
+        background: url(../static/img/house.svg) no-repeat 4px center;
+        background-size: 18px;
+        background-color: #4886e7;
+        font-weight: bold;
+    }
+    .emergency-condition {
+        padding: 5px;
+        border-radius: 4px;
+        color: #fff;
+        font-size: 16px;
+        margin-bottom: 3px;
+        text-align: center;
+        margin-top: 0px;
+        background: url(../static/img/emergency.svg) no-repeat 4px center;
+        background-size: 22px;
+        background-color: #fd4891;
+        font-weight: bold;
+    }
+    .tagarea {
+        max-height: 80px;
+        overflow: hidden;
+    }
+    .tag {
+        background: #4886e7;
+        padding: 5px;
+        border-radius: 4px;
+        color: #fff;
+        font-size: 16px;
+        margin-bottom: 2px;
+        display: inline-block;
+        font-size: 14px
+    }
+    .labelbox {
+        overflow: hidden;
+        font-size: 11px;
+        padding-top: 4px
+    }
+    .label {
+        background: #4886e7;
+        display: inline-block;
+        position: relative;
+        margin-left: 12px;
+        margin-bottom: 2px;
+        color: #fff;
+        height: 24px;
+        line-height: 24px;
+        font-size: 14px;
+        padding: 0 6px 0 10px;
+        border-radius: 0 5px 5px 0;
+    }
+    .label::before {
+        content: "";
+        position: absolute;
+        left: -10px;
+        top: 0px;
+        border-top: 12px solid transparent;
+        border-right: 10px solid #4886e7;
+        border-bottom: 12px solid transparent;
+    }
+    .label::after {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 10px;
+        background: #fff;
+        position: absolute;
+        top: 9px;
+        left: 0px;
+    }
+    // Tags 標籤
+    .labelbox {
+        max-height: 58px;
+        overflow: hidden;
+        font-size: 11px;
+        margin-bottom: 6px;
+        padding-top: 3px;
+        border-top: #ccc solid 1px
+    }
+    // ShiftIssues 交班事項
+    .textbox {
+        line-height: 16px;
+        font-size: 13px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
+    .bottomarea {
+        position: absolute;
+        bottom: 6px;
+        width: 100%;
+        background: #fff;
+        padding-top: 3px
+    }
+    .bottombox {
+        text-align: center;
+        overflow: hidden;
+        clear: both;
+        background: #fff;
+        border: #ccc solid 1px;
+        box-sizing: border-box;
+        margin: 0 5px;
+        border-radius: 4px
+    }
+    .bottombox .button3 {
+        cursor: pointer;
+        width: 33.3333%;
+        float: left;
+        text-align: center;
+        font-size: 14px;
+        color: #282828;
+        font-weight: bold;
+        border-right: #b5c6d0 solid 1px;
+        box-sizing: border-box;
+        line-height: 34px;
+        background: linear-gradient(to bottom, #ffffff 0%, #f3f3f3 50%, #ededed 50%, #e9eaec 100%);
+        white-space: nowrap;
+    }
+    .bottombox .button3:active {
+        background: #9ba1a7;
+        color: #fff
+    }
+    // 通知未讀的標籤
+    .unreadNotification {
+        padding: 2px;
+        font-size: 9px;
+        top: -0.4rem;
+        right: initial;
+    }
+}
+
+.notification-dialog {
+    // 可以放在 md-list 上方, 將開關, 更新時間等等, 放在 div.list-header 裡
+    .list-header {
+        // line-height: 46px;
+        height: 2.8em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 0.5em;
+        background-color: #BBDEFB;
+        >div {}
+        md-switch {
+            margin: 0 8px;
+        }
+        // * {
+        //     vertical-align: middle;
+        // }
+        input {
+            height: 1.8em;
+        }
+        md-select {
+            margin: 0 8px;
+            padding: 0;
+        }
+    }
+}

@@ -1,0 +1,56 @@
+<div class="dialysisForm-container" layout="column" flex>
+    <md-toolbar class="no-print md-toolbar-tools">
+        <h2>透析表單</h2>
+        <span flex></span>
+        <md-button ng-if="$ctrl.isBrowser && !$ctrl.loading && !$ctrl.isErr" class="md-icon-button" aria-label="More" ng-click="$ctrl.print()">
+            <i class="material-icons">print</i>
+            <!-- <md-tooltip ng-if="$ctrl.isBrowser" style="font-size: 12px; margin-top: -5px;" md-direction="bottom">
+                    <span translate>{{'summary.print'}}</span>
+                </md-tooltip> -->
+        </md-button>
+        <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+            <i class="material-icons">clear</i>
+        </md-button>
+    </md-toolbar>
+    <div layout="row" class="function-bar no-print">
+        <div layout="column">
+            <label translate>{{ 'dialysisForm.conditionTitle' }}</label>
+            <md-select ng-model="$ctrl.queryCondition" ng-model-options="{trackBy: '$value.name'}" ng-change="$ctrl.changeQueryType()">
+                <md-option ng-repeat="(key, item) in $ctrl.conditionTypes" ng-value="item">{{ item.name === 'current' ? item.value.recordDateTitle  : (item.name | formQueryName)}}</md-option>
+            </md-select>
+        </div>
+        <div layout="column" ng-if="$ctrl.queryCondition.name === 'times'">
+            <label translate>{{ 'dialysisForm.timesTitle' }}</label>
+            <md-select ng-model="$ctrl.queryCondition.value" ng-change="$ctrl.getDialysisDataByTimes($ctrl.queryCondition.value)">
+                <md-option ng-repeat="item in $ctrl.queryCondition.conditions" ng-value="item">{{::item}}</md-option>
+            </md-select>
+        </div>
+        <div layout="column" ng-if="$ctrl.queryCondition.name === 'months'">
+            <label translate>{{ 'dialysisForm.monthsTitle' }}</label>
+            <md-select ng-model="$ctrl.queryCondition.value" ng-change="$ctrl.getDialysisDataByMonths($ctrl.queryCondition.value)">
+                <md-option ng-repeat="item in $ctrl.queryCondition.conditions" ng-value="item">{{::item | formMonths}}</md-option>
+            </md-select>
+        </div>
+    </div>
+    <loading ng-if="$ctrl.loading" flex></loading>
+    <server-error-page ng-if="!$ctrl.loading && $ctrl.isErr" refresh="$ctrl.refresh()" flex></server-error-page>
+    <md-content flex ng-if="!$ctrl.loading && !ctrl.isErr">
+        <div class="summaryContent" ng-repeat="data in $ctrl.currentData">
+            <md-subheader class="no-print">{{ (data.StartTime | moment: 'YYYY/MM/DD') }}
+                <span translate="dialysisForm.count" translate-values="{count: data.Number || data.Numbers.month}"></span>
+            </md-subheader>
+
+            <chang-gung-report ng-if="$ctrl.isShow('crrtform', data.Prescription.DialysisMode.Name)" header-id="data.Id" patient="$ctrl.currentPatient"></chang-gung-report>
+            <ansn-report ng-if="$ctrl.isShow('ansn', data.Prescription.DialysisMode.Name)" header-id="data.Id" patient="$ctrl.currentPatient"></ansn-report>
+            <piyavate-report ng-if="$ctrl.isShow('piyavate', data.Prescription.DialysisMode.Name)" header-id="data.Id" patient="$ctrl.currentPatient"></piyavate-report>
+            <chutung-report ng-if="$ctrl.isShow('chutung', data.Prescription.DialysisMode.Name)" header-id="data.Id" patient="$ctrl.currentPatient"></chutung-report>
+            <ks806-report ng-if="$ctrl.isShow('806', data.Prescription.DialysisMode.Name)" header-id="data.Id" patient="$ctrl.currentPatient"></ks806-report>
+            <jiade-report ng-if="$ctrl.isShow('jiade', data.Prescription.DialysisMode.Name)" header-id="data.Id" patient="$ctrl.currentPatient"></jiade-report>
+            <tpech-report ng-if="$ctrl.isShow('tpech', data.Prescription.DialysisMode.Name)" header-id="data.Id" patient="$ctrl.currentPatient"></tpech-report>
+            <summary-a ng-if="$ctrl.isShow('b', data.Prescription.DialysisMode.Name)" header-id="data.Id" patient="$ctrl.currentPatient"></summary-a>
+            <summary-b ng-if="$ctrl.isShow('c', data.Prescription.DialysisMode.Name)" header-id="data.Id" patient="$ctrl.currentPatient"></summary-b>
+            <summary-c ng-if="$ctrl.isShow('d', data.Prescription.DialysisMode.Name)" header-id="data.Id" patient="$ctrl.currentPatient"></summary-c>
+            <summary-d ng-if="$ctrl.isShow('a', data.Prescription.DialysisMode.Name)" header-id="data.Id" patient="$ctrl.currentPatient"></summary-d>
+        </div>
+    </md-content>
+</div>

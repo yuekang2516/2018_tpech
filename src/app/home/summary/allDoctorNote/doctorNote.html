@@ -1,0 +1,56 @@
+<div layout="column" layout-fill flex>
+    <md-toolbar hide-gt-sm layout="row">
+        <div class="md-toolbar-tools">
+            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.goback()" aria-label="call">
+                <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+            </md-button>
+            <h3>
+                {{!$ctrl.loading ? $ctrl.patient.Name + '(' + $ctrl.patient.MedicalId + ')' : null }}
+                {{'allDoctorNote.doctorNote' | translate}}
+            </h3>
+        </div>
+    </md-toolbar>
+    <div hide-xs hide-sm ng-show="!$ctrl.loading">
+        <h3 style="float: left; padding-left: 10px">
+            <span ng-show="!$ctrl.doctorNoteId" translate="allDoctorNote.createRecord"
+                  translate-values='{loading: $ctrl.loading, Name: $ctrl.patient.Name, MedicalId: $ctrl.patient.MedicalId}'></span>
+            <span ng-show="$ctrl.doctorNoteId && $ctrl.regForm.Status !== 'Deleted'"
+                  translate="allDoctorNote.editRecord"
+                  translate-values='{loading: $ctrl.loading, Name: $ctrl.patient.Name, MedicalId: $ctrl.patient.MedicalId}'></span>
+            <span ng-show="$ctrl.regForm.Status === 'Deleted'"
+                  translate="allDoctorNote.showDeleted"
+                  translate-values='{loading: $ctrl.loading, Name: $ctrl.patient.Name, MedicalId: $ctrl.patient.MedicalId}'></span>
+        </h3>
+        <md-button style="float:right; margin-top: 8px" class="md-secondary md-icon-button" ng-click="$ctrl.goback()"
+                   aria-label="call">
+            <i class="material-icons">cancel</i>
+        </md-button>
+    </div>
+    <loading ng-show="$ctrl.loading"></loading>
+    <md-content layout="column" ng-show="!$ctrl.loading">
+        <form class="md-padding yuekang-input-container" layout="column" name="regForm">
+            <h4 translate="allDoctorNote.doctorNoteTime"></h4>
+            <span flex></span>
+            <span>{{ $ctrl.regForm.DoctorNoteTime | moment: 'YYYY/MM/DD(dd) HH:mm'}}</span>
+            <div layout="column" style="min-height: calc(100vh - 176px);">
+                <h4 translate="allDoctorNote.content"></h4>
+                <span>{{$ctrl.regForm.Content}}</span>
+            </div>
+            <div layout="row" layout-wrap>
+                <div flex="50" flex-xs="100" ng-show="$ctrl.regForm.CreatedUserName">
+                    <!-- <span>建立: {{ $ctrl.regForm.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                    <span translate="allDoctorNote.createdTime"
+                          translate-values='{CreatedTime: $ctrl.regForm.CreatedTime}'></span>
+                    <seal model="$ctrl.regForm" modified="none"></seal>
+                </div>
+                <div flex="50" flex-xs="100" ng-show="$ctrl.regForm.ModifiedTime != null">
+                    <!-- <span>修改: {{ $ctrl.regForm.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                    <span translate="allDoctorNote.editedTime"
+                          translate-values='{ModifiedTime: $ctrl.regForm.ModifiedTime}'></span>
+                    <seal model="$ctrl.regForm" created="none"></seal>
+                </div>
+            </div>
+        </form>
+        <div ng-class="{deleted: $ctrl.regForm.Status == 'Deleted'}"></div>
+    </md-content>
+</div>

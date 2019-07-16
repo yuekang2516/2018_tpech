@@ -1,0 +1,61 @@
+<md-dialog class="year-plan-dialog-container">
+        <form name="eventForm" style="height:100vh" ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools" layout="row">
+     
+                    <p flex>{{dialog.calendarDate | moment: 'YYYY'}} 年度計畫</p>
+    
+                    <md-button class="md-icon-button" ng-click="dialog.cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+    
+            <md-dialog-content layout="column" >
+                <loading ng-if="dialog.loading"></loading>
+                <div class="md-dialog-content" ng-if="!dialog.loading">
+
+                    <div layout="column" style="margin-top: -20px; margin-bottom: 10px;">
+                        <h3>請填寫每月計畫標題</h3>
+                        <span style="margin-top: -10px;">計畫將於每月一號開始，提醒一個月。( 所有計畫，將顯示於 "年度計畫表" )</span>
+                        <br>
+                        <span class="alert-message">
+                            ex：6月的計畫，將會從 6/1 開始顯示。若 6/1 沒有執行，則會持續往下一個日期顯示 ( 假設今天是 6/2，沒執行的計畫將會顯示於 6/2 的日期上，6/1 將不再顯示沒執行的計畫 )。
+                            執行過的計畫將會停留在執行日期當天，而若是整個6月都沒執行過的計畫，7/1 之後將顯示於6月的最後一天 6/30。
+                        </span>
+                    </div>
+                
+                    <div layout="row" class="row" ng-repeat="item in dialog.allMonthEvent" layout-align="start center">
+                        <label class="label-margin">{{item.month}}月</label>
+                        <md-chips ng-model="item.eventChips"
+                                  md-enable-chip-edit="true"
+                                  readonly="item.isReadonly"
+                                  md-removable="!item.isReadonly"
+                                  placeholder="計畫標題..."
+                                  md-on-add="dialog.addChip(item.month, $chip, $index)"
+                                  md-on-remove="dialog.deleteChip(item.month, $chip, $index)"
+                                  ng-click="dialog.selectChip(item.month, $event)"
+                                  ng-class="{pink: item.month % 2 === 0, yellow: item.month % 2 === 1}">
+                            <md-chip-template >
+                                <b>{{$chip.Title}}</b>
+                                
+                            </md-chip-template>
+                        </md-chips>
+                    </div>
+    
+                   
+                </div>
+            </md-dialog-content>
+            <md-dialog-actions ng-if="!dialog.loading" layout="row" layout-align="end end">
+                    <md-button class="md-raised" ng-click="dialog.cancel()">
+                        取消
+                    </md-button>
+                    <md-button class="md-raised md-primary md-btn-white-text" ng-click="dialog.save()" ng-disabled="eventForm.$invalid || !eventForm.$dirty">
+                        儲存
+                    </md-button>
+                   
+                    <md-progress-circular md-diameter="20px" md-mode="indeterminate" ng-show="dialog.isLoading" class="circle"></md-progress-circular>
+                    
+                </md-dialog-actions>
+        </form>
+    </md-dialog>

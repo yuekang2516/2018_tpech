@@ -1,0 +1,81 @@
+<div class="prescriptionTabPageContainer" layout="column" layout-fill flex>
+    
+         <!-- <md-toolbar hide-gt-sm>
+             <div class="md-toolbar-tools">
+                 <md-button class="md-icon-button" ng-click="$ctrl.back();">
+                     <i class="material-icons">keyboard_backspace</i>
+                 </md-button>
+                 <div layout="row">
+                     {{$ctrl.currentPatient.Name}}({{$ctrl.currentPatient.MedicalId}}) {{'allPrescriptions.allPrescriptions.prescribingRecord'
+                     | translate}}
+                 </div>
+                 <span flex></span>
+             </div>
+         </md-toolbar> -->
+ 
+         <div class="list-header" ng-show="!$ctrl.loading" layout="row" layout-align="center center" >
+             <md-switch ng-model="showDeleted" aria-label="Switch data">
+                 <h6 translate>{{'allPrescriptions.prescriptionTabPage.showDeleted'}}
+                     <!-- ({{$ctrl.deletedItemsLength}}筆) -->
+                 </h6>
+             </md-switch>
+             <span flex></span>
+             <!-- <h6>共 {{$ctrl.serviceData.Total}} 筆</h6> -->
+             <h6 translate="allPrescriptions.prescriptionTabPage.totalRecord" translate-values='{Total: $ctrl.serviceData.Total}'></h6>
+             <span flex></span>
+             <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+             <!-- <h6>{{$ctrl.lastRefreshTitle}}</h6>
+             <md-button class="md-icon-button" ng-click="$ctrl.refresh();">
+                 <i class="material-icons">refresh</i>
+             </md-button> -->
+         </div>
+         <md-content flex layout="column">
+             <loading ng-show="$ctrl.loading"></loading>
+             <div ui-grid="gridOptions" ng-show="!$ctrl.loading && $ctrl.normalRecordsLength > 0 || ($ctrl.normalRecordsLength === 0 && showDeleted)" id="i18nGrid" class="grid" ui-grid-auto-resize ui-grid-pinning ui-grid-resize-columns></div>
+             <div ng-show="$ctrl.serviceData.Records.length > 0 " infinite-scroll="$ctrl.loadMore()" infinite-scroll-disabled='$ctrl.loading'
+                 infinite-scroll-distance='2' infinite-scroll-parent>
+             </div>
+             <!--  ng-show="!$ctrl.loading && !$ctrl.serviceData.Records.length && !$ctrl.isError"  -->
+             <div flex ng-show="!$ctrl.loading && ($ctrl.normalRecordsLength === 0 && !showDeleted) && !$ctrl.isError" layout="column"  layout-align="center center" >
+                 <h1 translate="allPrescriptions.prescriptionTabPage.noData" translate-values='{tag: $ctrl.tagStr}'></h1>
+                 <h4 translate>{{'allPrescriptions.prescriptionTabPage.clickBottomRight'}}</h4>
+             </div>
+             <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column"  layout-align="center center">
+                 <h3 translate>{{'allPrescriptions.prescriptionTabPage.serverError'}}</h3>
+             </div>
+         </md-content>
+         <md-button class="md-fab md-fab-bottom-right" ng-if="checkCanAccess({dataStatus:Status})" ng-click="$ctrl.gotoDetail('add')">
+             <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+         </md-button>
+ </div>
+     
+     <script type="text/ng-template" id="dialog.html">
+         <md-dialog aria-label="刪除確認">
+             <form ng-cloak>
+                 <md-toolbar>
+                     <div class="md-toolbar-tools">
+                         <h2 translate>{{'allPrescriptions.prescriptionTabPage.confirmDelete'}}</h2>
+                         <span flex></span>
+                         <md-button class="md-icon-button" ng-click="vm.cancel()">
+                             <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                         </md-button>
+                     </div>
+                 </md-toolbar>
+     
+                 <md-dialog-content>
+                     <div class="md-dialog-content" translate>
+                         {{'allPrescriptions.prescriptionTabPage.deleteRecord'}}
+                     </div>
+                 </md-dialog-content>
+     
+                 <md-dialog-actions layout="row">
+                     <md-button ng-click="vm.cancel()">
+                         {{'allPrescriptions.prescriptionTabPage.cancel' | translate}}
+                     </md-button>
+                     <md-button ng-click="vm.ok()">
+                         {{'allPrescriptions.prescriptionTabPage.delete' | translate}}
+                     </md-button>
+                 </md-dialog-actions>
+             </form>
+         </md-dialog>
+     </script>

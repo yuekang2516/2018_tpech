@@ -1,0 +1,61 @@
+<loading ng-show="vm.loading"></loading>
+<div ng-show="!vm.data.loadingBeds && !vm.loading">
+    <div class="bed-container">
+        <div class="bed-body box1 hbed" ng-style="vm.data.options.shift != 'all' ? {'min-height': 'initial'} : {}"
+            ng-repeat="b in vm.data.beds" layout="column">
+            <div class="bed-title number a3num flex-column">
+                {{b.Name}}
+                <span class="bedGroup" ng-if="b.Group">{{b.Group}}</span>
+                <span ng-if="b.NotInSetting" class="warn no-print">
+                    <md-tooltip md-direction="top">{{'beds.bedNoNotInSetting' | translate}}</md-tooltip>
+                </span>
+            </div>
+            <button
+                ng-show="(vm.data.options.shift == 'all' && ( b[shift].Assign || (shift !== 'night' && shift !== 'temp'))) || vm.data.options.shift == shift"
+                ng-style="(vm.data.options.shift == shift) ? {'min-height': '157px'} : {}"
+                ng-class="{bedAssigned:b[shift].Assign, bedNotAssigned: b[shift].Assign == null, male: b[shift].Assign.PatientGender == 'M' || b[shift].Assign.PatientGender == 'Male', female: b[shift].Assign.PatientGender == 'F' || b[shift].Assign.PatientGender == 'Female' }"
+                ng-click="vm.gotoPatient(b[shift].Assign)" ng-disabled="!b[shift].Assign"
+                ng-repeat="shift in vm.shifts">
+                <div layout="column" class="{{shift}} shift" style="padding:0 12px; position:relative;">
+                    <div class="dayoff" ng-if="b[shift].Dayoff" layout="row" layout-align="center">
+                        <div layout="column">
+                            <span ng-if="vm.data.showDayoff">{{ b[shift].Dayoff.PatientName }}</span>
+                            <span ng-if="vm.data.showDayoff">{{ b[shift].Dayoff.MedicalId }}</span>
+                        </div>
+                        <i class="material-icons date_range-i">
+                            <md-tooltip ng-if="!vm.data.showDayoff">{{b[shift].Dayoff.MedicalId}} -
+                                {{b[shift].Dayoff.PatientName}}</md-tooltip>
+                            date_range
+                        </i>
+                    </div>
+                    <span class="title">{{ b[shift].Assign.PatientName }}</span>
+                    <span class="smaller">{{ b[shift].Assign.MedicalId }}</span>
+                    <!-- <span ng-if="b[shift].Assign.EndDate1"class="smaller" style = "color:red;">重大傷病卡剩{{b[shift].day}}到期</span> -->
+                    <span ng-if="b[shift].Assign.EndDate1 && b[shift].TimeGap1<60" class="smaller"
+                        style="color:red;">{{::b[shift].TimeGap1>0 ? '重大傷病卡剩' + b[shift].TimeGap1 + '天到期':'重大傷病卡已過期'+ (-b[shift].TimeGap1) + '天'}}</span>
+                    <span ng-if="b[shift].Assign.EndDate2 && b[shift].TimeGap2<60" class="smaller"
+                        style="color:red;">{{::b[shift].TimeGap2>0 ? '重大傷病卡剩' + b[shift].TimeGap2 + '天到期':'重大傷病卡已過期'+ (-b[shift].TimeGap2) + '天'}}</span>
+                    <span class="shiftText" ng-if="b[shift].Assign"
+                        translate="{{'beds.component.'+ shift + 'Abbr'}}"></span>
+                    <span class="shiftTextFull" ng-if="!b[shift].Assign"
+                        translate="{{'beds.component.'+ shift + 'Shift'}}"></span>
+                    <div style="text-align: left; padding-top: 4px" layout="column"
+                        ng-if="vm.data.options.shift == shift">
+                        <span class="smaller" ng-repeat="doc in b[shift].Assign.Doctor"
+                            translate="bedsContent.doctorName" translate-values="{doctor: doc}"></span>
+                        <span class="smaller" ng-repeat="nurse in b[shift].Assign.Nurses" translate="bedsContent.nurses"
+                            translate-values="{idx: $index, n: nurse}"></span>
+                        <span ng-if="b[shift].Assign.DialysisMode" class="smaller" translate="bedsContent.mode"
+                            translate-values="{mode: b[shift].Assign.DialysisMode}"></span>
+                        <span ng-if="b[shift].Assign.Prescription.ArtificialKidney" class="smaller"
+                            translate="bedsContent.afk"
+                            translate-values="{afk: b[shift].Assign.Prescription.ArtificialKidney}"></span>
+                        <span ng-if="b[shift].Assign.Prescription.Dialysate" class="smaller"
+                            translate="bedsContent.dialysate"
+                            translate-values="{dialysate: b[shift].Assign.Prescription.Dialysate}"></span>
+                    </div>
+                </div>
+            </button>
+        </div>
+    </div>
+</div>

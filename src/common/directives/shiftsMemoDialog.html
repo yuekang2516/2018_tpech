@@ -1,0 +1,28 @@
+<md-dialog class="shiftsTotalDialog" style="width: 500px">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 flex>{{vm.day.format('YYYY-MM-DD(dd)')}} {{'shifts.shiftsMemoDialog.memo' | translate}}</h2>
+            <md-button class="md-icon-button" ng-click="vm.cancel()">
+                <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <form layout="column" name="form">
+                <md-input-container>
+                    <label>{{'shifts.shiftsMemoDialog.memo' | translate}}</label>
+                    <textarea name="Content" ng-model="vm.memo" ng-model-options="{ allowInvalid: true }" rows="5" md-maxlength="5000" md-detect-hidden="true"
+                        required md-select-on-focus></textarea>
+                    <div ng-messages="form.Content.$error" ng-if="!showHints">
+                        <div ng-message="md-maxlength">{{'shifts.shiftsMemoDialog.overTextMessage' | translate}}</div>
+                    </div>
+                </md-input-container>
+                <div layout="row" ng-if="vm.editable">
+                    <md-button flex ng-click="vm.ok()" class="md-raised md-primary" ng-disabled="form.$invalid">{{'shifts.shiftsMemoDialog.save' | translate}}</md-button>
+                </div>
+            </form>
+        </div>
+    </md-dialog-content>
+</md-dialog>

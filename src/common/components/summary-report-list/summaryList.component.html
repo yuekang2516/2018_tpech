@@ -1,0 +1,530 @@
+<div layout="row" layout-padding layout-wrap layout-fill ng-cloak>
+    <md-whiteframe ng-class="{'md-whiteframe-10dp' : $ctrl.whiteframe}" layout-align="center center" flex>
+        <div layout="column" class="border" style="min-height: 36px; line-height: 36px;">
+            <div layout="row">
+                <div flex>
+                    <span class="title" translate="summary.content.BedNo"></span>
+                    <span class="content">{{$ctrl.data.DialysisHeader.BedNo}}</span>
+                </div>
+                <div flex>
+                    <span class="title" translate="summary.content.dialysisTimes"></span>
+                    <span class="content">{{$ctrl.data.DialysisHeader.Numbers.all}}</span>
+                </div>
+            </div>
+
+            <div flex>
+                <span class="title" translate="summary.content.startTime"></span>
+                <span class="content">{{$ctrl.data.DialysisHeader.StartTime | moment: 'YYYY-MM-DD (dd) HH:mm'}}</span>
+            </div>
+            <!-- <div flex="25" flex-xs="50">
+                <span class="title">病歷號:</span>
+                <span class="content">{{$ctrl.patient.MedicalId}}</span>
+            </div>
+            <div flex="25" flex-xs="50">
+                <span class="title">年齡:</span>
+                <span class="content">{{$ctrl.patient.Birthday | age}}</span>
+            </div> -->
+        </div>
+        <!-- 本次交班事項 -->
+        <div flex="100" ng-click="$ctrl.gotoShiftIssues()">
+            <div>
+                <table style="border: 1px solid gray; width: 100%">
+                    <thead>
+                        <tr>
+                            <td ng-if="$ctrl.data.ShiftIssues.length > 0" class="heading" translate="summary.content.time"></td>
+                            <td class="heading" translate="summary.content.shiftIssue"></td>
+                        </tr>
+                        <!-- <tr>
+                            <td>時間</td>
+                            <td>內容</td>
+                        </tr> -->
+                    </thead>
+                    <tbody>
+                        <tr ng-if="$ctrl.data.ShiftIssues.length > 0" ng-repeat="data in $ctrl.data.ShiftIssues">
+                            <td>
+                                {{data.ModifiedTime ? data.ModifiedTime : data.CreatedTime | moment: 'HH:mm'}}
+                            </td>
+                            <td>
+                                {{data.Content}}
+                            </td>
+                        </tr>
+                        <tr ng-if="$ctrl.data.ShiftIssues.length === 0">
+                            <td translate="summary.content.noData"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- 上次返家情況主訴 -->
+        <div flex="100" ng-click="$ctrl.gotoOverview()">
+                <div>
+                    <table style="border: 1px solid gray; width: 100%">
+                        <thead>
+                            <tr>
+                                <td class="heading" translate="summary.content.chiefComplaint"></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-if="$ctrl.data.DialysisHeader.ChiefComplaint">
+                                <td>
+                                    {{$ctrl.data.DialysisHeader.ChiefComplaint}}
+                                </td>
+                            </tr>
+                            <tr ng-if="!$ctrl.data.DialysisHeader.ChiefComplaint">
+                                <td translate="summary.content.noData"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <div layout="column">
+            <div layout="column" ng-click="$ctrl.gotoOverview()">
+                <div class="border" flex="100">
+                    <div layout="row">
+                        <span flex="100" class="title" translate="summary.content.dialysisTime"></span>
+                    </div>
+                    <div layout="row">
+                        <div flex="50">
+                            <span class="title" translate="summary.content.start"></span>
+                            <span class="content">{{$ctrl.data.DialysisHeader.DialysisDataFirstTime | date: 'HH:mm'}}</span>
+                        </div>
+                        <div flex="50">
+                            <span class="title" translate="summary.content.end"></span>
+                            <span class="content">{{$ctrl.data.DialysisHeader.DialysisDataLastTime | date: 'HH:mm'}}</span>
+                        </div>
+                    </div>
+                    <div layout="row">
+                        <span flex="100" class="title" translate="summary.content.bloodPressure"></span>
+                    </div>
+                    <div layout="row">
+                        <div flex="50">
+                            <span class="title" translate="summary.content.start">{{$ctrl.data.DialysisHeader.BloodPressureBeforePosture}}</span>
+                            <span class="content">{{$ctrl.data.DialysisHeader.BPs[0].BPS}} /
+                                {{$ctrl.data.DialysisHeader.BPs[0].BPD}}</span>
+                        </div>
+                        <div flex="50">
+                            <span class="title" translate="summary.content.end">{{$ctrl.data.DialysisHeader.BloodPressureAfterPosture}}</span>
+                            <span class="content">{{$ctrl.data.DialysisHeader.BPs[1].BPS}} /
+                                {{$ctrl.data.DialysisHeader.BPs[1].BPD}}</span>
+                        </div>
+                    </div>
+                    <div layout="row">
+                        <div flex="50">
+                            <span class="title" translate="summary.content.Temperature"></span>
+                            <span class="content">{{$ctrl.data.DialysisData[0].Temperature}}</span>{{'summary.content.degrees' | translate}}
+                        </div>
+                    </div>
+                    <div layout="row">
+                        <span flex="100" class="title" translate="summary.content.weight"></span>
+                    </div>
+                    <div layout="row">
+                        <div flex="50">
+                            <span class="title" translate="summary.content.start"></span>
+                            <span class="content">{{$ctrl.data.DialysisHeader.PredialysisWeight}} kg</span>
+                        </div>
+                        <div flex="50">
+                            <span class="title" translate="summary.content.end"></span>
+                            <span class="content">{{$ctrl.data.DialysisHeader.WeightAfterDialysis}} kg</span>
+                        </div>
+                    </div>
+                    <div layout="row">
+                        <div flex="50">
+                            <span class="title" translate="summary.content.StandardWeight"></span>
+                            <span class="content">{{$ctrl.data.DialysisHeader.Prescription.StandardWeight}}</span> kg
+                        </div>
+                        <div flex="50">
+                            <span class="title" translate="summary.content.Dehydration"></span>
+                            <span class="content">{{$ctrl.data.DialysisHeader.Dehydration}}</span> kg
+                        </div>
+                    </div>
+                    <div layout="row">
+                        <div flex="50">
+                            <span class="title" translate="summary.content.DehydrationTarget"></span>
+                            <span class="content" ng-if="$ctrl.data.DialysisHeader.PredialysisWeight < $ctrl.data.DialysisHeader.StandardWeight">0.0
+                                kg</span>
+                            <span class="content" ng-if="($ctrl.data.DialysisHeader.PredialysisWeight > $ctrl.data.DialysisHeader.StandardWeight) && $ctrl.data.DialysisHeader.DehydrationTarget">{{$ctrl.data.DialysisHeader.DehydrationTarget}}
+                                kg</span>
+                        </div>
+                        <div flex="50">
+                            <span class="title" translate="summary.content.deviation"></span>
+                            <span class="content">{{ $ctrl.deviation }}</span> kg
+                        </div>
+                    </div>
+                </div>
+                <div class="border" flex="100">
+                    <div>
+                        <span class="title" translate="summary.content.DialysisSystem"></span>
+                        <span class="content">{{$ctrl.data.DialysisHeader.DialysisSystem}}</span>
+                    </div>
+                    <div>
+                        <span class="title" translate="summary.content.machineType"></span>
+                        <span class="content">{{$ctrl.data.DialysisHeader.Prescription.ArtificialKidney}}</span>
+                    </div>
+                    <div>
+                        <span class="title" translate="summary.content.Dialysate"></span>
+                        <span class="content">{{$ctrl.data.DialysisHeader.Prescription.Dialysate}}</span>
+                    </div>
+                    <div>
+                        <span class="title" translate="summary.content.Anticoagulants"></span>
+                        <span class="content" ng-repeat="(key, value) in $ctrl.data.DialysisHeader.Prescription.Anticoagulants">
+                            {{key}} : {{value | AnticoagulantValue}}
+                        </span>
+                    </div>
+                    <div>
+                        <span class="title" translate="summary.content.EndHollowFiber"></span>
+                        <span class="content"> {{$ctrl.data.DialysisHeader.EndHollowFiber}} </span>
+                    </div>
+                    <div>
+                        <span class="title" translate="summary.content.EndChamber"></span>
+                        <span class="content">{{$ctrl.data.DialysisHeader.EndChamber}}</span>
+                    </div>
+                </div>
+            </div>
+            <div layout="column" layout-wrap ng-click="$ctrl.gotoOverview()">
+                <div class="border" flex="100">
+                    <div>
+                        <span class="title" translate="summary.content.vascularAccess"></span>
+                    </div>
+                    <div>
+                        <span class="content">{{$ctrl.data.DialysisHeader.VesselAssessment.CatheterPosition.Side}},
+                            {{$ctrl.catheter.typeName}}</span>
+                    </div>
+                    <div>
+                        <span class="title" translate="summary.content.StartDate"></span>
+                        <span class="content">{{$ctrl.data.DialysisHeader.VesselAssessment.StartDate |
+                            date:'yyyy/MM/dd'}}</span>
+                    </div>
+                    <div>
+                        <span class="title" translate="summary.content.ArteryCatheter"></span>
+                        <span class="content">{{$ctrl.data.DialysisHeader.ArteryCatheter}}</span>
+                        {{$ctrl.catheter.unit}}
+                        <span class="title" translate="summary.content.VeinCatheter"></span>
+                        <span class="content">{{$ctrl.data.DialysisHeader.VeinCatheter}}</span> {{$ctrl.catheter.unit}}
+                    </div>
+                    <div ng-if="$ctrl.catheter.unit === '(cc)' && $ctrl.data.DialysisHeader.CatheterLength">
+                        <span class="title" translate="summary.content.CatheterLength"></span>
+                        <span class="content">{{$ctrl.data.DialysisHeader.CatheterLength}}</span>(cm)
+                    </div>
+                    <div>
+                        <span class="title" translate="summary.content.VACR"></span>
+                        <span class="content">{{$ctrl.data.DialysisHeader.VACR}}</span>
+                    </div>
+                </div>
+                <div class="border" flex="100">
+                    <div>
+                        <span class="title" translate="summary.content.LabItems"></span>
+                        <span class="content" ng-repeat="(key, value) in $ctrl.data.DialysisHeader.LabItems">
+                            {{key}}{{$last ? '' : ', '}}
+                        </span>
+                    </div>
+                    <div>
+                        <span class="title" translate="summary.content.BeforeDialysisExsanguinate"></span>
+                        <span class="content">{{ $ctrl.data.DialysisHeader.BeforeDialysisExsanguinate }} </span>
+                        <span class="content" ng-if="$ctrl.data.DialysisHeader.BeforeDialysisExsanguinateContent">， {{
+                            $ctrl.data.DialysisHeader.BeforeDialysisExsanguinateContent }} </span>
+                        <span class="title" translate="summary.content.BeforeBloodTransfusionPerson"></span>
+                        <span class="content"> {{ $ctrl.data.DialysisHeader.BeforeBloodTransfusionPerson}} </span>
+                    </div>
+                    <div>
+                        <span class="title" translate="summary.content.AfterDialysisExsanguinate"></span>
+                        <span class="content">{{ $ctrl.data.DialysisHeader.AfterDialysisExsanguinate}} </span>
+                        <span class="content" ng-if="$ctrl.data.DialysisHeader.AfterDialysisExsanguinateContent">， {{
+                            $ctrl.data.DialysisHeader.AfterDialysisExsanguinateContent }} </span>
+                        <span class="title" translate="summary.content.AfterBloodTransfusionPerson"></span>
+                        <span class="content"> {{ $ctrl.data.DialysisHeader.AfterBloodTransfusionPerson}} </span>
+                    </div>
+                    <div layout="row">
+                        <div flex="50">
+                            <span class="title" translate="summary.content.BloodTypes"></span>
+                            <span class="content">{{$ctrl.patient.BloodTypes}}</span>
+                        </div>
+                        <div flex="50">
+                            <span class="title" translate="summary.content.RH"></span>
+                            <span class="content">{{$ctrl.patient.RH | rhMode}}</span>
+                        </div>
+                    </div>
+                    <div layout="row">
+                        <div flex="70">
+                            <span class="title" translate="summary.content.BloodTransfusionTime"></span>
+                            <span class="content" ng-if="$ctrl.data.BloodTransfusions.length>0">{{$ctrl.data.BloodTransfusions[0].StartTime
+                                | moment: 'YYYY-MM-DD HH:mm'}}</span>
+                            <span class="content" ng-if="$ctrl.data.BloodTransfusions.length>0"> ~
+                                {{$ctrl.data.BloodTransfusions[$ctrl.data.BloodTransfusions.length -1].EndTime| moment:
+                                'YYYY-MM-DD (dd) HH:mm'}}</span>
+                        </div>
+                        <div flex="30">
+                            <span class="title" translate="summary.content.TransfusionReaction"></span>
+                            <span class="content" ng-if="$ctrl.data.BloodTransfusions.length>0">{{$ctrl.data.BloodTransfusions[$ctrl.data.BloodTransfusions.length
+                                -1].TransfusionReaction}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div layout="column" ng-click="$ctrl.gotoDoctorNote()">
+                <div flex="100" class="border content for-doctor">
+                    <span class="title" translate="summary.content.Prescription"></span>
+                    <div ng-if="$ctrl.data.DialysisHeader.Prescription.StandardWeight">
+                        <span class="title" translate="summary.content.DW"></span>
+                        <span class="content">{{$ctrl.data.DialysisHeader.Prescription.StandardWeight}} kg</span>
+                    </div>
+                    <div>
+                        <span class="title" translate="summary.content.dialysisTime"></span>
+                        <span class="content" ng-if="$ctrl.data.DialysisHeader.Prescription.Duration.Hours" translate="summary.content.dialysisTimeHour"
+                        translate-values='{Hours: $ctrl.data.DialysisHeader.Prescription.Duration.Hours}'>
+                        </span>
+                        <span class="content" ng-if="$ctrl.data.DialysisHeader.Prescription.Duration.Minutes" translate="summary.content.dialysisTimeMinute"
+                        translate-values='{Minutes: $ctrl.data.DialysisHeader.Prescription.Duration.Minutes}'>
+                        </span>
+                        <span class="content" ng-if="$ctrl.data.DialysisHeader.Prescription.Duration.Seconds" translate="summary.content.dialysisTimeSecond"
+                        translate-values='{Seconds: $ctrl.data.DialysisHeader.Prescription.Duration.Seconds}'>
+                        </span>
+                    </div>
+                    <div ng-if="$ctrl.data.DialysisHeader.Prescription.Dialysate">
+                        <span class="title" translate="summary.content.DialysateConcentration"></span>
+                        <span class="content">{{$ctrl.data.DialysisHeader.Prescription.Dialysate}} meq/l</span>
+                    </div>
+                    <div ng-if="$ctrl.data.DialysisHeader.Prescription.HCO3 || $ctrl.data.DialysisHeader.Prescription.Na">
+                        <span class="title" translate="summary.content.HCO3"></span>
+                        <span class="content">{{$ctrl.data.DialysisHeader.Prescription.HCO3}} /{{$ctrl.data.DialysisHeader.Prescription.Na}} meq/l</span>
+                    </div>
+                    <div ng-if="$ctrl.data.DialysisHeader.Prescription.DialysateTemperature">
+                        <span class="title" translate="summary.content.dialysateTemperature"></span>
+                        <span class="content">{{$ctrl.data.DialysisHeader.Prescription.DialysateTemperature}} °C</span>
+                    </div>
+                    <div ng-if="$ctrl.data.DialysisHeader.Prescription.BF">
+                        <span class="title" translate="summary.content.BF"></span>
+                        <span class="content">{{$ctrl.data.DialysisHeader.Prescription.BF}} cc/min</span>
+                    </div>
+                    <div ng-if="$ctrl.data.DialysisHeader.Prescription.DialysateFlowRate">
+                        <span class="title" translate="summary.content.DialysateFlowRate"></span>
+                        <span class="content">{{$ctrl.data.DialysisHeader.Prescription.DialysateFlowRate}} cc/min</span>
+                    </div>
+                    <div ng-if="$ctrl.data.DialysisHeader.Prescription.Route">
+                        <span class="title" translate="summary.content.Route"></span>
+                        <span class="content">{{$ctrl.data.DialysisHeader.Prescription.Route}} </span>
+                    </div>
+                    <div ng-if="$ctrl.data.DialysisHeader.Prescription.Needle.ArteryLength">
+                        <span class="title" translate="summary.content.ArteryLength"></span>
+                        <span class="content">{{$ctrl.data.DialysisHeader.Prescription.Needle.ArteryLength}} G</span>
+                    </div>
+                    <div ng-if="$ctrl.data.DialysisHeader.Prescription.Needle.VeinLength">
+                        <span class="title" translate="summary.content.VeinLength"></span>
+                        <span class="content">{{$ctrl.data.DialysisHeader.Prescription.Needle.VeinLength}} G</span>
+                    </div>
+                    <div ng-if="$ctrl.data.DialysisHeader.Prescription.ArtificialKidney">
+                        <span class="title" translate="summary.content.ArtificialKidney"></span>
+                        <span class="content">{{$ctrl.data.DialysisHeader.Prescription.ArtificialKidney}} </span>
+                    </div>
+                    <div ng-if="$ctrl.data.DialysisHeader.Prescription.Mode.Name">
+                        <span class="title" translate="summary.content.Mode"></span>
+                        <span class="content">{{$ctrl.data.DialysisHeader.Prescription.Mode.Name}} </span>
+                    </div>
+                    <div ng-if="$ctrl.data.DialysisHeader.Prescription.Mode.Volumn">
+                        <span class="title" translate="summary.content.SupplementVolume"></span>
+                        <span class="content">{{$ctrl.data.DialysisHeader.Prescription.SupplementVolume}} </span>
+                    </div>
+                    <div ng-if="$ctrl.data.DialysisHeader.Prescription.Memo">
+                        <span class="title" translate="summary.content.memo"></span>
+                        <span class="content">{{$ctrl.data.DialysisHeader.Prescription.Memo}} </span>
+                    </div>
+                </div>
+                <div flex="100" class="border content for-doctor">
+                    <span class="title" translate="summary.content.condition"></span>
+                    <div class="content" ng-repeat="data in $ctrl.data.DoctorNotes">{{data.Content}} {{data.ModifiedUserName ? data.ModifiedUserName : data.CreatedUserName}}</div>
+                </div>
+            </div>
+
+            <!-- <div layout="row" layout-wrap ng-click="$ctrl.gotoMachineData()"> -->
+            <!-- 透析機資料 -->
+            <div flex="100" ng-click="$ctrl.gotoMachineData()">
+                <div class="machine">
+                    <table>
+                        <tr>
+                            <th class="headcol" translate="summary.content.time"></th>
+                            <td ng-if="$ctrl.data.DialysisData.length === 0">&nbsp;</td>
+                            <td ng-if="$ctrl.data.DialysisData.length > 0" class="" ng-repeat="data in $ctrl.data.DialysisData track by $index">{{data.DialysisTime | date: 'HH:mm'}}</td>
+                        </tr>
+                        <tr>
+                            <th class="headcol" translate="summary.content.BPS"></th>
+                            <td ng-if="$ctrl.data.DialysisData.length === 0">&nbsp;</td>
+                            <td ng-if="$ctrl.data.DialysisData.length > 0" class="" ng-repeat="data in $ctrl.data.DialysisData track by $index">{{data.BPS}}/{{data.BPD}}</td>
+                        </tr>
+                        <tr>
+                            <th class="headcol" translate="summary.content.Breath"></th>
+                            <td ng-if="$ctrl.data.DialysisData.length === 0">&nbsp;</td>
+                            <td ng-if="$ctrl.data.DialysisData.length > 0" class="" ng-repeat="data in $ctrl.data.DialysisData track by $index">{{data.Pulse}}/{{data.Breath}}</td>
+                        </tr>
+                        <tr>
+                            <th class="headcol" translate="summary.content.BloodFlowRate"></th>
+                            <td ng-if="$ctrl.data.DialysisData.length === 0">&nbsp;</td>
+                            <td ng-if="$ctrl.data.DialysisData.length > 0" class="" ng-repeat="data in $ctrl.data.DialysisData track by $index">{{data.BloodFlowRate ? data.BloodFlowRate : '&nbsp;'}}</td>
+                        </tr>
+                        <tr ng-if="$ctrl.isCRRTMode">
+                            <th class="headcol" translate="machineData.machineDataDetail.ArterialPressure"></th>
+                            <td ng-if="$ctrl.data.DialysisData.length === 0">&nbsp;</td>
+                            <td ng-if="$ctrl.data.DialysisData.length > 0" class="" ng-repeat="data in $ctrl.data.DialysisData track by $index">{{data.ArterialPressure ? data.ArterialPressure : '&nbsp;'}}</td>
+                        </tr>
+                        <tr ng-if="$ctrl.isCRRTMode">
+                            <th class="headcol" translate="machineData.machineDataDetail.FilterPressure"></th>
+                            <td ng-if="$ctrl.data.DialysisData.length === 0">&nbsp;</td>
+                            <td ng-if="$ctrl.data.DialysisData.length > 0" class="" ng-repeat="data in $ctrl.data.DialysisData track by $index">{{data.FilterPressure ? data.FilterPressure : '&nbsp;'}}</td>
+                        </tr>
+                        <tr ng-if="$ctrl.isCRRTMode">
+                            <th class="headcol" translate="machineData.machineDataDetail.EffluentPressure"></th>
+                            <td ng-if="$ctrl.data.DialysisData.length === 0">&nbsp;</td>
+                            <td ng-if="$ctrl.data.DialysisData.length > 0" class="" ng-repeat="data in $ctrl.data.DialysisData track by $index">{{data.EffluentPressure ? data.EffluentPressure : '&nbsp;'}}</td>
+                        </tr>
+                        <tr>
+                            <th class="headcol" translate="machineData.machineDataDetail.VenousPressure"></th>
+                            <td ng-if="$ctrl.data.DialysisData.length === 0">&nbsp;</td>
+                            <td ng-if="$ctrl.data.DialysisData.length > 0" class="" ng-repeat="data in $ctrl.data.DialysisData track by $index">{{data.VenousPressure ? data.VenousPressure : '&nbsp;'}}</td>
+                        </tr>
+                        <tr>
+                            <th class="headcol" translate="machineData.machineDataDetail.TMPLabel"></th>
+                            <td ng-if="$ctrl.data.DialysisData.length === 0">&nbsp;</td>
+                            <td ng-if="$ctrl.data.DialysisData.length > 0" class="" ng-repeat="data in $ctrl.data.DialysisData track by $index">{{data.TMP ? data.TMP : '&nbsp;'}}</td>
+                        </tr>
+                        <tr>
+                            <th class="headcol" translate="machineData.machineDataDetail.UFRateLabel"></th>
+                            <td ng-if="$ctrl.data.DialysisData.length === 0">&nbsp;</td>
+                            <td ng-if="$ctrl.data.DialysisData.length > 0" class="" ng-repeat="data in $ctrl.data.DialysisData track by $index">{{data.UFRate}}/{{data.TotalUF}}</td>
+                        </tr>
+                        <tr>
+                            <th class="headcol" translate="machineData.machineDataDetail.Heparin"></th>
+                            <td ng-if="$ctrl.data.DialysisData.length === 0">&nbsp;</td>
+                            <td ng-if="$ctrl.data.DialysisData.length > 0" class="" ng-repeat="data in $ctrl.data.DialysisData track by $index">{{data.HeparinDeliveryRate}}/{{data.HeparinAccumulatedVolume}}</td>
+                        </tr>
+                        <tr>
+                            <th class="headcol" translate="machineData.machineDataDetail.DialysisateFlowRateLabel"></th>
+                            <td ng-if="$ctrl.data.DialysisData.length === 0">&nbsp;</td>
+                            <td ng-if="$ctrl.data.DialysisData.length > 0" class="" ng-repeat="data in $ctrl.data.DialysisData track by $index">{{data.DialysisateFlowRate ? data.DialysisateFlowRate : '&nbsp;'}}</td>
+                        </tr>
+                        <tr>
+                            <th class="headcol" translate="machineData.machineDataDetail.DialysateA"></th>
+                            <td ng-if="$ctrl.data.DialysisData.length === 0">&nbsp;</td>
+                            <td ng-if="$ctrl.data.DialysisData.length > 0" class="" ng-repeat="data in $ctrl.data.DialysisData track by $index">{{data.DialysateA ? data.DialysateA : '&nbsp;'}}</td>
+                        </tr>
+                        <tr>
+                            <th class="headcol" translate="machineData.machineDataDetail.DialysateTemperature"></th>
+                            <td ng-if="$ctrl.data.DialysisData.length === 0">&nbsp;</td>
+                            <td ng-if="$ctrl.data.DialysisData.length > 0" class="" ng-repeat="data in $ctrl.data.DialysisData track by $index">{{data.DialysateTemperatureSet ? data.DialysateTemperatureSet : '&nbsp;'}}</td>
+                        </tr>
+                        <tr>
+                            <th class="headcol" translate="machineData.machineDataDetail.NormalSalineLabel"></th>
+                            <td ng-if="$ctrl.data.DialysisData.length === 0">&nbsp;</td>
+                            <td ng-if="$ctrl.data.DialysisData.length > 0" class="" ng-repeat="data in $ctrl.data.DialysisData track by $index">{{data.NormalSaline ? data.NormalSaline : '&nbsp;'}}</td>
+                        </tr>
+                        <tr>
+                            <th class="headcol" translate="machineData.machineDataDetail.AKClot"></th>
+                            <td ng-if="$ctrl.data.DialysisData.length === 0">&nbsp;</td>
+                            <td ng-if="$ctrl.data.DialysisData.length > 0" class="" ng-repeat="data in $ctrl.data.DialysisData track by $index">{{data.AKClot ? data.AKClot : '&nbsp;'}}</td>
+                        </tr>
+                        <tr>
+                            <th class="headcol" translate="machineData.machineDataDetail.FiftyPercentGW"></th>
+                            <td ng-if="$ctrl.data.DialysisData.length === 0">&nbsp;</td>
+                            <td ng-if="$ctrl.data.DialysisData.length > 0" class="" ng-repeat="data in $ctrl.data.DialysisData track by $index">{{data.FiftyPercentGW ? data.FiftyPercentGW : '&nbsp;'}}</td>
+                        </tr>
+                        <tr>
+                            <th class="headcol" translate="machineData.machineDataDetail.BloodLeak"></th>
+                            <td ng-if="$ctrl.data.DialysisData.length === 0">&nbsp;</td>
+                            <td ng-if="$ctrl.data.DialysisData.length > 0" class="" ng-repeat="data in $ctrl.data.DialysisData track by $index">{{data.BloodLeak ? data.BloodLeak : '&nbsp;'}}</td>
+                        </tr>
+                        <tr>
+                            <th class="headcol" translate="summary.content.Profile"></th>
+                            <td ng-if="$ctrl.data.DialysisData.length === 0">&nbsp;</td>
+                            <td ng-if="$ctrl.data.DialysisData.length > 0" class="" ng-repeat="data in $ctrl.data.DialysisData track by $index">{{data.Profile ? data.Profile : '&nbsp;'}}</td>
+                        </tr>
+                        <tr>
+                            <th class="headcol" translate="machineData.machineDataDetail.Memo"></th>
+                            <td ng-if="$ctrl.data.DialysisData.length === 0">&nbsp;</td>
+                            <td ng-if="$ctrl.data.DialysisData.length > 0" class="" ng-repeat="data in $ctrl.data.DialysisData track by $index">
+                                <div>
+                                    {{data.Memo ? data.Memo : '&nbsp;'}}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="headcol" translate="machineData.machineDataDetail.TotalUF"></th>
+                            <td ng-if="$ctrl.data.DialysisData.length === 0">&nbsp;</td>
+                            <td ng-if="$ctrl.data.DialysisData.length > 0" class="" ng-repeat="data in $ctrl.data.DialysisData track by $index">{{data.TotalUF ? data.TotalUF : '&nbsp;'}}</td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+            <!-- 執行記錄  -->
+            <div flex="100" ng-click="$ctrl.gotoExecutionRecord()">
+                <div class="order-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td translate="summary.content.nameTable"></td>
+                                <td translate="summary.content.dosageTable"></td>
+                                <td translate="summary.content.methodTable"></td>
+                                <td translate="summary.content.prescribedTimeTable"></td>
+                                <td translate="summary.content.executionTimeTable"></td>
+                                <td translate="summary.content.signature"></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="data in $ctrl.data.OrderRecord track by $index">
+                                <td>
+                                    {{data.Name}}
+                                </td>
+                                <td>
+                                    {{data.Quantity}}
+                                </td>
+                                <td>
+                                    {{data.Frequency}}
+                                </td>
+                                <td>
+                                    {{data.CreatedTime | moment: 'MM-DD (dd) HH:mm'}}
+                                </td>
+                                <td>
+                                    {{data.Mode === 'Performed' ? (data.ProcessTime | moment: 'MM-DD (dd) HH:mm') : data.Memo}}
+                                </td>
+                                <td>
+                                    <seal label="{{data.ModifiedUserName ? data.ModifiedUserName : data.CreatedUserName}}" created="none" modified="none"></seal>
+                                     <!-- {{data.ModifiedUserName ? data.ModifiedUserName : data.CreatedUserName}} -->
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- 護理紀錄 -->
+            <div flex="100" ng-click="$ctrl.gotoNursingRecords()">
+                <div>
+                    <table style="border: 1px solid gray; width: 100%">
+                        <thead>
+                            <tr>
+                                <td ng-if="$ctrl.data.NursingRecord.length > 0" class="heading" translate="summary.content.time"></td>
+                                <td class="heading" translate="summary.content.NursingRecord"></td>
+                            </tr>
+                            <!-- <tr>
+                                <td>時間</td>
+                                <td>內容</td>
+                            </tr> -->
+                        </thead>
+                        <tbody>
+                            <tr ng-if="$ctrl.data.NursingRecord.length > 0" ng-repeat="data in $ctrl.data.NursingRecord">
+                                <td>
+                                    {{data.ModifiedTime ? data.ModifiedTime : data.CreatedTime | moment: 'HH:mm'}}
+                                </td>
+                                <td>
+                                    {{data.Content}}
+                                    <seal label="{{data.ModifiedUserName ? data.ModifiedUserName : data.CreatedUserName}}" created="none" modified="none"></seal>
+                                </td>
+                            </tr>
+                            <tr ng-if="$ctrl.data.NursingRecord.length === 0">
+                                <td translate="summary.content.noData"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- </div> -->
+        </div>
+    </md-whiteframe>
+</div>

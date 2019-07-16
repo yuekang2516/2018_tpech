@@ -1,0 +1,31 @@
+.apd-setting-container {
+    > div {
+        margin: 0.2em 0;
+    }
+    label {
+        min-width: 10em;
+        padding: 0 0.2em;
+        text-align: right;
+        font-weight: normal;
+        white-space: nowrap;
+        line-height: 1.5rem;
+    }
+    input, md-select, textarea {
+        flex: 1;
+        min-width: 4em;
+        margin: 0 0.5em;
+    }
+    md-select {
+        border: 2px inset;
+    }
+}
+
+.apd-setting-div {
+    height: 430px;
+}
+
+@media only screen and (max-width: 500px) {
+    .apd-setting-div {
+        height: 800px;
+    }
+}

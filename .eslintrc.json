@@ -1,0 +1,81 @@
+{
+    "root": true,
+    "ecmaVersion ": 5,
+    "env": {
+        "browser": true,
+        "jasmine": true
+    },
+    "extends": "airbnb-base",
+    "plugins": [
+        "import",
+        "jasmine",
+        "protractor",
+        "angular"
+    ],
+    "rules": {
+        "indent": 0, // ["error", 4],
+        "linebreak-style": [
+            1,
+            "windows"
+        ],
+        "quotes": [
+            1,
+            "single"
+        ],
+        "comma-dangle": [
+            1,
+            "never"
+        ],
+        "quote-props": [
+            1,
+            "as-needed"
+        ],
+        "padded-blocks": 0,
+        "no-use-before-define": 0,
+        "no-unused-vars": 1,
+        "prefer-template": "off",
+        "no-param-reassign": "off",
+        "no-useless-concat": 2,
+        "angular/controller-name": 2,
+        "angular/controller-as": 2,
+        "angular/di": [
+            "error",
+            "$inject"
+        ],
+        "no-underscore-dangle": "off",
+        "no-alert": "error",
+        "new-cap": [
+            "error",
+            {
+                "newIsCap": false
+            }
+        ],
+        "func-names": "off",
+        "arrow-body-style": "off",
+        "max-len": "off",
+        "no-plusplus": "off",
+        "prefer-arrow-callback": "off",
+        "prefer-const": "off",
+        "radix": [
+            "error",
+            "as-needed"
+        ]
+    },
+    "globals": {
+        "$": true,
+        "angular": true,
+        "moment": true,
+        "lang": true,
+        "Swiper": true,
+        "_": true,
+        "Chart": true,
+        "VERSION": true,
+        "DEVELOPMENT": true,
+        "PRODUCTION": true,
+        "cordova": true,
+        "nfc": true
+    },
+    "settings": {
+        "angular": 1
+    }
+}

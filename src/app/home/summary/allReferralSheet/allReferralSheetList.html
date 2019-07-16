@@ -1,0 +1,100 @@
+<md-content layout="column" layout-fill ui-view>
+    <md-toolbar ng-hide="$ctrl.stateName.substr(0, 2) === 'pd'">
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="$ctrl.back();">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <div layout="row" hide-xs>
+                歷次病歷摘要{{!$ctrl.loading ? '-' + $ctrl.patient.Name : null }} 
+            </div>
+            <div layout="column" hide-gt-xs>
+                <span style="font-size: 18px;">歷次病歷摘要</span>
+                <!-- <span style="font-size: 18px;">{{!$ctrl.loading ? $ctrl.patient.Name + '(' + $ctrl.patient.MedicalId + ')' : null }}</span> -->
+            </div>
+            <span flex></span>
+            <!-- <md-button class="md-icon-button" aria-label="More" ng-click="$ctrl.gotoTestPage()">
+                <i class="material-icons">assignment_late</i>
+            </md-button> -->
+            <!-- <md-button class="md-icon-button" aria-label="More" ng-click="$ctrl.gotoHomePage()">
+                <i class="material-icons">home</i>
+            </md-button> -->
+        </div>
+    </md-toolbar>
+    <md-content layout="column" flex>
+        <md-button class="md-fab md-fab-bottom-right" style="position: fixed;" ng-click="$ctrl.goto()">
+            <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+        </md-button>
+        <loading ng-show="$ctrl.loading"></loading>
+        <md-list ng-show="!$ctrl.loading && $ctrl.serviceData.length > 0">
+            <div class="list-header" layout="row" layout-align="center center">
+                <md-switch ng-model="$ctrl.showDeleted" aria-label="Switch data">
+                    顯示已刪除 ({{$ctrl.deletedItemsLength}}筆)
+                </md-switch>
+                <span flex></span>
+                <h6>共 {{$ctrl.serviceData.length}} 筆</h6>
+                <span flex></span>
+                <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()' style="margin-right: -15px;"></last-refresh-time>
+                <!-- <h6>{{$ctrl.lastRefreshTitle}}</h6>
+                <md-button class="md-icon-button" ng-click="$ctrl.refresh();">
+                    <i class="material-icons">refresh</i>
+                </md-button> -->
+            </div>
+            <md-list-item class="md-2-line" ng-class="{deleted: item.Status == 'Deleted'}" ng-repeat="item in $ctrl.serviceData | orderBy: '-RecordDate'"
+                ng-click="$ctrl.goto(item.Id)" ng-show="item.Status !== 'Deleted' || $ctrl.showDeleted">
+                <div class="md-list-item-text" layout="column" style="line-height: 30px; padding: 10px 16px;">
+                    <h3>摘要時間 - {{item.RecordDate | moment: 'YYYY/MM/DD (dd) HH:mm'}}</h3>
+                    <!-- <div layout="row" layout-xs="column" style="margin-top: 5px;">
+                        <span style="margin-right: 20px; font-size: 15px;">姓名：{{item.Name}}</span>
+                        <span style="margin-right: 20px; font-size: 15px;">病歷號：{{item.MedicalId ? item.MedicalId : '-'}}</span>
+                        <span style="font-size: 15px;">身份證號：{{item.IdentifierId ? item.IdentifierId : '-'}}</span>
+                    </div> -->
+                    <seal model="item" modified="hideIfSame" fixed="true" left="true" my-style="$ctrl.myStyle"></seal>
+                </div>
+
+                <div layout="column" layout-align="start center">
+                    <!-- {{ 'allPrescriptions.prescriptionTabPage.copy' | translate }} -->
+                    <button ng-click="$event.stopPropagation();$ctrl.copyReferralSheet(item)" class="buttonblue" style="margin-bottom:3px">複製</button>
+                    <!-- {{ 'allPrescriptions.prescriptionTabPage.delete' | translate }} -->
+                    <button ng-show="item.Status !== 'Deleted'" ng-click="$event.stopPropagation();$ctrl.showDialog($event, item)" class="buttonblue">刪除</button>
+                </div>
+                <!-- <md-icon class="md-secondary" ng-show="item.Status !== 'Deleted'" ng-click="$ctrl.showDialog($event, item)" md-svg-icon="static/img/svg/ic_delete_black_24px.svg"></md-icon> -->
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+        </md-list>
+        <md-content ng-show="!$ctrl.loading && !$ctrl.serviceData.length" flex layout="column" layout-align="center center">
+            <h1>目前還沒有病歷摘要</h1>
+            <h4></h4>
+        </md-content>
+    </md-content>
+</md-content>
+
+<script type="text/ng-template" id="dialog.html">
+    <md-dialog aria-label="刪除確認">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>確認刪除此筆病歷摘要</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="vm.cancel()">
+                        <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    是否將此筆病歷摘要刪除
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+                <md-button ng-click="vm.cancel()">
+                    否
+                </md-button>
+                <md-button ng-click="vm.ok()">
+                    是
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>

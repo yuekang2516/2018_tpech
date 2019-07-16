@@ -1,0 +1,119 @@
+<style scoped="scoped">
+    .selectIndex {
+        background-color: #cccccc;
+    }
+
+    .statusButton {
+        min-width: 40px
+    }
+
+    .beStatus {
+        background-color: green;
+    }
+
+    .inStatus {
+        background-color: red;
+    }
+
+    .afStatus {
+        background-color: yellow;
+    }
+
+    md-list-item.active {
+        background-color: lightgray !important;
+    }
+</style>
+
+<div layout="row" layout-fill style="text-transform: none;">
+    <md-sidenav ng-hide="vm.hideSidenav" layout="column" class="md-sidenav-left md-whiteframe-z2 no-print" md-component-id="left"
+        md-is-locked-open="vm.lockLeft && $mdMedia('min-width: 1280px')">
+        <header class="nav-header">
+            <h1 style="margin:12px 2px">{{vm.currentHospital.HospitalName}}</h1>
+            <div layout="row" layout-align="center center">
+                <div style="background: #0e7ddc; padding: 2px 10px; border-radius: 30px; margin-bottom: 12px; cursor: pointer;" ui-sref="profile">
+                    <h4 translate="home.welcome" translate-values='{username: vm.currentUser.Name}' style="margin: 0; color: #fff; padding:4px 0;">
+                    </h4>
+                </div>
+            </div>
+        </header>
+        <md-content layout="column" flex class="menu">
+            <md-list>
+                <md-list-item ui-sref="allPatients" ui-sref-active="active">
+                    <i class="material-icons">view_list</i>
+                    <div translate>{{'home.patients'}}</div>
+                </md-list-item>
+                <md-list-item ui-sref="allPdPatients" ui-sref-active="active">
+                    <i class="material-icons">view_list</i>
+                    <div translate>{{'home.pdPatients'}}</div>
+                </md-list-item>
+                <md-list-item ui-sref="myPatients" ui-sref-active="active">
+                    <i class="material-icons">person</i>
+                    <div translate>{{'home.myPatiens'}}</div>
+                </md-list-item>
+                <md-list-item ui-sref="beds" ui-sref-active="active" ng-show="vm.ModuleFunctions === null || vm.ModuleFunctions.SettingBed === '1'">
+                    <i class="material-icons">today</i>
+                    <div translate>{{'home.todayBeds'}}</div>
+                </md-list-item>
+                <md-list-item ui-sref="notifications" ui-sref-active="active">
+                    <i class="material-icons">priority_high</i>
+                    <div translate>{{'home.notification'}}</div>
+                    <span class="badge notificationCount md-secondary" ng-show="vm.notificationCount > 0">{{vm.notificationCount}}</span>
+                </md-list-item>
+                <md-list-item ui-sref="weightHistory" ui-sref-active="active">
+                    <i class="material-icons">assignment</i>
+                    <div>體重機歷程</div>
+                </md-list-item>
+                <md-list-item ui-sref="emergencyAdmissionRecord" ui-sref-active="active">
+                    <i class="material-icons">assignment</i>
+                    <div>急診住院狀態查詢</div>
+                </md-list-item>
+                <!--<md-list-item ui-sref="newOrders" ui-sref-active="active">
+                    <i class="material-icons">content_paste</i>
+                    最新醫囑
+                </md-list-item>-->
+                <md-list-item ui-sref="arrangeBed" ui-sref-active="active" ng-show="vm.isBrowser && (vm.ModuleFunctions === null || vm.ModuleFunctions.SettingBed === '1')">
+                    <i class="material-icons">local_hotel</i>
+                    <div translate>{{'home.arrangeBed'}}</div>
+                </md-list-item>
+                <md-list-item ui-sref="shifts" ui-sref-active="active" ng-show="vm.isBrowser && (vm.ModuleFunctions === null || vm.ModuleFunctions.Scheduling === '1')">
+                    <i class="material-icons">date_range</i>
+                    <div translate>{{'home.arrangeShift'}}</div>
+                </md-list-item>
+                <!-- <md-list-item ui-sref="roProcessPending" ui-sref-active="active" ng-show="vm.ModuleFunctions === null || vm.ModuleFunctions.ROAlert === '1'">
+                    <i class="material-icons">warning</i>
+                    <div translate="roprocess.title"></div>
+                    <span class="badge notificationCount md-secondary" ng-show="vm.roAbnormalCount > 0">{{vm.roAbnormalCount}}</span>
+                </md-list-item> -->
+                <!-- <md-list-item ui-sref="wardCalendar" ui-sref-active="active" ng-show="vm.isBrowser">
+                    <i class="material-icons">event_note</i>
+                    <div translate>透析室行事曆</div>
+                </md-list-item> -->
+                <md-list-item ng-show="vm.isBrowser && (vm.ModuleFunctions === null || vm.ModuleFunctions.ElectronicBoard === '1')" ng-click="vm.openDashboard()">
+                    <i class="material-icons">dashboard</i>
+                    <div translate>{{'home.dashboard'}}</div>
+                </md-list-item>
+                <!-- <md-list-item ng-show="(vm.ModuleFunctions === null || vm.ModuleFunctions.HealthEducation === '1')" ui-sref="hygieneWork" ui-sref-active="active">
+                    <i class="material-icons">cloud_queue</i>
+                    <div translate>{{'home.healthEducation'}}</div>
+                </md-list-item> -->
+                <md-list-item ui-sref="reports" ui-sref-active="active" ng-show="vm.isBrowser">
+                    <i class="material-icons">print</i>
+                    <div translate>{{'home.reports'}}</div>
+                </md-list-item>
+            </md-list>
+            <span flex></span>
+            <md-list>
+                <md-divider></md-divider>
+                <md-list-item ng-show="vm.currentUser.Access == '99'" ng-click="vm.gotoAdmin()">
+                    <i class="material-icons">settings</i>
+                    <div translate>{{'home.settings'}}</div>
+                </md-list-item>
+                <md-list-item ng-click="vm.logout()">
+                    <i class="material-icons">exit_to_app</i>
+                    <div translate>{{'home.logout'}}</div>
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </md-sidenav>
+    <ui-view layout="column" flex></ui-view>
+</div>

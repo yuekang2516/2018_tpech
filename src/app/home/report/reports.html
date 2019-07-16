@@ -1,0 +1,24 @@
+<div layout="column" layout-fill class="reports-container">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="rep.back();">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <div layout="row" translate>
+                {{'reports.report'}}
+            </div>
+            <span flex></span>
+        </div>
+    </md-toolbar>
+    <div layout="row" flex>
+        <md-content class="reports-items" layout="column">
+            <md-list-item class="md-2-line" ng-class="{active: p.isSelected}" ng-repeat="p in rep.reportsitem" ng-click="rep.selectitems(p)">
+                <div class="md-list-item-text">
+                    <h3>{{p.name}}</h3>
+                </div>
+            </md-list-item>
+        </md-content>
+        <md-content ui-view flex>
+        </md-content>
+    </div>
+</div>

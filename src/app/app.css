@@ -1,0 +1,410 @@
+ui-view {
+  height: 100%;
+  width: 100%;
+}
+/*@media print {
+    @page {
+        // portrait 
+        size: A4 portrait;
+        // you can also specify margins here: 
+        // margin: 5mm;
+    }
+
+    body {
+        font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+        font-size: 0.8em;
+        color: #333333;
+    }
+}*/
+label {
+  color: rgba(0, 0, 0, 0.48);
+}
+md-toolbar {
+  background: #0e99dc!important;
+  height: 48px!important;
+  max-height: 48px!important;
+  min-height: 48px!important;
+}
+md-toolbar .md-toolbar-tools {
+  height: 48px!important;
+  max-height: 48px!important;
+  min-height: 48px!important;
+}
+.md-button.md-default-theme.md-accent[disabled],
+.md-button.md-accent[disabled],
+.md-button.md-default-theme.md-fab[disabled],
+.md-button.md-fab[disabled],
+.md-button.md-default-theme.md-raised[disabled],
+.md-button.md-raised[disabled],
+.md-button.md-default-theme.md-warn[disabled],
+.md-button.md-warn[disabled],
+.md-button.md-default-theme[disabled],
+.md-button[disabled] {
+  color: rgba(0, 0, 0, 0.28);
+}
+input:not([disabled]),
+input:not([readonly]),
+textarea,
+md-select:not([disabled]) {
+  background-color: lightgoldenrodyellow !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  height: 1.8em;
+  box-sizing: border-box;
+}
+input:required,
+textarea:required,
+md-select[required] {
+  background-color: lightpink !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  height: 1.8em;
+  box-sizing: border-box;
+}
+input:disabled,
+input[readonly],
+textarea:disabled {
+  background-color: lightgray !important;
+  color: black;
+  opacity: 1;
+}
+textarea {
+  max-height: 300px!important;
+  height: auto !important;
+  overflow-y: auto!important;
+}
+.md-select-value {
+  min-height: auto;
+}
+.md-select-value > span:not(.md-select-icon) {
+  text-overflow: initial;
+}
+img.x24 {
+  width: 24px;
+  height: 24px;
+}
+img.x16 {
+  width: 16px;
+  height: 16px;
+}
+md-list-item.deleted {
+  background-color: #9e9e9e;
+  font-style: italic;
+  text-decoration: line-through;
+}
+md-list {
+  padding: 0;
+  margin-bottom: 5rem;
+}
+md-list md-switch {
+  margin: 0;
+}
+md-tabs .md-tab {
+  color: #000000;
+}
+md-tabs.md-default-theme md-ink-bar,
+md-tabs md-ink-bar {
+  color: #fff000;
+  background-color: #fff000;
+  height: 3px;
+}
+md-sidenav {
+  width: 280px !important;
+}
+md-sidenav .nav-header {
+  background: url(static/img/sidenav.png);
+  color: #003b75;
+  padding: 0.5em;
+}
+md-sidenav .nav-header h1,
+md-sidenav .nav-header h2,
+md-sidenav .nav-header h3,
+md-sidenav .nav-header h4,
+md-sidenav .nav-header h5,
+md-sidenav .nav-header h6 {
+  text-align: center;
+  font-weight: bolder;
+  margin: 0.5em;
+}
+md-sidenav .nav-header .md-avatar {
+  height: 48px;
+  width: 48px;
+  border-radius: 50%;
+}
+md-sidenav .nav-header md-button {
+  margin: 0 auto;
+}
+md-sidenav > md-content {
+  background-color: white;
+}
+md-sidenav md-list {
+  margin: 0;
+}
+md-sidenav md-list .md-list-item-inner {
+  font-weight: bolder !important;
+}
+md-sidenav .menu .material-icons {
+  margin: 0 1em 0 0;
+  color: rgba(0, 0, 0, 0.54);
+}
+.list-header {
+  height: 2.8em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 0.5em;
+  background-color: #BBDEFB;
+}
+.list-header md-switch {
+  margin: 0 8px;
+}
+.list-header input {
+  height: 1.8em;
+}
+.list-header md-select {
+  margin: 0 8px;
+  padding: 0;
+}
+.badge {
+  color: white;
+  padding: 2px 4px;
+  border-radius: 4px;
+  background-color: springgreen;
+  height: 20px;
+  line-height: 20px;
+  margin: 0 4px;
+  display: inline;
+}
+.badge.pointer {
+  cursor: pointer;
+}
+.icon-button-badge {
+  position: absolute;
+  color: white;
+  background-color: red;
+  right: 0.5em;
+  top: 0.5em;
+  height: 1em;
+  width: 1em;
+  border-radius: 50%;
+  line-height: 1em;
+}
+.image-container {
+  position: relative;
+  width: 10em;
+  height: 10em;
+  margin: 0 auto;
+}
+.image-container img {
+  width: 10em;
+  height: 10em;
+}
+.image-container input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.logo-container {
+  position: relative;
+  margin: auto auto;
+}
+.logo-container img {
+  max-height: 110px;
+}
+@media only screen and (max-width: 1100px) {
+  .logo-container img {
+    width: 100%;
+    max-height: inherit;
+  }
+}
+.logo-container input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.fullscreenMask {
+  position: fixed;
+  display: flex;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  font-size: xx-large;
+  font-weight: bolder;
+  z-index: 50;
+}
+.inner {
+  position: relative;
+  height: auto;
+}
+.inner .readonly-inner {
+  position: absolute;
+  width: 100%;
+  box-sizing: border-box;
+  padding-left: calc(100% - 50px);
+  top: 0;
+  bottom: 0;
+  background-color: rgba(10, 10, 10, 0.03);
+  z-index: 99;
+}
+.readonly-text {
+  position: absolute;
+  right: 10%;
+  top: 0;
+  background-color: #ffe6e6;
+  color: #d92018;
+  font-weight: bold;
+  padding: 6px;
+}
+.yuekang-input-container > div.layout-row {
+  padding: 3px;
+}
+.yuekang-input-container > div.layout-row * {
+  margin: 0;
+}
+.yuekang-input-container > div.layout-row > label {
+  min-width: 6rem;
+  margin: 0 0.2em;
+  text-align: left;
+  font-weight: normal;
+  white-space: nowrap;
+  height: 1.6rem;
+  line-height: 1.6rem;
+}
+.yuekang-input-container > div.layout-row input,
+.yuekang-input-container > div.layout-row md-select,
+.yuekang-input-container > div.layout-row textarea,
+.yuekang-input-container > div.layout-row > div {
+  flex: 1;
+  min-width: 3rem;
+  margin: 0 0.2em;
+  line-height: 1.6rem;
+}
+.yuekang-input-container > div.layout-row .date > md-select {
+  flex: 1;
+  min-width: 3rem;
+}
+.yuekang-input-container div[ng-message] {
+  color: red;
+  text-align: right;
+}
+.error-message {
+  text-align: right;
+  color: red;
+}
+.for-doctor {
+  color: #0091EA !important;
+}
+.for-doctor * {
+  color: #0091EA !important;
+}
+.seal {
+  font-size: xx-small;
+  font-weight: bold;
+  color: red;
+  line-height: 1em;
+  white-space: nowrap;
+  text-align: center;
+}
+.seal .fixed {
+  border: 1px solid red;
+  transform: rotate(-10deg);
+  padding: 3px;
+  max-width: 4.5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: absolute;
+  bottom: 20px;
+  right: 60px;
+}
+.seal .fixedMiddle {
+  border: 1px solid red;
+  transform: rotate(-10deg);
+  padding: 3px;
+  max-width: 4.5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: absolute;
+  bottom: 40px;
+  right: 60px;
+}
+.seal .fixedTop {
+  border: 1px solid red;
+  transform: rotate(-10deg);
+  padding: 3px;
+  max-width: 4.5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: absolute;
+  bottom: 60px;
+  right: 60px;
+}
+.seal .floated {
+  color: red !important;
+  border: 1px solid red;
+  transform: rotate(-10deg);
+  padding: 3px;
+  max-width: 4.5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+  display: inline-block;
+}
+.state-style .seal .label {
+  position: absolute;
+  height: 15px;
+  width: 15px;
+  border: 0;
+  background: #1b5e20;
+  color: white;
+  border-radius: 50%;
+  line-height: 15px;
+  font-size: small;
+  top: 43px;
+  left: 43px;
+  z-index: 9;
+}
+.card .ulInline {
+  position: absolute;
+  right: 0;
+  top: 0px;
+}
+.card .inputbox .ulInline li {
+  margin-right: 8px;
+}
+.card .inputbox .ulInline li:last-child {
+  margin-right: 0px;
+}
+.card md-card-title {
+  position: relative;
+  padding: 0;
+}
+.cardTitBox {
+  min-height: 80px;
+}
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+  }
+  .no-print,
+  .no-print * {
+    display: none !important;
+  }
+  md-toast {
+    display: none !important;
+  }
+}

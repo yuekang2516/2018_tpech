@@ -1,0 +1,62 @@
+[
+    {
+      "Records": [
+        {
+          "ProcessTime": "2019-03-18T10:27:00Z",
+          "Id": "5c8f72a898584d53f047dcb2",
+          "UserId": "5c8f664c98584d53f0462983",
+          "UserName": "林秋玉",
+          "Mode": "Performed",
+          "Memo": "",
+          "Status": "Normal"
+        }
+      ],
+      "DateTimestamp": "2019-03-21T15:28:10.5289829+08:00",
+      "DialysisId": "5c8f6a2a98584d53f046ca4b",
+      "PatientId": "5c8f61ae98584d53f0458527",
+      "MedicineId": "575e82bf2345943be40b0434",
+      "Code": "9",
+      "Name": "Adalat(10mg)",
+      "IsDangerMed": false,
+      "StartDate": "2019-03-17T16:00:00Z",
+      "Quantity": 1,
+      "QuantityUnit": "顆",
+      "Volume": null,
+      "VolumeUnit": null,
+      "Dose": null,
+      "DoseUnit": null,
+      "TotalQuantity": 1,
+      "TotalVolume": null,
+      "TotalDose": null,
+      "Days": 1,
+      "Frequency": "ST",
+      "Route": "SC",
+      "Source": "medication",
+      "Memo": null,
+      "CategoryName": "6樓 注射針劑",
+      "Remind": true,
+      "IsOther": false,
+      "OtherContent": null,
+      "IsAllergic": false,
+      "HospitalId": "56fcc5dd4ead7870942f61c3",
+      "Revision": 1,
+      "HistoryId": null,
+      "Status": "Normal",
+      "CreatedUserId": "5c8f5c9e98584d53f044eac8",
+      "CreatedUserName": "楊昌宏",
+      "CreatedTime": "2019-03-18T10:24:27.084Z",
+      "ModifiedUserId": null,
+      "ModifiedUserName": null,
+      "ModifiedTime": null,
+      "Id": "5c8f71da98584d53f047c871",
+      "CreatedOn": "2019-03-18T10:24:26Z",
+      "ModifiedOn": "0001-01-01T00:00:00",
+      "ObjectId": {
+        "Timestamp": 1552904666,
+        "Machine": 9984077,
+        "Pid": 21488,
+        "Increment": 4704369,
+        "CreationTime": "2019-03-18T10:24:26Z"
+      }
+    }
+  ]

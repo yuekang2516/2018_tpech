@@ -1,0 +1,107 @@
+<div flex layout="column" layout-fill>
+    <md-toolbar hide-gt-sm layout="row">
+        <div class="md-toolbar-tools">
+            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.goback()" aria-label="call">
+                <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+            </md-button>
+            <h3 ng-show="$ctrl.serviceData.OrderMode == 'Performed'" translate>{{'executionRecord.executionDetail.executeMedicine'}}</h3>
+            <h3 ng-show="$ctrl.serviceData.OrderMode == 'Neglect'" style="color: red" translate>{{'executionRecord.executionDetail.confirmExecuteMedicine'}}</h3>
+        </div>
+    </md-toolbar>
+    <div hide-xs hide-sm ng-show="!$ctrl.loading">
+        <h3 style="float: left; padding-left: 10px" ng-show="$ctrl.serviceData.OrderMode == 'Performed'" translate>{{'executionRecord.executionDetail.executeMedicine'}}</h3>
+        <h3 style="float: left; padding-left: 10px" ng-show="$ctrl.serviceData.OrderMode == 'Neglect'" style="color: red" translate>{{'executionRecord.executionDetail.confirmExecuteMedicine'}}</h3>
+        <md-button style="float:right; margin-top: 8px" class="md-secondary md-icon-button" ng-click="$ctrl.goback()" aria-label="call">
+            <i class="material-icons">cancel</i>
+        </md-button>
+    </div>
+    <md-content flex layout-fill>
+        <loading ng-show="$ctrl.loading">loading...</loading>
+
+        <md-card>
+            <md-card-content>
+                <form class="yuekang-input-container" layout="column" name="regForm" ng-hide="$ctrl.loading">
+                    <!-- <date-time-picker-standard my-model="$ctrl.serviceData.ProcessTime" required="true" /> -->
+                    <date-time-picker-standard my-model="$ctrl.serviceData.ProcessTime" on-change="$ctrl.dateChanged()" required="true"></date-time-picker-standard>
+                    <!-- <div layout="row">
+                        <label>日期</label>
+                        <select-date-picker ng-model="$ctrl.serviceData.ProcessTime" on-change="$ctrl.dateChanged(date)" required></select-date-picker>
+                    </div>
+                    <div layout="row">
+                        <label>時間</label>
+                        <select-time-picker ng-model="$ctrl.serviceData.ProcessTime" on-change="$ctrl.timeChanged(time)" required></select-time-picker>
+                    </div> -->
+                    <div ng-if="$ctrl.timeMessage" class="error-message">
+                        {{ $ctrl.timeMessage}}
+                    </div>
+                    <div layout="row">
+                        <label translate>{{'executionRecord.executionDetail.medicine'}}</label>
+                        <p>{{::$ctrl.serviceData.Name}}</p>
+                    </div>
+                    <div layout="row">
+                        <label translate>{{'executionRecord.executionDetail.route'}}</label>
+                        <p>{{::$ctrl.serviceData.Route}}</p>
+                    </div>
+                    <div layout="row">
+                        <label translate>{{'executionRecord.executionDetail.Frequency'}}</label>
+                        <p>{{::$ctrl.serviceData.Frequency}}</p>
+                    </div>
+                    <div layout="row">
+                        <label translate>{{'executionRecord.executionDetail.Quantity'}}
+                            <span ng-if="$ctrl.serviceData.QuantityUnit">({{::$ctrl.serviceData.QuantityUnit}})</span>
+                        </label>
+                        <p>{{ ::$ctrl.serviceData.Quantity }}</p>
+                    </div>
+                    <div layout="row" ng-if="$ctrl.serviceData.OrderMode == 'Performed'">
+                        <label translate>{{'executionRecord.executionDetail.ActualQuantity'}}
+                            <span ng-if="$ctrl.serviceData.QuantityUnit">({{::$ctrl.serviceData.QuantityUnit}})</span>
+                        </label>
+                        <input required type="number" name="Quantity" ng-model="$ctrl.serviceData.ActualQuantity" min="0" />
+                    </div>
+                    <div ng-messages="regForm.Quantity.$error" multiple md-auto-hide="false">
+                        <div ng-message="required" translate>{{'executionRecord.executionDetail.usageMsgRequired'}}</div>
+                        <div ng-message="min" translate>{{'executionRecord.executionDetail.usageMsgMin'}}</div>
+                    </div>
+
+                    <div layout="row" ng-if="$ctrl.serviceData.OrderMode == 'Performed'">
+                        <label translate>{{'executionRecord.executionDetail.Memo'}}</label>
+                        <textarea name="Memo" rows="5" ng-model="$ctrl.serviceData.Memo" md-detect-hidden="true"></textarea>
+                    </div>
+                    <div layout="row" ng-if="$ctrl.serviceData.OrderMode == 'Neglect'">
+                        <label translate>{{'executionRecord.executionDetail.reason'}}</label>
+                        <textarea required name="Memo" rows="5" ng-model="$ctrl.serviceData.Memo" md-detect-hidden="true"></textarea>
+                    </div>
+                    <div ng-messages="regForm.Memo.$error" multiple md-auto-hide="false">
+                        <div ng-message="required" translate>{{'executionRecord.executionDetail.reasonRequired'}}</div>
+                    </div>
+                    <div layout="row">
+                        <md-button ng-click="$ctrl.submit()" class="md-raised md-primary" ng-disabled="regForm.$invalid">{{'executionRecord.executionDetail.save' | translate}}</md-button>
+                    </div>
+                </form>
+            </md-card-content>
+        </md-card>
+        <md-card>
+            <md-card-content ng-if="$ctrl.serviceData.DoctorMemo.length > 0">
+                <div layout="row">
+                    <label translate>{{'executionRecord.executionDetail.DoctorMemo'}}</label>
+                    <p>{{::$ctrl.serviceData.DoctorMemo}}</p>
+                </div>
+            </md-card-content>
+        </md-card>
+        <div layout="row" layout-wrap>
+            <div flex="50" flex-xs="100" ng-show="$ctrl.serviceData.CreatedUserName">
+                <!-- <span>建立: {{ $ctrl.serviceData.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                <span translate="executionRecord.executionDetail.createdTime" translate-values='{CreatedTime: $ctrl.serviceData.CreatedTime}'></span>
+                <seal model="$ctrl.serviceData" modified="none"></seal>
+            </div>
+            <div flex="50" flex-xs="100" ng-show="$ctrl.serviceData.ModifiedTime != null">
+                <!-- <span>修改: {{ $ctrl.serviceData.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                <span translate="executionRecord.executionDetail.editedTime" translate-values='{ModifiedTime: $ctrl.serviceData.ModifiedTime}'></span>
+                <seal model="$ctrl.serviceData" created="none"></seal>
+            </div>
+        </div>
+        <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate>{{'executionRecord.executionDetail.serverError'}}</h3>
+        </div>
+    </md-content>
+</div>

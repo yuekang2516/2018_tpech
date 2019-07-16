@@ -1,0 +1,122 @@
+<style>
+    frequency-implantation {
+        height: 100%;
+    }
+    @media print{
+        .md-dialog-container {
+            display: table;
+        }
+        @page{
+            size: A4 portrait;
+            margin: 0.5cm;
+            orphans:4;
+            widows:2;
+        }
+    }
+</style>
+<md-content layout="column" layout-fill>
+        <loading ng-show="$ctrl.loading && $ctrl.fiList.length == 0"></loading>
+        <div class="list-header" ng-show="!$ctrl.loading && $ctrl.fiList.length > 0" layout="row" layout-align="center center">
+            <md-switch ng-model="$ctrl.showDeleted" aria-label="Switch data">
+                <span translate="highRiskFaller.Records.showDeleted" translate-values='{deletedItemsLength: $ctrl.deletedItemsLength}'></span>
+            </md-switch>
+            <span flex></span>
+            <h6 translate="highRiskFaller.Records.totalRecord" translate-values='{totalCnt: $ctrl.totalCnt}'></h6>
+            <span flex></span>
+            <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+        </div>
+        <div class="freezeDiv tbFI">
+            <table class="freezeTb tb" ng-show="!$ctrl.loading && $ctrl.fiList.length > 0">
+                <thead>
+                    <tr>
+                        <th>植管<br/>次數</th>
+                        <th>植入日期</th>
+                        <th>植管醫師</th>
+                        <th>植管方式</th>
+                        <th>植入位置</th>
+                        <th>導管型式<br/>(種類)</th>
+                        <th>Cuff數</th>
+                        <th>前端<br/>型態</th>
+                        <th>終止治療<br/>日期</th>
+                        <th>終止<br/>原因</th>
+                        <th>拔管日期</th>
+                        <th>簽章</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody><!--  | orderBy:['-Catheter_Implantation_Date', '-CreatedTime']-->             
+                    <tr ng-repeat="fiList in $ctrl.fiList" ng-class="fiList.Status == 'Deleted' ? 'tempDelText' : ''"
+                        ng-if="$ctrl.showDeleted == true ? fiList.Status == 'Deleted' || fiList.Status !== 'Deleted' : fiList.Status !== 'Deleted'">
+                        <td ng-click="$ctrl.openEditDialog(fiList)">{{fiList.Frequency_Implantation}}</td>
+                        <td ng-click="$ctrl.openEditDialog(fiList)">
+                            {{fiList.Catheter_Implantation_Date  | moment:'YYYY/MM/DD'}}
+                            <!-- {{fiList.Catheter_Implantation_Date  | moment:'YYYY/MM/DD (dd)'}}<br />
+                            {{fiList.Catheter_Implantation_Date  | moment:'HH:mm'}} -->
+                        </td>
+                        <td ng-click="$ctrl.openEditDialog(fiList)">
+                            {{fiList.Doctor_Section}}
+                            <span ng-if="fiList.Doctor_Name"><br/>{{fiList.Doctor_Name}}</span>
+                        </td>
+                        <td ng-click="$ctrl.openEditDialog(fiList)">{{fiList.Implantation_Method}}</td>
+                        <td ng-click="$ctrl.openEditDialog(fiList)">
+                            <label ng-if="fiList.Implantation_Location !== '其他' || fiList.Implantation_Location !== '0'">{{fiList.Implantation_Location}}</label>
+                            <label ng-if="fiList.Implantation_Location == '其他'">{{fiList.ImplantationLocationOther}}</label>
+                        </td>
+                        <td ng-click="$ctrl.openEditDialog(fiList)">
+                            <label ng-if="fiList.Catheter_Type !== '其他' || fiList.Catheter_Type !== '0'">{{fiList.Catheter_Type}}</label>
+                            <label ng-if="fiList.Catheter_Type == '其他'">{{fiList.CatheterTypeOther}}</label>
+                        </td>
+                        <td ng-click="$ctrl.openEditDialog(fiList)">{{fiList.Cuff_Amount}}</td>
+                        <td ng-click="$ctrl.openEditDialog(fiList)">
+                            <label ng-if="fiList.Front_Type !== '其他' || fiList.Front_Type !== '0'">{{fiList.Front_Type}}</label>
+                            <label ng-if="fiList.Front_Type == '其他'">{{fiList.FrontTypeOther}}</label>
+                        </td>
+                        <td ng-click="$ctrl.openEditDialog(fiList)">
+                            {{fiList.Treatment_Termination_Date  | moment:'YYYY/MM/DD'}}
+                            <!-- {{fiList.Treatment_Termination_Date  | moment:'YYYY/MM/DD'}}<br />
+                            {{fiList.Treatment_Termination_Date  | moment:'HH:mm'}} -->
+                        </td>
+                        <td ng-click="$ctrl.openEditDialog(fiList)">
+                            <label ng-if="fiList.Termination_Reasons !== '其他' && fiList.Termination_Reasons !== '0'">{{fiList.Termination_Reasons}}</label>
+                            <label ng-if="fiList.Termination_Reasons == '其他'">{{fiList.TerminationReasonsOther}}</label>
+                        </td>
+                        <td ng-click="$ctrl.openEditDialog(fiList)">
+                            {{fiList.Extubation_Date  | moment:'YYYY/MM/DD'}}
+                            <!-- {{fiList.Extubation_Date  | moment:'HH:mm'}} -->
+                        </td>
+                        <td>
+                            <seal model="fiList" created='none' my-style="{display:'inline-block'}"></seal>
+                            <seal ng-show="fiList.CreatedUserName != fiList.ModifiedUserName" model="fiList" modified='none' my-style="{display:'inline-block'}"></seal>
+                        </td>
+                        <td>
+                            <!-- <i class="material-icons">add</i>
+                            <i class="material-icons">delete</i>
+                            <i class="material-icons">fullscreen</i>
+                            <i class="material-icons">assignment</i>
+                            <i class="material-icons">photo_album</i>
+                            <i class="material-icons">date_range</i>
+                            <i class="material-icons">navigate_before</i>
+                            <i class="material-icons">date_range</i>
+                            <i class="material-icons">navigate_next</i>
+                            <i class="material-icons">content_copy</i> -->                    
+                            <!-- <i ng-if="fiList.Status !== 'Deleted'" class="material-icons" ng-click="$ctrl.deleteOne($event, fiList)"><md-tooltip>刪除</md-tooltip>delete</i> -->
+                            <i ng-if="fiList.Status !== 'Deleted'" class="material-icons" ng-click="$ctrl.deleteOne($event, fiList)"><md-tooltip>刪除</md-tooltip>delete</i>
+                            <!-- <md-button class="md-icon-button" ng-click="$ctrl.deleteOne($event, fiList)" ng-if="fiList.Status !== 'Deleted'">
+                                <i class="material-icons">delete</i>
+                                <md-tooltip style="margin-top: -5px;">
+                                    刪除
+                                </md-tooltip>
+                            </md-button> -->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>            
+        </div>
+        <md-content ng-show="!$ctrl.loading && $ctrl.fiList.length == 0" flex layout="column" layout-align="center center">
+            <h1 translate>{{'frequencyImplantation.treat.noData'}}</h1>
+            <h4></h4>
+        </md-content>
+        <md-button class="no-print md-fab md-fab-bottom-right" style="position: fixed;" ng-click="$ctrl.openCreateDialog()">
+            <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+        </md-button>
+</md-content>

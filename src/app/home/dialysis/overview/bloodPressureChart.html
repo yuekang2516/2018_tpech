@@ -1,0 +1,51 @@
+<md-dialog id="blood-pressure-dialog" layout-fill>
+    <md-toolbar >
+        <div class="md-toolbar-tools">
+            <h2>
+                <span translate>
+                    <!-- {{'allExecutionRecord.recordDeleteDialog.checkDeleteMessage'}} -->
+                    {{'overview.bloodChart'}}
+                </span>
+            </h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="dialog.cancel()">
+                <i class="material-icons">close</i>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    
+    <md-dialog-content id="chart-dialog" flex class="pressure-chart-dialog-container">
+            <loading ng-show="dialog.loading" ></loading>
+
+        <div ng-show="!dialog.loading && !dialog.nodata && !dialog.isError" layout="column">
+
+            <div class="titleDate" layout="row" layout-align="center end">
+                {{dialog.titleDate}}
+            </div>
+
+            <div layout="column" style="margin-bottom:0rem;">
+                <div id="main-chart" style="width: 650px; height: 450px; padding: 10px; padding: 0px 0px 200px 0px;" ></div>
+            </div>
+
+            <!-- <md-dialog-actions layout="row" layout-align="end center">
+                <md-button class="md-raised" ng-click="dialog.cancel()">
+                    {{'allExecutionRecord.recordDeleteDialog.cancel' | translate}}
+                </md-button>
+                <md-button class="md-raised md-primary md-btn-white-text" ng-click="dialog.ok()">
+                    {{'allExecutionRecord.recordDeleteDialog.delete' | translate}}
+                </md-button>
+            </md-dialog-actions> -->
+        </div>
+
+
+        <div ng-if="dialog.nodata" flex layout="column" layout-align="center center" style="height: 100%;">
+            <h3 translate>{{'overview.chartNoData'}}</h3>
+        </div>
+
+        <div ng-if="dialog.isError" flex layout="column" layout-align="center center" style="height: 100%;">
+            <h3 translate>{{'customMessage.serverError'}}</h3>
+        </div>
+
+    </md-dialog-content>
+</md-dialog>

@@ -1,0 +1,64 @@
+<md-content layout-fill layout="column">
+    <summary-toolbar toolbar-title="'annualEpo.annualEpoReport' | translate" cancel="vm.back()"></summary-toolbar>
+
+    <!-- <md-toolbar hide-gt-sm>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.back()">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <div layout="row">
+                {{'annualEpo.annualEpoReport' | translate}}
+            </div>
+            <span flex></span>
+        </div>
+    </md-toolbar> -->
+
+    <loading ng-show="vm.loading"></loading>
+    <md-content flex layout-padding ng-show="!vm.loading && !vm.isError">
+        <div layout="row" layout-align="start center">
+            <div translate>{{'annualEpo.selectedYear'}}</div>
+            <md-select ng-model="vm.selectedYear" ng-change="vm.changeYear()">
+                <md-option ng-repeat="i in vm.optionYear" ng-value="i">{{i}}</md-option>
+            </md-select>
+        </div>
+        <!-- loop through every month -->
+        <div ng-repeat="month in [] | range:12:1">
+            <table>
+                <tbody>
+                    <tr>
+                        <!-- <td class="annual" colspan="17">{{vm.selectedYear}}年 {{month}}月</td> -->
+                        <td class="annual" colspan="17" translate="annualEpo.yearAndMonth" translate-values='{selectedYear: vm.selectedYear, month: month}'></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" translate>{{'annualEpo.dialysisTimes'}}</td>
+                        <td ng-repeat="i in [] | range:15:1">{{i}}</td>
+                    </tr>
+                    <tr ng-repeat="(key, records) in vm.dateHBContent[month-1]">
+                        <td colspan="{{$index === 0 ? 2 : 0}}" ng-repeat="item in records track by $index">{{item}}</td>
+                    </tr>
+                    <tr>
+                        <td class="type" rowspan="{{vm.publicRowspan}}" translate>{{'annualEpo.publicPay'}}</td>
+                    </tr>
+                    <tr ng-style="key % 6 === 0 || key % 6 === 1 || key % 6 === 2? {'background': '#dee4ed'} : {}" ng-repeat="(key, records) in vm.publicMedsContent[month-1]">
+                        <td ng-repeat="item in records track by $index">{{item}}</td>
+                    </tr>
+                    <tr>
+                        <td class="type" rowspan="{{vm.privateRowspan}}" translate>{{'annualEpo.selfPay'}}</td>
+                    </tr>
+                    <tr ng-style="key % 6 === 0 || key % 6 === 1 || key % 6 === 2? {'background': '#dee4ed'} : {}" ng-repeat="(key, records) in vm.privateMedsContent[month-1]">
+                        <td ng-repeat="item in records track by $index">{{item}}</td>
+                    </tr>
+                    <tr ng-repeat="(key, records) in vm.docProcessNameContent[month-1]">
+                        <td align="center" colspan="{{$index === 0 ? 2 : 0}}" ng-repeat="item in records track by $index">
+                            <seal ng-if="$index > 0" label="{{item}}" created="none"></seal>
+                            <span ng-if="$index === 0">{{item}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </md-content>
+    <div flex ng-show="!vm.loading && vm.isError" layout="column" layout-fill layout-align="center center">
+        <h3 translate>{{'annualEpo.serverError'}}</h3>
+    </div>
+</md-content>

@@ -1,0 +1,186 @@
+<style scoped>
+    medicine-detail {
+        height: 100%;
+    }
+
+    .padding {
+        padding: 20px;
+    }
+
+    .padding-bottom {
+        padding-bottom: 20px;
+    }
+</style>
+
+<md-content layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.back()">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <h4>
+                <span ng-show="vm.type === 'create'" translate="medicine.detailpageTitleAdd"></span>
+                <span ng-show="vm.type !== 'create'" translate="medicine.detailpageTitle" translate-values='{name: vm.formData.Name}'></span>
+            </h4>
+        </div>
+    </md-toolbar>
+    <md-content flex>
+        <!--<div layout="row" layout-sm="column" layout-align="space-around" id="loading" ng-show="vm.loading">
+            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>-->
+        <loading ng-show="vm.loading"></loading>
+        <div flex ng-show="!vm.loading && vm.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate="customMessage.serverError"></h3>
+        </div>
+        <div ng-show="!vm.loading && !vm.isError">
+            <form name="editForm" class="padding">
+                <md-grid-list md-cols="2" md-row-height="64px">
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="medicine.name"></label>
+                            <input type="text" name="Name" ng-model="vm.formData.Name" required />
+                            <div ng-messages="editForm.Name.$error">
+                                <div ng-message="required"><span translate="customMessage.dataRequired"></span></div>
+                            </div>
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <div style="margin-top:-0.9em" flex>
+                                <label translate="medicine.kind"></label>
+                                <md-select ng-model="vm.formData.CategoryName">
+                                    <md-option ng-repeat="category in vm.categories" ng-value="category">{{category}}</md-option>
+                                    <md-option value="keyin"><span translate="medicine.custom"></span></md-option>
+                                </md-select>
+                            </div>
+                        </md-input-container>
+                        <md-input-container class="md-block" ng-show="vm.formData.CategoryName === 'keyin'" flex>
+                            <input type="text" name="CategoryName" ng-show="vm.formData.CategoryName === 'keyin'" ng-model="vm.keyinCategoryName" placeholder="{{'medicine.enterCustom' | translate}}"
+                            />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="medicine.codes"></label>
+                            <input type="text" name="MedicineCode" ng-model="vm.formData.MedicineCode" required />
+                            <div ng-messages="editForm.MedicineCode.$error">
+                                <div ng-message="required"><span translate="customMessage.dataRequired"></span></div>
+                            </div>
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="medicine.NHICodes"></label>
+                            <input type="text" name="NHICode" ng-model="vm.formData.NHICode" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="medicine.qty"></label>
+                            <input type="number" name="Quantity" ng-model="vm.formData.Quantity" />
+                            <!--required min="0"
+                            <div ng-messages="editForm.Volume.$error">
+                                <div ng-message="required"><span translate="customMessage.dataRequired"></span></div>
+                            </div>-->
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="medicine.qtyUnit"></label>
+                            <input type="text" name="QuantityUnit" ng-model="vm.formData.QuantityUnit" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="medicine.capacity"></label>
+                            <input type="number" name="Volume" ng-model="vm.formData.Volume" min="0" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="medicine.capacityUnit"></label>
+                            <input type="text" name="VolumeUnit" ng-model="vm.formData.VolumeUnit" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="medicine.dose"></label>
+                            <input type="number" name="Dose" ng-model="vm.formData.Dose" min="0" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="medicine.doseUnit"></label>
+                            <input type="text" name="DoseUnit" ng-model="vm.formData.DoseUnit" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-checkbox md-no-ink aria-label="{{'medicine.addStatistics' | translate}}" ng-model="vm.formData.IsStatistics" class="md-primary" flex>
+                            <span translate="medicine.addStatistics"></span>
+                        </md-checkbox>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="medicine.statisticsOrder"></label>
+                            <input type="number" name="orderStatistics" ng-model="vm.formData.orderStatistics" min="0" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-checkbox md-no-ink aria-label="{{'medicine.IsDangerMed' | translate}}" ng-model="vm.formData.IsDangerMed" class="md-primary" flex>
+                            <span translate="medicine.isDangerMed"></span>
+                        </md-checkbox>
+                    </md-grid-tile>
+                </md-grid-list>
+                <md-input-container class="md-block">
+                    <label translate="medicine.memo"></label>
+                    <textarea ng-model="vm.formData.Memo" rows="2"></textarea>
+                </md-input-container>
+                <!--widas已不使用此欄位-->
+                <!--<md-input-container class="md-block">
+                    <label>統計欄位</label>
+                    <md-select ng-model="vm.formData.StatisticsField">
+                        <md-option ng-repeat="obj in vm.StatisticsFields" value="{{obj.Id}}">{{obj.Text}}</md-option>
+                    </md-select>
+                </md-input-container>-->
+                <md-input-container class="md-block">
+                    <label translate="medicine.way"></label>
+                    <br><br>
+                    <div layout="row" layout-wrap>
+                        <div flex="50" ng-repeat="(key, text) in vm.Routes">
+                            <md-checkbox ng-checked="vm.exists(key, vm.formData.Routes)" ng-click="vm.toggle(key, vm.formData.Routes)">
+                                {{ text }}
+                            </md-checkbox>
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label translate="medicine.method"></label>
+                    <br><br>
+                    <div layout="row" layout-wrap>
+                        <div flex="50" ng-repeat="(key, text) in vm.Frequencys">
+                            <md-checkbox ng-checked="vm.exists(key, vm.formData.Frequencys)" ng-click="vm.toggle(key, vm.formData.Frequencys)">
+                                {{ text }}
+                            </md-checkbox>
+                        </div>
+                    </div>
+                </md-input-container>
+
+                <md-button class="md-warn md-raised" ng-click="vm.delete($event)" ng-if="vm.type==='edit'" ng-disabled="vm.isSaving">
+                    <span translate>{{'medicine.deletebutton'}}</span>
+                </md-button>
+                <md-button type="submit" class="md-primary md-raised" ng-click="vm.save()" ng-disabled="editForm.$invalid || vm.isSaving">
+                    <span translate>{{'medicine.savebutton'}}</span>
+                </md-button>
+            </form>
+            <!--widas未使用的欄位-->
+            <!--<div class="form-group" ng-show="vm.formData.CategoryName === 'EPO'">
+            <label class="col-sm-3 control-label">數量快速選單(不同選單請換行)</label>
+            <div class="col-sm-4">
+            <md-input-container class="md-block">
+            <textarea ng-model="vm.EPODefaultString" columns="1" md-maxlength="50" rows="3"></textarea>
+            </md-input-container>
+            </div>
+            </div>-->
+        </div>
+    </md-content>
+</md-content>

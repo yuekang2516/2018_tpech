@@ -1,0 +1,33 @@
+<div class="freezeDiv tbTrackShort">
+    <table class="freezeTb tb">
+        <thead>
+            <tr>
+                <th>日期</th>
+                <th>透析時間</th>
+                <th>50%</th>
+                <th>Glucose（Amp）</th>
+                <th>開立醫師</th>
+                <th>其他備註</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="oST in $ctrl.orderSTList">
+                <td ng-click="$ctrl.openEditDialog(oST)">{{oST.Record_Date  | moment:'YYYY-MM-DD'}}</td>
+                <td ng-click="$ctrl.openEditDialog(oST)">{{oST.Record_Date  | moment:'HH:mm:ss'}}</td>
+                <td ng-click="$ctrl.openEditDialog(oST)"><a>{{oST.Percent50}}</a></td>
+                <td ng-click="$ctrl.openEditDialog(oST)"><a>{{oST.Gluose_Amp}}</a></td>
+                <td ng-click="$ctrl.openEditDialog(oST)"><a>{{oST.Opening_Doctor}}</a></td>
+                <td ng-click="$ctrl.openEditDialog(oST)"><a>{{oST.Other_Remarks}}</a></td>
+                <td>
+                    <button class="btnDef btnDel" type="button" ng-click="$ctrl.deleteOne($event, oST)">
+                        <span>刪除</span>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<md-button class="md-fab md-fab-bottom-right" style="position: fixed;" ng-click="$ctrl.openCreateDialog()">
+    <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+</md-button>

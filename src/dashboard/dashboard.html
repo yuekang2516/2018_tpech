@@ -1,0 +1,53 @@
+<md-content layout-fill>
+    <div class="head">
+        <img ng-if="$ctrl.logo" src="{{$ctrl.logo}}">
+        <span class="hospital" ng-if="!$ctrl.logo">{{::$ctrl.hospitalName}}</span>
+        <h1>{{$ctrl.selectedName}}</h1>
+        <select class="ward-select" ng-model="$ctrl.currentWard" ng-change="$ctrl.changeWard()">
+            <option ng-repeat="(key, value) in $ctrl.wardList" ng-value="key">{{::value}}</option>
+        </select>
+        <b>
+            {{'dashboard.outpatient' | translate}}
+            <span> {{$ctrl.outPatientCount}} </span>
+            {{'dashboard.person' | translate}} &nbsp {{'dashboard.Hospitalization' | translate}}
+            <span> {{$ctrl.inPatientCount}} </span>
+            {{'dashboard.person' | translate}} &nbsp 急診
+            <span> {{$ctrl.emergencyPatientCount}} </span>
+            {{'dashboard.person' | translate}}
+        </b>
+        <div class="time">{{ $ctrl.NowTime }}</div>
+    </div>
+    <div class="container">
+        <div class="menu">
+            <div ng-class="{button_white: $ctrl.selected == 'patientsBoard'}" ng-click="$ctrl.gotoPage()">
+                <div class="button_main" ng-class="$ctrl.language === 'en-us' ? 'e1' : 'a1'"></div>
+            </div>
+            <div ng-class="{button_white: $ctrl.selected == 'machineDataBoard'}" ng-click="$ctrl.gotoPage('machineDataBoard')">
+                <div class="button_main" ng-class="$ctrl.language === 'en-us' ? 'e2' : 'a2'"></div>
+            </div>
+            <div ng-class="{button_white: $ctrl.selected == 'bedsBoard'}" ng-click="$ctrl.gotoPage('bedsBoard')">
+                <div class="button_main" ng-class="$ctrl.language === 'en-us' ? 'e3' : 'a3'"></div>
+            </div>
+            <div ng-class="{button_white: $ctrl.selected == 'shiftsBoard'}" ng-click="$ctrl.gotoPage('shiftsBoard')">
+                <div class="button_main" ng-class="$ctrl.language === 'en-us' ? 'e4' : 'a4'"></div>
+            </div>
+            <!-- <div ng-class="{button_white: $ctrl.selected == 'emergency'}">
+                <div class="button_main a5"></div>
+            </div> -->
+            <div ng-class="{button_white: $ctrl.selected == 'whiteBoard'}" ng-click="$ctrl.gotoPage('whiteBoard')">
+                <div class="button_main" ng-class="$ctrl.language === 'en-us' ? 'e6' : 'a6'"></div>
+            </div>
+            <div ng-class="{button_white: $ctrl.selected == 'whiteBoard'}" ng-click="$ctrl.gotoPage('directoryBoard')">
+                <div class="button_main" ng-class="$ctrl.language === 'en-us' ? 'e7' : 'a7'"></div>
+            </div>
+        </div>
+        <!--最後更新時間：-->
+        <div class="lasttime" ng-if="$ctrl.selected == 'patientsBoard' || $ctrl.selected == 'bedsBoard' || $ctrl.selected == 'shiftsBoard'|| $ctrl.selected == 'directoryBoard'">
+            <img class="refresh" src="../static/img/refresh.png" ng-click="$ctrl.refresh()">
+            <br>
+            <span>{{$ctrl.lastRefreshTitle}}</span>
+            
+        </div>
+        <ui-view style="height:100%" flex class="main"></ui-view>
+    </div>
+</md-content>

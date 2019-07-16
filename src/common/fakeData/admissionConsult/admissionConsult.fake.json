@@ -1,0 +1,20 @@
+[
+    {
+        "AdmissionDate": "2019-03-10T18:14:56.3156932+08:00",
+        "DischargeDate": "2019-03-18T18:14:56.3156932+08:00",
+        "Diagnosis": "CKD",
+        "Hospitalname": "TaipeiCity Hospital",
+        "Station": "AI",
+        "Ward": "AI01",
+        "Memo": "VIPVIPVIPVIPVIPVIPVIPVIPVIPVIPVIPVIPVIPVIPVIPVIPVIPVIP"
+    },
+    {
+        "AdmissionDate": "2019-02-10T18:14:56.3156932+08:00",
+        "DischargeDate": "2019-02-20T18:14:56.3156932+08:00",
+        "Diagnosis": "APN",
+        "Hospitalname": "TaipeiCity Hospital",
+        "Station": "9B",
+        "Ward": "9B073",
+        "Memo": "VIP"
+    }
+]

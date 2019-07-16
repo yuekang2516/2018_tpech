@@ -1,0 +1,183 @@
+<md-dialog class="patient-event-dialog-container">
+    <form name="eventForm" ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools" layout="row">
+
+                <p flex ng-if="dialog.editType === 'new'" translate>{{'monthlyDialysisRecords.patientEventDialog.newPatientEvent'}}</p>
+                <p flex ng-if="dialog.editType === 'update' && dialog.eventType === 'patient'" translate>{{'monthlyDialysisRecords.patientEventDialog.updatePatientEvent'}}</p>
+                <p flex ng-if="dialog.editType === 'update' && dialog.eventType === 'ward'" translate>{{'monthlyDialysisRecords.patientEventDialog.updateWardEvent'}}</p>
+
+                <md-button class="md-icon-button" ng-click="dialog.cancel()">
+                    <i class="material-icons">clear</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div class="md-dialog-content">
+
+                <div layout="row" class="row">
+                    <label class="label-margin" translate>{{'monthlyDialysisRecords.patientEventDialog.title'}}</label>
+                    <input required ng-model="dialog.title">
+                </div>
+
+                <!--  ng-if="!dialog.noEndDate" -->
+                <div layout="row" class="row">
+                    <label class="label-margin" translate>{{'monthlyDialysisRecords.patientEventDialog.allDay'}}</label>
+                    <md-checkbox ng-model="dialog.allDay" ng-change="dialog.changeAllDay(dialog.allDay)" class="all-day"></md-checkbox>
+                </div>
+
+
+                <div layout="row" class="row">
+                    <label class="label-margin" translate>{{'monthlyDialysisRecords.patientEventDialog.startDate'}}</label>
+                    <input name="date" class="calendar" type="date" ng-model="dialog.startDate" ng-change="dialog.dateChanged('start')" required />
+                </div>
+
+
+                <div layout="row" class="row" ng-if="!dialog.allDay">
+                    <label class="label-margin" translate>{{'monthlyDialysisRecords.patientEventDialog.startTime'}}</label>
+                    <input name="time" class="calendar" type="time" ng-model="dialog.startTime" ng-change="dialog.dateChanged('start')" required />
+                </div>
+
+                <!-- ng-if="!dialog.allDay" -->
+                <div layout="row" class="row">
+                    <label class="label-margin" translate>{{'monthlyDialysisRecords.patientEventDialog.endDate'}}</label>
+                    <input id="endDate" name="date" class="calendar" type="date" ng-model="dialog.endDate" ng-change="dialog.dateChanged('end')" required />
+                </div>
+
+                <div layout="row" class="row" ng-if="!dialog.allDay">
+                    <label class="label-margin" translate>{{'monthlyDialysisRecords.patientEventDialog.endTime'}}</label>
+                    <input id="endTime" name="time" class="calendar" type="time" ng-model="dialog.endTime" ng-change="dialog.dateChanged('end')" required />
+                </div>
+
+
+                <!-- <div layout="row" class="row">
+                    <label class="label-margin">持續記事</label>
+                    <md-checkbox ng-model="dialog.noEndDate" ng-change="dialog.changeNoEndDate(dialog.noEndDate)" class="no-end-date"></md-checkbox>
+                    <span style="font-size: 14px;">(未執行自動延展，顯示於年度行事表)</span>
+                </div> -->
+
+
+                <div class="row" ng-if="dialog.editType === 'new'">
+                    <label class="label-margin" translate>{{'monthlyDialysisRecords.patientEventDialog.repeat'}}</label>
+                    <div layout="column">
+                        <div layout="row" ng-if="dialog.showEveryDay">
+                            <md-checkbox ng-model="dialog.everyday">
+                                <span class="margin-right-10" translate>{{'monthlyDialysisRecords.patientEventDialog.everyday'}}</span>
+                            </md-checkbox>
+                        </div>
+                        <div layout="row" layout-xs="column" ng-if="!dialog.everyday">
+                            <md-checkbox ng-model="dialog.monday" ng-change="dialog.selectDay()">
+                                <span class="margin-right-10" translate>{{'monthlyDialysisRecords.patientEventDialog.mon'}}</span>
+                            </md-checkbox>
+                            <md-checkbox ng-model="dialog.tuesday" ng-change="dialog.selectDay()">
+                                <span class="margin-right-10" translate>{{'monthlyDialysisRecords.patientEventDialog.tue'}}</span>
+                            </md-checkbox>
+                            <md-checkbox ng-model="dialog.wednesday" ng-change="dialog.selectDay()">
+                                <span class="margin-right-10" translate>{{'monthlyDialysisRecords.patientEventDialog.wed'}}</span>
+                            </md-checkbox>
+                        </div>
+                        <div layout="row" layout-xs="column" ng-if="!dialog.everyday">
+                            <md-checkbox ng-model="dialog.thursday" ng-change="dialog.selectDay()">
+                                <span class="margin-right-10" translate>{{'monthlyDialysisRecords.patientEventDialog.thurs'}}</span>
+                            </md-checkbox>
+                            <md-checkbox ng-model="dialog.friday" ng-change="dialog.selectDay()">
+                                <span class="margin-right-10" translate>{{'monthlyDialysisRecords.patientEventDialog.fri'}}</span>
+                            </md-checkbox>
+                            <md-checkbox ng-model="dialog.saturday" ng-change="dialog.selectDay()">
+                                <span class="margin-right-10" translate>{{'monthlyDialysisRecords.patientEventDialog.sat'}}</span>
+                            </md-checkbox>
+                        </div>
+                        <div layout="row" ng-if="!dialog.everyday">
+                            <md-checkbox ng-model="dialog.sunday" ng-change="dialog.selectDay()">
+                                <span class="margin-right-10" translate>{{'monthlyDialysisRecords.patientEventDialog.sun'}}</span>
+                            </md-checkbox>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- dialog.allDay &&  -->
+                <div layout="row" class="row" ng-if="dialog.editType === 'new' && (dialog.everyday || dialog.monday || dialog.tuesday || dialog.wednesday || dialog.thursday || dialog.friday || dialog.saturday || dialog.sunday)">
+                    <label class="label-margin" translate>{{'monthlyDialysisRecords.patientEventDialog.repeatEndDate'}}</label>
+                    <input id="endDate" name="date" class="calendar" type="date" ng-model="dialog.repeatEndTime" ng-change="dialog.dateChanged('repeatEndTime')" max="{{dialog.max10Year}}" required />
+                </div>
+
+
+                <div layout="row" class="row" ng-if="dialog.eventType === 'ward'">
+                    <label class="label-margin" translate>{{'monthlyDialysisRecords.patientEventDialog.tagColor'}}</label>
+                    <md-radio-group class="radioGroup" ng-model="dialog.tagColor" layout="column" required>
+                        <div layout="row">
+                            <md-radio-button value="#039BE5" class="md-primary">
+                                <div class="color-div color-div-lightblue"></div>
+                            </md-radio-button>
+                            <md-radio-button value="#7986CB" class="md-primary margin-left">
+                                <div class="color-div color-div-purple"></div>
+                            </md-radio-button>
+                            <md-radio-button value="#33B679" class="md-primary margin-left">
+                                <div class="color-div color-div-green"></div>
+                            </md-radio-button>
+                            <md-radio-button value="#F4511E" class="md-primary margin-left">
+                                <div class="color-div color-div-orange"></div>
+                            </md-radio-button>
+                        </div>
+                    </md-radio-group>
+                </div>
+
+                <div layout="row" class="row">
+                    <label class="label-margin" translate>{{'monthlyDialysisRecords.patientEventDialog.content'}}</label>
+                    <!-- <md-input-container md-no-float md-no-asterisk> -->
+                    <textarea ng-model="dialog.content" style="min-height: 80px; width: 100%;" rows="2" placeholder="{{'monthlyDialysisRecords.patientEventDialog.fillContent' | translate}}"></textarea>
+                    <!-- </md-input-container> -->
+                </div>
+
+                <div class="div-created-modified" layout="row" layout-xs="column" ng-if="dialog.editType === 'update' && dialog.eventType === 'patient'">
+
+                    <!-- <label class="label-margin">建立者</label> -->
+                    <div class="created" ng-if="dialog.createdTime !== null" flex='50'>
+                        {{'monthlyDialysisRecords.patientEventDialog.created' | translate}} {{dialog.createdTime}} {{dialog.createdUserName}}
+                    </div>
+                    <!-- <label class="label-margin">建立者</label> -->
+                    <div class="modified" ng-if="dialog.modifiedTime !== null" flex='50'>
+                        {{'monthlyDialysisRecords.patientEventDialog.modified' | translate}} {{dialog.modifiedTime}} {{dialog.modifiedUserName}}
+                    </div>
+                </div>
+
+
+                <!-- <div layout="row" class="row">
+                    <label class="label-margin">執行狀態</label>
+                    <md-radio-group ng-model="dialog.executeStatus" layout="row" aria-label="執行" ng-change="dialog.executeStatusChanged(dialog.executeStatus)">
+                        <md-radio-button ng-value="'none'">無</md-radio-button>
+                        <md-radio-button ng-value="'pending'">未執行</md-radio-button>
+                        <md-radio-button ng-value="'done'">已執行</md-radio-button>
+                    </md-radio-group>
+                </div>
+
+                <div layout="row" class="row" ng-if="dialog.executeStatus === 'done'">
+                    <label class="label-margin">執行日期</label>
+                    <input id="executeDate" name="date" class="calendar" type="date" ng-model="dialog.executeTime" ng-change="dialog.dateChanged('execute')" />
+                </div>
+
+                <div layout="row" class="row" ng-if="dialog.executeStatus === 'done'">
+                    <label class="label-margin">執行時間</label>
+                    <input id="executeTime" name="time" class="calendar" type="time" ng-model="dialog.executeTime" ng-change="dialog.dateChanged('execute')" />
+                </div> -->
+
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout-align="end end">
+            <md-button class="md-raised" ng-click="dialog.cancel()">
+                {{'monthlyDialysisRecords.patientEventDialog.cancel' | translate}}
+            </md-button>
+            <md-button ng-if="dialog.editType === 'update'" class="md-raised md-warn md-btn-white-text" ng-click="dialog.deleteEvent(dialog.id, dialog.title)" ng-disabled="">
+                {{'monthlyDialysisRecords.patientEventDialog.delete' | translate}}
+            </md-button>
+            <md-button ng-if="dialog.editType === 'update'" class="md-raised md-primary md-btn-white-text" ng-click="dialog.editEvent(eventForm)" ng-disabled="eventForm.$invalid || dialog.timeError">
+                {{'monthlyDialysisRecords.patientEventDialog.update' | translate}}
+            </md-button>
+            <md-button ng-if="dialog.editType === 'new'" class="md-raised md-primary md-btn-white-text" ng-click="dialog.newEvent(eventForm)" ng-disabled="eventForm.$invalid || dialog.timeError">
+                {{'monthlyDialysisRecords.patientEventDialog.new' | translate}}
+            </md-button>
+            <!-- <md-progress-circular md-diameter="20px" md-mode="indeterminate" ng-show="dialog.isLoading"></md-progress-circular> -->
+        </md-dialog-actions>
+    </form>
+</md-dialog>

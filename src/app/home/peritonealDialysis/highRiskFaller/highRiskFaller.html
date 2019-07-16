@@ -1,0 +1,139 @@
+<style>
+    high-risk-faller{
+        height: 100%;
+    }
+    .inputbox .inputBoxTit{width:100px;}
+    input{width:100%;}
+    @media print{
+        .md-dialog-container {
+            display: inline-table;
+        }
+        @page{
+            size: A4 portrait;
+            margin: 0.5cm;
+            orphans:4;
+            widows:2;
+        }
+        div,input,table,select,md-select{
+            page-break-inside :avoid;
+            page-break-after: avoid;
+        }
+    }
+</style>
+<md-content layout="column" layout-fill>
+    <summary-toolbar ng-if="$ctrl.headerId" toolbar-title="'跌倒評估'" cancel="$ctrl.back()"></summary-toolbar>
+    <md-content layout="column" flex>
+        <md-list ng-show="!$ctrl.loading && $ctrl.hRFList.length > 0">
+                <div class="list-header" ng-show="!$ctrl.loading" layout="row" layout-align="center center">
+                    <md-switch ng-model="$ctrl.showDeleted" aria-label="Switch data">
+                        <span translate="highRiskFaller.Records.showDeleted" translate-values='{deletedItemsLength: $ctrl.deletedItemsLength}'></span>
+                    </md-switch>
+                    <span flex></span>
+                    <h6 translate="highRiskFaller.Records.totalRecord" translate-values='{totalCnt: $ctrl.totalCnt}'></h6>
+                    <span flex></span>
+                    <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+                </div>
+                <md-content layout="column" flex>
+                    <loading ng-show="$ctrl.loading"></loading>
+                    <div ng-show="$ctrl.hRFList.length > 0"  infinite-scroll="$ctrl.loadMore()" infinite-scroll-disabled='$ctrl.loading' infinite-scroll-distance='2' infinite-scroll-parent>
+                        <md-content>
+                            <md-list>
+                                <md-list-item class="md-2-line" ng-class="{deleted: item.Status == 'Deleted'}" ng-repeat="item in $ctrl.hRFList" ng-click="$ctrl.openEditDialog(item,false)" ng-show="item.Status !== 'Deleted' || $ctrl.showDeleted">
+                                    <div class="md-list-item-text" layout="column">
+                                        <h3 ng-bind="item.Record_Date | moment:'YYYY/MM/DD (dd) HH:mm'"></h3>
+                                        <p>總分：{{item.Total}}</p>
+                                        <seal my-style="$ctrl.myStyle" model="item" modified="hideIfSame" fixed="true"></seal>
+                                    </div>
+                                    <div  style="position: absolute; right: 6px; top: 20px" ng-hide="item.Status == 'Deleted'">                                                                        
+                                        <md-button class="md-icon-button" ng-click="$ctrl.openEditDialog(item,true)">
+                                            <i class="material-icons">
+                                                content_copy
+                                            </i>
+                                            <md-tooltip style="margin-top: -5px;">
+                                                複製
+                                            </md-tooltip>
+                                        </md-button>
+                                        <md-button  class="md-icon-button" ng-click="$ctrl.deleteOne($event,item)" > 
+                                            <i class="material-icons">delete</i>
+                                            <md-tooltip style="margin-top: -5px;">
+                                                刪除
+                                            </md-tooltip>
+                                        </md-button>
+                                    </div>
+                                    <md-divider ng-if="!$last"></md-divider>
+                                </md-list-item>
+                            </md-list>
+                        </md-content>
+                    </div>
+                </md-content>
+        </md-list>
+        <md-progress-circular ng-show="$ctrl.loadingMore" class="loadmore" md-diameter="40" md-mode="indeterminate"></md-progress-circular> 
+        <md-content ng-show="!$ctrl.loading && $ctrl.hRFList.length == 0 && !$ctrl.isError" flex layout="column" layout-align="center center">
+            <h1 translate>{{'highRiskFaller.Records.noData'}}</h1>
+            <h4></h4>
+        </md-content>
+        <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate>{{'highRiskFaller.Records.serverError'}}</h3>
+        </div>
+    </md-content>
+</md-content>
+<md-button class="no-print md-fab md-fab-bottom-right" ng-hide="$ctrl.isAll" ng-click="$ctrl.openCreateDialog()">
+    <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+</md-button>
+<!-- <div class="freezeDiv tbHighRisk">
+    <table class="freezeTb tb">
+        <thead>
+            <tr>
+                <th>日期</th>
+                <th>年齡大於65歲</th>
+                <th>是否發生跌倒<br />(上次透析後至今)</th>
+                <th>步態不穩、使用輔助助行器、軟弱需他人扶持</th>
+                <th>肢體功能障礙</th>
+                <th>意識不清或認知障礙</th>
+                <th>營養不良、頭暈、暈眩</th>
+                <th>貧血(Hct-25%)</th>
+                <th>血壓不穩或姿位性低血壓</th>
+                （收縮壓大於180mmHg或小於90mmHg
+                <th>視力模糊或失明</th>
+                <th>服用影響意識活動之藥物</th>
+                <th>合計</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="hRFL in $ctrl.hRFList">
+                <td ng-click="$ctrl.openEditDialog(hRFL)">
+                    {{hRFL.Record_Date  | moment:'YYYY-MM-DD'}}<br/>
+                    {{hRFL.Record_Date  | moment:'HH:mm:ss'}}
+                </td>
+                <td ng-click="$ctrl.openEditDialog(hRFL,false)"><a>{{(hRFL.Age_Over_65 === 'N' || hRFL.Age_Over_65 === '0') ? '否' : '是'}}</a></td>
+                <td ng-click="$ctrl.openEditDialog(hRFL,false)"><a>{{(hRFL.Have_Fallen_Before === 'N' || hRFL.Have_Fallen_Before === '0') ? '否' : '是'}}</a></td>
+                <td ng-click="$ctrl.openEditDialog(hRFL,false)"><a>{{(hRFL.Can_Not_Walk_Myself === 'N' || hRFL.Can_Not_Walk_Myself === '0') ? '否' : '是'}}</a></td>
+                <td ng-click="$ctrl.openEditDialog(hRFL,false)"><a>{{(hRFL.Limb_Dysfunction === 'N' || hRFL.Limb_Dysfunction === '0') ? '否' : '是'}}</a></td>
+                <td ng-click="$ctrl.openEditDialog(hRFL,false)"><a>{{(hRFL.Unconsciousness_Or_Mci === 'N' || hRFL.Unconsciousness_Or_Mci === '0') ? '否' : '是'}}</a></td>
+                <td ng-click="$ctrl.openEditDialog(hRFL,false)"><a>{{(hRFL.Malnutrition_Or_Dizziness === 'N' || hRFL.Malnutrition_Or_Dizziness === '0') ? '否' : '是'}}</a></td>
+                <td ng-click="$ctrl.openEditDialog(hRFL,false)"><a>{{(hRFL.Percent25_Anemia_Hct === 'N' || hRFL.Percent25_Anemia_Hct === '0') ? '否' : '是'}}</a></td>
+                <td ng-click="$ctrl.openEditDialog(hRFL,false)"><a>{{(hRFL.Blood_Pressure_Instability === 'N' || hRFL.Blood_Pressure_Instability === '0') ? '否' : '是'}}</a></td>
+                <td ng-click="$ctrl.openEditDialog(hRFL,false)"><a>{{(hRFL.Blurred_Vision_Or_Blindness === 'N' || hRFL.Blurred_Vision_Or_Blindness === '0') ? '否' : '是'}}</a></td>
+                <td ng-click="$ctrl.openEditDialog(hRFL,false)"><a>{{(hRFL.Take_Drugs_Affect_Conscious === 'N' || hRFL.Take_Drugs_Affect_Conscious === '0') ? '否' : '是'}}</a></td>
+                <td ng-click="$ctrl.openEditDialog(hRFL,false)"><a>{{hRFL.Total}}</a></td>
+                <td>                    
+                    <md-button ng-hide="$ctrl.isAll" ng-click="$ctrl.openEditDialog(hRFL,true)" style="min-width: 1%;">
+                        <i class="material-icons">
+                            content_copy
+                        </i>
+                        <md-tooltip style="margin-top: -5px;">
+                            複製
+                        </md-tooltip>
+                    </md-button>
+                    <md-button ng-click="$ctrl.deleteOne($event, hRFL)" style="min-width: 1%;">
+                        <i class="material-icons">delete</i>
+                        <md-tooltip style="margin-top: -5px;">
+                            刪除
+                        </md-tooltip>
+                    </md-button>                    
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div> -->

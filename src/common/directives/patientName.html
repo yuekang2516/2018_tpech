@@ -1,0 +1,33 @@
+<style scoped>
+
+    .out-div {
+        border-bottom: rgb(213, 213, 213) solid 1px;
+        clear:both;
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .name {
+        float: left;
+        max-width: calc(100% - 110px);
+        padding-left: 10px;
+        line-height: 40px;
+        margin: 0;
+        overflow:hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .medical-id {
+        float: left;
+        padding-top: 12px;
+        padding-left: 3px;
+    }
+
+</style>
+
+
+<div class="out-div">
+    <h3 class="name">{{::$ctrl.name}}</h3>
+    <span class="medical-id">({{::$ctrl.medicalId}})</span>
+</div>

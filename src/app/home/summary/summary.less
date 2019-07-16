@@ -1,0 +1,636 @@
+summary {
+    height: 100%;
+    position: relative;
+    .away {
+        position: fixed;
+        top: -9999px;
+    }
+    last-refresh-time {
+        outline: none;
+    }
+    .md-toolbar-tools {
+        .circular {
+            min-height: initial;
+            min-width: initial;
+            padding: 0;
+            height: 36px;
+            width: 36px;
+            border-radius: 50%;
+        }
+        .first-child {
+            margin-left: -8px;
+        }
+        .toolbar-date {
+            font-size: 16px;
+        }
+
+        .readonly-text {
+            position: relative;
+            right: initial;
+            top: initial;
+            margin-left: 6px;
+            font-size: 16px;
+        }
+    }
+    .toolbar-function-button {
+        margin-right: -8px;
+        button {
+            &.md-button {
+                margin: 0;
+                &.md-icon {
+                    margin: 0;
+                }
+            }
+        }
+    }
+    .todayInfo {
+        position: absolute;
+        right: -15px;
+        top: -5px;
+        transform: rotate(15deg);
+        color: red;
+        font-weight: bold;
+        background: rgba(255, 255, 0, 0.5);
+    }
+    .md-sidenav-right {
+        width: 320px !important;
+    }
+    md-list-item {
+        .material-icons {
+            margin: 0 0.6em 0 0;
+        }
+        p {
+            line-height: 18px;
+        }
+    }
+    // 最後更新
+    .lastaccesstime {
+        position: fixed; // right: 0;
+        bottom: 0;
+        z-index: 1;
+        width: 180px; // 為了避免寬度變化造成縮進去的距離需要變動，把寬度給死
+    }
+    .lastaccesstime .list-header {
+        padding-right: 22px!important;
+        background: url(./static/img/svg/stretch.svg) no-repeat right;
+        background-size: 30px 30px;
+        background-color: rgba(187, 222, 251, 0.7);
+        cursor: pointer;
+    }
+    // ========= TEST ==========
+    .summary-container {
+        background-color: rgba(16, 16, 16, 0.04)
+    }
+
+    // 執行紀錄及 EPO 的 notification
+    .tabCount {
+        background-color: red;
+        position: absolute;
+    }
+
+    // 功能列
+    .list_tab {
+        position: fixed;
+        right: -1px;
+        bottom: 0;
+        width: 50px;
+        border: #ccc solid 1px;
+        background: #fff;
+        z-index: 2;
+        text-align: center;
+        padding: 0;
+        img {
+            outline: none;
+            cursor: pointer;
+        }
+        .expand {
+            -webkit-transition: all ease 0.3s;
+            transition: all ease 0.3s;
+            transform: rotate(-180deg);
+            &.less {
+                transform: rotate(0);
+            }
+        }
+        .functionTab {
+            outline: none;
+            &.animate-show-hide.ng-hide {
+                opacity: 0;
+            }
+            &.animate-show-hide.ng-hide-add, &.animate-show-hide.ng-hide-remove {
+                -webkit-transition: all ease 0.3s;
+                transition: all linear 0.3s;
+            }
+        }
+        // notification
+        .tabCount {
+            font-size: 12px;
+            font-weight: bold;
+            left: -12px;
+            top: -3px;
+        }
+    }
+    .list_tab img {
+        width: 25px
+    }
+    .list_tab .item {
+        position: relative;
+        padding: 8px 0;
+        outline: none;
+    }
+    .list_tab .item:hover, .list_tab .item:active {
+        background: #eeeeee;
+        cursor: pointer;
+    }
+    #card-container {
+        padding: 0 80px 10px 80px;
+        // overview
+        .card {
+            border: #ccc solid 1px;
+            border-radius: 8px;
+            padding: 10px;
+            position: relative;
+            background: #fff;
+            height: 300px;
+            // 連續型傳輸需要再長一些
+            &.higher {
+                height: 400px;
+            }
+            margin-bottom: 8px;
+            // subheader
+            .md-subheader {
+                top: 0px !important;
+                /*simon*/
+                background: #fff;
+                span, i {
+                    vertical-align: middle;
+                }
+                i {
+                    cursor: pointer;
+                }
+                .md-subheader-inner {
+                    border-bottom: 1px solid #ccc;
+                    padding: 0;
+                    .md-subheader-content {
+                        span {
+                            font-size: 20px;
+                        }
+                        line-height: 33px;
+                        color: black;
+                        margin-bottom: 4px;
+
+                        // notification
+                        .tabCount {
+                            font-size: 16px;
+                            font-weight: bold;
+                        }
+                    }
+                    margin-bottom: 8px;
+                }
+            }
+            // component
+            .card-content {
+                position: relative;
+                height: calc(~"100% - 46px");
+                overflow: auto;
+                // component 裡的加號不需出現
+                .md-button.md-fab {
+                    // height: 40px;
+                    // width: 40px;
+                    // z-index: 1;
+                    display: none;
+                }
+                // 沒有資料
+                h1 {
+                    font-size: 18px;
+                    color: #9e9e9e;
+                }
+                // TODO 新增按鈕位置不同，先將提示隱藏
+                h4 {
+                    display: none;
+                    font-size: 16px;
+                    color: #9e9e9e;
+                    margin: 0;
+                }
+                // md-tabs 處方、檢驗檢查
+                md-tabs {
+                    min-height: initial;
+                    // height: 100%;
+                }
+
+                // 處方、檢驗檢查的高度需剪掉 tab 的高度(48px)
+                prescription-tab-page, labexam-table, labexam-week-table {
+                    height: calc(~"100% - 48px");
+                    .prescriptionTabPageContainer {
+                        height: calc(~"100% - 48px");
+                        min-height: initial;
+                    }
+
+                    md-content {
+                        height: calc(~"100% - 48px") !important;
+                    }
+                }
+            }
+            h2 {
+                font-size: 17px;
+                line-height: 30px;
+            }
+            // list-head
+            .list-header {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                z-index: 1;
+                background-color: transparent;
+                * {
+                    display: none;
+                }
+                last-refresh-time {
+                    display: flex;
+                    height: initial;
+                    background-color: transparent;
+                    color: #9e9e9e;
+                    min-width: 140px;
+                    * {
+                        display: initial;
+                    }
+                    .md-icon-button {
+                        margin: 0;
+                    }
+                }
+            }
+            // 連續型的上方 bar 需維持一致
+            continuous-machine-data {
+                &.hide {
+                    display: none;
+                }
+                .list-header {
+                    position: relative;
+                    bottom: initial;
+                    left: initial;
+                    background-color: #BBDEFB;
+                    * {
+                        display: flex;
+                    }
+                    last-refresh-time {
+                        display: flex;
+                        height: initial;
+                        color: initial;
+                        min-width: initial;
+                        * {
+                            display: flex;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .toggleSideNav {
+        display: none;
+    }
+    .state-btn {
+        // background: #e2e2e2;
+        cursor: pointer;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        opacity: 0.6;
+        .md-button.md-fab.md-mini {
+            background-color: #0e99dc !important;
+        }
+    }
+    @media only screen and (max-width: 1140px) {
+        #card-container {
+            padding: 0 40px 10px 40px;
+        }
+    }
+    @media only screen and (max-width: 960px) {
+        #card-container {
+            padding: 0 20px 10px 20px;
+        }
+    }
+    // 病人基本資料
+    .head {
+        padding: 8px 95px 8px 80px;
+        // patient more info
+        .hide {
+            display: none;
+        }
+        &.err {
+            color: red;
+            font-weight: bold;
+        }
+        &.morePatientInfo {
+            padding: 10px 95px 2px 80px;
+        }
+        font-size: 10pt;
+        position: relative;
+        // background-color: rgba(16, 16, 16, 0.04);
+        display: flex;
+        img {
+            vertical-align: middle;
+            width: 18px;
+            margin-right: 3px
+        }
+        span {
+            // padding-right: 10px;
+        }
+        .patient_name {
+            border: 0;
+            border-radius: 100px;
+            padding: 4px 10px;
+            display: inline-block;
+            color: #fff;
+            font-size: 10pt;
+            font-weight: bold;
+            margin-right: 8px;
+            max-width: 200px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            flex: 1;
+            &.male {
+                background-color: #43c4f3
+            }
+            &.female {
+                background-color: #fb8189
+            }
+        }
+        // 病人
+        select {
+            &.patient_name {
+                padding: 4px 24px 4px 10px;
+            }
+            &.male:hover {
+                background-color: #2aaad9
+            }
+            &.female:hover {
+                background-color: #e3616a
+            }
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            background: url('./static/img/svg/dropdown.svg') no-repeat center right;
+            background-size: 20px
+        }
+        .tag {
+            display: inline-block;
+            // padding: 3px 5px;
+            border-radius: 4px;
+            // background: #ccc;
+            // color: #fff;
+            margin-right: 3px;
+            margin-bottom: 5px
+        }
+        i {
+            &.headitem {
+                outline: none;
+                display: inline-block;
+                vertical-align: -webkit-baseline-middle;
+                &:hover, :active {
+                    background: #e2e2e2;
+                    cursor: pointer;
+                }
+            }
+            &.expand {
+                -webkit-transition: all ease 0.3s;
+                transition: all ease 0.3s;
+                transform: rotate(-180deg);
+                &.less {
+                    transform: rotate(0);
+                }
+            }
+        }
+    }
+    @media only screen and (max-width: 1140px) {
+        .head {
+            padding: 8px 55px 10px 40px!important
+        }
+    }
+    @media only screen and (max-width: 960px) {
+        .head {
+            padding: 8px 15px 10px 25px!important
+        }
+    }
+    .remarks {
+        // 病人重要記事, 字體紅色
+        color: red;
+        font-weight: bold;
+        font-size: 10pt;
+        max-height: 34px;
+        overflow: hidden;
+        margin-bottom: 4px;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        // background-color: rgba(16, 16, 16, 0.04);
+        padding: 0 95px 0px 80px;
+        &.animate-show-hide.ng-hide {
+            opacity: 0;
+        }
+        &.animate-show-hide.ng-hide-add, &.animate-show-hide.ng-hide-remove {
+            -webkit-transition: all ease 0.3s;
+            transition: all linear 0.3s;
+        }
+    }
+    @media only screen and (max-width: 1140px) {
+        .remarks {
+            padding: 0 55px 0px 40px;
+        }
+    }
+    @media only screen and (max-width: 960px) {
+        .remarks {
+            padding: 0 15px 0px 25px;
+        }
+    }
+    // 選擇表單
+    .recordChoose {
+        background-color: #fff;
+        font-size: 10pt;
+        .md-button.md-icon-button {
+            margin: 0;
+        }
+    }
+    // 最新表單按鈕
+    .latestRecord {
+        -webkit-appearance: none;
+        appearance: none;
+        outline: none;
+        padding: 3px 5px;
+        border-radius: 4px;
+        color: #fff;
+        font-weight: bold;
+        background: #8BC34A;
+        display: inline-block;
+        &[disabled] {
+            background: #ccc;
+        }
+    }
+    #summary-content-container {
+        position: absolute;
+        // height: 100vh;
+        width: 100%;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 50;
+        #summary-content {
+            position: absolute;
+            top: 50px;
+            left: 0;
+            right: 0;
+            margin: auto;
+            height: 80%;
+            width: 80%;
+            #phrase {
+                position: absolute;
+            }
+        }
+    }
+    #wholeScreen {
+        position: absolute;
+        top: 0;
+        z-index: 52;
+        height: 100%;
+        width: 100%;
+    }
+    #compose-area {
+        // position: absolute;
+        position: fixed;
+        top: -9999px;
+        bottom: 0;
+        right: 0;
+        z-index: 20; // 才不會被 md-fab 擋住
+        // TODO need to be flexible
+        // max-height: 70%;
+        // max-width: 70%;
+        height: 70%;
+        width: 70%;
+        background-color: aliceblue;
+        // height: 500px;
+        // width: 500px;
+        #phrase {
+            position: absolute;
+        }
+    }
+    @media (max-width: 600px) and (min-width: 0) {
+        #summary-content-container {
+            position: absolute;
+            height: calc(~"100% - 43px");
+            top: initial;
+            #summary-content {
+                top: 0;
+                height: 100%;
+                width: 100%;
+            }
+        }
+
+        // toolbar patient
+        .patient-name {
+            display: none;
+        }
+
+        // 唯讀提示
+        .readonly-text {
+            z-index: 1;
+            top: -1.5rem;
+
+        }
+    }
+    @media only screen and (max-width: 700px) {
+        .head .tag {
+            display: none;
+        }
+        .phone_none {
+            display: none;
+        }
+    }
+    @media (max-width: 1919px) and (min-width: 960px) {
+        // 為了給卡片中間的間距
+        .card {
+            &.flex-gt-sm-50 {
+                max-width: 49.5%;
+            }
+        }
+    }
+    @media screen and (min-width: 1280px) {
+        .toggleSideNav {
+            display: initial;
+        }
+    }
+    @media screen and (min-width: 1920px) {
+        .card {
+            &.flex-gt-lg-33 {
+                max-width: 33%;
+            }
+        }
+    }
+}
+
+@media print {
+
+    html, body {
+        background: #fff;
+    }
+
+    .summary {
+        .layout-wrap {
+            flex-wrap: nowrap;
+        }
+        .border {
+            .flex-25 {
+                flex: 1;
+            }
+            &.flex-50 {
+                width: 50%;
+            }
+            &.flex-66 {
+                flex: 2;
+            }
+            &.flex-33 {
+                flex: 1;
+            }
+        }
+    }
+
+    summary {
+        .head {
+            background-color: #fff;
+        }
+
+        ui-view {
+            padding-left: 1cm !important;
+            font-family: "Microsoft JhengHei", "Times New Roman";
+            background: #fff !important;
+            input {
+                font-family: "Microsoft JhengHei", "Times New Roman" !important;
+            }
+        }
+
+        #summary-content-container {
+            position: absolute;
+            height: calc(~"100% - 43px");
+
+            &.fullheightPrint {
+                top: 0;
+                height: 100%;
+            }
+            top: initial;
+            #summary-content {
+                top: 0;
+                height: 100%;
+                width: 100%;
+            }
+        }
+        #wholeScreen {
+            position: initial;
+            top: initial;
+            bottom: initial;
+            left: initial;
+            right: initial;
+            height: initial;
+        }
+    }
+}

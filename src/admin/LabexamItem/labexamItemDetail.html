@@ -1,0 +1,136 @@
+<style scoped>
+    labexam-item-detail {
+        height: 100%;
+    }
+
+    .padding {
+        padding: 20px;
+    }
+
+    .padding-bottom {
+        padding-bottom: 20px;
+    }
+</style>
+
+<md-content layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.back()">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <h4>
+                <span ng-show="vm.type === 'create'" translate="labexamItem.detailpageTitleAdd"></span>
+                <span ng-show="vm.type !== 'create'" translate="labexamItem.detailpageTitle" translate-values='{name: vm.formData.Name}'></span>
+            </h4>
+        </div>
+    </md-toolbar>
+    <md-content flex>
+        <loading ng-show="vm.loading"></loading>
+        <div flex ng-show="!vm.loading && vm.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate="customMessage.serverError"></h3>
+        </div>
+        <div ng-show="!vm.loading && !vm.isError">
+            <form name="editForm" class="padding">
+                <md-grid-list md-cols="2" md-row-height="64px">
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="labexamItem.name"></label>
+                            <input type="text" name="Name" ng-model="vm.formData.Name" required />
+                            <div ng-messages="editForm.Name.$error">
+                                <div ng-message="required"><span translate="customMessage.dataRequired"></span></div>
+                            </div>
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="labexamItem.code"></label>
+                            <input type="text" name="Code" ng-model="vm.formData.Code" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="labexamItem.fullname"></label>
+                            <input type="text" name="FullName" ng-model="vm.formData.FullName" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <div style="margin-top:-0.9em">
+                                <label translate="labexamItem.gender"></label>
+                                <md-select ng-model="vm.formData.Gender" name="Gender" required>
+                                    <md-option ng-repeat="g in vm.optGender" value="{{ g.value }}">{{ g.name }}</md-option>
+                                </md-select>
+                            </div>
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="labexamItem.unit"></label>
+                            <input type="text" name="Unit" ng-model="vm.formData.Unit" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="labexamItem.lowerLimit"></label>
+                            <input type="text" name="NormalDown" ng-model="vm.formData.NormalDown" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="labexamItem.upperLimit"></label>
+                            <input type="text" name="NormalUpper" ng-model="vm.formData.NormalUpper" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label>Memo</label>
+                            <input type="text" name="Memo" ng-model="vm.formData.Memo" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label>Group</label>
+                            <input type="text" name="SettingGroup" ng-model="vm.formData.SettingGroup" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label>排序</label>
+                            <input type="text" name="SortNo" ng-model="vm.formData.SortNo" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label>醫師備註</label>
+                            <input type="text" name="DoctorMemo" ng-model="vm.formData.DoctorMemo" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label>護理師備註</label>
+                            <input type="text" name="NursreMemo" ng-model="vm.formData.NursreMemo" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label>病人備註</label>
+                            <input type="text" name="PatientMemo" ng-model="vm.formData.PatientMemo" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <!-- <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label>衛教連結</label>
+                            <input type="text" name="Url" ng-model="vm.formData.Url" />
+                        </md-input-container>
+                    </md-grid-tile> -->
+                </md-grid-list>
+                <md-button class="md-warn md-raised" ng-click="vm.delete($event)" ng-if="vm.type==='edit'" ng-disabled="vm.isSaving">
+                    <span translate>{{'labexamItem.deletebutton'}}</span>
+                </md-button>
+                <md-button type="submit" class="md-primary md-raised" ng-click="vm.save()" ng-disabled="editForm.$invalid || vm.isSaving">
+                    <span translate>{{'labexamItem.savebutton'}}</span>
+                </md-button>
+            </form>
+        </div>
+    </md-content>
+</md-content>

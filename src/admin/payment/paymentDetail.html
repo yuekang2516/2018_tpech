@@ -1,0 +1,111 @@
+<style scoped>
+    payment-detail {
+        height: 100%;
+    }
+    
+    .padding {
+        padding: 20px;
+    }
+    
+    .warning {
+        color: red;
+    }
+
+    div.deleted {
+        background-color: rgba(10, 10, 10, 0.2);
+        position: absolute;
+        width: 100%;
+    }
+</style>
+<md-content layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.back()">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <h4 translate="payment.detailpageTitle" translate-values='{name: vm.payment.Name}'></h4>
+        </div>
+    </md-toolbar>
+    <md-content layout-fill flex>
+        <loading ng-show="vm.loading"></loading>
+        <div flex ng-show="vm.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate="customMessage.serverError"></h3>
+        </div>
+        <div ng-show="!vm.loading && !vm.isError">
+            <form name="editForm" class="padding">
+                <div>
+                <md-grid-list md-cols="2" md-row-height="70px" flex>
+                                <md-grid-tile>
+                                <md-input-container class="md-block" flex>
+                                    <label translate="payment.name"></label>
+                                    <input type="text" name="Name" ng-model="vm.formData.Name" ng-readonly="true" />
+                                </md-input-container>
+                            </md-grid-tile>
+                            <md-grid-tile>
+                                <md-input-container class="md-block" flex>
+                                    <label translate="payment.state"></label>
+                                    <input type="text" name="State" ng-model="vm.formData.State" ng-readonly="true" />
+                                </md-input-container>
+                            </md-grid-tile>
+                            <md-grid-tile>
+                                <md-input-container class="md-block" flex>
+                                    <label translate="payment.start"></label>
+                                    <input type="date" min="1900-01-01" max="2999-12-31" name="StartDate" ng-model="vm.formData.StartDate" ng-readonly="true" />
+                                </md-input-container>
+                            </md-grid-tile>
+                            <md-grid-tile>
+                                <md-input-container class="md-block" flex>
+                                    <label translate="payment.end"></label>
+                                    <input type="date" min="1900-01-01" max="2999-12-31" name="EndDate" ng-model="vm.formData.EndDate" ng-readonly="true" />
+                                </md-input-container>
+                            </md-grid-tile>
+                            <md-grid-tile>
+                                <md-input-container class="md-block" flex>
+                                    <label translate="payment.pricingMethod"></label>
+                                    <input type="text" name="PricingMethod"value="{{vm.showMethod(vm.formData.PricingMethod)}}" ng-readonly="true" />
+                                </md-input-container>
+                            </md-grid-tile>
+                            <md-grid-tile>
+                                <md-input-container class="md-block" flex>
+                                    <label translate="payment.price"></label>
+                                    <input type="text" name="Price" ng-model="vm.formData.Price" ng-readonly="true" />
+                                </md-input-container>
+                            </md-grid-tile>
+                            <md-grid-tile>
+                                <md-input-container class="md-block" flex>
+                                    <label translate="payment.quantity"></label>
+                                    <input type="text" name="Quantity" ng-model="vm.formData.Quantity" ng-readonly="true" />
+                                </md-input-container>
+                            </md-grid-tile>
+                            <md-grid-tile>
+                                <md-input-container class="md-block" flex>
+                                    <label translate="payment.discount"></label>
+                                    <input type="text" name="Discount" ng-model="vm.formData.Discount" ng-readonly="true" />
+                                </md-input-container>
+                            </md-grid-tile>
+                            <md-grid-tile>
+                                <md-input-container class="md-block" flex>
+                                    <label translate="payment.totalAmount"></label>
+                                    <input type="text" name="TotalAmount" ng-model="vm.formData.TotalAmount" ng-readonly="true" />
+                                </md-input-container>
+                            </md-grid-tile>
+                            <md-grid-tile>
+                            <md-input-container class="md-block" flex>
+                                <label translate="payment.invoiceNumber"></label>
+                                <input type="text" name="InvoiceNumber" ng-model="vm.formData.InvoiceNumber" ng-readonly="true" />
+                            </md-input-container>
+                        </md-grid-tile>
+                        <md-grid-tile>
+                            <md-input-container class="md-block" flex>
+                                <label translate="payment.postingDate"></label>
+                                <input type="date" min="1900-01-01" max="2999-12-31" name="PostingDate" ng-model="vm.formData.PostingDate" ng-readonly="true" />
+                            </md-input-container>
+                        </md-grid-tile>
+                    </md-grid-list>
+                </div>
+                <div>
+            </div>
+            </form>
+        </div>
+    </md-content>
+</md-content>

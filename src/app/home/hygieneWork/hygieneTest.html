@@ -1,0 +1,74 @@
+<md-content layout="column" layout-fill class="hygieneWork-container">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" ng-click="$ctrl.back();">
+                    <i class="material-icons">keyboard_backspace</i>
+                </md-button>
+                <div layout="row" flex translate>
+                    衛教作業
+                    <!-- {{'reports.report'}} -->
+                </div>
+                <!-- <span flex></span> -->
+                <!-- <md-button class="md-icon-button" ng-click="$ctrl.upRightMenu()">
+                    <md-icon md-svg-icon="static/img/svg/ic_menu_white_24px.svg"></md-icon>
+                </md-button> -->
+                <md-button class="md-icon-button" ng-click="$ctrl.deleteTrash()">
+                    <md-icon>delete</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-content layout="row" flex class="hygieneWork-container-content">
+            <md-content class="hygieneWork-items" layout="column">
+                    <md-list class="" ng-repeat="(key, item) in $ctrl.finalData">
+                        <div layout="row" layout-align="start center" style="height: 50px; color:#747474; margin-left:10px; font-weight:bold;">
+                            <span ng-if="key === 'folder'">資料夾</span>
+                            <span ng-if="key === 'singleFile'">檔案</span>
+                        </div>
+                        <md-card flex ng-if="!$ctrl.isBrowser" ng-repeat="value in item" ng-click="$ctrl.clickFile(key, value)" >
+                            <md-card-content>
+                                <div layout="row" layout-align="start center" style="position:relative;">
+                                    <div style="margin-right:10px;">
+                                        <i ng-if="key === 'folder'" class="material-icons" style="font-size:28px; color:#747474">folder</i>
+                                        <i ng-if="key === 'singleFile'" class="material-icons" style="font-size:28px; color:#747474">description</i>
+                                    </div>
+                                    <div style="margin-right:10px; max-width: 50%; word-break: break-all;">
+                                        {{value.name}}
+                                    </div>
+                                    <div style="color:#747474; font-size: 14px;">
+                                        上次修改時間：{{value.uploadTime}}
+                                    </div>
+                                    <diV style="position:absolute; right:0; top:0; height: 100%; cursor:pointer;" ng-click="$event.stopPropagation(); $ctrl.showDotMenu(value)">
+                                        <i class="material-icons" style="font-size:28px; color:#747474; height: 100%;">more_horiz</i>
+                                    </diV>
+                                </div>
+                            </md-card-content>
+                        </md-card>
+    
+                        <md-card flex ng-if="$ctrl.isBrowser" ng-repeat="value in item" ng-dblclick="$ctrl.clickFile(key, value)">
+                            <md-card-content>
+                                <div layout="row" layout-align="start center" style="position:relative;">
+                                    <div style="margin-right:10px;">
+                                        <i ng-if="key === 'folder'" class="material-icons" style="font-size:28px; color:#747474">folder</i>
+                                        <i ng-if="key === 'singleFile'" class="material-icons" style="font-size:28px; color:#747474">description</i>
+                                    </div>
+                                    <div style="margin-right:10px; max-width: 50%; word-break: break-all;">
+                                        {{value.name}}
+                                    </div>
+                                    <div style="color:#747474; font-size: 14px;">
+                                        上次修改時間：{{value.uploadTime}}
+                                    </div>
+                                    <diV style="position:absolute; right:0; top:0; height: 100%; cursor:pointer;" ng-click="$event.stopPropagation(); $ctrl.showDotMenu(value)">
+                                        <i class="material-icons" style="font-size:28px; color:#747474; height: 100%;">more_horiz</i>
+                                    </diV>
+                                </div>
+                            </md-card-content>
+                        </md-card>
+                    </md-list>    
+            </md-content>
+            <md-button class="md-fab md-fab-bottom-right" style="position: fixed !important;" ng-click="$ctrl.showAddMenu()">
+                <md-icon>
+                    <i class="material-icons">add</i>
+                </md-icon>
+            </md-button>
+        </md-content>
+    </md-content>

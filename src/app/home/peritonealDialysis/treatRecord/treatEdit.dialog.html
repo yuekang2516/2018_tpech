@@ -1,0 +1,1268 @@
+<style>
+    /* .layout-row {
+        margin: 0.2em 0;
+    } */
+
+    textarea {
+        width: 100%;
+    }
+
+    md-card md-card-content {
+        padding: 10px;
+    }
+
+    .inputbox .inputBoxTit {
+        width: 200px;
+    }
+    md-dialog {
+        max-width: 100%; 
+        max-height: 100%;
+    }
+    .dcTable {
+        width: 100%;
+    }
+
+    .dcTable th {
+        border-bottom: 1px solid #ddd;
+        border-top: 1px solid #ddd;
+        height: 40px;
+    }
+
+    .dcTable td {
+        border-bottom: 1px solid #ddd;
+    }
+
+    .md-button.btnSearch {
+        min-width: 40px;
+        padding: 0px 4px;
+        margin: 2px;
+    }
+
+    .dataList h3 {
+        text-align: center;
+    }
+    .dataList h2 {
+        margin: 0;
+        display: inline-block;
+        font-size: 1.17em;
+        vertical-align: bottom;
+    }
+
+    body {
+        overflow: hidden;
+    }
+
+    .peritonealDialysisTabView .inputbox .inputBoxTit {
+        max-width: 10em;
+    }
+    .peritonealDialysisTabView input{
+        margin: 2px;
+    }
+    .peritonealDialysisTabView md-select{
+        width:250px;
+    }
+    .peritonealDialysisTabView md-select span{
+        padding-left: 5px;
+    }
+    .OrderSelect{
+        background: #9ed0ec !important;
+    }
+    .OrderSelect tr{
+        background: #9ed0ec !important;
+    }
+    .OrderSelect tr td{
+        background: #9ed0ec !important;
+    }
+    .OrderSelect td{
+        background: #9ed0ec !important;
+    }
+    td{
+        outline: none;
+    }
+    #CAPD_Nutrineal .md-label,#CAPD_Extraneal .md-label{
+        margin-top: 5px;
+    }
+    #esatable {
+        font-family: '\5FAE\8EDF\6B63\9ED1\9AD4',"Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    #esatable td, #esatable th {
+        border: 1px solid #ddd;
+        padding: 5px;
+    }
+
+    #esatable tr:nth-child(even){background-color: #f2f2f2;}
+
+    #esatable th {
+        padding:3px;
+        text-align: left;
+        background-color: #7e90a0;
+        color: white;
+    }
+    @media print{
+        * {
+            -webkit-print-color-adjust: exact !important;
+        }
+        .peritonealDialysisTabView{
+            display: inline-table; /* Not really needed in all cases */
+        }
+        md-dialog{
+            box-shadow: none;
+            max-width: 100%;
+        }
+        div,input,table,select,md-select{
+            page-break-inside :avoid;
+            page-break-after: avoid;
+        }
+    }
+</style>
+<md-dialog class="peritonealDialysisTabView">
+    <form name="treatEditForm" novalidate ng-cloak>
+        <md-dialog-toolbar>
+            <div class="md-toolbar-tools">
+                <md-button class="md-fab" aria-label="Settings" ng-click="$ctrl.cancel()">
+                    <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+                </md-button>
+                <h2 ng-if="(!$ctrl.editViewMode && $ctrl.treatDataObj.isCreate) || $ctrl.treatDataObj.isCopy" translate="treatRecord.dialog.createTitle"></h2>
+                <h2 ng-if="!$ctrl.editViewMode && !$ctrl.treatDataObj.isCreate && !$ctrl.treatDataObj.isCopy" translate="treatRecord.dialog.editTitle"></h2>
+                <h2 ng-if="$ctrl.editViewMode" translate="treatRecord.dialog.editViewTitle"></h2>
+                <div
+                    class="{{'patient_name ' + (($ctrl.currentPatient.Gender|gender) == '男' ? 'male ' : '') + (($ctrl.currentPatient.Gender|gender) == '女' ? 'female' : '') }}">
+                    {{ $ctrl.currentPatient.MedicalId + ' - ' + $ctrl.currentPatient.Name }}
+                </div>
+                <span flex></span>
+                <span ng-show="$ctrl.treatDataObj.Status == 'Deleted'" class="readonly-text" title="{{ 'customMessage.readonlyTitle' | translate }}" translate>{{ 'customMessage.readonly' }}</span>
+                <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+                    <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-dialog-toolbar>
+        <md-dialog-content>
+            <div class="dataList">
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem lightblue">
+                        <label>*處方日期</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.treatDataObj.Prescription_Startdate" type="date" min="1900-01-01" max="2999-12-31"
+                            ng-disabled="!$ctrl.treatDataObj.isCreate && !$ctrl.treatDataObj.isCopy" name="startDate" required>
+                        <div ng-messages="editForm.startDate.$error" ng-show="editForm.startDate.$dirty">
+                            <div ng-message="required" class="clrRequired">必填選項</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="inputbox" layout="row">
+                    <div layout="row">
+                        <div class="inputBoxTit titItem">
+                            <label>腹膜透析類別</label>
+                        </div>
+                        <md-select ng-model="$ctrl.treatDataObj.Dialysis_Type" ng-change="$ctrl.ChangMedicineLiquidKind()">
+                            <md-option ng-repeat="DT in $ctrl.DialysisType" value="{{DT}}">{{DT}}</md-option>
+                        </md-select>
+                        <input ng-show="$ctrl.treatDataObj.Dialysis_Type == '其他'" placeholder="請輸入腹膜透析類別" type="text" ng-model="$ctrl.treatDataObj.Dialysis_Type_Other">
+                    </div>
+                </div>
+                <div class="inputbox" layout="row" ng-show="$ctrl.treatDataObj.Dialysis_Type == 'APD'">
+                    <div layout="row">
+                        <div class="inputBoxTit titItem">
+                            <label>換液系統</label>
+                        </div>
+                        <div layout="row">
+                            <md-select ng-model="$ctrl.treatDataObj.Liquid_Exchange_System" ng-change="$ctrl.Exchange_systemChang()">
+                                <md-option ng-repeat="LES in $ctrl.DialysisEsSystem" value="{{LES}}">{{LES}}</md-option>
+                            </md-select>
+                            <input type="text" ng-model="$ctrl.Liquid_Exchange_Other" placeholder="請輸入換液系統"
+                                ng-show="$ctrl.treatDataObj.Liquid_Exchange_System == '其他'">
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="inputbox" ng-show="$ctrl.treatDataObj.Dialysis_Type == 'APD'">
+                    <div class="inputBoxTit titItem">
+                        <label>換液系統</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-select ng-model="$ctrl.treatDataObj.Liquid_Exchange_System">
+                            <md-option ng-repeat="LES in $ctrl.DialysisEsSystem" value="{{LES}}">{{LES}}</md-option>
+                        </md-select>
+                        <input type="text" ng-model="$ctrl.Liquid_Exchange_Other"
+                            ng-show="$ctrl.treatDataObj.Liquid_Exchange_System == '其他'">
+                    </div>
+                </div> -->
+                <div class="inputbox" layout="row">
+                    <div class="inputBoxTit titItem">
+                        <label>透析液系統</label>
+                    </div>
+                    <md-select ng-model="$ctrl.treatDataObj.Dialysis_System">
+                        <md-option ng-repeat="DiaSys in $ctrl.DialysisSystem" value="{{DiaSys}}">{{DiaSys}}
+                        </md-option>
+                    </md-select>
+                    <input type="text" ng-model="$ctrl.treatDataObj.DialysisSystemOther" placeholder="請輸入透析液系統"
+                        ng-if="$ctrl.treatDataObj.Dialysis_System == '其他'">
+                </div>
+                <div class="inputbox" layout="row">
+                    <div class="inputBoxTit titItem">
+                        <label>兼做血液透析</label>
+                    </div>
+                    <div class="inputboxflex" style="flex:none;margin-right:10px;" layout="row">
+                        <md-radio-group class="radioGroupInline" ng-model="$ctrl.treatDataObj.Is_With_Hemodialysis">
+                            <md-radio-button value="Y">是</md-radio-button>
+                            <md-radio-button value="N">否</md-radio-button>
+                        </md-radio-group>
+                        <!--  -->
+                        <input ng-style="{'visibility': $ctrl.treatDataObj.Is_With_Hemodialysis == 'Y'?'visible':'hidden'}" type="number" min="0" class="txtSS" ng-model="$ctrl.treatDataObj.Monthly_Hemodialysis_Times">
+                        <label ng-style="{'visibility': $ctrl.treatDataObj.Is_With_Hemodialysis == 'Y'?'visible':'hidden'}">次/月(HD)</label>
+                    </div>
+                </div>
+                <div class="inputbox" layout="row">
+                    <div layout="row">
+                        <div class="inputBoxTit titItem">
+                            <label>主要換袋者</label>
+                        </div>
+                        <md-select ng-model="$ctrl.treatDataObj.Major_Bag_Changers">
+                            <md-option value="">請選擇</md-option>
+                            <md-option ng-repeat="MBC in $ctrl.MajorBagChangers" value="{{MBC}}">{{MBC}}</md-option>
+                        </md-select>
+                    </div>
+                </div>
+                <!--ESA start-->
+                <div class="cardContent">
+                    <div class="cardTit">
+                        <h2 style="margin-right: 5px;">ESA</h2>
+                        <i class="material-icons" title="新增ESA項目" ng-hide="$ctrl.treatDataObj.Status == 'Deleted'" ng-click="$ctrl.add_ESA()">add</i>
+                    </div>
+                    <div>
+                        <table id="esatable" ng-show="$ctrl.treatDetailTypes.ESA.length > 0">
+                            <thead>
+                                <tr>
+                                    <th>種類</th>
+                                    <th>頻率</th>
+                                    <th>劑量</th>
+                                    <th>天數</th>
+                                    <th>總量</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="esaitem in $ctrl.treatDetailTypes.ESA">
+                                    <td>
+                                        <div>
+                                            <md-select style="width:160px;" ng-model="esaitem.Esa_Types"
+                                            ng-change="$ctrl.setESAType(esaitem.Esa_Types,$index)">
+                                                <md-option value="">請選擇</md-option>
+                                                <md-option style="overflow: hidden;
+                                                text-overflow: ellipsis;"ng-repeat="ESATypes in $ctrl.ESATypesByEpo" value="{{ESATypes.Value}}">
+                                                    {{ESATypes.Text}}</md-option>
+                                            </md-select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <md-select ng-model="esaitem.Frequency" ng-change="$ctrl.calculationTotal('Frequency',esaitem)">
+                                            <md-option ng-repeat="Freq in esaitem.viewFrequency" value="{{Freq.Value}}">
+                                                {{Freq.Text}}
+                                            </md-option>
+                                        </md-select>
+                                    </td>
+                                    <td>
+                                        <input style="width: 65px;"
+                                            onkeypress="if (event.keyCode!=46 && event.keyCode!=45 && (event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                            type="number" ng-change="$ctrl.calculationTotal('Esa_Dose_U',esaitem)" ng-model="esaitem.Esa_Dose_U">
+                                        <label style="width:15px;margin: 0.25rem;padding-right: 2px;">{{esaitem.esaUnit}}</label>
+                                    </td>
+                                    <td>
+                                        <input style="width: 65px;" type="text"
+                                            style="ime-mode:disabled" onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                        ng-change="$ctrl.calculationTotal('Used_Days',esaitem)" ng-model="esaitem.Used_Days" />
+                                    </td>
+                                    <td>
+                                        <input style="width: 70px;" type="text" ng-model="esaitem.Total_Dose">
+                                    </td>
+                                    <td>
+                                        <i class="material-icons delete-btn" ng-click="$ctrl.del_ESA($index)">clear</i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--ESA End-->
+                <div class="inputbox" ng-if="$ctrl.treatDataObj.Dialysis_Type === 'CAPD'">
+                    <div class="inputBoxTit titItem">
+                        <label>藥水使用方式</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-input-container-flat>
+                            <md-radio-group class="radioGroup" ng-model="$ctrl.treatDataObj.Potions_Mode"
+                                ng-disabled="$ctrl.editViewMode">
+                                <md-radio-button ng-repeat="PM in $ctrl.PotionsMode" value="{{PM.Value}}"
+                                    ng-if="PM.Type == 'CAPD'" ng-click="$ctrl.changePotionsMode('DryAll')">{{PM.Text}}
+                                </md-radio-button>
+                            </md-radio-group>
+                        </md-input-container-flat>
+                    </div>
+                </div>
+                <!-- 換液處方 start-->
+                <div ng-if="$ctrl.treatDataObj.Dialysis_Type === 'CAPD'" class="cardContent">
+                    <div class="cardTit">
+                        <h2 style="margin-right: 30px;">換液處方</h2>
+                        <md-checkbox id="CAPD_Extraneal" ng-repeat="Ex in $ctrl.ChangChklist"
+                            ng-checked="Ex.Check" ng-click="$ctrl.checkTheDetail('ChangChklist', $index)">
+                            {{Ex.Text}}
+                        </md-checkbox>
+                    </div>
+                    <div>
+                        <!-- Dianeal-->
+                        <div layout="row" ng-show="$ctrl.ChangChklist[0].Check">
+                            <h4 style="color:#0e99dc; margin-right: 10px;">Dianeal</h4>
+                            <i class="material-icons" ng-click="$ctrl.add_Dianeal('Treat');">add</i>
+                        </div>
+                        <div ng-show="$ctrl.ChangChklist[0].Check" style="margin-bottom: 8px;">
+                            <table id="esatable" ng-show="$ctrl.treatDetailTypes.CAPD.TreatDianealCount > 0">
+                                <thead>
+                                    <tr>
+                                        <th style="width:12%;">葡萄糖濃度(%)</th>
+                                        <th style="width:16%;">鈣離子濃度(mEq/L)</th>
+                                        <th style="width:12.5%;">每次注入量</th>
+                                        <th style="width:11%;">藥水體積(L)</th>
+                                        <th style="width:10%;">袋數</th>
+                                        <th style="width:5%;">PRN</th>
+                                        <th>備註</th>
+                                        <th style="width:2%;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in $ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Dianeal'}">
+                                        <td>
+                                            <md-select style="width:100px;" ng-model="item.Glucoseconcentration">
+                                                <md-option ng-repeat="CB in $ctrl.Concentration_Bd" value="{{CB}}">{{CB}}%</md-option>
+                                            </md-select>
+                                        </td>
+                                        <td>
+                                            <md-select style="width:130px;" ng-model="item.Calciumconcentration">
+                                                <md-option ng-repeat="CM in $ctrl.Calcium" value="{{CM}}">{{CM}} mEq/L</md-option>
+                                            </md-select>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                    <input style="width: 100%;ime-mode:disabled;" type="number"
+                                                    onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if (event.keyCode!=46 && event.keyCode!=45 &&(event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                                    ng-model="item.Esa_Dose_U" ng-change="$ctrl.CalculationCAPDTreat('Esa_Dose_U',item)">
+                                                </input>
+                                                <md-tooltip md-visible="item.showTooltip">請輸入輸入 ≦ 2.5 的值</md-tooltip>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <md-select style="width:90px;" ng-model="item.Baglitre" ng-change="$ctrl.CalculationCAPDTreat('Baglitre',item)">
+                                                <md-option ng-repeat="CG in $ctrl.Concentration_GLC" value="{{CG}}">{{CG}}</md-option>
+                                            </md-select>
+                                            <input style="width:90px;" type="number" min="0" ng-model="item.BaglitreOther"
+                                                ng-show="item.Baglitre == '其他'" ng-change="$ctrl.CalculationCAPDTreat()">
+                                        </td>
+                                        <td>
+                                            <md-select style="width:80px;" ng-model="item.Bagnumber" ng-change="$ctrl.CalculationCAPDTreat()">
+                                                <md-option ng-repeat="QT in $ctrl.Quantity" value="{{QT}}">{{QT}}</md-option>
+                                            </md-select>
+                                        </td>
+                                        <td><md-switch style="margin: 0px;" ng-model="item.Esa_Dose_Ug" ng-change="$ctrl.CalculationCAPDTreat()"></md-switch></td>
+                                        <td><input style="width: 100%;" ng-model="item.Remark"></td>
+                                        <td><i class="material-icons delete-btn" ng-click="$ctrl.del_Dianeal('Treat',$index)">clear</i></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Dianeal-->
+                        <div layout="row" layout-xs="column" ng-show="$ctrl.ChangChklist[1].Check">
+                            <h4 style="color:#0e99dc;margin-right:42px;">Nutrineal</h4>
+                            <md-checkbox id="CAPD_Nutrineal" ng-repeat="Ex in $ctrl.PaymentconditionsCheck" ng-if="Ex.Type == 'Nutrineal'"
+                                ng-checked="Ex.Check" ng-click="$ctrl.checkTheBox('PaymentconditionsCheck', $index)">
+                                {{Ex.Text}}
+                            </md-checkbox>
+                        </div>
+                        <div ng-show="$ctrl.ChangChklist[1].Check" style="margin-bottom: 8px;">
+                            <table id="esatable">
+                                <thead>
+                                    <tr>
+                                        <th style="width:12%;">胺基酸濃度(%)</th>
+                                        <!-- <th style="width:16%;">鈣離子濃度(mEq/L)</th> -->
+                                        <th style="width:16%;">每次注入量</th>
+                                        <th style="width:6.25%;">袋數</th>
+                                        <th style="width:6.25%;">PRN</th>
+                                        <th>備註</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in $ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Nutrineal'}">
+                                        <td>1.10</td>
+                                        <td>
+                                            <input style="width: 80%;ime-mode:disabled;" type="text" oninput="if(value>2.0)value=null"
+                                                onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if (event.keyCode!=46 && event.keyCode!=45 &&(event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                                ng-change="$ctrl.CalculationCAPDTreat()" ng-model="item.Esa_Dose_U" >
+                                            </input>
+                                            <md-tooltip md-visible="item.showTooltip">請輸入 ≦2.0 的值</md-tooltip>
+                                        </td>
+                                        <!-- <td>2.5</td> -->
+                                        <!-- <td>2.0</td> -->
+                                        <td>1</td>
+                                        <td>
+                                            <md-switch style="margin: 0px;" ng-model="item.Esa_Dose_Ug" ng-change="$ctrl.CalculationCAPDTreat()"></md-switch>
+                                        </td>
+                                        <td><input type="text" ng-model="item.Remark" style="width:100%;"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div layout="row" layout-xs="column" ng-show="$ctrl.ChangChklist[2].Check">
+                            <h4 style="color:#0e99dc;margin-right:5px;">Extraneal</h4>
+                            <i class="material-icons" style="margin-right: 10px;" ng-click="$ctrl.add_Extraneal('Treat');">add</i>
+                            <md-checkbox id="CAPD_Extraneal"  ng-repeat="Ex in $ctrl.PaymentconditionsCheck" ng-if="Ex.Type == 'Extraneal'"
+                                ng-checked="Ex.Check" ng-click="$ctrl.checkTheBox('PaymentconditionsCheck', $index)">
+                                {{Ex.Text}}
+                            </md-checkbox>
+                        </div>
+                        <div ng-show="$ctrl.ChangChklist[2].Check" style="margin-bottom: 8px;">
+                            <table id="esatable">
+                                <thead>
+                                    <tr>
+                                        <th style="width:12%;">lcodextrin(%)</th>
+                                        <!-- <th style="width:16%;">鈣離子濃度(mEq/L)</th> -->
+                                        <th style="width:16%;">每次注入量</th>
+                                        <th style="width:6.25%;">袋數</th>
+                                        <th style="width:6.25%;">PRN</th>
+                                        <th>備註</th>
+                                        <th style="width:2%;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in $ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Extraneal'}">
+                                        <td>7.5</td>
+                                        <td>
+                                            <input style="width: 80%;ime-mode:disabled;" type="text" oninput="if(value>2.0)value=null"
+                                                onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if (event.keyCode!=46 && event.keyCode!=45 &&(event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                                ng-change="$ctrl.CalculationCAPDTreat()" ng-model="item.Esa_Dose_U">
+                                            </input>
+                                            <md-tooltip md-visible="item.showTooltip">請輸入 ≦2.0 的值</md-tooltip>
+                                        </td>
+                                        <!-- <td>3.5</td> -->
+                                        <!-- <td>2.0</td> -->
+                                        <td>1</td>
+                                        <td>
+                                            <md-switch style="margin: 0px;" ng-model="item.Esa_Dose_Ug" ng-change="$ctrl.CalculationCAPDTreat()"></md-switch>
+                                        </td>
+                                        <td><input type="text" ng-model="item.Remark" style="width:100%;"/></td>
+                                        <td>
+                                            <i class="material-icons delete-btn"  ng-show="$ctrl.treatDetailTypes.CAPD.TreatExtranealCount > 1"
+                                            ng-click="$ctrl.del_Extraneal('Treat',$index)">clear</i>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div ng-show="$ctrl.treatDetailTypes.CAPD.Treat.length > 0" layout="row" layout-align="end center" style="background-color: #BBDEFB;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width:30%; text-align: left;">每日換袋次數</th>
+                                    <th style="width:30%; text-align: left;">總治療量(L)</th>
+                                    <th style="width:40%; text-align: left;">總處方量(L)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input disabled type="number" min="0" ng-model="$ctrl.Daily_Changed_Bag_Times">
+                                    </td>
+                                    <td>
+                                        <input disabled type="number" min="0" ng-model="$ctrl.CAPD_Total_Treatment">
+                                    </td>
+                                    <td>
+                                        <input disabled type="number" min="0" ng-model="$ctrl.CAPD_Total_Prescription">
+                                        <!-- <input type="number" min="0"
+                                        style="ime-mode:disabled" onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                        ng-model="$ctrl.treatDataObj.Day_Changed_Bag_Times"> -->
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- 換液處方 ends-->
+                <!-- 機器處方 start-->
+                <div ng-if="$ctrl.treatDataObj.Dialysis_Type == 'APD'">
+                    <div class="cardContent">
+                        <div class="cardTit" layout="row">
+                            <h2>機器處方</h2>
+                            <div class="inputBoxTit titItem" style="margin-left:20px;margin-right: 20px;">
+                                <label>每次注入量</label>
+                            </div>
+                            <div class="inputboxflex" style="flex:none;margin-right:10px;">
+                                <md-select ng-model="$ctrl.treatDataObj.Pd_Injection_Volume" style="width:100px;" ng-change="$ctrl.CalculationAPDTreat()">
+                                    <md-option ng-repeat="PdIV in $ctrl.PdInjectionVolume" value="{{PdIV.Value}}">{{PdIV.Text}}
+                                    </md-option>
+                                </md-select>
+                                <input type="number" min="0" ng-model="$ctrl.PdInjectionVolumeOther"
+                                    ng-if="$ctrl.treatDataObj.Pd_Injection_Volume == '-999'"
+                                    onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if (event.keyCode!=46 && event.keyCode!=45 &&(event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                    ng-change="$ctrl.CalculationAPDTreat()">
+                            </div>
+                            <div class="inputBoxTit titItem" style="margin-left:20px;margin-right: 20px;">
+                                <label>週期數</label>
+                            </div>
+                            <div class="inputboxflex" style="flex:none;margin-right:10px;">
+                                <md-select ng-model="$ctrl.treatDataObj.Pd_Period_Number" style="width:100px;" ng-change="$ctrl.CalculationAPDTreat()">
+                                    <md-option ng-repeat="PdPNum in $ctrl.PdPeriodNumber" value="{{PdPNum.Value}}">{{PdPNum.Text}}
+                                    </md-option>
+                                </md-select>
+                                <input type="number" min="0" ng-model="$ctrl.PdPeriodNumberOther"
+                                    onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                    ng-if="$ctrl.treatDataObj.Pd_Period_Number == '-999'"
+                                    ng-disabled="$ctrl.editViewMode" ng-change="$ctrl.CalculationAPDTreat()">
+                            </div>
+                        </div>
+                        <div layout="row">
+                            <h4 style="color:#0e99dc;margin-right: 10px;">Dianeal</h4>
+                            <i class="material-icons" ng-click="$ctrl.add_Dianeal('Machine');">add</i>
+                        </div>
+                        <div ng-show="$ctrl.treatDetailTypes.APD.Machine.length > 0">
+                            <table id="esatable">
+                                <thead>
+                                    <tr>
+                                        <th style="width:12%">葡萄糖濃度(%)</th>
+                                        <th style="width:16%">鈣離子濃度(mEq/L)</th>
+                                        <th style="width:12%">藥水體積(L)</th>
+                                        <th style="width:11%">袋數</th>
+                                        <th style="width:5%">PRN</th>
+                                        <th>備註</th>
+                                        <th style="width: 2%;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in $ctrl.treatDetailTypes.APD.Machine | filter:{ Potiontypes:'Dianeal'}">
+                                        <td>
+                                            <md-select style="width:100px;" ng-model="item.Glucoseconcentration">
+                                                <md-option ng-repeat="CB in $ctrl.Concentration_Bd" value="{{CB}}">{{CB}}%</md-option>
+                                            </md-select>
+                                        </td>
+                                        <td>
+                                            <md-select style="width:130px;" ng-model="item.Calciumconcentration">
+                                                <md-option ng-repeat="CM in $ctrl.Calcium" value="{{CM}}">{{CM}} mEq/L</md-option>
+                                            </md-select>
+                                        </td>
+                                        <td>
+                                            <md-select style="width:90px;" ng-model="item.Baglitre" ng-change="$ctrl.CalculationAPDTreat()">
+                                                <md-option ng-repeat="CG in $ctrl.Concentration_GLC" value="{{CG}}">{{CG}}</md-option>
+                                            </md-select>
+                                            <input style="width:90px;" type="number" min="0" ng-model="item.BaglitreOther"
+                                                ng-show="item.Baglitre == '其他'" ng-change="$ctrl.CalculationAPDTreat()">
+                                        </td>
+                                        <td>
+                                            <md-select style="width:80px;" ng-model="item.Bagnumber" ng-change="$ctrl.CalculationAPDTreat()">
+                                                <md-option ng-repeat="QT in $ctrl.Quantity" value="{{QT}}">{{QT}}</md-option>
+                                            </md-select>
+                                        </td>
+                                        <td><md-switch style="margin: 0px;" ng-model="item.Esa_Dose_Ug" ng-change="$ctrl.CalculationAPDTreat()"></md-switch></td>
+                                        <td><input style="width: 100%;" ng-model="item.Remark"></td>
+                                        <td><i class="material-icons delete-btn" ng-click="$ctrl.del_Dianeal('Machine',$index)">clear</i></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- 機器處方 end-->
+                <!-- 最末袋處方 statrt-->
+                <div ng-if="$ctrl.treatDataObj.Dialysis_Type == 'APD'">
+                    <div class="cardContent">
+                        <div class="cardTit">
+                            <div layout="row">
+                                <h2>最末袋處方</h2>
+                                <md-switch class="md-primary" style="margin:0px; margin-left: 20px;" md-no-ink ng-model="$ctrl.LastBagShow" ng-change="$ctrl.LastBagChang()"></md-switch>
+                                <div class="inputBoxTit titItem" style="margin-left:20px;margin-right: 20px;" ng-if="$ctrl.LastBagShow">
+                                    <label>濃度</label>
+                                </div>
+                                <div class="inputboxflex" style="flex:none;margin-right:10px;"  layout="row" ng-if="$ctrl.LastBagShow">
+                                    <md-radio-group class="radioGroupInline" ng-model="$ctrl.treatDataObj.Pd_Ismatch_Last_Bag_Concn" ng-change="$ctrl.LastBageConcnChang()">
+                                        <md-radio-button value="Y">相同</md-radio-button>
+                                        <md-radio-button value="N">不同</md-radio-button>
+                                    </md-radio-group>
+                                </div>
+                            </div>
+                        </div>
+                        <div layout="row" ng-show="$ctrl.LastBagShow && $ctrl.treatDataObj.Pd_Ismatch_Last_Bag_Concn =='Y' ">
+                            <h4 style="color:#0e99dc;margin-right: 10px;">Dianeal</h4>
+                        </div>
+                        <div ng-show="$ctrl.LastBagShow && $ctrl.treatDataObj.Pd_Ismatch_Last_Bag_Concn =='Y'">
+                            <table id="esatable">
+                                <thead>
+                                    <tr>
+                                        <th style="width:12%">注入量(Ｌ)</th>
+                                        <th style="width:5%">PRN</th>
+                                        <th>備註</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in $ctrl.treatDetailTypes.APD.ListBage | filter:{ Potiontypes:'Dianeal'}">
+                                        <td>
+                                            <div>
+                                                <input style="width: 100%;ime-mode:disabled;" type="number" max="2.5" oninput="if(value>2.5)value=null"
+                                                    onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if (event.keyCode!=46 && event.keyCode!=45 &&(event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                                    ng-model="item.Esa_Dose_U" ng-change="$ctrl.CalculationAPDTreat()">
+                                                </input>
+                                                <md-tooltip>請輸入 ≦ 2.5 的值</md-tooltip>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <md-switch style="margin: 0px;" ng-model="item.Esa_Dose_Ug" ng-change="$ctrl.CalculationAPDTreat()"></md-switch>
+                                        </td>
+                                        <td><input style="width: 100%;" ng-model="item.Remark"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <md-radio-group ng-show="$ctrl.LastBagShow && $ctrl.treatDataObj.Pd_Ismatch_Last_Bag_Concn == 'N'" class="radioGroupInline" ng-model="$ctrl.LastBageConcnSelect" ng-change="$ctrl.LastBageConcnChang()">
+                            <md-radio-button value="Dianeal">Dianeal</md-radio-button>
+                            <md-radio-button value="Extraneal ">Extraneal </md-radio-button>
+                        </md-radio-group>
+                        <!-- CAPD_Dianeal-->
+                        <div layout="row" ng-show="$ctrl.LastBagShow && $ctrl.treatDataObj.Pd_Ismatch_Last_Bag_Concn  == 'N' && $ctrl.LastBageConcnSelect =='Dianeal'">
+                                <h4 style="color:#0e99dc;margin-right: 10px;">Dianeal</h4>
+                        </div>
+                        <div ng-show="$ctrl.LastBagShow && $ctrl.treatDataObj.Pd_Ismatch_Last_Bag_Concn  == 'N' && $ctrl.LastBageConcnSelect =='Dianeal'">
+                                <table id="esatable">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:12%;">葡萄糖濃度(%)</th>
+                                            <th style="width:16%;">鈣離子濃度(mEq/L)</th>
+                                            <th style="width:12%;">注入量(L)</th>
+                                            <th style="width:11%;">藥水體積(L)</th>
+                                            <th style="width:5%">PRN</th>
+                                            <th>備註</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in $ctrl.treatDetailTypes.APD.ListBage | filter:{ Potiontypes:'Dianeal'}">
+                                            <td>
+                                                <md-select style="width:100px;" ng-model="item.Glucoseconcentration">
+                                                    <md-option ng-repeat="CB in $ctrl.Concentration_Bd" value="{{CB}}">{{CB}}%</md-option>
+                                                </md-select>
+                                            </td>
+                                            <td>
+                                                <md-select style="width:130px;" ng-model="item.Calciumconcentration">
+                                                    <md-option ng-repeat="CM in $ctrl.Calcium" value="{{CM}}">{{CM}} mEq/L</md-option>
+                                                </md-select>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <input style="width: 100%;ime-mode:disabled;" type="number" max="2.5" oninput="if(value>2.5)value=null"
+                                                        onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if (event.keyCode!=46 && event.keyCode!=45 &&(event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                                        ng-model="item.Esa_Dose_U" ng-change="$ctrl.CalculationAPDTreat()">
+                                                    </input>
+                                                    <md-tooltip>請輸入 < 2.5 的值</md-tooltip>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                {{item.Baglitre}}
+                                            </td>
+                                            <td>
+                                                <md-switch style="margin: 0px;" ng-model="item.Esa_Dose_Ug" ng-change="$ctrl.CalculationAPDTreat()"></md-switch>
+                                            </td>
+                                            <td><input style="width: 100%;" ng-model="item.Remark"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                        </div>
+                        <!-- CAPD_Extraneal-->
+                        <div layout="row" layout-xs="column" ng-show="$ctrl.LastBagShow && $ctrl.treatDataObj.Pd_Ismatch_Last_Bag_Concn && $ctrl.LastBageConcnSelect =='Extraneal'">
+                            <h4 style="color:#0e99dc;margin-right:10px;">Extraneal</h4>
+                            <md-checkbox id="CAPD_Extraneal"  ng-repeat="Ex in $ctrl.ListBage_PaymentconditionsCheck" ng-if="Ex.Type == 'Extraneal'"
+                                ng-checked="Ex.Check" ng-click="$ctrl.checkTheBox('ListBage_PaymentconditionsCheck', $index)">
+                                {{Ex.Text}}
+                            </md-checkbox>
+                        </div>
+                        <div ng-show="$ctrl.LastBagShow && $ctrl.treatDataObj.Pd_Ismatch_Last_Bag_Concn && $ctrl.LastBageConcnSelect =='Extraneal'">
+                            <table id="esatable">
+                                <thead>
+                                    <tr>
+                                        <th style="width:12%;">lcodextrin(%)</th>
+                                        <!-- <th style="width:16%;">鈣離子濃度(mEq/L)</th> -->
+                                        <th style="width:12%;">注入量(L)</th>
+                                        <th style="width:11%;">藥水體積(L)</th>
+                                        <th style="width:5%;">PRN</th>
+                                        <th>備註</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in $ctrl.treatDetailTypes.APD.ListBage | filter:{ Potiontypes:'Extraneal'}">
+                                        <td>
+                                            {{item.Glucoseconcentration}}
+                                        </td>
+                                        <!-- <td>
+                                            {{item.Calciumconcentration}}
+                                        </td> -->
+                                        <td>
+                                            <div>
+                                                <input style="width: 100%;ime-mode:disabled;" type="number"  max="2.0" oninput="if(value>2.0)value=null"
+                                                    onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if (event.keyCode!=46 && event.keyCode!=45 &&(event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                                    ng-model="item.Esa_Dose_U" ng-change="$ctrl.CalculationAPDTreat()">
+                                                </input>
+                                                <md-tooltip md-visible="item.showTooltip">請輸入 ≦2.0 的值</md-tooltip>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{item.Baglitre}}
+                                        </td>
+                                        <td>
+                                            <md-switch style="margin: 0px;" ng-model="item.Esa_Dose_Ug" ng-change="$ctrl.CalculationAPDTreat()"></md-switch>
+                                        </td>
+                                        <td><input style="width: 100%;" ng-model="item.Remark"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- 最末袋處方 end -->
+                <div ng-if="$ctrl.treatDataObj.Dialysis_Type == 'APD'" layout="row" layout-align="end center" style="background-color: #BBDEFB;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:30%; text-align: left;">機器總治療量(L)</th>
+                                <th style="width:40%; text-align: left;">機器總處方量(L)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input type="number" min="0" disabled
+                                        onkeypress="if (event.keyCode!=46 && event.keyCode!=45 && (event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                        ng-model="$ctrl.APD_Total_Treatment">
+                                </td>
+                                <td>
+                                    <input type="number" min="0" disabled
+                                        onkeypress="if (event.keyCode!=46 && event.keyCode!=45 && (event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                        ng-model="$ctrl.APD_Total_Prescription">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- 白天換液處方 start-->
+                <div ng-if="$ctrl.treatDataObj.Dialysis_Type == 'APD'">
+                    <div class="cardContent">
+                        <div class="cardTit">
+                            <div layout="row" layout-sm="column" layout-xs="column">
+                                <h2 style="margin-right: 50px;">白天換液處方</h2>
+                                <div layout="row">
+                                    <md-checkbox id="CAPD_Extraneal" ng-repeat="Ex in $ctrl.TwinBagChklist"
+                                        ng-checked="Ex.Check" ng-click="$ctrl.checkTheDetail('TwinBagChklist', $index)">
+                                        {{Ex.Text}}
+                                    </md-checkbox>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <!-- Dianeal -->
+                            <div layout="row" ng-show="$ctrl.TwinBagChklist[0].Check">
+                                <h4 style="color:#0e99dc; margin-right: 10px;">Dianeal</h4>
+                                <i class="material-icons" ng-click="$ctrl.add_Dianeal('TwinBage');">add</i>
+                            </div>
+                            <div ng-show="$ctrl.TwinBagChklist[0].Check" ng-show="$ctrl.treatDetailTypes.APD.TwinBage.length > 0">
+                                <table id="esatable">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:12%;">葡萄糖濃度(%)</th>
+                                            <th style="width:16%;">鈣離子濃度(mEq/L)</th>
+                                            <th style="width:12.5%;">每次注入量(L)</th>
+                                            <th style="width:11%;">藥水體積(L)</th>
+                                            <th style="width:10%;">袋數</th>
+                                            <th style="width:5%;">PRN</th>
+                                            <th>備註</th>
+                                            <th style="width: 2%;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in $ctrl.treatDetailTypes.APD.TwinBage | filter:{ Potiontypes:'Dianeal'}">
+                                            <td>
+                                                <md-select style="width:100px;" ng-model="item.Glucoseconcentration">
+                                                    <md-option ng-repeat="CB in $ctrl.Concentration_Bd" value="{{CB}}">{{CB}}%</md-option>
+                                                </md-select>
+                                            </td>
+                                            <td>
+                                                <md-select style="width:130px;" ng-model="item.Calciumconcentration">
+                                                    <md-option ng-repeat="CM in $ctrl.Calcium" value="{{CM}}">{{CM}} mEq/L</md-option>
+                                                </md-select>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <input style="width: 100%;ime-mode:disabled;" type="number"
+                                                        onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if (event.keyCode!=46 && event.keyCode!=45 &&(event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                                        ng-model="item.Esa_Dose_U" ng-change="$ctrl.CalculationAPDTreat('Esa_Dose_U',item,'TwinBage')">
+                                                    </input>
+                                                    <md-tooltip md-visible="item.showTooltip">請輸入輸入 ≦ 2.5 的值</md-tooltip>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <md-select style="width:90px;" ng-model="item.Baglitre" ng-change="$ctrl.CalculationAPDTreat('Baglitre',item,'TwinBage')">
+                                                    <md-option ng-repeat="CG in $ctrl.Concentration_GLC" value="{{CG}}">{{CG}}</md-option>
+                                                </md-select>
+                                                <input style="width:90px;" type="number" min="0" ng-model="item.BaglitreOther"
+                                                    ng-show="item.Baglitre == '其他'" ng-change="$ctrl.CalculationAPDTreat()">
+                                            </td>
+                                            <td>
+                                                <md-select style="width:80px;" ng-model="item.Bagnumber" ng-change="$ctrl.CalculationAPDTreat()">
+                                                    <md-option ng-repeat="QT in $ctrl.Quantity" value="{{QT}}">{{QT}}</md-option>
+                                                </md-select>
+                                            </td>
+                                            <td><md-switch style="margin: 0px;" ng-model="item.Esa_Dose_Ug" ng-change="$ctrl.CalculationAPDTreat()"></md-switch></td>
+                                            <td><input style="width: 100%;" ng-model="item.Remark"></td>
+                                            <td><i class="material-icons delete-btn" ng-click="$ctrl.del_Dianeal('TwinBage',$index)">clear</i></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- Dianeal -->
+                            <!-- Nutrineal-->
+                            <div layout="row" layout-xs="column" ng-show="$ctrl.TwinBagChklist[1].Check">
+                                <h4 style="color:#0e99dc;margin-right:10px;">Nutrineal</h4>
+                                <md-checkbox ng-repeat="Ex in $ctrl.TwinBage_PaymentconditionsCheck" ng-if="Ex.Type == 'Nutrineal'"
+                                    ng-checked="Ex.Check" ng-click="$ctrl.checkTheBox('TwinBage_PaymentconditionsCheck', $index)">
+                                    {{Ex.Text}}
+                                </md-checkbox>
+                            </div>
+                            <div ng-show="$ctrl.TwinBagChklist[1].Check" style="margin-bottom: 8px;">
+                                <table id="esatable">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:12%;">胺基酸濃度(%)</th>
+                                            <th style="width:16%;">每次注入量</th>
+                                            <!-- <th style="width:16%;">鈣離子濃度(mEq/L)</th>
+                                            <th style="width:12.5%;">藥水體積(L)</th> -->
+                                            <th style="width:6.25%;">袋數</th>
+                                            <th style="width:6.25%;">PRN</th>
+                                            <th>備註</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in $ctrl.treatDetailTypes.APD.TwinBage | filter:{ Potiontypes:'Nutrineal'}">
+                                            <td>1.10</td>
+                                            <td>
+                                                <div>
+                                                    <input style="width: 80%;ime-mode:disabled;" type="text" oninput="if(value>2.0)value=null"
+                                                        onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if (event.keyCode!=46 && event.keyCode!=45 &&(event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                                        ng-change="$ctrl.CalculationAPDTreat()" ng-model="item.Esa_Dose_U" >
+                                                    </input>
+                                                    <md-tooltip md-visible="item.showTooltip">請輸入 ≦2.0 的值</md-tooltip>
+                                                </div>
+                                            </td>
+                                            <!-- <td>2.5</td>
+                                            <td>2.0</td> -->
+                                            <td>1</td>
+                                            <td>
+                                                <md-switch style="margin: 0px;" ng-model="item.Esa_Dose_Ug" ng-change="$ctrl.CalculationAPDTreat()"></md-switch>
+                                            </td>
+                                            <td><input type="text" ng-model="item.Remark" style="width:100%;"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- Nutrineal-->
+                            <div layout="row" layout-xs="column" ng-show="$ctrl.TwinBagChklist[2].Check">
+                                <h4 style="color:#0e99dc;margin-right:10px;">Extraneal</h4>
+                                <i class="material-icons" style="margin-right: 10px;" ng-click="$ctrl.add_Extraneal('TwinBage');">add</i>
+                                <md-checkbox ng-repeat="Ex in $ctrl.TwinBage_PaymentconditionsCheck" ng-if="Ex.Type == 'Extraneal'"
+                                    ng-checked="Ex.Check" ng-click="$ctrl.checkTheBox('TwinBage_PaymentconditionsCheck', $index)">
+                                    {{Ex.Text}}
+                                </md-checkbox>
+                            </div>
+                            <div ng-show="$ctrl.TwinBagChklist[2].Check" style="margin-bottom: 8px;">
+                                <table id="esatable">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:12%;">lcodextrin(%)</th>
+                                            <th style="width:16%;">每次注入量</th>
+                                            <!-- <th style="width:16%;">鈣離子濃度(mEq/L)</th>
+                                            <th style="width:12.5%;">藥水體積(L)</th> -->
+                                            <th style="width:6.25%;">袋數</th>
+                                            <th style="width:6.25%;">PRN</th>
+                                            <th>備註</th>
+                                            <th style="width: 2%;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in $ctrl.treatDetailTypes.APD.TwinBage | filter:{ Potiontypes:'Extraneal'}">
+                                            <td>7.5</td>
+                                            <td>
+                                                <div>
+                                                    <input style="width: 80%;ime-mode:disabled;" type="text"  oninput="if(value>2.0)value=null"
+                                                        onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if (event.keyCode!=46 && event.keyCode!=45 &&(event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                                        ng-change="$ctrl.CalculationAPDTreat()" ng-model="item.Esa_Dose_U" >
+                                                    </input>
+                                                    <md-tooltip>請輸入 ≦2.0 的值</md-tooltip>
+                                                </div>
+                                            </td>
+                                            <!-- <td>3.5</td>
+                                            <td>2.0</td> -->
+                                            <td>1</td>
+                                            <td>
+                                                <md-switch style="margin: 0px;" ng-model="item.Esa_Dose_Ug"  ng-change="$ctrl.CalculationAPDTreat()"></md-switch>
+                                            </td>
+                                            <td><input type="text" ng-model="item.Remark" style="width:100%;"/></td>
+                                            <td>
+                                                <i class="material-icons delete-btn"  ng-show="$ctrl.treatDetailTypes.APD.TwinBageExtranealCount > 1"
+                                                ng-click="$ctrl.del_Extraneal('TwinBage',$index)">clear</i>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 白天換液處方 end -->
+                <div class="cardContent">
+                    <div class="cardTit">
+                        <label>鹼基</label>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputboxflex itemList">
+                            <md-radio-group class="radioGroup" ng-model="$ctrl.treatDataObj.Alkali_Base">
+                                <md-radio-button ng-repeat="AB in $ctrl.AlkaliBase" value="{{AB}}">{{AB}}
+                                </md-radio-button>
+                            </md-radio-group>
+                        </div>
+                    </div>
+                </div>
+                <div class="cardContent">
+                    <div class="cardTit">
+                        <h2>透析液滲透物質</h2>
+                    </div>
+                    <div class="inputbox">
+                        <div class="inputboxflex itemList autoWidth">
+                            <md-input-container-flat class="md-block">
+                                <md-checkbox ng-repeat="DOS in $ctrl.DialysisOsmoticSubstanceCheck"
+                                    ng-checked="DOS.Check">
+                                    {{DOS.Text}}
+                                </md-checkbox>
+                                <input style="display:inline-block;"
+                                    ng-if="$ctrl.DialysisOsmoticSubstanceCheck[($ctrl.DialysisOsmoticSubstanceCheck.length - 1)].Check == true"
+                                    ng-model="$ctrl.treatDataObj.DialysisOsmoticSubstanceCheckOther" maxlength="50"
+                                    type="text">
+                            </md-input-container-flat>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="$ctrl.treatDataObj.Dialysis_Type === 'APD'">
+                    <div class="cardContent">
+                        <div class="cardTit">
+                            <h3>
+                                {{$ctrl.treatDataObj.Dialysis_Type}}
+                                /處方 - PD 醫囑
+                            </h3>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem"><label style="width:100px;">總治療量</label></div>
+                            <div class="inputboxflex itemList">
+                                <input type="number" min="0" disabled
+                                onkeypress="if (event.keyCode!=46 && event.keyCode!=45 && (event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                ng-model="$ctrl.APD_Total_Treatment">
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>治療時間</label>
+                            </div>
+                            <div class="inputboxflex itemList autoWidth">
+                                <!--Pd_Treatment_Time-->
+                                <md-select ng-model="$ctrl.treatDataObj.Pd_Treatment_Time_Hh">
+                                    <md-option value="">請選擇</md-option>
+                                    <md-option ng-repeat="tHr in $ctrl.therapyTimeStHr" value="{{tHr}}">{{tHr}}
+                                    </md-option>
+                                </md-select>
+                                <input ng-if="$ctrl.treatDataObj.Pd_Treatment_Time_Hh === '其他'"
+                                    onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                    ng-model="$ctrl.treatDataObj.PdTreatmentTimeHhOther">
+                                <label>小時</label>
+                                <md-select ng-model="$ctrl.treatDataObj.Pd_Treatment_Time_Mm">
+                                    <md-option value="">請選擇</md-option>
+                                    <md-option ng-repeat="tMm in $ctrl.therapyTimeStMM" value="{{tMm}}">{{tMm}}
+                                    </md-option>
+                                </md-select>
+                                <input ng-if="$ctrl.treatDataObj.Pd_Treatment_Time_Mm === '其他'"
+                                    onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                    ng-model="$ctrl.treatDataObj.PdTreatmentTimeMmOther">
+                                <label>分鐘</label>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem"><label style="width:100px;">注入量</label></div>
+                            <div class="inputboxflex itemList" layout="row">
+                                <!--Pd_Injection_Volume-->
+                                <md-select ng-hide="$ctrl.treatDataObj.Pd_Injection_Volume == '-999'" disabled ng-model="$ctrl.treatDataObj.Pd_Injection_Volume" style="width:100px;" ng-change="$ctrl.CalculationAPDTreat()">
+                                    <md-option ng-repeat="PdIV in $ctrl.PdInjectionVolume" value="{{PdIV.Value}}">{{PdIV.Text}}
+                                    </md-option>
+                                </md-select>
+                                <input type="number" min="0" ng-model="$ctrl.PdInjectionVolumeOther" disabled
+                                    ng-if="$ctrl.treatDataObj.Pd_Injection_Volume == '-999'">
+                            </div>
+                        </div>
+                        <div class="inputbox"
+                            ng-show="$ctrl.treatDataObj.Dialysis_Type === 'APD' && $ctrl.LastBagShow">
+                            <div class="inputBoxTit titItem"><label style="width:100px;">最末袋注入量</label></div>
+                            <div class="inputboxflex itemList">
+                                <!--Pd_Last_Bag_Injection_Volume-->
+                                <input type="text" disabled="disabled" ng-repeat="item in $ctrl.treatDetailTypes.APD.ListBage"
+                                    value="{{item.Esa_Dose_U}}"/>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem"><label style="width:300px;">末袋濃度是否相同</label></div>
+                            <div class="inputboxflex itemList">
+                                <!--Pd_Ismatch_Last_Bag_Concn-->
+                                <md-radio-group class="radioGroup" layout="column"
+                                    ng-model="$ctrl.treatDataObj.Pd_Ismatch_Last_Bag_Concn"
+                                    ng-disabled="$ctrl.editViewMode">
+                                    <div class="inputbox">
+                                        <md-radio-button value="Y" ng-disabled="true">是</md-radio-button>
+                                        <md-radio-button value="N" ng-disabled="true">否</md-radio-button>
+                                    </div>
+                                </md-radio-group>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem"><label style="width:300px;">週期數</label></div>
+                            <div class="inputboxflex itemList" layout="row">
+                                    <md-select ng-hide="$ctrl.treatDataObj.Pd_Period_Number == '-999'"
+                                    ng-model="$ctrl.treatDataObj.Pd_Period_Number" style="width:100px;" ng-change="$ctrl.CalculationAPDTreat()" disabled>
+                                        <md-option ng-repeat="PdPNum in $ctrl.PdPeriodNumber" value="{{PdPNum.Value}}">{{PdPNum.Text}}
+                                        </md-option>
+                                    </md-select>
+                                    <input type="text" ng-model="$ctrl.PdPeriodNumberOther" disabled="disabled"
+                                        ng-if="$ctrl.treatDataObj.Pd_Period_Number == '-999'" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cardContent">
+                        <div class="cardTit">
+                            <h3>
+                                {{$ctrl.treatDataObj.Dialysis_Type}}
+                                處方 - 機器設定 1
+                            </h3>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>治療方式</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <md-input-container-flat class="md-block">
+                                    <div layout="row">
+                                        <md-radio-group class="radioGroup" layout="row" ng-disabled="$ctrl.editViewMode"
+                                            ng-model="$ctrl.treatDataObj.Machine_Type">
+                                            <div layout="row">
+                                                <md-radio-button ng-repeat="MT in $ctrl.MachineType" value="{{MT}}">{{MT}}
+                                                </md-radio-button>
+                                            </div>
+                                        </md-radio-group>
+                                    </div>
+                                </md-input-container-flat>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>0週期引流警訊</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <md-select ng-model="$ctrl.treatDataObj.Machine_Zero_Period_Warning">
+                                    <md-option value="">請選擇</md-option>
+                                    <md-option ng-repeat="MachineZeroPW in $ctrl.MachineZeroPeriodWarning"
+                                        value="{{MachineZeroPW}}">{{MachineZeroPW}}</md-option>
+                                </md-select>
+                                <input type="number" min="0" ng-model="$ctrl.treatDataObj.MachineZeroPeriodWarningOther"
+                                    ng-if="$ctrl.treatDataObj.Machine_Zero_Period_Warning == '其他'"
+                                    onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                    ng-disabled="$ctrl.editViewMode" />
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>留置時間</label>
+                            </div>
+                            <div class="inputboxflex itemList autoWidth">
+                                <md-select ng-model="$ctrl.treatDataObj.Machine_Stay_Time_Hh">
+                                    <md-option value="">請選擇</md-option>
+                                    <md-option ng-repeat="MSTHr in $ctrl.MachineStayTimeHr" value="{{MSTHr}}">{{MSTHr}}
+                                    </md-option>
+                                </md-select>
+                                <input type="text" ng-if="$ctrl.treatDataObj.Machine_Stay_Time_Hh === '其他'"
+                                    onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                    ng-model="$ctrl.treatDataObj.MachineStayTimeHhOther">
+                                <label>小時</label>
+                                <md-select ng-model="$ctrl.treatDataObj.Machine_Stay_Time_Mm">
+                                    <md-option value="">請選擇</md-option>
+                                    <md-option ng-repeat="MSTMm in $ctrl.MachineStayTimeMM" value="{{MSTMm}}">{{MSTMm}}
+                                    </md-option>
+                                </md-select>
+                                <input type="text" ng-if="$ctrl.treatDataObj.Machine_Stay_Time_Mm === '其他'"
+                                    onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                    ng-model="$ctrl.treatDataObj.MachineStayTimeMmOther">
+                                <label>分鐘</label>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>病人體重</label></div>
+                            <div class="inputboxflex itemList">
+                                <input type="number" min="0" 
+                                onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if (event.keyCode!=46 && event.keyCode!=45 &&(event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                ng-model="$ctrl.treatDataObj.Machine_Patientweight">
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>透析液溫度</label></div>
+                            <div class="inputboxflex itemList">
+                                <md-select ng-model="$ctrl.treatDataObj.Machine_Dialysate_Temperature">
+                                    <md-option value="">請選擇</md-option>
+                                    <md-option ng-repeat="MachineDT in $ctrl.MachineDialysateTemperature"
+                                        value="{{MachineDT}}">{{MachineDT}}</md-option>
+                                </md-select>
+                                <input type="number" min="0"
+                                    ng-model="$ctrl.treatDataObj.MachineDialysateTemperatureOther"
+                                    onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if (event.keyCode!=46 && event.keyCode!=45 &&(event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                    ng-if="$ctrl.treatDataObj.Machine_Dialysate_Temperature == '其他'"
+                                    ng-disabled="$ctrl.editViewMode">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cardContent">
+                        <div class="cardTit">
+                            <h3>
+                                {{$ctrl.treatDataObj.Dialysis_Type}}
+                                /處方 - 機器設定 2
+                            </h3>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>最末手控引流</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <md-radio-group class="radioGroup" layout="column"
+                                    ng-model="$ctrl.treatDataObj.Machine_Isfinal_Drainage"
+                                    ng-disabled="$ctrl.editViewMode">
+                                    <div layout="row">
+                                        <md-radio-button value="Y">是</md-radio-button>
+                                        <md-radio-button value="N">否</md-radio-button>
+                                    </div>
+                                </md-radio-group>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>總脫水目標</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <md-select ng-model="$ctrl.treatDataObj.Machine_Tot_Dehydrate_Target">
+                                    <md-option value="">請選擇</md-option>
+                                    <md-option ng-repeat="MachineTotTarget in $ctrl.MachineTotDehydrateTarget"
+                                        value="{{MachineTotTarget}}">{{MachineTotTarget}}</md-option>
+                                </md-select>
+                                <input type="number" min="0"
+                                    ng-model="$ctrl.treatDataObj.MachineTotDehydrateTargetOther"
+                                    onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                    ng-if="$ctrl.treatDataObj.Machine_Tot_Dehydrate_Target == '其他'"
+                                    ng-disabled="$ctrl.editViewMode">
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>警訊</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <md-radio-group class="radioGroup" layout="column"
+                                    ng-model="$ctrl.treatDataObj.Machine_Isalarm" ng-disabled="$ctrl.editViewMode">
+                                    <div layout="row">
+                                        <md-radio-button value="Y">是</md-radio-button>
+                                        <md-radio-button value="N">否</md-radio-button>
+                                    </div>
+                                </md-radio-group>
+                            </div>
+                        </div>
+                        <div class="inputbox">
+                            <div class="inputBoxTit titItem">
+                                <label>週期最小引流量</label>
+                            </div>
+                            <div class="inputboxflex itemList">
+                                <md-select ng-model="$ctrl.treatDataObj.Machine_Period_Min_Drainage">
+                                    <md-option value="">請選擇</md-option>
+                                    <md-option ng-repeat="MachinePMD in $ctrl.MachinePeriodMinDrainage"
+                                        value="{{MachinePMD}}">{{MachinePMD}}</md-option>
+                                </md-select>
+                                <input type="number" min="0" ng-model="$ctrl.treatDataObj.MachinePeriodMinDrainageOther"
+                                    ng-if="$ctrl.treatDataObj.Machine_Period_Min_Drainage == '其他'"
+                                    onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                    ng-disabled="$ctrl.editViewMode">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="inputbox" ng-if="$ctrl.treatDataObj.CreatedTime !== null">
+                <div class="signinGroup" ng-show="!$ctrl.isCreate">
+                    <label
+                        class="signinTime">建立:{{$ctrl.treatDataObj.CreatedTime | moment:'YYYY/MM/DD (dd) HH:mm'}}</label>
+                    <label class="signinNm"><span class="fixed">{{$ctrl.treatDataObj.CreatedUserName}}</span></label>
+                </div>
+                <div class="signinGroup" ng-show="!$ctrl.isCreate && $ctrl.treatDataObj.ModifiedTime !== null">
+                    <label
+                        class="signinTime">修改:{{$ctrl.treatDataObj.ModifiedTime | moment:'YYYY/MM/DD (dd) HH:mm'}}</label>
+                    <label class="signinNm"><span class="fixed">{{$ctrl.treatDataObj.ModifiedUserName}}</span></label>
+                </div>
+            </div> -->
+            <div row-warp layout="row" layout-sm="row" layout-xs="column" style="margin-left: 10px;">
+                <div flex="50" flex-xs="100" ng-show="$ctrl.treatDataObj.CreatedUserName">
+                    <!-- <span>建立: {{ $ctrl.regForm.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                    <span translate="treatRecord.createdTime"
+                        translate-values='{CreatedTime: $ctrl.treatDataObj.CreatedTime}'></span>
+                    <seal model="$ctrl.treatDataObj" modified="none"></seal>
+                </div>
+                <div flex="50" flex-xs="100" ng-show="$ctrl.treatDataObj.ModifiedTime != null">
+                    <!-- <span>修改: {{ $ctrl.regForm.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                    <span translate="treatRecord.editedTime"
+                        translate-values='{ModifiedTime: $ctrl.treatDataObj.ModifiedTime}'></span>
+                    <seal model="$ctrl.treatDataObj" created="none"></seal>
+                </div>
+            </div>
+
+        </md-dialog-content>
+        <md-dialog-actions layout="row" ng-hide="$ctrl.treatDataObj.Status == 'Deleted'" class="no-print">
+            <md-button class="md-raised" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.cancel()">
+                {{'treatRecord.dialog.cancel' | translate}}
+            </md-button>
+            <md-button class="md-raised md-primary" ng-click="$ctrl.ok()">
+                {{$ctrl.isCreate || $ctrl.treatDataObj.isCopy ? 'treatRecord.dialog.create' : 'treatRecord.dialog.edit' | translate}}
+            </md-button>
+            <!-- <md-button ng-if="!$ctrl.editViewMode" ng-click="$ctrl.ok()" class="md-raised md-primary">儲存</md-button>
+            <md-button ng-click="$ctrl.cancel()" class="md-raised md-primary">取消</md-button>
+            <md-button ng-if="$ctrl.editViewMode" ng-click="$ctrl.startEdit()" class="md-raised md-primary">修改</md-button> -->
+        </md-dialog-actions>
+    </form>
+    <div class="infectionTbUpdate" ng-if="$ctrl.isEditDetail">
+        <form name="editDetailForm">
+            <md-dialog-toolbar>
+                <div class="md-toolbar-tools">
+                    <md-button class="md-fab" aria-label="Settings" ng-click="$ctrl.DetailEditCancel()">
+                        <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+                    </md-button>
+                    <h2 ng-if="!$ctrl.editViewMode && $ctrl.isCreate" translate="treatRecord.dialog.createTitle"></h2>
+                    <h2 ng-if="!$ctrl.editViewMode && !$ctrl.isCreate" translate="treatRecord.dialog.editTitle"></h2>
+                    <h2 ng-if="$ctrl.editViewMode" translate="treatRecord.dialog.editViewTitle"></h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="$ctrl.DetailEditCancel()">
+                        <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                    </md-button>
+                </div>
+            </md-dialog-toolbar>
+        </form>
+    </div>
+    
+</md-dialog>

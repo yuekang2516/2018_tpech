@@ -1,0 +1,115 @@
+<div flex layout="column" layout-fill>
+    <md-content flex layout-fill>
+        <loading ng-show="$ctrl.loading"></loading>
+        <div ng-show="!$ctrl.loading" class="col-sm-5box">
+            <div class="col-sm-5">
+                <label translate>Date</label>
+                <input type="date" min="1900-01-01" max="2999-12-31" ng-model="$ctrl.recordTime" required/>
+            </div>
+            <div class="col-sm-5">
+                <label translate>Time</label>
+                <input type="time" ng-model="$ctrl.recordTime" required/>
+            </div>
+        </div>
+        <div ng-show="!$ctrl.loading" layout="row" layout-wrap>
+            <!-- Complication -->
+            <div class="wf-container">
+                <div>
+                    <div class="wf-box">
+                        <md-card>
+                            <md-card-title>
+                                <md-card-title-text>
+                                    <h3>Complication</h3>
+                                </md-card-title-text>
+                            </md-card-title>
+                            <md-card-content class="assessment-content">
+                                <!-- loop through options in each question -->
+                                <div ng-repeat="(k,v) in $ctrl.complication">
+                                    <!-- populate check boxes for choices -->
+                                    <md-checkbox ng-checked="$ctrl.exists('Complication', v)" ng-click="$ctrl.toggle('Complication', v)">{{v}}</md-checkbox>
+                                </div>
+                            </md-card-content>
+                        </md-card>
+                    </div>
+                </div>
+            </div>
+            <!-- Technical complication -->
+            <div class="wf-container">
+                <div>
+                    <div class="wf-box">
+                        <md-card>
+                            <md-card-title>
+                                <md-card-title-text>
+                                    <h3>Technical complication</h3>
+                                </md-card-title-text>
+                            </md-card-title>
+                            <md-card-content class="assessment-content">
+                                <!-- loop through options in each question -->
+                                <div ng-repeat="(k,v) in $ctrl.technical">
+                                    <!-- populate check boxes for choices -->
+                                    <md-checkbox ng-checked="$ctrl.exists('Technical complication', v)" ng-click="$ctrl.toggle('Technical complication', v)">{{v}}</md-checkbox>
+                                </div>
+                            </md-card-content>
+                        </md-card>
+                    </div>
+                </div>
+            </div>
+            <!-- Nursing intervention -->
+            <div class="wf-container">
+                <div>
+                    <div class="wf-box">
+                        <md-card>
+                            <md-card-title>
+                                <md-card-title-text>
+                                    <h3>Nursing intervention</h3>
+                                </md-card-title-text>
+                            </md-card-title>
+                            <md-card-content class="assessment-content">
+                                <!-- loop through options in each question -->
+                                <div ng-repeat="(k,v) in $ctrl.intervention">
+                                    <!-- populate check boxes for choices -->
+                                    <md-checkbox ng-checked="$ctrl.exists('Nursing intervention', v)" ng-click="$ctrl.toggle('Nursing intervention', v)">{{v}}</md-checkbox>
+                                </div>
+                            </md-card-content>
+                        </md-card>
+                    </div>
+                </div>
+            </div>
+            <!-- Health education -->
+            <div class="wf-container">
+                <div>
+                    <div class="wf-box">
+                        <md-card>
+                            <md-card-title>
+                                <md-card-title-text>
+                                    <h3>Health education</h3>
+                                </md-card-title-text>
+                            </md-card-title>
+                            <md-card-content class="assessment-content">
+                                <!-- loop through options in each question -->
+                                <div ng-repeat="(k,v) in $ctrl.education">
+                                    <!-- populate check boxes for choices -->
+                                    <md-checkbox ng-checked="$ctrl.exists('Health education', v)" ng-click="$ctrl.toggle('Health education', v)">{{v}}</md-checkbox>
+                                </div>
+                            </md-card-content>
+                        </md-card>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-show="!$ctrl.loading" layout="row" layout-wrap>
+            <div flex="50" flex-xs="100" ng-show="$ctrl.data.CreatedUserName">
+                <!-- <span >建立: {{ $ctrl.regForm.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                <span translate="assessment.assessment.createdTime" translate-values='{CreatedTime: $ctrl.data.CreatedTime}'></span>
+                <seal model="$ctrl.data" modified="none"></seal>
+            </div>
+            <div flex="50" flex-xs="100" ng-show="$ctrl.data.ModifiedTime != null">
+                <!-- <span>修改: {{ $ctrl.regForm.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                <span translate="assessment.assessment.editedTime" translate-values='{ModifiedTime: $ctrl.data.ModifiedTime}'></span>
+                <seal model="$ctrl.data" created="none"></seal>
+            </div>
+        </div>
+    </md-content>
+
+    <md-button ng-click="$ctrl.submit()" class="md-raised md-primary" ng-disabled="$ctrl.disabled">Save</md-button>
+</div>

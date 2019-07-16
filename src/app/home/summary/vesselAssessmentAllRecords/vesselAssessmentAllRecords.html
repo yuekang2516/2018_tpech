@@ -1,0 +1,25 @@
+<div layout="column" style="position: relative" layout-fill>
+    <!-- <md-content  layout="column" layout-fill> -->
+    <summary-toolbar toolbar-title="'vesselAssessmentAllRecords.vesselAssessmentRecord' | translate" cancel="$ctrl.goback()"></summary-toolbar>
+
+    <!-- <md-toolbar hide-gt-sm>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="$ctrl.goback();">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <div layout="row">
+                {{'vesselAssessmentAllRecords.vesselAssessmentRecord' | translate}}
+            </div>
+            <span flex></span>
+        </div>
+    </md-toolbar> -->
+    <loading ng-show="$ctrl.loading"> </loading>
+    <md-tabs md-stretch-tabs="never" md-center-tabs="true" md-swipe-content="true" md-selected="$ctrl.selectedIndex">
+        <md-tab label="{{'vesselAssessmentAllRecords.vesselAssessmentTab' | translate}}"></md-tab>
+        <md-tab label="{{'vesselAssessmentAllRecords.vesselProblemTab' | translate}}"></md-tab>
+        <md-tab label="{{'vesselAssessmentAllRecords.vesselAbnormalTab' | translate}}"></md-tab>
+    </md-tabs>
+    <!-- <md-content ui-view flex></md-content> -->
+    <ui-view layout="column" flex></ui-view>
+    <!-- </md-content> -->
+</div>

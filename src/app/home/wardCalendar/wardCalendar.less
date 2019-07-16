@@ -1,0 +1,224 @@
+ward-calendar {
+    height: 100%;
+
+}
+
+.ward-calendar-container {
+
+    #calendar {
+        margin: 24px 24px 0 24px;
+    }
+
+    .fc-event-container {
+        a {
+            border: 0;
+            padding: 3px 5px;
+        }
+        .fc-event {
+            cursor: pointer;
+        }
+    }
+
+    .legend {
+        margin: 10px 0 10px 24px;
+        div {
+            &.none {
+                border-radius: 3px;
+                margin-left: 10px; 
+                padding: 3px 8px;
+                background: #eeeeee;
+            }
+           
+        }
+    }
+
+    .choose-ward {
+        -webkit-flex: none; 
+        flex: none; 
+        // width:130px; 
+        margin-right: 10px; 
+        text-align: right;
+        line-height: 20px;
+        // height: 50px;
+        // color: black;
+        // font-size: 32px;
+    }
+
+    md-select {
+        margin: 0;
+        margin-left: 5px;
+        width: auto;
+        min-width: 45px;
+        padding: 0 3px;
+    }
+    
+
+}
+
+
+.ward-event-dialog-container {
+    width: 60%;
+    height: 100%;
+
+    h2{ font-size: 20px; color: #444; font-weight: normal; line-height: 20px;}
+
+
+    .material-icons {
+        color:white;
+    }
+
+    .md-dialog-content {
+        padding: 1em;
+    }
+
+    .row {display: -webkit-flex; display: flex;}
+    .row span { 
+        line-height: 40px;
+    }
+    .label-margin {
+        -webkit-flex: none; 
+        flex: none; 
+        // width:130px; 
+        margin-right: 10px; 
+        text-align: right;
+        line-height: 40px;
+    }
+    
+    .label-margin::after { 
+        content: "：";
+    }
+
+    .lable-error-message-margin {
+        -webkit-flex: none; 
+        flex: none; 
+        // width:130px; 
+        margin-right: 10px; 
+        text-align: right;
+        line-height: 40px;
+    }
+
+    .error-message-text {
+        color: red;
+    }
+
+
+    .shifts-checkbox-list {
+        padding:15px;
+        border: #cccccc solid 1px;
+    }
+
+    .week-day-margin {
+        margin-right:20px;
+    }
+
+    .dialog-content-title {
+        margin-bottom: 20px;
+    }
+
+    md-input-container {
+        width: 100%; 
+        min-height: 100px;
+        .md-errors-spacer { min-height: 0px;};
+        border-radius: 4px;
+    }
+
+    .md-btn-white-text{
+        span{color:white;}
+    }
+
+    md-progress-circular {
+        margin: 0 8px;
+    }
+
+    input {
+        display: block;
+        width: 100%; 
+        box-sizing: border-box;
+        -webkit-box-sizing:border-box;
+        -moz-box-sizing: border-box;
+        padding: 8px;
+        font-size: 14px;
+        line-height: 40px;
+        // line-height: 1.52857143;
+        margin-bottom:5px;
+        margin-top:5px;
+        color: #3a3f51;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        // border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+
+    md-select {
+        display: block;
+        width: 100%; 
+        box-sizing: border-box;
+        -webkit-box-sizing:border-box;
+        -moz-box-sizing: border-box;
+        // padding: 5px;
+        // font-size: 14px;
+        line-height: 1.52857143;
+        margin-bottom:5px; 
+        margin-top:5px; 
+        color: #3a3f51;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+
+    md-checkbox {
+        margin: 0px;
+       
+    }
+    
+    .all-day {
+        margin: 0px;
+        
+    }
+
+    .radioGroup {
+        height: 20px;
+        margin-top: 10px;
+        md-radio-button {
+            margin-bottom: 0px;
+            &.margin-left {
+                margin-left: 15px;
+                margin-top: 0px;
+                margin-bottom: 0px;
+            }
+        }
+    }
+
+    .color-div {
+        width:20px; 
+        height:20px; 
+        margin: 0px;
+    }
+
+    .color-div-lightblue {
+        background: #039BE5;
+    }
+
+    .color-div-purple {
+        background: #7986CB;
+    }
+
+    .color-div-green {
+        background: #33B679;
+    }
+
+    .color-div-orange {
+        background: #F4511E;
+    }
+
+
+}

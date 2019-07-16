@@ -1,0 +1,75 @@
+{
+  "DateTimestamp": "2017-02-21T06:40:26.3006701+00:00",
+  "Module": "Dialysis",
+  "BarCode": "",
+  "RFID": "AFD2612",
+  "Name": "Coral",
+  "Gender": "F",
+  "WardId": "56fcc9eb4ead7870942f61c4",
+  "WardName": "測試透析室001",
+  "BedNo": "",
+  "Birthday": "1985-12-31T16:00:00Z",
+  "IdentifierId": "A227635500",
+  "MedicalId": "00227",
+  "Tags": [
+    {
+      "TagName": "Qqq",
+      "TagColor": "#455A64",
+      "TagBgColor": "#ECEFF1",
+      "LineThrough": "underline",
+      "FontStyle": "oblique",
+      "FontWeight": "bold"
+    },
+    {
+      "TagName": "Qqq",
+      "TagColor": "#FAFAFA",
+      "TagBgColor": "#512DA8",
+      "LineThrough": "none",
+      "FontStyle": "normal",
+      "FontWeight": "normal"
+    },
+    {
+      "TagName": "Qte",
+      "TagColor": "#FAFAFA",
+      "TagBgColor": "#455A64",
+      "LineThrough": "none",
+      "FontStyle": "oblique",
+      "FontWeight": "normal"
+    }
+  ],
+  "Type": null,
+  "BloodTypes": null,
+  "RH": null,
+  "Address": "",
+  "Phone": "",
+  "Insurance": null,
+  "Photo": null,
+  "ClinicalDiagnosis": "",
+  "MedicalHistory": "",
+  "Memo": "",
+  "State": "1",
+  "AdmissionNumber": null,
+  "Height": null,
+  "Weight": null,
+  "OrganTransplantDate": null,
+  "EntryMode": "",
+  "LastDialysisInfo": {
+    "DialysisId": "57cfa92523459427506913d4",
+    "StartTime": "2016/09/07 13:44:04",
+    "CareUserIds": [
+      "570600fdd53d3c61d6794f95"
+    ],
+    "Status": "DIALYSIS",
+    "EstimatedEndTime": null
+  },
+  "FirstDialysisDate": null,
+  "HospitalId": "56fcc5dd4ead7870942f61c3",
+  "Status": "Normal",
+  "CreatedUserId": "572bf619bc2b8841f458ec44",
+  "CreatedUserName": "管理者",
+  "CreatedTime": "2016-07-15T08:17:12.82Z",
+  "ModifiedUserId": "570600fdd53d3c61d6794f95",
+  "ModifiedUserName": "系統更新:異動最後透析資訊",
+  "ModifiedTime": "2016-09-07T06:09:15.597Z",
+  "Id": "57889c0827920c3e0cc57546"
+}

@@ -1,0 +1,96 @@
+<div layout="column" style="position: relative" layout-fill>
+    <loading ng-show="$ctrl.loading"></loading>
+    <div ng-show="!$ctrl.loading && $ctrl.patient">
+        <summary-toolbar toolbar-title="'album.album.album' | translate" cancel="$ctrl.back()" show-refresh="true" refresh="$ctrl.refresh()" ng-hide="$ctrl.stateName.substr(0, 2) === 'pd'"></summary-toolbar>
+        <!-- <md-toolbar>
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" ng-click="$ctrl.back()">
+                    <i class="material-icons">keyboard_backspace</i>
+                </md-button>
+                <div layout="row">
+                    {{'album.album.album' | translate}}
+                </div>
+                <span flex></span>
+                <div layout="row">
+                    <button class="md-icon-button md-button" type="button" ng-click="$ctrl.refresh()">
+                        <i class="material-icons">refresh</i>
+                    </button>
+                </div>
+            </div>
+        </md-toolbar> -->
+        <md-tabs ng-show="!$ctrl.loading"
+                 md-stretch-tabs="always"
+                 md-center-tabs="false"
+                 md-swipe-content="true"
+                 md-selected="$ctrl.selectedIndex">
+            <md-tab label="{{'album.album.photoByDate' | translate}}"></md-tab>
+            <md-tab label="{{'album.album.byAlbum' | translate}}"></md-tab>
+        </md-tabs>
+    </div>
+    <md-content ng-show="!$ctrl.loading && $ctrl.patient" flex>
+        <ui-view layout="column" flex layout-fill></ui-view>
+    </md-content>
+</div>
+<!--<md-button class="md-fab md-fab-bottom-right"-->
+           <!--ng-if="!$ctrl.device"-->
+           <!--ng-click="$ctrl.openCamera({ files: $files, error: $invalidFiles })">-->
+    <!--<md-icon class="material-icons">camera_alt</md-icon>-->
+<!--</md-button>-->
+<md-button class="md-fab md-fab-bottom-right"
+           ng-if="$ctrl.device"
+           ngf-select="$ctrl.openDocument({ files: $files, error: $invalidFiles })"
+           ng-model="$ctrl.Photo"
+           name="photo"
+           accept="image/*"
+           ngf-fix-orientation="true"
+           ngf-multiple="false"
+           ngf-resize="{centerCrop: true}}"
+           ngf-validate="{size: {max: '10MB'}}"
+           >
+    <md-icon class="material-icons">collections</md-icon>
+</md-button>
+
+<!--<div class="bottombar" ng-if="!$ctrl.device">-->
+    <!--<img ng-src="static/img/svg/list_alt-24px.svg"-->
+         <!--alt=""-->
+         <!--ngf-select="$ctrl.openDocument({ files: $files, error: $invalidFiles })"-->
+         <!--ng-model="$ctrl.Photo"-->
+         <!--name="photo"-->
+         <!--accept="image/*"-->
+         <!--ngf-fix-orientation="true"-->
+         <!--ngf-multiple="false"-->
+         <!--ngf-resize="{centerCrop: true}}"-->
+         <!--ngf-validate="{size: {max: '10MB'}}"-->
+         <!--style="width: 30px; margin-right: 30px">-->
+    <!--<i class="material-icons"-->
+       <!--ng-click="$ctrl.openCamera({ files: $files, error: $invalidFiles })">-->
+        <!--camera_alt-->
+    <!--</i>-->
+<!--</div>-->
+
+
+<md-fab-speed-dial md-open="$ctrl.isFabOpen"
+                   md-direction="up"
+                   ng-if="!$ctrl.device"
+                   class="md-fab md-fab-bottom-right md-scale">
+    <md-fab-trigger>
+        <md-button aria-label="menu" class="md-fab md-warn">
+            <md-icon md-svg-src="static/img/svg/list_alt-24px.svg"></md-icon>
+        </md-button>
+    </md-fab-trigger>
+
+    <md-fab-actions>
+        <md-button aria-label="Document" class="md-fab md-raised md-mini">
+            <md-icon class="material-icons"
+                     ng-click="$ctrl.openDocument({ files: $files, error: $invalidFiles })">
+                collections
+            </md-icon>
+        </md-button>
+        <md-button aria-label="Camera" class="md-fab md-raised md-mini">
+            <md-icon class="material-icons"
+               ng-click="$ctrl.openCamera({ files: $files, error: $invalidFiles })">
+                camera_alt
+            </md-icon>
+        </md-button>
+    </md-fab-actions>
+</md-fab-speed-dial>

@@ -1,0 +1,32 @@
+<style scoped>
+    other {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+    }
+</style>
+
+<md-content layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.openLeftMenu()" hide-gt-sm>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <h3>
+                <span>其他功能 - 清除病人標籤</span>
+            </h3>
+        </div>
+    </md-toolbar>
+
+    <md-content flex>
+        <md-card-actions layout="row">
+            <md-button class="md-raised md-primary" ng-click="vm.clearTags($event)" ng-disabled="vm.loading">清除病人標籤</md-button>
+        </md-card-actions>
+        <span ng-show="vm.message.length > 0">{{vm.message}}</span>
+        <div layout="row" layout-sm="column" layout-align="space-around" id="loading" ng-show="vm.loading">
+            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>
+        <p>功能說明:</p>
+        <p>* 清除昨天以前的透析病人所有標籤。例如:今日(8/2)，只保留今日已透析的病人標籤，清除昨天(8/1)之前的所有標籤。</p>
+    </md-content>
+</md-content>

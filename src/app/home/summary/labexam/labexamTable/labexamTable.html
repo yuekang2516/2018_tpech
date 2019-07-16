@@ -1,0 +1,59 @@
+<!-- <loading ng-show="$ctrl.loading"></loading> -->
+<loading ng-if="$ctrl.loading"></loading>
+<md-content style="height: 100%;" ng-if="!$ctrl.loading && $ctrl.serviceData.length > 0 && !$ctrl.isError" id="grid-container"  flex>
+    <!-- <div ui-grid="gridOptions" ng-if="!$ctrl.loading" id="i18nGrid" class="grid" ui-grid-auto-resize ui-grid-resize-columns ui-grid-pinning ui-grid-exporter></div> -->
+    <!-- <i class="material-icons" style="position:absolute; z-index:1; cursor: pointer;">filter_list</i> -->
+    <md-menu md-position-mode="target-right target" layout="row" layout-align="center center" style="height: 24px; position:absolute; z-index:1; cursor: pointer;">
+        <md-button class="md-icon-button" ng-click="$ctrl.openMenu($mdMenu)">
+            <md-tooltip md-direction="right">依檢驗項目過濾</md-tooltip>
+            <i class="material-icons">filter_list</i>
+        </md-button>
+        <md-menu-content>
+            <md-menu-item ng-repeat="item in $ctrl.searchFilters track by $index">
+                <md-checkbox md-prevent-menu-close="md-prevent-menu-close" ng-checked="$ctrl.searchExists(item)" ng-click="$ctrl.searchToggle(item, $event);"
+                    class="menu">{{::item}}</md-checkbox>
+            </md-menu-item>
+        </md-menu-content>
+    </md-menu>
+    <div ag-grid="gridOptions" class="ag-theme-blue" style="height: 100%"></div>
+</md-content>
+
+<nodata-page flex ng-if="!$ctrl.loading && $ctrl.serviceData.length === 0 && !$ctrl.isError" nodata-title="{{'labexam.labexam.noData' | translate}}"></nodata-page>
+<server-error-page flex ng-if="!$ctrl.loading && $ctrl.isError" refresh="$ctrl.refresh()"></server-error-page>
+<!-- <div ng-show="!$ctrl.loading && $ctrl.serviceData.length === 0" layout="row" layout-align="center center" layout-fill>
+    <h4 translate>{{'labexam.labexam.noData'}}</h4>
+</div>
+<div ng-show="!$ctrl.loading && $ctrl.isError" layout="row" layout-align="center center" layout-fill>
+    <h4 translate>{{'labexam.labexam.serverError'}}</h4>
+</div> -->
+
+<script type="text/ng-template" id="dialog.html">
+    <md-dialog aria-label="刪除確認" style="height:auto">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2 translate>{{'labexam.labexam.confirmDelete'}}</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="vm.cancel()">
+                        <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content" translate>
+                    {{'labexam.labexam.deleteRecord'}}
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+                <md-button ng-click="vm.cancel()">
+                    {{'labexam.labexam.cancel' | translate}}
+                </md-button>
+                <md-button ng-click="vm.ok()">
+                    {{'labexam.labexam.delete' | translate}}
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>

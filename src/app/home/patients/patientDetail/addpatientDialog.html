@@ -1,0 +1,25 @@
+<md-dialog aria-label="新增病人">
+    <form name="form">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 translate>{{'patientDetail.createPatient'}}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+                    <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content class="md-padding">
+            <div layout-align="center" layout="row">請輸入病人病歷號</div>
+            <span flex></span>
+            <input layout-align="center" id="myText" placeholder="請輸入病歷號" ng-model="$ctrl.medicalId" required>
+            <span flex></span>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button type="submit" class="md-raised md-primary" ng-click="$ctrl.ok()"
+                ng-disabled="form.$invalid">
+                {{'patientDetail.ok' | translate}}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

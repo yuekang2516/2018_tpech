@@ -1,0 +1,99 @@
+<style scoped>
+    log {
+        height: 100%;
+    }
+
+    .vertical-container {
+        height: 292px;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .repeated-item {
+        border-bottom: 1px solid #ddd;
+        box-sizing: border-box;
+        height: 40px;
+        padding-top: 10px;
+    }
+
+    .margin {
+        margin: 20px;
+    }
+</style>
+<div flex layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.openLeftMenu()" hide-gt-sm>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <h3 translate="log.pageTitle"></h3>
+        </div>
+    </md-toolbar>
+    <md-grid-list md-cols="2" md-row-height="56px" class="margin" ng-show="!vm.isError">
+        <md-grid-tile>
+            <md-input-container>
+                <md-icon>
+                    <i class="material-icons">search</i>
+                </md-icon>
+                <input ng-model="vm.searchStr1" ng-change="vm.searchStrChange()" placeholder="{{'log.search1' | translate}}" ng-model-options="{debounce:600}">
+            </md-input-container>
+            <md-input-container>
+                <input ng-model="vm.searchStr" ng-change="vm.searchStrChange()" placeholder="{{'log.search' | translate}}" ng-model-options="{debounce:600}">
+            </md-input-container>
+        </md-grid-tile>
+        <md-grid-tile>
+            <md-input-container>
+                <label translate="log.Sdate"></label>
+                <input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.searchDateTime" ng-change="vm.datetimeChange()"  ng-model-options="{debounce:600}" />
+            </md-input-container>
+            ～
+            <md-input-container>
+                <label translate="log.Edate"></label>
+                <input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.searchDateTime1" ng-change="vm.datetimeChange()"  ng-model-options="{debounce:600}" />
+            </md-input-container>
+        </md-grid-tile>
+    </md-grid-list>
+    <md-content layout="column" layout-fill flex>
+        <div infinite-scroll="vm.loadMore()" infinite-scroll-disabled='vm.loading' infinite-scroll-distance='2' infinite-scroll-parent>
+            <md-list>
+                <md-list-item class="md-2-line" ng-repeat="log in vm.logs" ng-click="vm.logDetail($event, $index)" ng-disabled="vm.checkMethod(log.Method)">
+                    <div class="md-list-item-text">
+                        <h3>{{vm.showMethod(log.Method)}}</h3>
+                        <h4 translate="log.resultList" translate-values='{CreatedDateTime: log.CreatedDateTime , user: log.UserName , functionType: log.FunctionType}'></h4>
+                    </div>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-list-item>
+            </md-list>
+        </div>
+        <loading ng-show="vm.loading"></loading>
+        <div flex ng-show="vm.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate="customMessage.serverError"></h3>
+        </div>
+        <div ng-show="!vm.loading">
+            <div ng-show="vm.logs && vm.noData" layout="column" layout-fill layout-align="center center" flex>
+                <i class="fa fa-file-o"></i>
+                <h3 translate="customMessage.noData"></h3>
+            </div>
+        </div>
+    </md-content>
+</div>
+<!--<md-content layout="column">
+                <md-virtual-repeat-container class="vertical-container">
+                    <div md-virtual-repeat="item in vm.infiniteItems" md-on-demand class="repeated-item" flex>
+                        {{item}}
+                    </div>
+                </md-virtual-repeat-container>
+            </md-content>-->
+
+<!--<md-virtual-repeat-container id="vertical-container">
+                <div md-virtual-repeat="item in ctrl.infiniteItems" md-on-demand class="repeated-item" flex>
+                    <div class="md-list-item-text">
+                        <h3>{{item.Method}}</h3>
+                        <h4>使用者：{{item.UserName}} ， 來源：{{item.FunctionType}} ， 時間：{{item.CreatedDateTime | date : 'yyyy/MM/dd
+                            hh:mm:ss'}}</h4>
+                    </div>
+                </div>
+            </md-virtual-repeat-container>-->
+<!--<div style="height:500px; overflow:scroll" infinite-scroll='vm.loadMore()' infinite-scroll-distance='2'>
+    <img ng-repeat='image in vm.images' ng-src='http://placehold.it/225x250&text={{image}}'>
+  </div>-->

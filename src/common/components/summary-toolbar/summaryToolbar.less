@@ -1,0 +1,45 @@
+summary-toolbar {
+    background: #fff;
+    .circular {
+        min-height: initial;
+        min-width: initial;
+        padding: 0;
+        height: 36px;
+        width: 36px;
+        border-radius: 50%;
+    }
+    .summary-toolbar {
+        height: 48px;
+        button {
+            &.md-button {
+                &.md-fab {
+                    height: 36px;
+                    width: 36px;
+                    box-shadow: initial;
+                    background-color: transparent;
+                    
+                    &:hover {
+                        background-color: #e0e0e0; 
+                    }
+                    md-icon {
+                        color: initial;
+                    }
+                }
+            }
+        }
+    }
+    @media (max-width: 600px) and (min-width: 0) {
+        .summary-toolbar {
+            display: none;
+        }
+    }
+}
+
+summary {
+    // summary 中的卡片不需要顯示 toolbar
+    .card {
+        summary-toolbar {
+            display: none;
+        }
+    }
+}

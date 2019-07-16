@@ -1,0 +1,54 @@
+<style scoped>
+    charge-create {
+        height: 100%;
+    }
+</style>
+
+<div class="charge-create-container" layout="column" layout-fill>
+    <summary-toolbar toolbar-title="'charge.chargeCreate.createCharge'|translate" cancel="vm.goback()"></summary-toolbar>
+        
+    <!-- <div hide-xs hide-sm ng-show="!$ctrl.loading">
+        <h3 translate style="float: left; padding-left: 10px">{{'charge.chargeCreate.createCharge'}}</h3>
+        <md-button style="float:right; margin-top: 8px" class="md-secondary md-icon-button" ng-click="vm.goback()" aria-label="call">
+            <i class="material-icons">cancel</i>
+        </md-button>
+    </div> -->
+    <md-content flex>
+        <loading ng-show="vm.loading"></loading>
+        <div ng-show="!vm.loading">
+
+            <div class="removeMdErr" layout="row" style="padding: 0 10px; ">
+                <md-input-container class="md-block" flex style="margin: 16px 0 5px 0">
+                    <label translate>{{'charge.chargeCreate.searchItem'}}</label>
+                    <input id="search" type="text" ng-model="vm.searchStr" ng-change="vm.searchCharge()" />
+                </md-input-container>
+            </div>
+
+            <!-- <md-subheader class="md-no-sticky">{{ vm.title }}物品清單</md-subheader> -->
+            <md-subheader class="md-no-sticky">
+                <span ng-if="vm.filteredResult.length > 0">{{::vm.filteredResult[0].WardName}}</span>
+                {{'charge.chargeCreate.itemList' | translate: '{title: vm.title}' }}
+            </md-subheader>
+            <div>
+                <md-list>
+                    <md-list-item class="md-2-line" ng-repeat="w in vm.filteredResult" ng-click="vm.PSW($event, w, false)">
+                        <!--<img ng-show="w.Photo" ng-src="{{::w.Photo}}" class="md-avatar" alt="{{w.Name}}" />
+                        <img ng-show="!w.Photo" ng-src="static/img/Unknown.png" class="md-avatar" alt="{{w.Name}}" />-->
+                        <!-- <img ng-src="{{w.Photo || 'static/img/Unknown.png'}}" class="md-avatar" /> -->
+                        <div class="proimg" ng-style="{'background-image':'url({{w.Photo || 'static/img/Unknown.png'}})'}"></div>
+                        <div class="md-list-item-text">
+                            <h3>No. {{ $index + 1 }}</h3>
+                            <h3>{{ w.Name }}</h3>
+                            <!-- <h3>剩餘庫存: {{ w.Stock }}</h3> -->
+                            <div layout="row">
+                                <div translate="charge.chargeCreate.remainingStock" translate-values='{Stock: w.Stock}' flex></div>
+                                <div ng-show="w.Stock < w.SafetyStock" class="errMsg" flex translate>{{'charge.chargeCreate.lowerSafetyStock'}}</div>
+                            </div>
+                        </div>
+                        <md-divider ng-if="!$last"></md-divider>
+                    </md-list-item>
+                </md-list>
+            </div>
+        </div>
+    </md-content>
+</div>

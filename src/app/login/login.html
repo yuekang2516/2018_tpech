@@ -1,0 +1,81 @@
+<div class="login-container" style="background-image: url('./static/img/vector-abstract-blue-wave-background.jpg')" layout-gt-md="row"
+    layout-fill layout="column">
+
+    <!-- <div class="title" flex-gt-sm="60" flex="30" layout="column">
+        <div>{{vm.currentHospital.HospitalName}}</div>
+        <div>{{'login.DialysisSystem' | translate}}</div>
+    </div> -->
+    <div class="title" flex-gt-md="65">
+        <div class="girl"></div>
+    </div>
+    <div flex-gt-md="35">
+        <div class="login-card">
+            <div class="logo"></div>
+            <form name="loginForm" ng-submit="vm.submit()" novalidate>
+                <div class="header">
+                    <!-- <h3 ng-click="vm.scanBarCode()">{{'login.enterUsernamePassword' | translate}}</h3>
+                    <h3 ng-show="vm.isMobileDevice">{{'login.scanToLogin' | translate}}</h3> -->
+                    <h3>{{vm.currentHospital.HospitalName}}</h3>
+                    <h4>{{'login.DialysisSystem' | translate}}</h4>
+                </div>
+
+                <md-input-container class="md-block">
+                    <label>{{'login.username' | translate}}</label>
+                    <input name="account" ng-model="vm.formData.account" type="text" required="" />
+                    <div ng-messages="loginForm.account.$error" role="alert" multiple="">
+                        <div class="my-message" ng-message="required">{{'login.enterUsername' | translate}}</div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>{{'login.password' | translate}}</label>
+                    <input name="password" ng-model="vm.formData.password" type="password" required="" />
+                    <div ng-messages="loginForm.password.$error" role="alert" multiple="">
+                        <div class="my-message" ng-message="required">{{'login.enterPassword' | translate}}</div>
+                    </div>
+                </md-input-container>
+                <md-button class="md-primary md-raised" type="submit" ng-disabled="!loginForm.$valid || vm.loading">
+                    {{'login.login' | translate}}
+                    <img ng-if="vm.loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+                    />
+                </md-button>
+            </form>
+            <div style="text-align:center">
+                <div class="f13">{{vm.appVersion}}</div>
+            </div>
+        </div>
+    </div>
+    <md-button id="focus-item" ng-if="vm.isMobileDevice" class="md-icon-button gear" ui-sref="setting">
+        <i class="material-icons">settings</i>
+    </md-button>
+    <div class="version" layout="row">
+        <div ng-hide="vm.isMobileDevice" class="downbutton">
+            <a href="dialysis.apk">{{'login.downloadAPK' | translate}}</a>
+        </div>
+        <span flex></span>
+        <md-select style="margin: 0px" ng-model="vm.language" placeholder="語言" ng-change="vm.changeLanguage()">
+            <md-option value="zh-tw">中文(繁體)</md-option>
+            <md-option value="zh-cn">中文(簡体)</md-option>
+            <md-option value="en-us">English</md-option>
+        </md-select>
+
+    </div>
+    <!-- <walkthrough ng-if="vm.isMobileDevice && vm.showTutor" is-round="true" walkthrough-type="transparency" focus-element-selector="#focus-item"
+        icon="arrow" main-caption="{{vm.tutorText}}" icon-padding-left="30" icon-padding-top="0" force-caption-location="BOTTOM"
+        is-active="vm.tutorActive">
+    </walkthrough> -->
+    <div class="walkthrough" ng-click="vm.dismissWalkthrough()" ng-if="vm.isMobileDevice && vm.tutorActive && !vm.clicked">
+        <div class="finger">
+            <img ng-src="static/img/svg/finger.svg" alt="" ui-sref="setting">
+        </div>
+        <div class="border">
+            <div>{{vm.tutorText}}</div>
+        </div>
+    </div>
+
+</div>
+<div class="fullscreenMask" ng-show="vm.updating">
+    <layout layout="column" layout-align="center center" style="margin: 1rem;">
+        <p>{{'login.updateMessage' | translate}}</p>
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+    </layout>
+</div>

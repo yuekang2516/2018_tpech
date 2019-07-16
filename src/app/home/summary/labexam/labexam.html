@@ -1,0 +1,77 @@
+<div layout="column" style="position: relative;" layout-fill>
+    <loading ng-show="$ctrl.loading"></loading>
+    <div ng-show="!$ctrl.loading">
+        <summary-toolbar toolbar-title="'labexam.labexam.labexamResult' | translate" cancel="$ctrl.goback()" ng-hide="$ctrl.stateName.substr(0,2) === 'pd'"></summary-toolbar>
+        <!-- <md-toolbar hide-gt-sm>
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" ng-click="$ctrl.goback()">
+                    <i class="material-icons">keyboard_backspace</i>
+                </md-button>
+                <div layout="row">
+                    {{'labexam.labexam.labexamResult' |
+                    translate}}
+                </div>
+            </div>
+        </md-toolbar> -->
+
+        <div class="list-header" layout="row" layout-align="center end" ng-show="!$ctrl.loading" layout-wrap>
+            <!-- <div flex-xs="50" flex-order="1" flex-order-xs="1">
+                    <md-switch ng-model="$ctrl.showDeleted" aria-label="Switch data">
+                        <h6 translate="labexam.labexam.showdeletedAndTotal" translate-values='{deletedItemsLength: $ctrl.deletedItemsLength, length: $ctrl.serviceData.length}'></h6>
+                    </md-switch>
+                </div> -->
+            <h6 translate="labexam.labexam.totalRecord" translate-values='{length: $ctrl.dataLength}'></h6>
+            <div layout="row">
+                <!-- <md-icon ng-show="$ctrl.excelExportButtonShow && !$ctrl.loading && $ctrl.dataLength > 0" md-svg-src="static/img/svg/excel_export.svg" ng-click="$ctrl.export()"></md-icon> -->
+                <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+            </div>
+            <md-select ng-model="$ctrl.queryCondition" ng-model-options="{trackBy: '$value.name'}" ng-change="$ctrl.changeQueryCondition()">
+                <md-option ng-repeat="(key, item) in $ctrl.conditionTypes" ng-value="item">{{ item.name | labexamQueryName }}</md-option>
+            </md-select>
+            <md-select ng-if="$ctrl.queryCondition.name === 'times'" ng-model="$ctrl.queryCondition.value" ng-change="$ctrl.changeQueryCondition()">
+                <md-option ng-repeat="item in $ctrl.queryCondition.conditions" ng-value="item">{{::item | labexamTimes}}</md-option>
+            </md-select>
+
+            <button ng-show="$ctrl.queryCondition.name !== 'duration'" style="margin-left: 5px;" ng-click="$ctrl.gotoPrintPage()" ng-disabled="$ctrl.showPrintBtn">印表</button>
+
+            <div layout="row" ng-show="$ctrl.queryCondition.name === 'duration'" layout-wrap>
+                <input type="date" ng-model="$ctrl.queryCondition.value.startDate" ng-change="$ctrl.changeQueryDate()" required> ～
+                <input type="date" ng-model="$ctrl.queryCondition.value.endDate" ng-change="$ctrl.changeQueryDate()" required>
+                <button style="margin-left: 5px;" ng-click="$ctrl.changeQueryCondition()" ng-disabled="labQueryForm.$invalid">查詢</button>
+                <button style="margin-left: 5px;" ng-click="$ctrl.gotoPrintPage()" ng-disabled="$ctrl.showPrintBtn">印表</button>
+            </div>
+
+            <md-button class="md-primary" ng-click="$ctrl.openFiles()">瀏覽檔案</md-button>
+            <!-- <div>
+                <button ng-click="$ctrl.gotoPrintPage()">印表</button>
+            </div> -->
+
+        </div>
+    </div>
+
+    <md-tabs ng-show="!$ctrl.loading && $ctrl.stateName !== 'pdLabexam'" md-stretch-tabs="always" md-center-tabs="false" md-swipe-content="true">
+        <md-tab ui-sref="{{item.uiSref}}" ui-sref-opts="{{item.uiSrefOpts}}" md-active="currentName === item.active" ng-repeat="item in $ctrl.allTabs track by $index">
+            <md-tab-label>
+                {{ item.label }}
+            </md-tab-label>
+        </md-tab>
+    </md-tabs>
+    <md-tabs ng-if="!$ctrl.loading && $ctrl.stateName === 'pdLabexam'" md-stretch-tabs="always" md-center-tabs="false" md-swipe-content="true">
+        <md-tab ui-sref="{{item.uiSref}}" ui-sref-opts="{{item.uiSrefOpts}}" md-active="currentName === item.active" ng-repeat="item in $ctrl.allPdTabs track by $index">
+            <md-tab-label>
+                {{ item.label }}
+            </md-tab-label>
+        </md-tab>
+    </md-tabs>
+
+    <md-content style="position:relative;" ng-if="!$ctrl.loading" layout="column" flex>
+        <ui-view layout="column" flex layout-fill></ui-view>
+    </md-content>
+    <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+        <h3 translate>{{'labexam.labexam.serverError'}}</h3>
+    </div>
+</div>
+
+<md-button class="md-fab md-fab-bottom-right" ng-click="$ctrl.addLabexam()">
+    <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+</md-button>

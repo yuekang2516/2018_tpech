@@ -1,0 +1,10 @@
+<md-toast id="restart-ble-toast" layout-align="start center" role="alert" aria-relevant="all">
+    <span class="md-toast-text" flex>
+        <span translate>{{'bluetooth.btConnectErrorRestartBle'}}</span>
+        <i class="material-icons" ng-click="$ctrl.retartBleAndDoAction()">bluetooth_searching</i> 
+        <span translate>{{'bluetooth.btRetryConnect'}}</span>
+    </span>
+    <md-button ng-click="$ctrl.closeToast()">
+        <i class="material-icons">close</i>
+    </md-button>
+</md-toast>

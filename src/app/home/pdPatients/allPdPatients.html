@@ -1,0 +1,201 @@
+<style scoped="scoped">
+    /*patient-list {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          height: 100%;
+        }*/
+
+    /* 淡入淡出 */
+
+    .patient-list .ng-enter {
+        transition: all ease-in-out 1s;
+        opacity: 0;
+    }
+
+    .patient-list .ng-enter-active {
+        opacity: 1;
+    }
+</style>
+<div id="outside" layout="column" layout-fill flex>
+    <md-toolbar>
+        <div class="md-toolbar-tools" ng-class="{isSearch:vm.searchOptions.searchMode}">
+            <div ng-if="!vm.searchOptions.searchMode" layout="row" layout-align="start center" flex="100">
+                <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.openLeftMenu()" hide-gt-md>
+                    <i class="material-icons">menu</i>
+                    <span ng-show="vm.notificationCount > 0" class="icon-button-badge">1{{vm.notificationCount}}</span>
+                </md-button>
+                <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.toggleSideNav()" hide-md hide-sm
+                    hide-xs show-gt-md>
+                    <i class="material-icons">menu</i>
+                    <span ng-show="vm.notificationCount > 0" class="icon-button-badge">{{vm.notificationCount}}</span>
+                </md-button>
+                <span class="padding-left" hide-md hide-sm hide-xs hide-gt-md></span>
+                <div show-md hide-sm hide-xs show-gt-md layout="row">
+                    <h2>
+                        <span translate>{{'home.pdPatients'}}-醫師：</span>
+                    </h2>
+                    <select ng-model="vm.sel_doctor" class="no-print" ng-change="vm.selectDoctor()">
+                        <option value="ALL">ALL</option>
+                        <option ng-repeat="state in vm.doctors" value="{{state.Id}}" >{{state.Name}}</option>
+                    </select>
+                </div>
+                <div hide-md show-sm show-xs hide-gt-md style="font-size:14px;">
+                    <span translate>{{'home.pdPatients'}}-醫師：</span>
+                </div>
+            </div>
+            <div ng-if="vm.searchOptions.searchMode" layout="row" layout-align="start center" flex="45">
+                <md-button class="md-icon-button" ng-click="vm.back()">
+                    <i class="material-icons">keyboard_backspace</i>
+                </md-button>
+                <h2 class="w600none">
+                    <span translate>{{'allPatients.searchFinish'}}</span>
+                </h2>
+            </div>
+            <div layout="row" layout-align="end center" flex="55">
+                <select hide-md show-sm show-xs hide-gt-md  ng-if="!vm.searchOptions.searchMode" ng-model="vm.sel_doctor" class="no-print" ng-change="vm.selectDoctor()">
+                    <option value="ALL">ALL</option>
+                    <option ng-repeat="state in vm.doctors" value="{{state.Id}}" >{{state.Name}}</option>
+                </select>
+                <md-button id="search-icon" class="md-icon-button w600none" ng-click="vm.clickSearch()">
+                    <i class="material-icons">search</i>
+                </md-button>
+                <input id="search" onClick="this.select();" ng-focus="vm.selectSearch()" class="search"
+                    ng-class="{isSearch:vm.searchOptions.searchMode}" type="text" ng-model="vm.search"
+                    ng-change="vm.searchPatient(vm.search)" ng-model-options="{debounce:600}"
+                    placeholder="{{vm.filterHint}}" />
+                <md-button id="search-filter" ng-click="vm.showDialog()" class="md-icon-button">
+                    <i class="material-icons">filter_list</i>
+                </md-button>
+            </div>
+
+        </div>
+    </md-toolbar>
+
+    <div ng-show="!vm.loading" class="list-header" layout="row" layout-align="center center">
+        <h6 translate="allPatients.totalRecord" translate-values='{total: vm.patients.length}'></h6>
+        <span flex></span>
+        <last-refresh-time accesstime='vm.lastAccessTime' refresh='vm.refresh()'></last-refresh-time>
+    </div>
+    <md-content layout-fill layout="column" flex>
+        <loading ng-show="vm.loading"></loading>
+        <div flex ng-show="vm.isError && !vm.loading" layout="column" layout-fill layout-align="center center">
+            <h3 translate="customMessage.serverError1"></h3>
+        </div>
+        <!--<div ng-show="!vm.loading">-->
+        <!--<patient-list patients="vm.patients"></patient-list>-->
+        <div ng-show="!vm.loading" infinite-scroll="vm.loadMore()" infinite-scroll-disabled='vm.loading'
+            infinite-scroll-distance='2' infinite-scroll-parent>
+            <!-- this prevents the double tap problem -->
+            <md-content class="patient-list">
+                <div class="main_card">
+                    <div class="card" ng-repeat="item in vm.currentPatients">
+                        <!-- ng-click="vm.goToDialysis(item)"-->
+                        <md-card flex ng-click="vm.goToPD(item)"
+                            style="position: relative; width: 100%; margin: 0; cursor: pointer; height: 100%; box-sizing: border-box">
+                            <div style="position: absolute; top: 0; left: 0; width: 20px; height: 20px; z-index: 1;">
+                                <img ng-if="(item.Gender|gender)=='男'" ng-src="static/img/svg/male.svg"
+                                    class="md-gender" width="30px" />
+                                <img ng-if="(item.Gender|gender)=='女'" ng-src="static/img/svg/female.svg"
+                                    class="md-gender" width="30px" />
+                            </div>
+                            <md-card-title style="padding: 8px; margin: 0">
+                                <md-card-title-media>
+                                    <div class="avatar">
+                                        <div style="position: relative;">
+                                            <!-- <div class="state" ng-if="item.StateFormat" created="none" modified="none" my-style="vm.stateSealStyle">{{::item.StateFormat}}</div> -->
+                                            <div class="state" ng-if="item.StateFormat" created="none" modified="none"
+                                                my-style="vm.stateSealStyle">{{::item.StateFormat}}</div>
+                                            <img ng-show="item.Photo" ng-src="{{::item.Photo}}" class="md-avatar"
+                                                style="width: 70px; margin-right: 8px; margin-top: 8px" />
+                                            <img ng-show="!item.Photo" ng-src="static/img/avatar.png" class="md-avatar"
+                                                style="width: 70px; margin-right: 8px; margin-top: 8px" />
+                                        </div>
+                                    </div>
+                                </md-card-title-media>
+                                <div class="inputbox listRisCenter">
+                                    <div class="mgnBtm5 inputboxflex">
+                                        <div layout="column" class="cardTitBox">
+                                            <div>
+                                                <h3 style="padding: 0px; margin: 0; font-size: 18px; display: inline;">
+                                                    {{::item.Name}}</h3>
+                                                <span style="white-space: nowrap">
+                                                    <span>{{::item.MedicalId}}</span>
+                                                    <span
+                                                        style="font-size: 14px; margin-right: 13px; line-height: 18px">({{::item.Birthday
+                                                        | age}})</span>
+                                                </span>
+                                                <div style="height: 5px;"></div>
+                                            </div>
+                                            <div style="margin-top: 4px;">
+                                                <div>
+                                                    <patient-tag tag="t" ng-repeat="t in item.Tags track by $index"
+                                                        style="margin-bottom: 2px; font-size: 13px; white-space: nowrap; display: inline-block;">
+                                                    </patient-tag>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </md-card-title>
+                            <md-divider ng-if="!$last"></md-divider>
+                        </md-card>
+                    </div>
+
+                </div>
+            </md-content>
+        </div>
+        <!--</div>-->
+    </md-content>
+    <md-button ng-if="!vm.iosNFCSupport" class="md-fab md-fab-bottom-right" style="position: fixed !important;"
+        ng-click="vm.goToPatientListAdd()">
+        <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+    </md-button>
+    <!-- for ios with nfc support only (add and nfc FAB) -->
+    <ios-fab ng-if="vm.iosNFCSupport" add="vm.goToPatientListAdd()" nfc="vm.iosNfcScan()"></ios-fab>
+</div>
+
+<script type="text/ng-template" id="filter.html">
+    <md-dialog aria-label="過濾">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2 translate>{{'allPatients.filter'}}</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="filter.cancel()">
+                        <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-dialog-content class="md-padding">
+                <div class="yuekang-input-container" style="margin-top:10px;">
+                    <md-checkbox ng-model="filter.select.Name" aria-label="Name">
+                        {{'allPatients.Name' | translate}}
+                    </md-checkbox>
+                    <md-checkbox ng-model="filter.select.MedicalId" aria-label="MedicalId">
+                        {{'allPatients.MedicalId' | translate}}
+                    </md-checkbox>
+                    <md-checkbox ng-model="filter.select.RFID" aria-label="RFID">
+                        {{'allPatients.RFID' | translate}}
+                    </md-checkbox>
+                    <md-checkbox ng-model="filter.select.BarCode" aria-label="BarCode">
+                        {{'allPatients.BarCode' | translate}}
+                    </md-checkbox>
+                    <md-checkbox ng-model="filter.select.IdentifierId" aria-label="IdentifierId">
+                        {{'allPatients.IdentifierId' | translate}}
+                    </md-checkbox>
+                    <hr>
+                    <md-checkbox ng-model="filter.select.State" aria-label="State" style="margin-top:10px;">
+                        {{'allPatients.inactivePatient' | translate}}
+                    </md-checkbox>
+                </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button class="md-raised" ng-click="filter.cancel()">
+                    {{'allPatients.cancel' | translate}}
+                </md-button>
+                <md-button ng-disabled="filter.selected" class="md-raised md-primary" ng-click="filter.ok()">
+                    {{'allPatients.ok' | translate}}
+                </md-button>
+            </md-dialog-actions>
+        </md-dialog>
+    </script>

@@ -1,0 +1,36 @@
+<md-dialog class="machine-data-detail-dialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2><span>{{::$ctrl.name}} ({{::$ctrl.medicalId}})</span></h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+                <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <div class="md-padding">
+            <ul>
+                <li>透析液流速：{{ ::$ctrl.item.DialysisateFlowRate }}</li>
+                <li>血液流速：{{ ::$ctrl.item.BloodFlowRate }}</li>
+                <li ng-class="{warning: $ctrl.item.IsBloodPressureAlarm}">血壓：{{ ::$ctrl.item.BPS }}/{{ ::$ctrl.item.BPD }}</li>
+                <li><span ng-class="{warning: $ctrl.item.IsPulseAlarm}">脈博</span>/呼吸：<span ng-class="{warning: $ctrl.item.IsPulseAlarm}">{{ ::$ctrl.item.Pulse }}</span> / {{ ::$ctrl.item.Breath }}</li>
+                <li>體溫：{{ ::$ctrl.item.Temperature }}</li>
+                <li ng-class="{warning: $ctrl.item.IsVenousPressureAlarm}">靜脈壓：{{ ::$ctrl.item.VenousPressure }}</li>
+                <li ng-class="{warning: $ctrl.item.IsTMPAlarm}">TMP：{{ ::$ctrl.item.TMP }}</li>
+                <li>UFR：{{ ::$ctrl.item.UFRate }}</li>
+                <li>脫水量: {{::$ctrl.item.TotalUF}}</li>
+                <li ng-class="{warning: $ctrl.item.IsConductivityAlarm}">透析液導電度：{{ ::$ctrl.item.DialysateConductivity }}</li>
+                <li ng-class="{warning: $ctrl.item.IsDialysateTemperatureAlarm}">透析液溫度：{{ ::$ctrl.item.DialysateTemperature }}</li>
+                <!-- <li>漏血: {{::$ctrl.item.BloodLeak}}</li> -->
+                <li>肝素維持量： {{::$ctrl.item.HeparinDeliveryRate}}</li>
+                <li>加生理食鹽水： {{::$ctrl.item.NormalSaline}}</li>
+                <li>Ｍode： {{::$ctrl.item.HDFType}}</li>
+                <li>目標UF： {{::$ctrl.item.TargetUF}}</li>
+                <!-- <li>累積血流量： {{::$ctrl.item.TotalBloodFlowVolume}}</li> -->
+                <li ng-if="$ctrl.showVolume">補充液流速: {{::$ctrl.item.Volume}}</li>
+                <li>{{ $ctrl.calculationTime($ctrl.item.DialysisTime) }}</li>
+            </ul>
+        </div>
+    </md-dialog-content>
+</md-dialog>

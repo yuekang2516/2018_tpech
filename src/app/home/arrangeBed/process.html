@@ -1,0 +1,16 @@
+<md-dialog aria-label="process" class="arrange-container">
+    <div ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>排床等待中</h2>
+            </div>
+        </md-toolbar>
+        <md-dialog-content layout="row" layout-align="center center">
+            <h2>{{ dvm.count }} / {{ dvm.total }}</h2>
+            <div ng-if="dvm.isErr" class="errMsg">
+                <p>下列日期已有排床紀錄:</p>
+                <span ng-repeat="date in dvm.repeatDateAry">[{{date}}]</span>
+            </div>
+        </md-dialog-content>
+    </div>
+</md-dialog>

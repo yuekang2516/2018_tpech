@@ -1,0 +1,200 @@
+
+<!-- 前台顯示的畫面 為了前台可以呼叫使用，利用 md-sidenav 達成，若前後台畫面要改需連同這裡也一起改 -->
+<md-sidenav ng-if="!$ctrl.isAdmin" class="md-sidenav-right md-whiteframe-z2" md-component-id="rightFile" style="position: fixed;">
+    <md-content layout="column" layout-fill class="adminFile-container">
+        <md-toolbar layout="column">
+            <!--  ng-show="$ctrl.currentName === 'uploadFiles'" -->
+            <div class="md-toolbar-tools">
+                <h3>瀏覽檔案</h3>
+                <span flex></span>
+                <md-button class="md-secondary md-icon-button" ng-click="$ctrl.close()" aria-label="call">
+                    <md-icon md-svg-icon="static/img/svg/ic_close_24px.svg"></md-icon>
+                </md-button>
+            </div>
+            <!-- <div class="md-toolbar-tools" ng-show="$ctrl.currentName !== 'uploadFiles'">
+                        <h3 ng-repeat="b in $ctrl.breadcrumb.slice().reverse()">
+                            <span ng-click="$ctrl.changeState(b.Url)">
+                                <md-icon md-svg-src="static/img/svg/tabs-arrow.svg" aria-label="Close dialog"></md-icon>
+                                {{ b.Name }}
+                            </span>
+                        </h3>
+                    </div> -->
+        </md-toolbar>
+
+        <div ng-if="!$ctrl.isError" layout="row" layout-align="center center" style="padding: 20px 20px 10px 20px;">
+            檔案類別：
+            <md-select ng-model="$ctrl.selectedClass" ng-change="$ctrl.changeFileClass()" flex>
+                <md-option ng-value="null">全部</md-option>
+                <md-option ng-repeat="item in $ctrl.classList" ng-value="item"> {{::item}} </md-option>
+            </md-select>
+
+        </div>
+
+        <md-content flex class="adminFile-items" layout="column">
+            <loading ng-show="$ctrl.loading">loading...</loading>
+            <!-- ng-if="!$ctrl.loading && ($ctrl.finalData.folder.length !== 0 || $ctrl.finalData.singleFile.length !== 0)" -->
+            <md-list class="" ng-if="!$ctrl.loading && $ctrl.finalData.singleFile.length !== 0" ng-repeat="(key, item) in $ctrl.finalData">
+                <md-card flex ng-if="!$ctrl.isBrowser" ng-repeat="value in item | orderBy:'Title'" ng-click="$ctrl.clickFile(key, value)">
+                    <md-card-content>
+                        <div layout="row" layout-align="start center" style="position:relative;">
+                            <div style="margin-right:10px;">
+                                <!-- <i ng-if="key === 'folder'" class="material-icons" style="font-size:28px; color:#747474">folder</i> -->
+                                <i ng-if="key === 'singleFile'" class="material-icons" style="font-size:28px; color:#747474">description</i>
+                            </div>
+                            <div style="margin-right:10px; max-width: 50%; word-break: break-all;">
+                                {{value.Title}}
+                            </div>
+                            <div style="color:#747474; font-size: 14px;">
+                                上次修改時間：{{value.UploadDate | moment: 'YYYY/MM/DD HH:mm'}}
+                            </div>
+                        </div>
+                    </md-card-content>
+                </md-card>
+
+                <md-card flex ng-if="$ctrl.isBrowser" ng-repeat="value in item | orderBy:'-UploadDate'" ng-dblclick="$ctrl.clickFile(key, value)">
+                    <md-card-content>
+                        <div layout="row" layout-align="start center" style="position:relative;">
+                            <div style="margin-right:10px;">
+                                <!-- <i ng-if="key === 'folder'" class="material-icons" style="font-size:28px; color:#747474">folder</i> -->
+                                <i ng-if="key === 'singleFile'" class="material-icons" style="font-size:28px; color:#747474">description</i>
+                            </div>
+                            <div layout="column" layout-align="start start" flex>
+                                <div layout="row" layout-align="start center" style="max-width: 80%;">
+                                    <div style="margin-right:10px;  word-break: break-all;">
+                                        {{value.Title}}
+                                    </div>
+                                    <div style="color:#747474; font-size: 14px;">
+                                        類別：{{value.Class ? value.Class : '無類別'}}
+                                    </div>
+                                </div>
+                                <div layout="row" layout-align="start center" flex>
+                                    <div style="color:#747474; font-size: 14px;">
+                                        格式：{{value.FileType}}
+                                    </div>
+                                    <div style="color:#747474; font-size: 14px;">
+                                        上次修改時間：{{value.UploadDate | moment: 'YYYY/MM/DD HH:mm'}}
+                                    </div>
+                                </div>
+
+                            </div>
+                            <diV style="position:absolute; right:0; top:0; height: 100%; cursor:pointer;" ng-click="$event.stopPropagation(); $ctrl.showDotMenu(value, item)">
+                                <i class="material-icons" style="font-size:28px; color:#747474; height: 100%;">more_horiz</i>
+                            </diV>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </md-list>
+            <div flex ng-if="!$ctrl.loading && $ctrl.finalData.singleFile.length === 0 && !$ctrl.isError" layout="column" layout-fill layout-align="center center">
+                <h1 translate>目前沒有檔案</h1>
+                <h4 translate>您可以按右下角新增按鈕來新增檔案</h4>
+            </div>
+
+            <server-error-page flex ng-show="!$ctrl.loading && $ctrl.isError" refresh="$ctrl.refresh()"></server-error-page>
+
+        </md-content>
+        <mask-loading ng-show="$ctrl.isOpening" style="z-index:99" is-show-title="true" title-text="檔案下載中"></mask-loading>
+    </md-content>
+</md-sidenav>
+
+
+
+<!-- 後台顯示的畫面 -->
+<md-content ng-if="$ctrl.isAdmin" layout="column" layout-fill class="adminFile-container">
+    <md-toolbar>
+        <!--  ng-show="$ctrl.currentName === 'uploadFiles'" -->
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="$ctrl.openLeftMenu()" hide-gt-sm>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <h3>檔案上傳</h3>
+        </div>
+        <!-- <div class="md-toolbar-tools" ng-show="$ctrl.currentName !== 'uploadFiles'">
+            <h3 ng-repeat="b in $ctrl.breadcrumb.slice().reverse()">
+                <span ng-click="$ctrl.changeState(b.Url)">
+                    <md-icon md-svg-src="static/img/svg/tabs-arrow.svg" aria-label="Close dialog"></md-icon>
+                    {{ b.Name }}
+                </span>
+            </h3>
+        </div> -->
+    </md-toolbar>
+
+    <div ng-if="!$ctrl.isError" layout="row" layout-align="center center" style="padding: 20px 20px 10px 20px;">
+        檔案類別：
+        <md-select ng-model="$ctrl.selectedClass" ng-change="$ctrl.changeFileClass()" flex>
+            <md-option ng-value="null">全部</md-option>
+            <md-option ng-repeat="item in $ctrl.classList" ng-value="item"> {{::item}} </md-option>
+        </md-select>
+
+    </div>
+
+    <md-content flex class="adminFile-items" layout="column">
+        <loading ng-show="$ctrl.loading">loading...</loading>
+        <!-- ng-if="!$ctrl.loading && ($ctrl.finalData.folder.length !== 0 || $ctrl.finalData.singleFile.length !== 0)" -->
+        <md-list class="" ng-if="!$ctrl.loading && $ctrl.finalData.singleFile.length !== 0" ng-repeat="(key, item) in $ctrl.finalData">
+            <md-card flex ng-if="!$ctrl.isBrowser" ng-repeat="value in item | orderBy: 'Title'" ng-click="$ctrl.clickFile(key, value)" style="cursor: pointer;">
+                <md-card-content>
+                    <div layout="row" layout-align="start center" style="position:relative;">
+                        <div style="margin-right:10px;">
+                            <!-- <i ng-if="key === 'folder'" class="material-icons" style="font-size:28px; color:#747474">folder</i> -->
+                            <i ng-if="key === 'singleFile'" class="material-icons" style="font-size:28px; color:#747474">description</i>
+                        </div>
+                        <div style="margin-right:10px; max-width: 50%; word-break: break-all;">
+                            {{value.Title}}
+                        </div>
+                        <div style="color:#747474; font-size: 14px;">
+                            上次修改時間：{{value.UploadDate | moment: 'YYYY/MM/DD HH:mm'}}
+                        </div>
+                        <div style="position:absolute; right:0; top:0; height: 100%; cursor:pointer;" ng-click="$event.stopPropagation(); $ctrl.showDotMenu(value, item)">
+                            <i class="material-icons" style="font-size:28px; color:#747474; height: 100%;">more_horiz</i>
+                        </div>
+                    </div>
+                </md-card-content>
+            </md-card>
+
+            <md-card flex ng-if="$ctrl.isBrowser" ng-repeat="value in item | orderBy: 'Title'" ng-dblclick="$ctrl.clickFile(key, value)" style="cursor: pointer;">
+                <md-card-content>
+                    <div layout="row" layout-align="start center" style="position:relative;">
+                        <div style="margin-right:10px;">
+                            <!-- <i ng-if="key === 'folder'" class="material-icons" style="font-size:28px; color:#747474">folder</i> -->
+                            <i ng-if="key === 'singleFile'" class="material-icons" style="font-size:28px; color:#747474">description</i>
+                        </div>
+                        <div layout="column" layout-align="start start" flex>
+                            <div layout="row" layout-align="start center" style="max-width: 80%;">
+                                <div style="margin-right:10px;  word-break: break-all;">
+                                    {{value.Title}}
+                                </div>
+                                <div style="color:#747474; font-size: 14px;">
+                                    類別：{{value.Class ? value.Class : '無類別'}}
+                                </div>
+                            </div>
+                            <div layout="row" layout-align="start center" flex>
+                                <div style="color:#747474; font-size: 14px; margin-right: 5px;">
+                                    格式：{{value.FileType}}
+                                </div>
+                                <div style="color:#747474; font-size: 14px;">
+                                    上次修改時間：{{value.UploadDate | moment: 'YYYY/MM/DD HH:mm'}}
+                                </div>
+                            </div>
+                        </div>
+                        <div style="position:absolute; right:0; top:0; height: 100%; cursor:pointer;" ng-click="$event.stopPropagation(); $ctrl.showDotMenu(value, item)">
+                            <i class="material-icons" style="font-size:28px; color:#747474; height: 100%;">more_horiz</i>
+                        </div>
+                    </div>
+                </md-card-content>
+            </md-card>
+            <!-- 避免 fab button 遮擋 -->
+            <div style="height: 80px;"></div>
+        </md-list>
+        <div flex ng-if="!$ctrl.loading && $ctrl.finalData.singleFile.length === 0 && !$ctrl.isError" layout="column" layout-fill layout-align="center center">
+            <h1 translate>目前沒有檔案</h1>
+            <h4 translate>您可以按右下角新增按鈕來新增檔案</h4>
+        </div>
+        <server-error-page flex ng-show="!$ctrl.loading && $ctrl.isError" refresh="$ctrl.refresh()"></server-error-page>
+    </md-content>
+    <mask-loading ng-show="$ctrl.isOpening" style="z-index:99" is-show-title="true" title-text="檔案下載中"></mask-loading>
+    <md-button ng-if="!$ctrl.isError" class="md-fab md-fab-bottom-right" style="position: fixed !important;" ng-click="$ctrl.addFile($ctrl.classListForDialog)">
+        <md-icon>
+            <i class="material-icons">add</i>
+        </md-icon>
+    </md-button>
+</md-content>

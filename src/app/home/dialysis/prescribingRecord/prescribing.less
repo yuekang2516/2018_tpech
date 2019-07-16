@@ -1,0 +1,147 @@
+prescribing-detail {
+    height: 100%;
+    div.deleted {
+        background-color: rgba(10, 10, 10, 0.2);
+        position: absolute;
+        height: 100%;
+        width: 100%;
+    }
+    .execute-no-show {
+        font-size: 14px;
+        color: red;
+        margin-left: 5px;
+    }
+    .dangerous-drug-icon {
+        color: red;
+        margin-right: 5px!important;
+        font-size: 28px;
+    }
+    .action-area {
+        md-progress-circular {
+            margin-left: 18px !important;
+        }
+    }
+}
+
+custom-medicine {
+    .readonly-text {
+        width: 80px;
+        word-wrap: break-word;
+    }
+    @media (max-width: 600px) and (min-width:0px) {
+        .readonly-text {
+            width: 60px;
+            word-wrap: break-word;
+            top: -2.5rem !important;
+            right: 0rem;
+        }
+    }
+}
+
+prescribing-record {
+    height: 100%;
+    .infinity-text {
+        color: red;
+    }
+    .margin-left-5 {
+        margin-left: 5px;
+    }
+    md-checkbox {
+        margin-bottom: 0px;
+    }
+    md-checkbox:last-of-type {
+        margin-left: 0;
+        margin-right: -5px;
+    }
+    .checkValid-div {
+        width: 55px;
+        margin-left: 10px;
+    }
+    .checkValid-label {
+        color: black;
+        white-space: nowrap;
+        margin-left: 10px; // font-size:14px;
+    }
+    .disableDelete {
+        color: #ccc;
+    }
+    .nonDisableDelete {
+        color: black;
+    }
+    .seal-1 {
+        position: absolute;
+        bottom: -5px;
+        right: 50px;
+    }
+    .medicinename {
+        position: absolute;
+        top: 0px;
+        right: 50px;
+    }
+    .medicinetag {
+        display: inline-block;
+        height: 16px;
+        line-height: 16px;
+        padding: 4px;
+        font-size: 13px;
+        color: #fff;
+        border-radius: 4px;
+        margin-left: 5px
+    }
+    .bgblue {
+        background: rgb(61, 188, 247);
+    }
+    .bgpink {
+        background: #ff0066;
+    }
+    @media only screen and (max-width: 700px) {
+        // .f14{font-size: 14px; line-height: 16px; padding-top: 10px}
+        .medicinename {
+            position: inherit;
+            line-height: 18px;
+            margin-top: -5px;
+            padding-bottom: 10px
+        }
+        .medicinetag {
+            font-size: 13px;
+            height: 14px;
+            line-height: 14px;
+        }
+    }
+    @media only screen and (max-width: 500px) {
+        .seal-1 {
+            bottom: -5px;
+            right: 5px;
+            font-size: 13px!important
+        }
+    }
+    .dangerous-drug-icon {
+        color: red;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        font-size: 28px;
+    }
+}
+
+medicine-record {
+    .dangerous-drug-icon {
+        color: red;
+        margin-right: 5px;
+        font-size: 28px;
+    }
+}
+
+.custom-medcine-content {
+    height: 100%;
+    div.deleted {
+        background-color: rgba(10, 10, 10, 0.2);
+        position: absolute;
+        height: 100%;
+        width: 100%;
+    }
+    .execute-no-show {
+        font-size: 14px;
+        color: red;
+        margin-left: 5px;
+    }
+}

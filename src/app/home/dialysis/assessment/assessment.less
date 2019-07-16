@@ -1,0 +1,174 @@
+assessment {
+    height: 100%;
+
+    // 最多三行
+    .md-list-item-text p {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        padding-bottom: 8px;
+    }
+
+    //chosen options
+    .test {
+        font-size: 15px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    //title of the question
+    .question {
+        font-weight: bold;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    ul {
+        margin-left: -20px
+    }
+
+    ul li {
+        margin-left: 0px;
+        padding: 0;
+        list-style-type: square
+    }
+
+    .layoutRow {
+        width: 37%;
+        float: left;
+        margin-right: 10% !important;
+        padding: 0 !important;
+    }
+
+    .layoutRow:nth-child(2n+2) {
+        margin-right: 0 !important
+    }
+
+    // .seal .fixed{ right: 15px!important;}
+    @media only screen and (max-width: 650px) {
+        .layoutRow {
+            width: 90%;
+            margin-right: 0
+        }
+    }
+
+    .addcolon::after {
+        content: ":"
+    }
+
+    .dataspan::after {
+        content: " / "
+    }
+
+    .dataspan:last-child::after {
+        content: ""
+    }
+
+    .assessment-heading {
+        text-align: center;
+        background-color: bisque;
+        font-size: 18px;
+        padding: 5px 0;
+    }
+}
+
+assessment-detail {
+    height: 100%;
+
+    .wf-container {
+        margin: 0 auto;
+    }
+
+    .wf-container:before,
+    .wf-container:after {
+        content: '';
+        display: table;
+    }
+
+    .wf-container:after {
+        clear: both;
+    }
+
+    .wf-box {
+        // margin: 10px;
+    }
+
+    .wf-box img {
+        display: block;
+        width: 100%;
+    }
+
+    .wf-box .content {
+        border: 1px solid #ccc;
+        border-top-width: 0;
+        padding: 5px 8px;
+    }
+
+    .wf-column {
+        float: left;
+    }
+
+    .radio {
+        margin: 10px;
+    }
+    
+    .col-sm-5box {
+        overflow: hidden;
+        clear: both
+    }
+    
+    .col-sm-5box .col-sm-5 {
+        width: 49.5%;
+        float: left;
+        margin-right: 1%
+    }
+    
+    .col-sm-5box .col-sm-5:nth-child(2n+2) {
+        margin-right: 0
+    }
+    
+    input {
+        width: 100%
+    }
+
+   
+
+}
+
+.assessment-content {
+    label {
+        display: flex;
+        text-align: right;
+        flex: 20;
+        white-space: nowrap;
+    }
+
+    input,
+    md-select {
+        display: flex;
+        flex: 30;
+        margin: 0;
+        min-width: 6em;
+    }
+
+    .layoutRow {
+        width: 50%;
+    }
+
+    @media only screen and (max-width: 450px) {
+        .layoutRow {
+            width: 100%;
+        }
+    }
+
+    .addcolon::after {
+        content: ":"
+    }
+}
+
+
+
+
+
+

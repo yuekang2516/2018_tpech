@@ -1,0 +1,147 @@
+<style scoped>
+  epo-detail {
+    height: 100%;
+  }
+
+  .padding {
+    padding: 20px;
+  }
+
+  .padding-bottom {
+    padding-bottom: 20px;
+  }
+</style>
+
+<md-content layout="column" layout-fill>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.back()">
+        <i class="material-icons">keyboard_backspace</i>
+      </md-button>
+      <h4>
+        <span ng-show="vm.type === 'create'" translate="epo.detailpageTitleAdd"></span>
+        <span ng-show="vm.type !== 'create'" translate="epo.detailpageTitle" translate-values='{name: vm.formData.Name}'></span>
+        <!--<span> {{vm.formData.Name}} {{ vm.titleType }}</span>-->
+      </h4>
+    </div>
+  </md-toolbar>
+  <md-content flex>
+    <!--<div layout="row" layout-sm="column" layout-align="space-around" id="loading" ng-show="vm.loading">
+      <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+    </div>-->
+    <loading ng-show="vm.loading"></loading>
+    <div flex ng-show="vm.isError" layout="column" layout-fill layout-align="center center">
+        <h3 translate="customMessage.serverError"></h3>
+    </div>
+    <form name="editForm" class="padding" ng-show="!vm.loading && !vm.isError">
+      <md-grid-list md-cols="2" md-row-height="64px">
+        <md-grid-tile>
+          <md-input-container class="md-block" flex>
+            <label translate="epo.name"></label>
+            <input type="text" name="Name" ng-model="vm.formData.Name" required />
+            <div ng-messages="editForm.Name.$error">
+              <div ng-message="required"><span translate="customMessage.dataRequired"></span></div>
+            </div>
+          </md-input-container>
+        </md-grid-tile>
+        <md-grid-tile>
+          <md-input-container class="md-block" flex>
+            <div style="margin-top:-0.9em" flex>
+            <label translate="epo.kind"></label>
+            <md-select ng-model="vm.formData.EPOMode">
+              <md-option value="Long" translate="epo.long"></md-option>
+              <md-option value="Short" translate="epo.short"></md-option>
+            </md-select>
+            </div>
+          </md-input-container>
+        </md-grid-tile>
+        <md-grid-tile>
+          <md-input-container class="md-block" flex>
+            <label translate="epo.NHICodes"></label>
+            <input type="text" name="NHICode" ng-model="vm.formData.NHICode" />
+          </md-input-container>
+        </md-grid-tile>
+        <md-grid-tile>
+          <md-input-container class="md-block" flex>
+            <label translate="epo.internalCodes"></label>
+            <input type="text" name="InternalCode" ng-model="vm.formData.InternalCode" />
+          </md-input-container>
+        </md-grid-tile>
+        <md-grid-tile>
+          <md-input-container class="md-block" flex>
+            <label translate="epo.qty"></label>
+            <input type="number" name="Quantity" ng-model="vm.formData.Quantity" min="0" required />
+            <div ng-messages="editForm.Quantity.$error">
+              <div ng-message="required"><span translate="customMessage.dataRequired"></span></div>
+            </div>
+          </md-input-container>
+        </md-grid-tile>
+        <md-grid-tile>
+          <md-input-container class="md-block" flex>
+            <label translate="epo.qtyUnit"></label>
+            <input type="text" name="Units" ng-model="vm.formData.QuantityUnit" />
+          </md-input-container>
+        </md-grid-tile>
+        <md-grid-tile>
+          <md-input-container class="md-block" flex>
+            <label translate="epo.dose"></label>
+            <input type="number" name="Dose" ng-model="vm.formData.Dose" min="0" />
+          </md-input-container>
+        </md-grid-tile>
+        <md-grid-tile>
+          <md-input-container class="md-block" flex>
+            <label translate="epo.doseUnit"></label>
+            <input type="text" name="DoseUnit" ng-model="vm.formData.DoseUnit" />
+          </md-input-container>
+        </md-grid-tile>
+        <md-grid-tile>
+          <md-input-container class="md-block" flex>
+            <label translate="epo.statisticsOrder"></label>
+            <input type="number" name="OrderStatistics" ng-model="vm.formData.OrderStatistics" min="0" />
+          </md-input-container>
+        </md-grid-tile>
+      </md-grid-list>
+      <md-input-container class="md-block">
+        <span translate="epo.way"></span>
+        <md-checkbox ng-checked="vm.exists('SC', vm.formData.Routes)" ng-click="vm.toggle('SC', vm.formData.Routes)">
+            SC
+          </md-checkbox>
+          <md-checkbox ng-checked="vm.exists('IVD', vm.formData.Routes)" ng-click="vm.toggle('IVD', vm.formData.Routes)">
+            IVD
+          </md-checkbox>
+          <md-checkbox ng-checked="vm.exists('IV', vm.formData.Routes)" ng-click="vm.toggle('IV', vm.formData.Routes)">
+            IV
+          </md-checkbox>
+          <md-checkbox ng-checked="vm.exists('H', vm.formData.Routes)" ng-click="vm.toggle('H', vm.formData.Routes)">
+            H
+          </md-checkbox>
+      </md-input-container>
+      <md-input-container class="md-block">
+        <span>服法(頻率)</span>
+        <br><br>
+        <div layout="row" layout-wrap>
+            <div flex="50" ng-repeat="(key, text) in vm.Frequencys">
+                <md-checkbox ng-checked="vm.exists(key, vm.formData.Frequencys)" ng-click="vm.toggle(key, vm.formData.Frequencys)">
+                    {{ text }}
+                </md-checkbox>
+            </div>
+        </div>
+      </md-input-container>
+      <md-button class="md-warn md-raised" ng-click="vm.delete($event)" ng-if="vm.epo_id !== 'create'" ng-disabled="vm.isSaving">
+        <span translate>{{'epo.deletebutton'}}</span>
+      </md-button>
+      <md-button type="submit" class="md-primary md-raised" ng-click="vm.save()" ng-disabled="editForm.$invalid || vm.isSaving">
+        <span translate>{{'epo.savebutton'}}</span>
+      </md-button>
+    </form>
+    <!--widas未使用的欄位-->
+    <!--<div class="form-group" ng-show="vm.formData.CategoryName === 'EPO'">
+        <label class="col-sm-3 control-label">數量快速選單(不同選單請換行)</label>
+        <div class="col-sm-4">
+        <md-input-container class="md-block">
+        <textarea ng-model="vm.EPODefaultString" columns="1" md-maxlength="50" rows="3"></textarea>
+        </md-input-container>
+        </div>
+        </div>-->
+  </md-content>
+</md-content>

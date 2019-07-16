@@ -1,0 +1,66 @@
+<style scoped>
+    create-payment-dialog {
+        height: 100%;
+    }
+    .padding-bottom {
+        padding-bottom: 20px;
+    }
+
+    .width {
+        width: 600px;
+    }
+</style>
+<md-dialog aria-label="出帳功能">
+    <div ng-cloak class="width">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>出帳功能</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="dvm.cancel()">
+                    <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <loading ng-show="dvm.loading"></loading>
+        <md-dialog-content ng-show="!dvm.loading">
+            <div class="md-dialog-content" flex>
+                <div flex ng-show="dvm.isError" layout="column" layout-fill layout-align="center center">
+                    <h3>伺服器資料讀取失敗</h3>
+                </div>
+                <!--<div layout="column" flex>
+                    <md-input-container class="md-block" flex>
+                        <label>出帳醫院</label>
+                        <md-select ng-model="dvm.HospitalId">
+                            <md-option value="ALL">所有醫院</md-option>
+                            <md-option ng-repeat="h in dvm.payments" value="{{ h.HospitalId }}">{{ h.HospitalName }}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>-->
+                <label>出帳月份</label>
+                <div layout="row" flex>
+                    <md-input-container class="md-block" flex>
+                        <label>年</label>
+                        <input type="text" name="Year" ng-model="dvm.Year" />
+                    </md-input-container>
+                    <md-input-container class="md-block" flex>
+                        <label>月</label>
+                        <input type="text" name="Month" ng-model="dvm.Month" />
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <div style="margin-top:-0.4em" flex>
+                            <md-button class="md-raised md-primary" ng-click="dvm.hospitalReload()">重整</md-button>
+                        </div>
+                    </md-input-container>
+                </div>
+                <label>出帳醫院</label>
+                <div layout="column" flex>
+                    <md-checkbox ng-repeat="h in dvm.contracts" ng-checked="h.paycheck" ng-click="dvm.toggle(h.HospitalId)">
+                        {{ h.HospitalName }} / {{ h.Name }} / {{ h.BillingMethod }}
+                    </md-checkbox>
+                </div>
+                <md-button class="md-raised md-primary" ng-click="dvm.save()">出帳</md-button>
+            </div>
+        </md-dialog-content>
+    </div>
+</md-dialog>

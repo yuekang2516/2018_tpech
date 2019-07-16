@@ -1,0 +1,214 @@
+all-pd-patients {
+    height: 100%;
+    .md-toolbar-tools {
+        padding: 0;
+    }
+    
+    .padding-left {
+        padding-left: 16px;
+    }
+    // 上方工具列裡的 search input
+    .search {
+        color: black;
+        width: 0;
+        opacity: 0;
+        outline: none;
+        background-color: #fff !important;
+        &.isSearch {
+            width: 100%;
+            min-width: 100px;
+            max-width: 600px;
+            opacity: 1;
+            transition: width linear 0.3s;
+        }
+    }
+    // 搜尋模式 toolbar
+    .isSearch {
+        background-color: #f6f6f6;
+        color: black;
+    }
+    @media only screen and (max-width: 600px) {
+        .isSearch {
+            background-color: #f6f6f6;
+            color: black;
+            .w600none {
+                display: none
+            }
+            .flex-45 {
+                max-width: 15%!important
+            }
+            .flex-55 {
+                max-width: 100%!important
+            }
+        }
+    }
+    md-card{ outline: none!important}
+    md-card:active{ background: #f6f6f6; outline: none!important;}
+
+    .main_card{
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+    .main_card .card{ float: left; width: 50%; box-sizing: border-box; border-right: rgb(214, 214, 214) solid 1px;}
+    .main_card .card:nth-child(2n+2){border-right:none}
+    .main_card .card:last-of-type{border-bottom: rgb(214, 214, 214) solid 1px!important;}
+
+    /*allPatients*/
+    .mgnBtm5 {
+        margin-bottom: 5px;
+    }
+
+    .ulInline.mgnLeft20 {
+        margin-left: 20px;
+    }
+
+    .ulInline {
+        padding: 0;
+        margin: 0;
+    }
+
+    .ulInline::after {
+        content: '';
+        width: 100%;
+        height: 0;
+        clear: both;
+        display: block;
+    }
+
+    .ulInline li {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        float: left;
+    }
+
+    .ulInline.width50 li {
+        width: 50%;
+    }
+
+    .ulInline h3 {
+        font-size: 18px;
+    }
+
+    .ulInline h4 {
+        font-size: 14px;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+
+    .ulInline.sysIcon {
+        text-align: center;
+    }
+
+    .sysIcon img {
+        width: 60px;
+    }
+
+    /*allPatients*/
+
+    @media only screen and (max-width: 768px) {
+    .main_card .card{ float: left; width: 100%; margin-right: 0; border-right:none}
+    }
+
+}
+
+.patient-list {
+    .md-list-item-text {
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    md-card {
+        border-radius: inherit!important;
+        box-shadow: none!important;
+
+
+        // 若病人的連續型傳輸正在啟動
+        .continuousIcon {
+            position: absolute;
+            top:3px;
+            right:3px;
+            animation: blink 0.5s infinite;
+            animation-direction: alternate;
+            animation-timing-function: ease-in-out;
+            z-index:100;
+        }
+        @keyframes blink {
+            from {
+                color: rgb(246, 99, 0);
+            } to {
+                color: rgb(255, 196, 0);
+            }
+        }
+        &.male {
+            div.md-button {
+                padding: 0 1em 0 0;
+            }
+            .avatar {
+                
+                img.md-avatar {
+                    margin: 0;
+
+                }
+                padding: 16px;
+                background-color: #b3e5fc;
+                line-height: 10px;
+                position: relative;
+                img.md-gender {
+                    position: absolute;
+                    width: 15px;
+                    bottom: 0px;
+                    left: 0px;
+                }
+            }
+        }
+        &.female {
+            div.md-button {
+                padding: 0 1em 0 0;
+            }
+            .avatar {
+                img.md-avatar {
+                    margin: 0;
+
+                }
+                padding: 16px;
+                background-color: #f8bbd0;
+                line-height: 10px;
+                position: relative;
+                img.md-gender {
+                    position: absolute;
+                    width: 15px;
+                    bottom: 0px;
+                    left: 0px;
+                }
+            }
+        }
+        .name {
+            font-weight: bold;
+            overflow: hidden;
+        }
+        // 透析狀態
+        .dialysis {
+            padding: 3px;
+            display: inline-block;
+            margin-left: 0;
+            line-height: 24px;
+            i{ font-size: 22px; color:rgb(72, 134, 231);  }
+            // 過期
+            &.overdue {
+                border-radius: 4px;
+                margin-left: 3px;
+                background-color: rgb(251, 76, 47);
+                color: white;
+                line-height: 24px;
+                i{ font-size: 22px; color:#fff;  }
+            }
+        }
+        .fontsize12 {
+            font-size: 12px;
+        }
+    }
+    .state{ position: absolute; top: 51px; left: 0; width:62px; text-align: center;  background: rgb(126, 125, 125); padding: 1px 4px; color: #fff; font-size: 12px; }
+}

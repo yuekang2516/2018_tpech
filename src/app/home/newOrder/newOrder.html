@@ -1,0 +1,28 @@
+<md-content layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.openLeftMenu()" hide-gt-sm>
+                <md-icon md-svg-icon="static/img/svg/ic_menu_white_24px.svg"></md-icon>
+            </md-button>
+            <md-button class="md-fab md-fab-bottom-right" style="position: fixed;" ng-click="vm.goToPatientListAdd('patientListAdd')">
+                <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+            </md-button>
+            <h2>
+                <span>最新醫囑</span>
+            </h2>
+            <span flex></span>
+        </div>
+    </md-toolbar>
+    <md-content layout="column" flex>
+        <loading ng-show="vm.loading">  </loading>
+        <md-list class="patient-list">
+            <md-list-item class="md-3-line" ng-repeat="item in $ctrl.orders" ng-click="null">
+                <div class="md-list-item-text" layout="column">
+                    <h3>{{ item.who }}</h3>
+                    <h4>{{ item.what }}</h4>
+                    <p>{{ item.notes }}</p>
+                </div>
+            </md-list-item>
+        </md-list>
+    </md-content>
+</md-content>

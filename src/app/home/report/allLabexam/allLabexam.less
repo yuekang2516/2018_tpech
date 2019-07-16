@@ -1,0 +1,30 @@
+all-labexam {
+    height: 100%;
+    table {
+        width: 100%;
+        border: 1px solid #000000;
+        border-collapse: collapse;
+        tr,
+        td {
+            border: 1px solid #000000;
+            white-space: nowrap;
+        }
+        td.content:not(:first-child) {
+            white-space: nowrap;
+            min-width: 25px;
+            text-align: center;
+        }
+        .allLabexam {
+            background-color: #BBDEFB;
+            font-size: 1.2em; //text-align: center;
+        }
+        .excel-button {
+            position: absolute;
+            right: 0;
+            top: 50px;
+        }
+    }
+    tr:nth-child(even) {
+        background-color: #f2f2f2
+    };
+}

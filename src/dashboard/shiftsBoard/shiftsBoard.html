@@ -1,0 +1,18 @@
+<md-content layout-fill class="shifts-container shifts-board-content">
+    <div class="bar" layout="row" layout-align="start">
+        <div class="date">
+            <div class="date_in" translate="shiftsBoard.date" translate-values="{year: $ctrl.data.currentYear, month: $ctrl.data.currentMonth}"></div>
+        </div>
+        <!-- <div class="nowEn" ng-class="{disable: $ctrl.data.loading}" ng-click="$ctrl.today()" ng-disabled="$ctrl.data.loading"></div> -->
+        <div ng-class="[{'en-us': 'nowEn', 'zh-tw': 'now' }[$ctrl.language], {disable: $ctrl.data.loading}]" ng-click="$ctrl.today()" ng-disabled="$ctrl.data.loading"></div>
+        <div class="backward" ng-class="{disable: $ctrl.data.loading}" ng-click="$ctrl.lastMonth()" ng-disabled="$ctrl.data.loading"></div>
+        <div class="forward" ng-class="{disable: $ctrl.data.loading}" ng-click="$ctrl.nextMonth()" ng-disabled="$ctrl.data.loading"></div>
+    </div>
+    <loading ng-show="$ctrl.data.loading"></loading>
+    <div id="container">
+        <label class="red" ng-show="$ctrl.serverErr" translate>{{'shiftsBoard.serverError'}}</label>
+        <!-- <div class="readonly"></div> -->
+        <shifts-content ng-if="$ctrl.data.daysInMonth.length > 0" data="$ctrl.data"></shifts-content>
+    </div>
+
+</md-content>

@@ -1,0 +1,159 @@
+<style scoped>
+    ward-detail {
+        height: 100%;
+    }
+    .padding {
+        padding: 20px
+    }
+</style>
+<md-content layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.back()">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <h4>
+                <span ng-show="vm.type === 'create'" translate="ward.detailpageTitleAdd"></span>
+                <span ng-show="vm.type !== 'create'" translate="ward.detailpageTitle" translate-values='{wardname: vm.Ward.Name}'></span>
+            </h4>
+        </div>
+    </md-toolbar>
+
+    <md-content layout="column" flex>
+        <div flex ng-show="vm.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate="customMessage.serverError"></h3>
+        </div>
+        <loading ng-show="vm.loading"></loading>
+        <div ng-show="!vm.loading && !vm.isError" flex>
+            <form name="wardForm" class="padding" novalidate>
+                <md-input-container class="md-block" flex>
+                    <label translate="ward.wardName"></label>
+                    <input type="text" name="Name" ng-model="vm.Ward.Name" required />
+                    <div ng-messages="wardForm.Name.$error">
+                        <div ng-message="required"><span translate="customMessage.dataRequired"></span></div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block" flex>
+                    <label translate="ward.bedName"></label>
+                    <md-chips ng-model="vm.Ward.BedNos" name="bednoschip" readonly="false" md-enable-chip-edit="false" md-removable="true" md-on-add="vm.bedsChange()" md-on-remove="vm.bedsDel($index)" md-add-on-blur="true"></md-chips>
+                </md-input-container>
+                <div flex>
+                    <!--
+                    <label>病床號</label>
+                    <md-chips ng-model="vm.BedNoArray" name="bednochip" readonly="false" md-enable-chip-edit="true" md-removable="true">
+                    </md-chips>-->
+                    <!--
+                    <label>病床號 (不同床號請換行)</label>
+                    <textarea ng-model="vm.BedNos" md-detect-hidden="true" md-select-on-focus></textarea>-->
+                </div>
+                <div flex>
+                    <label class="group-title" translate="ward.bedGroup"></label>
+                    <md-button class="md-raised md-primary" ng-click="vm.addgroupitem()"><span translate>{{'ward.addGroupbutton'}}</span></md-button>
+                    <div ng-repeat="git in vm.Ward.BedGroups">
+                        <div layout="row">
+                        <!--<input type="text" name="gName" ng-model="git.Name" flex=10 placeholder="{{'ward.groupName' | translate}}" style="margin-top:0.4em" required />-->
+                        <!--<md-select name="gName" ng-model="git.Name" flex=10 placeholder="{{'ward.groupName' | translate}}" style="margin-top:0.4em">
+                            <md-option ng-repeat="a in vm.optAccess" value="{{ a.value }}">{{ a.name }}</md-option>
+                        </md-select>-->
+                        <select name="gName" ng-model="git.Name" ng-options="member for member in vm.optAccess">
+                            <option value="" translate>{{'ward.component.selopt'}}</option>
+                        </select>
+                        <md-chips ng-model="git.BedNos" name="bednochip" readonly="true" md-enable-chip-edit="false" md-removable="true" ng-change="vm.itemChange('Bed')" md-on-remove="vm.itemChange('Bed')"></md-chips>
+                        <select id="{{'gsName' + $index}}">
+                            <option ng-repeat="bed in vm.optAccessBed" ng-value="bed">{{bed}}</option>
+                        </select>
+                        <md-button class="md-raised md-primary" ng-click="vm.addbed('Bed', $index, 'gsName' + $index)"><span translate>{{'ward.addbutton'}}</span></md-button>
+                        <md-button class="md-raised md-warn" ng-click="vm.removegroupitem($event, git, 'Bed')"><span translate>{{'ward.deleteGroupbutton'}}</span></md-button>
+                        </div>
+                    </div>
+                </div>
+                <label translate="ward.errorItem"></label>
+                <md-button class="md-raised md-primary" ng-show="!vm.showCreateAbnormalItem" ng-click="vm.showCreateAbnormalItem = true"><span translate>{{'ward.addErrorItembutton'}}</span></md-button>
+                <div ng-show="vm.WardTemplete !== null && vm.showCreateAbnormalItem === false && vm.editMode === false" flex>
+                    <md-input-container class="md-block">
+                        <label translate="ward.applyTemplate"></label>
+                        <md-select ng-model="vm.selectAbnormalItems" ng-change="vm.changeTemplet(vm.selectAbnormalItems)">
+                            <md-option ng-repeat="w in vm.WardTemplete" value="{{ w }}">{{ w.Name }}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <div ng-show="vm.showCreateAbnormalItem" layout="column">
+                    <md-card>
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline" translate="ward.itemKind"></span>
+                            </md-card-title-text>
+                        </md-card-title>
+                        <md-card-actions layout="row">
+                            <md-input-container class="md-block">
+                                <label translate="ward.enterItemKind"></label>
+                                <md-select ng-model="vm.item" ng-change="vm.selectItem(vm.item)">
+                                    <md-option value=""><span translate="ward.enterItemKind"></span></md-option>
+                                    <md-option ng-repeat="e in (vm.Ward.AbnormalItems | filter: { ParentId: null } )" ng-value="e">{{ e.Name }}</md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="md-block" ng-show="!vm.item">
+                                <label translate="ward.kindCode"></label>
+                                <input type="text" ng-model="vm.itemCodeKeyIn" ng-required="vm.item == '' || vm.item == null || !vm.item" placeholder="{{'ward.enterItemKindCode' | translate}}" />
+                            </md-input-container>
+                            <md-input-container class="md-block" ng-show="!vm.item">
+                                <label translate="ward.kindName"></label>
+                                <input type="text" ng-model="vm.itemKeyIn" ng-required="vm.item == '' || vm.item == null || !vm.item" placeholder="{{'ward.enterItemKindName' | translate}}" />
+                            </md-input-container>
+                            <md-input-container class="md-block" ng-show="vm.item != null">
+                                <label translate="ward.subKindCode"></label>
+                                <input type="text" ng-model="vm.subItemCodeKeyIn" ng-hide="vm.item == '' || vm.item == null || !vm.item" placeholder="{{'ward.entersubItemKindCode' | translate}}" />
+                            </md-input-container>
+                            <md-input-container class="md-block" ng-show="vm.item != null">
+                                <label translate="ward.subKindName"></label>
+                                <input type="text" ng-model="vm.subItemKeyIn" ng-hide="vm.item == '' || vm.item == null || !vm.item" placeholder="{{'ward.entersubItemKindName' | translate}}" />
+                            </md-input-container>
+                        </md-card-actions>
+                        <md-card-actions layout="row">
+                            <md-button class="md-raised" ng-click="vm.showCreateAbnormalItem = false"><span translate>{{'ward.canclebutton'}}</span></md-button>
+                            <md-button type="submit" class="md-raised md-primary" ng-click="vm.createAbnormalItem(vm.selectedParentId)"><span translate>{{'ward.addbutton'}}</span></md-button>
+                        </md-card-actions>
+                    </md-card>
+                </div>
+                <div>
+                    <p ng-show="vm.Ward.AbnormalItems.length == 0"><span translate="ward.noErrorItem"></span></p>
+                    <div ng-repeat="list in vm.Ward.AbnormalItems | orderBy: 'ParentId+Code': false">
+                        <md-chips>
+                            <md-chip ng-show="!list.editMode" ng-click="vm.editAbnormalItem(list)">{{list.ParentName}} / {{list.Code}} : {{list.Name}}</md-chip>
+                        </md-chips>
+                        <div ng-show="list.editMode">
+                            <md-card>
+                                <md-card-actions layout="row">
+                                    <md-input-container class="md-block" ng-show="!(vm.Parent == null || vm.Parent == '')">
+                                        <div><span translate="ward.kind"></span> : {{vm.Parent}}</div>
+                                    </md-input-container>
+                                    <md-input-container class="md-block" ng-show="!vm.item">
+                                        <label translate="ward.code"></label>
+                                        <input type="text" ng-model="vm.Code" ng-required="vm.item == '' || vm.item == null || !vm.item" placeholder="{{'ward.enterCode' | translate}}" />
+                                    </md-input-container>
+                                    <md-input-container class="md-block" ng-show="!vm.item">
+                                        <label translate="ward.name"></label>
+                                        <input type="text" ng-model="vm.Name" ng-required="vm.item == '' || vm.item == null || !vm.item" placeholder="{{'ward.name' | translate}}" />
+                                    </md-input-container>
+                                </md-card-actions>
+                                <md-card-actions layout="row">
+                                    <md-button class="md-raised md-warn" ng-click="vm.deleteAbnormalItem($event, list)"><span translate>{{'ward.deletebutton'}}</span></md-button>
+                                    <md-button class="md-raised" ng-click="list.editMode = false"><span translate>{{'ward.canclebutton'}}</span></md-button>
+                                    <md-button type="submit" class="md-raised md-primary" ng-click="vm.saveAbnormalItem(list, vm.Code, vm.Name)"><span translate>{{'ward.savebutton'}}</span></md-button>
+                                </md-card-actions>
+                            </md-card>
+                        </div>
+                    </div>
+                </div>
+                <md-input-container class="md-block" flex>
+                    <label>Memo</label>
+                    <textarea ng-model="vm.Ward.Memo" md-detect-hidden="true"></textarea>
+                </md-input-container>
+
+                <md-button class="md-raised" ng-show="vm.editMode" ng-click="vm.recover()" ng-disabled="vm.isSaving"><span translate>{{'ward.recoverbutton'}}</span></md-button>
+                <md-button type="submit" class="md-raised md-primary" ng-click="vm.save(vm.Ward)" ng-disabled="(vm.type == 'edit' && vm.Ward.Name == null) || (vm.type == 'create' && vm.Ward.Name == null) || vm.isSaving"><span translate>{{'ward.savebutton'}}</span></md-button>
+            </form>
+        </div>
+    </md-content>
+</md-content>

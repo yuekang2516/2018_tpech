@@ -1,0 +1,14 @@
+<div layout="row">
+    <md-select ng-model="$ctrl.selectedYear" flex ng-change="$ctrl.afterSelected()" placeholder="年" ng-required="$ctrl.required">
+        <md-option>請選擇</md-option>
+        <md-option ng-value="y" ng-repeat="y in $ctrl.years track by $index">{{::y}}</md-option>
+    </md-select>
+    <md-select ng-model="$ctrl.selectedMonth" flex ng-change="$ctrl.afterSelected()" placeholder="月" ng-required="$ctrl.required">
+        <md-option>請選擇</md-option>
+        <md-option ng-value="m" ng-repeat="m in $ctrl.months">{{::m}}月</md-option>
+    </md-select>
+    <md-select ng-model="$ctrl.selectedDay" flex ng-change="$ctrl.afterSelected()" placeholder="日" ng-required="$ctrl.required">
+        <md-option>請選擇</md-option>
+        <md-option ng-value="d" ng-repeat="d in $ctrl.days">{{::d}}日</md-option>
+    </md-select>
+</div>

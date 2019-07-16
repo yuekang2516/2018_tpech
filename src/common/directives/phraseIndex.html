@@ -1,0 +1,250 @@
+<section layout="column">
+    <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="rightPhrase" style="position: fixed;">
+        <md-content layout="column" layout-fill>
+            <md-toolbar class="md-hue-2">
+                <div class="md-toolbar-tools">
+                    <md-button class="md-secondary md-icon-button" ng-click="vm.closeSelf()" aria-label="call">
+                        <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+                    </md-button>
+                    <h2 class="md-toolbar-tools" ng-bind="vm.phraseTitleName"></h2>
+                    <md-button class="md-secondary md-icon-button" ng-click="vm.closeRight()" aria-label="call">
+                        <md-icon md-svg-icon="static/img/svg/ic_close_24px.svg"></md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-content flex>
+                <loading ng-show="vm.loading"></loading>
+                <form>
+                    <md-list flex>
+                        <div ng-show="vm.phraseListPage.length > 0 && !vm.loading"
+                             ng-repeat="list in vm.phraseListPage track by $index">
+                            <md-list-item class="md-2-line md-long-text"
+                                          ng-show="vm.phrasecallbacklistId[vm.phrasecallbacklistId.length -1] === list.id"
+                                          ng-repeat="item in list.obj track by $index"
+                                          ng-click="vm.handleClickPhraseBox($event, item)">
+                                <div class="md-list-item-text">
+                                    <div layout="row">
+                                        <md-icon ng-show="item.type !== 'phrase'" md-svg-icon="static/img/svg/ic_folder_black_24px.svg" flex="10"></md-icon>
+                                        <md-icon ng-show="item.type === 'phrase'" md-svg-icon="static/img/svg/ic_assignment_black_24px.svg" flex="10"></md-icon>
+                                        <p style="margin-left: 24px" ng-bind="item.name" flex="90"></p>
+                                    </div>
+                                </div>
+                                <md-menu class="md-secondary" ng-show="item.type !== 'user' && item.type !== 'ward' && item.type !== 'system'">
+                                    <md-button class="md-icon-button" ng-click="vm.openMenu($mdMenu, $event)">
+                                        <i class="material-icons">more_vert</i>
+                                    </md-button>
+                                    <md-menu-content width="1">
+                                        <md-menu-item>
+                                            <md-button ng-click="vm.handleCreateModal($event,'edit-'+ item.type, item)" flex>
+                                                {{'phrase.edit' | translate}}
+                                            </md-button>
+                                        </md-menu-item>
+                                        <md-menu-item>
+                                            <md-button ng-click="vm.handleCreateModal($event,'delete', item)" flex>
+                                                {{'phrase.delete' | translate}}
+                                            </md-button>
+                                        </md-menu-item>
+                                        <md-menu-divider></md-menu-divider>
+                                        <md-menu-item>
+                                            <md-button ng-click="vm.closeMenu($mdMenu, $event)">
+                                                {{'phrase.cancel' | translate}}
+                                            </md-button>
+                                        </md-menu-item>
+                                    </md-menu-content>
+                                </md-menu>
+                                <md-divider ng-if="!$last"></md-divider>
+                            </md-list-item>
+                            <div layout="column" ng-show="vm.phraseListPage.length > 1 && vm.phrasecallbacklistId[vm.phrasecallbacklistId.length -1] === list.id">
+                                <div ng-show="list.obj.length === 0">
+                                    <h4>{{'phrase.noDataMessage' | translate}}</h4>
+                                </div>
+                                <div layout="row">
+                                    <md-button flex ng-click="vm.handleCreateModal($event, 'create-category')" class="md-primary">
+                                        {{'phrase.addCatalog' | translate}}
+                                    </md-button>
+                                    <md-button flex ng-click="vm.handleCreateModal($event, 'create-phrase')" class="md-primary">
+                                        {{'phrase.addPhrase' | translate}}
+                                    </md-button>
+                                </div>
+                            </div>
+                        </div>
+                    </md-list>
+                </form>
+            </md-content>
+        </md-content>
+    </md-sidenav>
+</section>
+
+<!--新增目錄-->
+<script type="text/ng-template" id="create-category.html">
+    <md-dialog flex="percentage">
+        <form name="dialogForm" novalidate>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>{{'phrase.addCatalog' | translate}}</h2>
+                    <span flex></span>
+                </div>
+            </md-toolbar>
+            <md-dialog-content>
+                <div class="md-dialog-content" layout="column">
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>{{'phrase.catalogName' | translate}}</label>
+                        <input type="text" name="CategoryName" ng-model="dia.CategoryName" required>
+                        <div ng-messages="dialogForm.CategoryName.$error" role="alert">
+                            <div ng-message="required">{{'phrase.enterCatalogName' | translate}}</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button ng-click="dia.cancel()">
+                    {{'phrase.cancel' | translate}}
+                </md-button>
+                <md-button type="submit" ng-click="dia.ok($event)" ng-disabled="dialogForm.$invalid">
+                    {{'phrase.addCatalog' | translate}}
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>
+
+<!--新增片語-->
+<script type="text/ng-template" id="create-phrase.html">
+    <md-dialog flex="percentage">
+        <form name="dialogForm" novalidate>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>{{'phrase.addPhrase' | translate}}</h2>
+                    <span flex></span>
+                </div>
+            </md-toolbar>
+            <md-dialog-content>
+                <div class="md-dialog-content" layout="column">
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>{{'phrase.title' | translate}}</label>
+                        <input type="text" name="Name" ng-model="dia.Name" required>
+                        <div ng-messages="dialogForm.Name.$error" role="alert">
+                            <div ng-message="required">{{'phrase.enterPhraseTitle' | translate}}</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>{{'phrase.phraseContent' | translate}}</label>
+                        <textarea name="Content" ng-model="dia.Content" rows="5" md-detect-hidden="true" required></textarea>
+                        <div ng-messages="dialogForm.Content.$error" role="alert">
+                            <div ng-message="required">{{'phrase.enterPhraseContent' | translate}}</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button ng-click="dia.cancel()">
+                    {{'phrase.cancel' | translate}}
+                </md-button>
+                <md-button type="submit" ng-click="dia.ok($event)" ng-disabled="dialogForm.$invalid">
+                    {{'phrase.addPhrase' | translate}}
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>
+
+<!--修改目錄-->
+<script type="text/ng-template" id="edit-category.html">
+    <md-dialog flex="percentage">
+        <form name="dialogForm" novalidate>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>{{'phrase.updateCatalog' | translate}}</h2>
+                    <span flex></span>
+                </div>
+            </md-toolbar>
+            <md-dialog-content>
+                <div class="md-dialog-content" layout="column">
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>{{'phrase.catalogName' | translate}}</label>
+                        <input type="text" name="CategoryName" ng-model="dia.CategoryName" required>
+                        <div ng-messages="dialogForm.CategoryName.$error" role="alert">
+                            <div ng-message="required">{{'phrase.enterCatalogName' | translate}}</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button ng-click="dia.cancel()">
+                    {{'phrase.cancel' | translate}}
+                </md-button>
+                <md-button type="submit" ng-click="dia.ok($event)" ng-disabled="dialogForm.$invalid">
+                    {{'phrase.updateCatalog' | translate}}
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>
+
+
+<!--修改片語-->
+<script type="text/ng-template" id="edit-phrase.html">
+    <md-dialog flex="percentage">
+        <form name="dialogForm" novalidate>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>{{'phrase.updatePhrase' | translate}}</h2>
+                    <span flex></span>
+                </div>
+            </md-toolbar>
+            <md-dialog-content>
+                <div class="md-dialog-content" layout="column">
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>{{'phrase.title' | translate}}</label>
+                        <input type="text" name="Name" ng-model="dia.Name" required>
+                        <div ng-messages="dialogForm.Name.$error" role="alert">
+                            <div ng-message="required">{{'phrase.enterPhraseTitle' | translate}}</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>{{'phrase.phraseContent' | translate}}</label>
+                        <textarea name="Content" ng-model="dia.Content" rows="5" md-detect-hidden="true" required></textarea>
+                        <div ng-messages="dialogForm.Content.$error" role="alert">
+                            <div ng-message="required">{{'phrase.enterPhraseContent' | translate}}</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button ng-click="dia.cancel()">
+                    {{'phrase.cancel' | translate}}
+                </md-button>
+                <md-button type="submit" ng-click="dia.ok($event)" ng-disabled="dialogForm.$invalid">
+                    {{'phrase.updatePhrase' | translate}}
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>
+
+<!--刪除目錄、片語-->
+<script type="text/ng-template" id="delete.html">
+    <md-dialog flex="percentage">
+        <form name="dialogForm" novalidate>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>{{'phrase.delete' | translate}}</h2>
+                    <span flex></span>
+                </div>
+            </md-toolbar>
+            <md-dialog-content>
+                <div class="md-dialog-content" layout="column">
+                    {{'phrase.deleteMessage' | translate}}
+                </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button ng-click="dia.cancel()">
+                    {{'phrase.cancel' | translate}}
+                </md-button>
+                <md-button type="submit" ng-click="dia.ok($event)" ng-disabled="dialogForm.$invalid">
+                    {{'phrase.delete' | translate}}
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>

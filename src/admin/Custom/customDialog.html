@@ -1,0 +1,51 @@
+<style scoped>
+    .width {
+        width: 600px;
+    }
+</style>
+
+<md-dialog aria-label="{{'custom.pageTitle' | translate}}">
+    <form ng-cloak class="width">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 translate="custom.edit" translate-values='{name: dvm.title}'></h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="dvm.cancel()">
+                    <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content layout-padding>
+            <div layout="column">
+                <div>
+                    <md-input-container class="md-block">
+                        <label translate="custom.cont"></label>
+                        <textarea ng-model="dvm.content" md-detect-hidden="true" id="conttext1" ng-change="dvm.changeText('change')" ng-click="dvm.clickPos()" ng-keyup="dvm.clickPos()"></textarea>
+                    </md-input-container>
+                    {{ dvm.convertedText }}
+                </div>
+                <div layout="column" ng-show="dvm.description.length > 0">
+                    <h3 translate="custom.template"></h3>
+                    <md-list>
+                        <md-list-item class="md-2-line" ng-repeat="d in dvm.description" ng-click="dvm.addToContent(d)">
+                            <div class="md-list-item-text">
+                                <h3>{{ d.Name }}</h3>
+                                <h3>{{ d.Code }}</h3>
+                            </div>
+                            <md-divider ng-if="!$last"></md-divider>
+                        </md-list-item>
+                    </md-list>
+                </div>
+
+                <div layout="row">
+                    <md-switch ng-model="dvm.isPerformed" aria-label="isPerformed">
+                        <span translate="custom.autoImport"></span>
+                    </md-switch>
+                    <span flex />
+                    <md-button class="md-raised md-primary" ng-click="dvm.save()" ng-disabled="vm.isSaving"><span translate>{{'custom.savebutton'}}</span></md-button>
+                </div>
+            </div>
+        </md-dialog-content>
+    </form>
+</md-dialog>

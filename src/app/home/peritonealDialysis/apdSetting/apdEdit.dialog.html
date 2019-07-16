@@ -1,0 +1,355 @@
+<style type="text/css">
+    md-dialog {
+        max-width: 90%;
+    }
+    @media print{
+        * {
+            -webkit-print-color-adjust: exact !important;
+        }
+        .peritonealDialysisTabView{
+            display: inline-table; /* Not really needed in all cases */
+            /*position: relative;
+            width: auto;
+            height: auto;
+            overflow: visible*/
+        }
+        md-dialog{
+            box-shadow: none;
+        }
+    }
+</style>
+<md-dialog class="peritonealDialysisTabView">
+    <form name="editForm" novalidate ng-cloak>
+        <!-- <summary-toolbar ng-if="$ctrl.apdDataObj.isCreate && !$ctrl.apdDataObj.isCopy" ng-click="$ctrl.cancel()"
+        toolbar-title="'apdSetting.dialog.createTitle' | translate"></summary-toolbar>
+    <summary-toolbar ng-if="!$ctrl.apdDataObj.isCreate && !$ctrl.apdDataObj.isCopy" ng-click="$ctrl.cancel()"
+        toolbar-title="'apdSetting.dialog.editTitle' | translate"></summary-toolbar>
+    <summary-toolbar ng-if="$ctrl.apdDataObj.isCopy && !$ctrl.apdDataObj.isCreate" ng-click="$ctrl.cancel()"
+        toolbar-title="'apdSetting.dialog.copyTitle' | translate"></summary-toolbar> -->
+        <md-dialog-toolbar>
+            <div class="md-toolbar-tools">
+                <md-button class="md-fab" aria-label="Settings" ng-click="$ctrl.cancel()">
+                    <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+                </md-button>
+                <h2 ng-if="$ctrl.apdDataObj.isCreate && !$ctrl.apdDataObj.isCopy"
+                    translate="apdSetting.dialog.createTitle"></h2>
+                <h2 ng-if="!$ctrl.apdDataObj.isCreate && !$ctrl.apdDataObj.isCopy"
+                    translate="apdSetting.dialog.editTitle"></h2>
+                <h2 ng-if="$ctrl.apdDataObj.isCopy && !$ctrl.apdDataObj.isCreate"
+                    translate="apdSetting.dialog.copyTitle"></h2>
+                <div
+                    class="{{'patient_name ' + (($ctrl.currentPatient.Gender|gender) == '男' ? 'male ' : '') + (($ctrl.currentPatient.Gender|gender) == '女' ? 'female' : '') }}">
+                    {{ $ctrl.currentPatient.MedicalId + ' - ' + $ctrl.currentPatient.Name }}
+                </div>
+                <span flex></span>
+                <span ng-show="$ctrl.apdDataObj.Status == 'Deleted' || $ctrl.apdDataObj.Status == 'tempDeleted'" class="readonly-text" title="{{ 'customMessage.readonlyTitle' | translate }}" translate>{{ 'customMessage.readonly' }}</span>
+                <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+                    <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-dialog-toolbar>
+        <md-dialog-content>
+            <div class="dialogBoxData dataList formApd">
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>{{'apdSetting.therapy'}}</label>
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <md-radio-group class="radioGroup" ng-model="$ctrl.apdDataObj.Treatment_Method"
+                            ng-style="{textAlign: 'center'}" layout="row">
+                            <md-radio-button ng-repeat="TM in $ctrl.TreatmentMethod" value="{{TM}}">
+                                <span style="margin-left:5px;margin-right:1rem;">{{TM}}</span>
+                            </md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>{{'apdSetting.totalVol'}}</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input type="text" min="0"
+                        onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                        ng-model="$ctrl.apdDataObj.Total_Therapeutic_Dose">
+                        <!-- <md-select ng-model="$ctrl.apdDataObj.Total_Therapeutic_Dose">
+                            <md-option value="">--請選擇--</md-option>
+                            <md-option ng-repeat="tv in $ctrl.TotalTherapeuticDose" value="{{tv}}">{{tv}}</md-option>
+                        </md-select>
+                        <input type="number" min="0" ng-if="$ctrl.apdDataObj.Total_Therapeutic_Dose === '其他'"
+                            ng-model="$ctrl.apdDataObj.TotalTherapeuticDoseOther"> -->
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>{{'apdSetting.therapyTime'}}</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-select ng-model="$ctrl.apdDataObj.Treatment_Time_Hh">
+                            <md-option value="">--請選擇--</md-option>
+                            <md-option ng-repeat="tHr in $ctrl.TreatmentTimeHh" value="{{tHr}}">{{tHr}}</md-option>
+                        </md-select>
+                        <input type="text" ng-if="$ctrl.apdDataObj.Treatment_Time_Hh === '其他'"
+                            onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                            ng-model="$ctrl.apdDataObj.TreatmentTimeHhOther">
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <label>小時</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-select ng-model="$ctrl.apdDataObj.Treatment_Time_Mm">
+                            <md-option value="">--請選擇--</md-option>
+                            <md-option ng-repeat="tMm in $ctrl.TreatmentTimeMm" value="{{tMm}}">{{tMm}}</md-option>
+                        </md-select>
+                        <input type="text" ng-if="$ctrl.apdDataObj.Treatment_Time_Mm === '其他'"
+                            onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                            ng-model="$ctrl.apdDataObj.TreatmentTimeMmOther">
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <label>分鐘</label>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>{{'apdSetting.fillVol'}}</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-select ng-model="$ctrl.apdDataObj.Injection_Volume">
+                            <md-option value="">--請選擇--</md-option>
+                            <md-option ng-repeat="fv in $ctrl.InjectionVolume" value="{{fv}}">{{fv}}</md-option>
+                        </md-select>
+                        <input type="number" ng-if="$ctrl.apdDataObj.Injection_Volume === '其他'"
+                            onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                            ng-model="$ctrl.apdDataObj.InjectionVolumeOther">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>{{'apdSetting.lastFillVol'}}</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                            <input type="number" min="0"
+                            ng-model="$ctrl.apdDataObj.Last_Injection_Volume">
+                        <!-- <md-select ng-model="$ctrl.apdDataObj.Last_Injection_Volume">
+                            <md-option value="">--請選擇--</md-option>
+                            <md-option ng-repeat="lfv in $ctrl.LastInjectionVolume" value="{{lfv}}">{{lfv}}</md-option>
+                        </md-select>
+                        <input type="number" ng-if="$ctrl.apdDataObj.Last_Injection_Volume === '其他'"
+                            ng-model="$ctrl.apdDataObj.LastInjectionVolumeOther"> -->
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>{{'apdSetting.dextrose'}}</label>
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <md-radio-group class="radioGroup" ng-model="$ctrl.apdDataObj.Last_Glucose_Concentration"
+                            ng-style="{textAlign: 'center'}" layout="row" flex="100">
+                            <md-radio-button value="Y">
+                                <span style="margin-left:5px;margin-right:1rem;">相同</span>
+                            </md-radio-button>
+                            <md-radio-button value="N">
+                                <span style="margin-left:5px;margin-right:1rem;">不同</span>
+                            </md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>{{'apdSetting.patientWeight'}}</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input 
+                        onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if (event.keyCode!=46 && event.keyCode!=45 &&(event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                        ng-model="$ctrl.apdDataObj.Patient_Weight" name="Patient_Weight">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>{{'apdSetting.iDrainAlarm'}}</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-select ng-model="$ctrl.apdDataObj.Zero_Cycle_Drainage_Warning">
+                            <md-option value="">--請選擇--</md-option>
+                            <md-option ng-repeat="ida in $ctrl.ZeroCycleDrainageWarning" value="{{ida}}">{{ida}}
+                            </md-option>
+                        </md-select>
+                        <input type="text" ng-if="$ctrl.apdDataObj.Zero_Cycle_Drainage_Warning === '其他'"
+                            ng-model="$ctrl.apdDataObj.ZeroCycleDrainageWarningOther">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>{{'apdSetting.cycles'}}</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-select ng-model="$ctrl.apdDataObj.Cycle_Number">
+                            <md-option value="">--請選擇--</md-option>
+                            <md-option ng-repeat="c in $ctrl.CycleNumber" value="{{c}}">{{c}}</md-option>
+                        </md-select>
+                        <input type="number" ng-if="$ctrl.apdDataObj.Cycle_Number === '其他'"
+                            ng-model="$ctrl.apdDataObj.CycleNumberOther">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>{{'apdSetting.dwellTime'}}</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-select ng-model="$ctrl.apdDataObj.Retention_Time_Hh">
+                            <md-option value="">--請選擇--</md-option>
+                            <md-option ng-repeat="MSTHr in $ctrl.RetentionTimeHh" value="{{MSTHr}}">{{MSTHr}}
+                            </md-option>
+                        </md-select>
+                    </div>
+                    <div class="inputboxflex itemList" ng-if="$ctrl.apdDataObj.Retention_Time_Hh === '其他'">
+                        <input 
+                        onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                        ng-model="$ctrl.apdDataObj.RetentionTimeHhOther">
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <label>小時</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-select ng-model="$ctrl.apdDataObj.Retention_Time_Mm">
+                            <md-option value="">--請選擇--</md-option>
+                            <md-option ng-repeat="MSTMm in $ctrl.RetentionTimeMm" value="{{MSTMm}}">{{MSTMm}}
+                            </md-option>
+                        </md-select>
+                    </div>
+                    <div class="inputboxflex itemList" ng-if="$ctrl.apdDataObj.Retention_Time_Mm === '其他'">
+                        <input 
+                        onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                        ng-model="$ctrl.apdDataObj.RetentionTimeMmOther">
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <label>分鐘</label>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>{{'apdSetting.comfortControl'}}</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-select ng-model="$ctrl.apdDataObj.Dialysate_Temperature_Setting">
+                            <md-option value="">--請選擇--</md-option>
+                            <md-option ng-repeat="cc in $ctrl.DialysateTemperatureSetting" value="{{cc}}">{{cc}}
+                            </md-option>
+                        </md-select>
+                        <input type="text" ng-if="$ctrl.apdDataObj.Dialysate_Temperature_Setting === '其他'"
+                            onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if (event.keyCode!=46 && event.keyCode!=45 &&(event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                            ng-model="$ctrl.apdDataObj.DialysateTemperatureSettingOther">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>{{'apdSetting.lastManualDrain'}}</label>
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <md-radio-group class="radioGroup" ng-model="$ctrl.apdDataObj.Isfinal_Manual_Drainage"
+                            ng-style="{textAlign: 'center'}" layout="row" flex="100">
+                            <md-radio-button value="Y">
+                                <span style="margin-left:5px;margin-right:1rem;">是</span>
+                            </md-radio-button>
+                            <md-radio-button value="N">
+                                <span style="margin-left:5px;margin-right:1rem;">否</span>
+                            </md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>{{'apdSetting.ufTarget'}}</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-select ng-model="$ctrl.apdDataObj.Final_Manual_Drainage">
+                            <md-option value="">--請選擇--</md-option>
+                            <md-option ng-repeat="ut in $ctrl.FinalManualDrainage" value="{{ut}}">{{ut}}</md-option>
+                        </md-select>
+                        <input type="number" ng-if="$ctrl.apdDataObj.Final_Manual_Drainage === '其他'"
+                            onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                            ng-model="$ctrl.apdDataObj.FinalManualDrainageOther">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>{{'apdSetting.alarm'}}</label>
+                    </div>
+                    <div class="inputboxflex itemList autoWidth">
+                        <md-radio-group class="radioGroup" ng-model="$ctrl.apdDataObj.Islast_Manual_Drainage_Warn"
+                            ng-style="{textAlign: 'center'}" layout="row" flex="100">
+                            <md-radio-button value="Y">
+                                <span style="margin-left:5px;margin-right:1rem;">是</span>
+                            </md-radio-button>
+                            <md-radio-button value="N">
+                                <span style="margin-left:5px;margin-right:1rem;">否</span>
+                            </md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>{{'apdSetting.minDrainVol'}}(%)</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-select ng-model="$ctrl.apdDataObj.Minimum_Periodic_Drainage">
+                            <md-option value="">--請選擇--</md-option>
+                            <md-option ng-repeat="mdv in $ctrl.MinimumPeriodicDrainage" value="{{mdv}}">{{mdv}}
+                            </md-option>
+                        </md-select>
+                        <input type="number" ng-if="$ctrl.apdDataObj.Minimum_Periodic_Drainage === '其他'"
+                            onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                            ng-model="$ctrl.apdDataObj.MinimumPeriodicDrainageOther">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label translate>{{'apdSetting.specialNotes'}}</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <textarea style="width:100%;" id="specialNotes" name="specialNotes" ng-model="$ctrl.apdDataObj.Notes"></textarea>
+                        <!-- <input ng-model="$ctrl.apdDataObj.Notes" name="specialNotes"> -->
+                    </div>
+                </div>
+                <!-- <div class="inputbox">
+                    <div class="signinGroup" ng-show="!$ctrl.apdDataObj.isCreate && !$ctrl.apdDataObj.isCopy ">
+                        <label
+                            class="signinTime">建立:{{$ctrl.apdDataObj.CreatedTime | moment:'YYYY/MM/DD (dd) HH:mm'}}</label>
+                        <label class="signinNm"><span class="fixed">{{$ctrl.apdDataObj.CreatedUserName}}</span></label>
+                    </div>
+                    <div class="signinGroup"
+                        ng-show="!$ctrl.apdDataObj.isCreate && $ctrl.apdDataObj.ModifiedTime !== null">
+                        <label
+                            class="signinTime">修改:{{$ctrl.apdDataObj.ModifiedTime | moment:'YYYY/MM/DD (dd) HH:mm'}}</label>
+                        <label class="signinNm"><span class="fixed">{{$ctrl.apdDataObj.ModifiedUserName}}</span></label>
+                    </div>
+                </div> -->
+                <div row-warp layout="row" layout-sm="row" layout-xs="column" style="margin-left:5px;margin-top:5px;">
+                    <div flex="50" flex-xs="100" ng-show="$ctrl.apdDataObj.CreatedUserName">
+                        <!-- <span>建立: {{ $ctrl.regForm.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                        <span translate="apdSetting.createdTime"
+                            translate-values='{CreatedTime: $ctrl.apdDataObj.CreatedTime}'></span>
+                        <seal model="$ctrl.apdDataObj" modified="none"></seal>
+                    </div>
+                    <div flex="50" flex-xs="100" ng-show="$ctrl.apdDataObj.ModifiedTime != null">
+                        <!-- <span>修改: {{ $ctrl.regForm.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                        <span translate="apdSetting.editedTime"
+                            translate-values='{ModifiedTime: $ctrl.apdDataObj.ModifiedTime}'></span>
+                        <seal model="$ctrl.apdDataObj" created="none"></seal>
+                    </div>
+                </div>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions class="no-print" layout="row" ng-hide="$ctrl.apdDataObj.Status == 'Deleted' || $ctrl.apdDataObj.Status == 'tempDeleted'">
+            <md-button class="md-raised" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.cancel()">
+                {{'apdSetting.dialog.cancel' | translate}}
+            </md-button>
+            <md-button class="md-raised md-primary" ng-click="$ctrl.ok()" ng-if="!$ctrl.apdDataObj.isCopy">
+                {{$ctrl.apdDataObj.isCreate ? 'apdSetting.dialog.create' : 'apdSetting.dialog.edit' | translate}}
+            </md-button>
+            <md-button class="md-raised md-primary" ng-click="$ctrl.ok()" ng-if="$ctrl.apdDataObj.isCopy">
+                {{'apdSetting.dialog.create' | translate}}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

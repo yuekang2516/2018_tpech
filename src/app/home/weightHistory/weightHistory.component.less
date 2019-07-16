@@ -1,0 +1,41 @@
+weight-history {
+    height: 100%;
+    
+    // angular-ui-grid
+    .grid {
+        height: calc(~"100% - 10px") !important;
+        // 拿掉 ui-grid hover 時 row 的 background 顏色
+        .ui-grid-row:hover .ui-grid-cell {
+            background-color: transparent;
+        }
+        .text-center {
+            text-align: center;
+        }
+        // 避免往右 scroll 時，y 軸的 scrollbar 也跟著動
+        // https://stackoverflow.com/questions/27200875/how-to-change-height-of-ui-grid-row
+        .ui-grid-viewport {
+            overflow-anchor: none;
+        }
+        .ui-grid-cell-contents {
+            font-size: 14px;
+            text-align: center;
+            font-weight: bold;
+            // 非第一行項目
+            .content {
+                font-weight: normal;
+                font-size: 16px;
+            }
+            .custom {
+                max-Width: 200px;
+                padding: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+        .ui-grid-header-cell-primary-focus {
+            background-color: #e3f2fd;
+            font-size: 14px;
+            height: 30px;
+        }
+    }
+}

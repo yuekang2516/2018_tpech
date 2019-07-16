@@ -1,0 +1,238 @@
+machine-data-detail {
+    height: 100%; // display: flex;
+    // flex-direction: column;
+    .padding-6 {
+        padding: 6px;
+    }
+    .fullscreenMask {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 50;
+    }
+    .phrase-span {
+        cursor: pointer;
+        float: right;
+        color: white;
+        padding: 5px;
+        background: #4CAF50;
+        border-radius: 2px;
+    }
+    .errorMsg {
+        color: red;
+    }
+    .md-button .font-size-24 {
+        font-size: 24px!important;
+        color: black;
+    }
+    .wf-container {
+        margin: 0 auto;
+    }
+    .wf-container:before,
+    .wf-container:after {
+        content: '';
+        display: table;
+    }
+    .wf-container:after {
+        clear: both;
+    }
+    .wf-box {
+        // margin: 10px;
+    }
+    .wf-box img {
+        display: block;
+        width: 100%;
+    }
+    .wf-box .content {
+        border: 1px solid #ccc;
+        border-top-width: 0;
+        padding: 5px 8px;
+    }
+    .wf-column {
+        float: left;
+    }
+    .assessment-content {
+        label {
+            display: flex;
+            text-align: right;
+            flex: 20;
+            white-space: nowrap;
+        }
+        input,
+        md-select {
+            display: flex;
+            flex: 30;
+            margin: 0;
+            min-width: 6em;
+        }
+        .layoutRow {
+            width: 50%;
+        }
+    }
+}
+
+.machine-data-container {
+    // max-width: 45em;
+    display: flex;
+    flex-direction: column;
+    >div {
+        margin: 0.2em 0;
+    }
+    label {
+        min-width: 10em;
+        padding: 0 0.2em;
+        text-align: right;
+        font-weight: normal;
+        white-space: nowrap;
+        line-height: 1.5rem;
+    }
+    label.from-machine {
+        background-color: lightblue;
+    }
+    input,
+    md-select,
+    textarea {
+        flex: 1;
+        min-width: 4em;
+        margin: 0 0.5em;
+    }
+    md-select {
+        border: 2px inset;
+    }
+}
+
+machine-data {
+    height: 100%;
+    position: relative; // span.title {
+    //     color: darkgray;
+    //     font-size: small;
+    // }
+    // span.content {
+    //     font-weight: bold;
+    // }
+    // .assessment-div {
+    //     display: block;
+    //     font-size: 14px;
+    // }
+    // ag-grid
+    .ag-theme-blue {
+        .ag-header {
+            color: #000;
+            font-weight: bold;
+            background-color: #e3f2fd;
+        }
+        .ag-full-width-container {
+            border-bottom: 1px solid #9bc2e6;
+        }
+        .ag-row {
+            border-bottom-width: 0;
+        }
+        .ag-row-odd {
+            background-color: #f3f3f3;
+        }
+        .ag-header-cell-label {
+            .ag-header-cell-text {
+                margin: 0 auto;
+            }
+        }
+        .cell {
+            i {
+                font-size: 16px;
+                cursor: pointer;
+            }
+        }
+        .ag-ltr {
+            .ag-cell {
+                text-align: center;
+            }
+        }
+        .ag-body-viewport {
+            padding-bottom: 60px; // 多留一個空間避免新增按鈕擋到
+        }
+        .isAbnormal {
+            background-color: #ffe6e6;
+            color: #d92018;
+            font-weight: bold;
+        }
+    } 
+    // // angular-ui-grid
+    // .grid {
+    //     height: calc(~"100% - 10px - 65px") !important; // 多扣掉留空間給新增按鈕
+    //     // 拿掉 ui-grid hover 時 row 的 background 顏色
+    //     .ui-grid-row:hover .ui-grid-cell {
+    //         background-color: transparent;
+    //         cursor: pointer;
+    //     }
+    //     .text-center {
+    //         text-align: center;
+    //     } // 避免往右 scroll 時，y 軸的 scrollbar 也跟著動
+    //     // https://stackoverflow.com/questions/27200875/how-to-change-height-of-ui-grid-row
+    //     .ui-grid-viewport {
+    //         overflow-anchor: none;
+    //         padding-bottom: 65px; // 留空間給新增的按鈕
+    //     }
+    //     .ui-grid-cell-contents {
+    //         font-size: 14px;
+    //         text-align: center;
+    //         font-weight: bold; // 非第一行項目
+    //         .content {
+    //             font-weight: normal;
+    //             font-size: 16px;
+    //         }
+    //         .custom {
+    //             max-Width: 200px;
+    //             padding: 0;
+    //             overflow: hidden;
+    //             text-overflow: ellipsis;
+    //         }
+    //     }
+    //     .ui-grid-header-cell-primary-focus {
+    //         // background-color: #e3f2fd;
+    //         background-color: #7e90a0;
+    //         color: #fff;
+    //         font-size: 14px;
+    //         height: 30px;
+    //     }
+    // } 
+    //title of the question
+    .question {
+        font-weight: bold;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+    ul {
+        margin-left: -20px
+    }
+    ul li {
+        margin-left: 0px;
+        padding: 0;
+        list-style-type: square
+    }
+    .layoutRow {
+        width: 37%;
+        float: left;
+        margin-right: 10%!important;
+        padding: 0!important;
+    }
+    .layoutRow:nth-child(2n+2) {
+        margin-right: 0!important
+    } // .seal .fixed{ right: 15px!important;}
+    @media only screen and (max-width: 650px) {
+        .layoutRow {
+            width: 90%;
+            margin-right: 0
+        }
+    }
+    .addcolon::after {
+        content: ":"
+    }
+    .dataspan::after {
+        content: " / "
+    }
+    .dataspan:last-child::after {
+        content: ""
+    }
+}

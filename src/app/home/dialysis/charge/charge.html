@@ -1,0 +1,83 @@
+<style scoped>
+    charge {
+        height: 100%;
+    }
+</style>
+
+<div flex style="position:relative" layout-fill id="charge-content" layout="column">
+    <summary-toolbar toolbar-title="'dialysisTabView.charge' | translate" cancel="vm.goback()"></summary-toolbar>
+    <div ng-show="!vm.loading && vm.chargeItems.length > 0 || vm.isError">
+        <div class="list-header" layout="row" layout-align="center center" hide-xs>
+            <md-switch ng-model="vm.showDeleted" aria-label="Switch data">
+                <!-- 顯示已刪除 ({{vm.deletedItemsLength}}筆) -->
+                <span translate="charge.charge.showDeleted" translate-values='{deletedItemsLength: vm.deletedItemsLength}'></span>
+            </md-switch>
+            <span flex></span>
+            <!-- <h6>共 {{ vm.chargeWarehouse.length }} 筆紀錄, {{ vm.count.length }} 項物品</h6> -->
+            <h6 translate="charge.charge.totalRecord" translate-values='{length: vm.chargeWarehouse.length, itemLength: vm.count.length}'></h6>
+            <span flex></span>
+            <!-- <h6>總計 {{ vm.totalPrice }} 元</h6> -->
+            <h6 translate="charge.charge.totalPrice" translate-values='{totalPrice: vm.totalPrice}'></h6>
+            <span flex></span>
+            <div layout="row" layout-align="start center">
+                <last-refresh-time accesstime='vm.lastAccessTime' refresh='vm.refresh()'></last-refresh-time>
+            </div>
+        </div>
+    </div>
+    <div ng-show="!vm.loading && vm.chargeItems.length > 0 || vm.isError" layout="column" hide-gt-xs>
+        <div layout="row" layout-fill class="list-header">
+            <md-switch ng-model="vm.showDeleted" aria-label="Switch data">
+                <span translate="charge.charge.showDeleted" translate-values='{deletedItemsLength: vm.deletedItemsLength}'></span>
+            </md-switch>
+            <span flex></span>
+            <div layout="row" layout-align="start center">
+                <h6>{{vm.lastRefreshTitle}}</h6>
+                <md-button class="md-icon-button" ng-click="vm.refresh();">
+                    <i class="material-icons">refresh</i>
+                </md-button>
+            </div>
+        </div>
+        <div layout="row" layout-fill class="list-header" style="height: 2em;">
+            <!-- <h6>共 {{ vm.chargeWarehouse.length }} 筆紀錄, {{ vm.count.length }} 項物品</h6> -->
+            <h6 translate="charge.charge.totalRecord" translate-values='{length: vm.chargeWarehouse.length, itemLength: vm.count.length}'></h6>
+            <span flex></span>
+            <!-- <h6>總計 {{ vm.totalPrice }} 元</h6> -->
+            <h6 translate="charge.charge.totalPrice" translate-values='{totalPrice: vm.totalPrice}'></h6>
+        </div>
+    </div>
+    <md-content flex layout="column">
+        <loading ng-show="vm.loading"></loading>
+        <div ng-show="!vm.loading && vm.chargeWarehouse.length > 0">
+
+            <md-list>
+                <md-list-item class="md-3-line" ng-class="{deleted:c.Status == 'Deleted'}" ng-repeat="c in vm.chargeWarehouse | orderBy: '-RecordDateTime'"
+                    ng-click="vm.chargeEdit($event, c, true)" ng-show="c.Status !== 'Deleted' || vm.showDeleted">
+                    <div class="md-list-item-text">
+                        <h3>{{ c.RecordDateTime | moment:'YYYY/MM/DD (dd) HH:mm' }}</h3>
+                        <!-- <h3 ng-if="c.Deposit || (c.Deposit === 0 && c.Withdraw === 0)">使用{{ c.Deposit }}{{ c.Unit }} {{ c.ItemName }}, 剩餘庫存: {{ c.Stock }}</h3> -->
+                        <h3 ng-if="c.Deposit || (c.Deposit === 0 && c.Withdraw === 0)" translate="charge.charge.deposite" translate-values='{Deposit: c.Deposit, Unit: c.Unit, ItemName: c.ItemName, Stock: c.Stock}'></h3>
+                        <!-- <h3 ng-if="c.Withdraw">使用{{ c.Withdraw }}{{ c.Unit }} {{ c.ItemName }}, 小計 {{ c.Price*c.Withdraw }} 元</h3> -->
+                        <h3 ng-if="c.Withdraw" translate="charge.charge.withdraw" translate-values='{Withdraw: c.Withdraw, Unit: c.Unit, ItemName: c.ItemName, Price: c.Price}'></h3>
+                        <h3 ng-if="c.IsFixed" class="stocktaking" translate>{{'charge.charge.stocktaking'}}</h3>
+                        <seal model="c" modified="hideIfSame" fixed="true"></seal>
+                    </div>
+                    <md-icon class="md-secondary" ng-show="c.Status !== 'Deleted'" ng-click="vm.showDeleteDialog($event, c)" md-svg-icon="static/img/svg/ic_delete_black_24px.svg"></md-icon>
+                    <md-divider></md-divider>
+                </md-list-item>
+            </md-list>
+        </div>
+        <!--取 barcode 用-->
+        <input id="barcode" />
+        <div ng-show="!vm.loading && !vm.showDeleted && !vm.isError && vm.normalItemsLength == 0" layout="column" flex layout-fill
+            layout-align="center center">
+            <h1 translate>{{'charge.charge.noData'}}</h1>
+            <h4 translate>{{'charge.charge.clickBottomRight'}}</h4>
+        </div>
+        <div flex ng-show="!vm.loading && vm.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate>{{'charge.charge.serverError'}}</h3>
+        </div>
+    </md-content>
+    <md-button id="gotoChargeBtn" class="md-fab md-fab-bottom-right" ng-click="vm.gotoCharge()" aria-label="Charge Use">
+        <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg">+</md-icon>
+    </md-button>
+</div>

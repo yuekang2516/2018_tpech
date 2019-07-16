@@ -1,0 +1,47 @@
+<style scoped>
+  notifications {
+    height: 100%;
+  }
+</style>
+<md-content layout="column" layout-fill>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <md-button class="md-icon-button" aria-label="Settings" ng-click="$ctrl.openLeftMenu()" hide-gt-md>
+        <i class="material-icons">menu</i>
+      </md-button>
+      <h2>
+        <span translate>{{'notifications.notification'}}</span>
+      </h2>
+      <span flex></span>
+    </div>
+  </md-toolbar>
+
+  <div class="list-header" layout="row" layout-align="center center" ng-show="!$ctrl.loading && $ctrl.serviceData.length > 0">
+      <h6 translate="notifications.totalRecord" translate-values='{total: $ctrl.serviceData.length}'></h6>
+      <span flex></span>
+      <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+    </div>
+  
+  <md-content flex layout="column" layout-fill>
+    <loading ng-show="$ctrl.loading">loading...</loading>
+    <div flex ng-show="$ctrl.serviceData.length === 0" layout="column" layout-fill layout-align="center center">
+      <h3 translate>{{'notifications.noData'}}</h3>
+    </div>
+    
+    <md-list ng-show="!$ctrl.loading && !$ctrl.isError && $ctrl.serviceData.length > 0">
+      <md-list-item class="md-2-line" ng-repeat="item in $ctrl.serviceData" ng-click="$ctrl.openDialog($event, item)">
+        <div class="md-list-item-text" layout="column">
+          <h3> {{::item.Date | date: 'MM/dd HH:mm' }} {{ ::item.Name}}({{::item.MedicalId}})</h3>
+          <p> {{ ::item.Content }}</p>
+        </div>
+        <span class="md-secondary" ng-hide="item.IsRead">
+          <i class="material-icons">fiber_new</i>
+        </span>
+        <md-divider ng-if="!$last"></md-divider>
+      </md-list-item>
+    </md-list>
+    <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+      <h3 translate>{{'notifications.serverError'}}</h3>
+    </div>
+  </md-content>
+</md-content>

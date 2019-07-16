@@ -1,0 +1,58 @@
+<div layout-fill layout="column" flex style="background:#f3f3f3">
+    <h2 translate="reports.allVisit.title" translate-values='{selectedYear: allV.selectedYear, selectedMonth: allV.selectedMonth}' style="margin-top: 25px ; margin-bottom: 0; padding-left: 15px;">
+        <!-- {{ allV.selectedYear }} 年 {{ allV.selectedMonth}} 月服務總量統計表 -->
+    </h2>
+    <loading ng-show="allV.loading"></loading>
+    <md-content flex layout-fill layout-padding layout="column" ng-show="!allV.loading" style="background:#f3f3f3">
+        <div>
+            {{'reports.allVisit.ward' | translate}}
+            <md-input-container style="margin:0px">
+                <md-select ng-model="allV.selectedWards" >
+                    <md-option ng-repeat="i in allV.keys" ng-value="i">{{::allV.wards[i]}}</md-option>
+                </md-select>
+            </md-input-container>
+            {{'reports.allVisit.year' | translate}}
+            <md-input-container style="margin:0px">
+                <md-select ng-model="allV.selectedYear" >
+                    <md-option ng-repeat="j in allV.optionYear" ng-value="j">{{::j}}</md-option>
+                </md-select>
+            </md-input-container style="margin:0px">
+            {{'reports.allVisit.month' | translate}}
+            <md-input-container style="margin:0px">
+                <md-select ng-model="allV.selectedMonth" >
+                    <md-option ng-repeat="k in allV.optionMonth" ng-value="k">{{::k}}</md-option>
+                </md-select>
+            </md-input-container style="margin:0px">
+            <md-card-actions>
+            <md-button class="md-raised md-primary" ng-click="allV.getAllVisit()">查詢</md-button>
+        </md-card-actions>
+            <md-card-actions class="excel-button">
+                <md-button class="md-raised md-primary" ng-click="allV.exportExcel()" ng-disabled="!allV.searchContent">{{'reports.allVisit.exportExcel' | translate}}</md-button>
+            </md-card-actions>
+        </div>
+        <loading ng-show="allV.searching"></loading>
+        <div ng-if="allV.searchContent && !allV.isError">
+            <table id="myTable">
+                <tbody>
+                <tr>
+                    <!-- <td class="allVisit" colspan="33">{{allV.selectedYear}}年 {{allV.selectedMonth}}月</td> -->
+                    <td class="serviceQuality" colspan="33" translate="reports.allVisit.yearMonthHeading" translate-values='{selectedYear: allV.contentYear, selectedMonth: allV.contentMonth}'></td>
+                </tr>
+                <tr>
+                    <td translate>{{'reports.allVisit.itemAndMonth'}}</td>
+                    <td class="content" ng-repeat="day in [] | range : allV.daysOfMonth:1">{{::day}}</td>
+                    <td translate>{{'reports.allVisit.total'}}</td>
+                </tr>
+                <tr ng-repeat="(key,records) in allV.Content">
+                    <td class="content" ng-repeat="item in records track by $index">{{::item}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div ng-if="!allV.searching && allV.isError" layout-fill flex layout="column" layout-align="center center" style="background:#f3f3f3">
+            <h3>
+                伺服器錯誤，請重新整理
+            </h3>
+        </div>
+    </md-content>
+</div>

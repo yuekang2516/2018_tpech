@@ -1,0 +1,110 @@
+[
+    {
+        "Id": "59a3eca52345943ad497b76d",
+        "Name": "陳新",
+        "Gender": "F",
+        "Birthday": "1979-03-03T16:00:00Z",
+        "MedicalId": "1091",
+        "Tags": [
+            {
+                "TagName": "aa",
+                "TagColor": "#464646",
+                "TagBgColor": "#E7E7E7",
+                "LineThrough": "underline",
+                "FontStyle": "normal",
+                "FontWeight": "normal"
+            }
+        ],
+        "Photo": null,
+        "State": null,
+        "LastDialysisInfo": {
+            "DialysisId": "5c90926620c32b17a4c6031a",
+            "StartTime": "2019-03-19T06:55:34.231Z",
+            "CareUserIds": [
+                "5c8f664c98584d53f0462983"
+            ],
+            "Status": null,
+            "EstimatedEndTime": null,
+            "EndTime": null,
+            "BeforeBP": {
+                "BPS": null,
+                "BPD": null
+            },
+            "AfterBP": {
+                "BPS": null,
+                "BPD": null
+            },
+            "BeforeWeight": null,
+            "AfterWeight": null,
+            "CheckInTime": null
+        },
+        "WardId": "598952092345941e60ae88e0",
+        "WardName": "泉新",
+        "BarCode": null,
+        "RFID": "04A33B6A993C80",
+        "RaspberryPiSetting": {
+            "RaspberryPiId": null,
+            "Frequency": null,
+            "Meter": null,
+            "Status": null,
+            "DialysisId": null
+        },
+        "BedNo": "A01",
+        "AdmissionBedNo": null,
+        "ModifiedTime": "2019-03-19T06:55:35.168Z"
+    },
+    {
+        "Id": "5c8f61ae98584d53f0458527",
+        "Name": "方文豪",
+        "Gender": "M",
+        "Birthday": "1966-06-07T16:00:00Z",
+        "MedicalId": "23561256",
+        "Tags": [
+            {
+                "TagName": "跌倒",
+                "TagColor": "#0D3472",
+                "TagBgColor": "#B6CFF5",
+                "LineThrough": "none",
+                "FontStyle": "normal",
+                "FontWeight": "normal"
+            }
+        ],
+        "Photo": null,
+        "State": "1",
+        "LastDialysisInfo": {
+            "DialysisId": "5c9080ae20c32b17a4c56a3a",
+            "StartTime": "2019-03-19T05:39:58.912Z",
+            "CareUserIds": [
+                "5c8f5c9e98584d53f044eac8"
+            ],
+            "Status": null,
+            "EstimatedEndTime": "2019-03-19T08:10:00Z",
+            "EndTime": null,
+            "BeforeBP": {
+                "BPS": null,
+                "BPD": null
+            },
+            "AfterBP": {
+                "BPS": null,
+                "BPD": null
+            },
+            "BeforeWeight": null,
+            "AfterWeight": null,
+            "CheckInTime": null
+        },
+        "WardId": "598952092345941e60ae88e0",
+        "WardName": "泉新",
+        "BarCode": null,
+        "RFID": null,
+        "RaspberryPiSetting": {
+            "RaspberryPiId": null,
+            "Frequency": null,
+            "Meter": null,
+            "Status": null,
+            "DialysisId": null
+        },
+        "BedNo": null,
+        "AdmissionBedNo": null,
+        "ModifiedTime": "2019-03-19T07:11:02.103Z"
+    }
+]

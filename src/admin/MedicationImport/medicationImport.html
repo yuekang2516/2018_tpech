@@ -1,0 +1,74 @@
+<style scoped>
+    medication-import {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+    }
+
+    .padding {
+        padding: 10px;
+    }
+</style>
+<div flex layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.openLeftMenu()" hide-gt-sm>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <h3 translate="medicationImport.pageTitle"></h3>
+        </div>
+    </md-toolbar>
+    <md-content>
+            <!--資料匯入功能改寫需要import angular-file-upload-shim-->
+        <md-card>
+            <div class="padding">
+                <input type="file" onchange="angular.element(this).scope().vm.importf(this)" accept=".txt, .csv, .xls, .xlsx" ngf-select ng-model="vm.Photo1" name="Photo1" ngf-fix-orientation="true" />
+                <div layout="row" layout-sm="column" layout-align="space-around" id="loading" ng-show="vm.loading">
+                    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                </div>
+                <pre ng-show="vm.Message.length > 0">{{vm.Message}}</pre>
+                <p><span translate="medicationImport.inputDesc"></span></p>
+                <p><span translate="medicationImport.desc1"></span></p>
+                <p><span translate="medicationImport.desc2"></span></p>
+                <p><span translate="medicationImport.desc3"></span></p>
+                <p><span translate="medicationImport.desc4"></span></p>
+                <p><span translate="medicationImport.desc5"></span></p>
+                <p><span translate="medicationImport.desc6"></span></p>
+                <p><span translate="medicationImport.desc7"></span> 
+                     <a download href="./static/MedicationImportSample.xlsx" ng-if="vm.lang==='zh-tw'"> <span translate="medicationImport.download"></span> </a>
+                     <a download href="./static/MedicationImportSample_cn.xlsx" ng-if="vm.lang==='zh-cn'"> <span translate="medicationImport.download"></span> </a>
+                     <a download href="./static/MedicationImportSample_us.xlsx" ng-if="vm.lang==='en-us'"> <span translate="medicationImport.download"></span> </a>
+                     <span translate="medicationImport.required"></span></p>
+            </div>
+        </md-card>
+    </md-content>
+    <md-content layout-fill flex>
+        <div ng-show="vm.MedicationResult.length > 0">
+        <md-list>
+            <md-list-item>
+                <div layout="row" layout-fill>
+                    <span flex=20 translate="medicationImport.name"></span>
+                    <span flex=20 translate="medicationImport.code"></span>
+                    <span flex=25 translate="medicationImport.kind"></span>
+                    <span flex=15 translate="medicationImport.qty"></span>
+                    <span flex=20 translate="medicationImport.press"></span>
+                </div>
+            </md-list-item>
+            <md-list-item ng-repeat="rec in vm.MedicationResult">
+                <div layout="row" layout-fill>
+                    <span flex=20>{{rec.Name}}</span>
+                    <span flex=20>{{rec.MedicineCode}}</span>
+                    <span flex=25>{{rec.CategoryName}}</span>
+                    <span flex=15>{{rec.Quantity}}</span>
+                    <span flex=20 style="color:blue;">{{rec.CheckStatus}}</span>
+                </div>
+            </md-list-item>
+        </md-list>
+        </div>
+    </md-content>
+    <div layout="row" ng-show="vm.MedicationResult.length > 0">
+        <md-button class="md-raised md-primary" ng-click="vm.sendFile()" ng-disabled="vm.buttonrun">
+            <span translate>{{'medicationImport.importbutton'}}</span>
+        </md-button>
+    </div>
+</div>

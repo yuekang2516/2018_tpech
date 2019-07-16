@@ -1,0 +1,285 @@
+beds {
+    height: 100%;
+    md-input-container {
+        margin: 0;
+    }
+    .margin-bottom {
+        margin-bottom: 3px;
+    }
+    .radioGroup {
+        md-radio-button {
+            margin-bottom: 10px;
+            &.margin-left {
+                margin-left: 15px;
+            }
+        }
+    }
+    .list-header {
+        height: initial;
+        input {
+            width: initial;
+        }
+    }
+    .bed-container {
+        -ms-box-orient: horizontal;
+        display: flex;
+        -webkit-flex-wrap: wrap;
+        flex-wrap: wrap;
+        padding: 6px;
+        .warn:before {
+            content: '!';
+            cursor: default;
+            color: red;
+            font-weight: bold;
+            position: relative;
+            top: -8px;
+        }
+        .list-header {
+            label {
+                color: black;
+            }
+        }
+        .bed-body {
+            border: rgb(148, 148, 148) 1px solid;
+            box-sizing: border-box;
+            border-radius: 3px;
+            float: left !important; // width: 9.6%;
+            // margin-right:0.4444%!important;
+            margin-bottom: 5px;
+            padding: 4px;
+            text-align: center
+        }
+        .bed-subheader {
+            margin: 2px;
+            color: black;
+            font-weight: bold;
+        }
+        .bed-title {
+            // margin-left: 5px;
+            // margin-top: 5px;
+            font-weight: bold;
+            text-align: center;
+            height: 25px;
+        }
+        // 床組顯示
+        .bedGroup {
+            border: #3949ab 2px solid;
+            padding: 0 4px;
+            color: red;
+            font-weight: bold;
+        }
+        .bed-card {
+            // width: 100px;
+            // height: 150px;
+            overflow: hidden;
+            border: 1px solid;
+            border-radius: 3px;
+        }
+        .md-button {
+            margin: 0;
+            min-width: inherit;
+            width: 100%;
+            margin-bottom: 3px !important; // height: 40px !important;
+            padding: 0 3px;
+        }
+
+        button {
+            margin: 0;
+            min-width: inherit;
+            width: 100%;
+            margin-bottom: 3px !important; // height: 40px !important;
+            padding: 0 3px;
+            min-height: 45px;
+        }
+
+        .bedNotAssigned {
+            // height: 36px;
+            color: rgb(49, 46, 46);
+            background-color: #eeeeee; // margin: 6px 8px 3px 8px;
+            border: 0px !important;
+            line-height: 1.2em;
+            .shiftTextFull {
+                color: #9e9e9e;
+            }
+        }
+        .bedAssigned {
+            .shiftText {
+                color: #9575cd;
+                // top: 7px;
+                font-size: 12px;
+                left: 0;
+                position: absolute;
+            } //padding: 0 0.25em;
+            //color: rgb(49, 46, 46);
+            //height: 30px;
+            // height: 36px;
+            text-transform: none; // margin: 6px 8px 3px 8px;
+            // width: 50px;
+            padding: 0.3em;
+            border: 1px solid #9e9e9e; // .morning:before {
+            &.male {
+                border: 0px;
+                background-color: #BBDEFB;
+            }
+            &.female {
+                border: 0px;
+                background-color: #F8BBD0;
+            }
+            span {
+                line-height: 1.2em;
+                word-break: break-all!important;
+                // overflow: hidden;
+                // text-overflow: ellipsis;
+                &.title {
+                    font-weight: bold;
+                    color: black;
+                }
+                &.smaller {
+                    font-size: smaller;
+                }
+            }
+        }
+        .bedAssigned:hover:enabled {
+            background-color: #616161;
+            color: white;
+            span {
+                &.title {
+                    color: white;
+                }
+            }
+        }
+        // 請假相關
+        .dayoff {
+            color: #9e9e9e;
+            padding: 0 12px!important;
+            word-break: break-all!important;
+            // &.absolute {
+            //     position: absolute;
+            //     top: 0;
+            //     right: 0;
+            // }
+        }
+        .date_range-i {
+            font-size: 18px;
+            position: absolute!important;
+            top: -2px!important;
+            right: -2px!important;
+        }
+    }
+    .bed-container .bed-body {
+        box-sizing: border-box;
+        width: 9.5% !important;
+        margin-right: 0.55% !important;
+    }
+    .bed-container .bed-body:nth-child(10n+10) {
+        margin-right: 0 !important
+    }
+
+    .print-only {
+        display: none;
+    }
+    @media only screen and (max-width: 1800px) {
+        .bed-container .bed-body {
+            box-sizing: border-box;
+            width: 12% !important;
+            margin-right: 0.57% !important;
+        }
+        .bed-container .bed-body:nth-child(10n+10) {
+            margin-right: 0.57% !important;
+        }
+        .bed-container .bed-body:nth-child(8n+8) {
+            margin-right: 0 !important
+        }
+    }
+    @media only screen and (max-width: 1500px) {
+        .bed-container .bed-body {
+            box-sizing: border-box;
+            width: 16% !important;
+            margin-right: 0.8% !important;
+        }
+        .bed-container .bed-body:nth-child(10n+10), .bed-container .bed-body:nth-child(8n+8) {
+            margin-right: 0.8% !important
+        }
+        .bed-container .bed-body:nth-child(6n+6) {
+            margin-right: 0 !important
+        }
+    }
+    @media only screen and (max-width: 1000px) {
+        .bed-container .bed-body {
+            box-sizing: border-box;
+            width: 33% !important;
+            margin-right: 0.5% !important;
+            align-self: auto;
+        }
+        .bed-container .bed-body:nth-child(10n+10), .bed-container .bed-body:nth-child(8n+8), .bed-container .bed-body:nth-child(6n+6) {
+            margin-right: 0.5% !important
+        }
+        .bed-container .bed-body:nth-child(3n+3) {
+            margin-right: 0 !important
+        }
+    }
+    @media only screen and (max-width: 700px) {
+        .bed-container .bed-body {
+            box-sizing: border-box;
+            width: 49.5% !important;
+            margin-right: 0.5% !important;
+            align-self: auto;
+        }
+        .bed-container .bed-body:nth-child(10n+10), .bed-container .bed-body:nth-child(8n+8), .bed-container .bed-body:nth-child(6n+6), .bed-container .bed-body:nth-child(3n+3) {
+            margin-right: 0.5% !important
+        }
+        .bed-container .bed-body:nth-child(2n+2) {
+            margin-right: 0% !important
+        }
+    }
+    // 列印
+    @media print {
+        * {
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+          }
+        .bed-container {
+            // page-break-inside: avoid;
+            // break-inside: avoid;
+
+            // width: 21cm;
+            // min-height: 29.7cm;
+            // height: 100%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            background-color: #fff;
+
+            .bed-body {
+                // page-break-inside: avoid;
+                // break-inside: avoid;
+                box-sizing: border-box;
+                width: 40mm !important;
+                max-width: 40mm !important;
+                align-self: center;
+                // margin-right: 0.8% !important;
+            }
+            .bed-body + .bed-body {
+                margin-right: 6px!important;
+            }
+
+            .shift {
+                padding: 0 !important;
+            }
+        }
+
+        md-content {
+            background-color: #fff;
+        }
+        .print-only {
+            display: block;
+            padding-left: 40px;
+        }
+    }
+
+    @page {
+        size: A4 auto;
+        margin: 0.5cm;
+    }
+}

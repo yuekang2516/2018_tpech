@@ -1,0 +1,24 @@
+[
+    {
+        "Id": "123",
+        "RecordTime": "2019-03-18T10:25:00Z",
+        "CreatedUserId": "5c8f5c9e98584d53f044eac8",
+        "CreatedUserName": "楊昌宏",
+        "CreatedTime": "2019-03-18T10:26:33.94Z",
+        "Items": [],
+        "ModifiedUserId": null,
+        "ModifiedUserName": null,
+        "ModifiedTime": null 
+    }, 
+    {
+        "Id": "1234",
+        "RecordTime": "2019-03-18T10:25:00Z",
+        "CreatedUserId": "5c8f5c9e98584d53f044eac8",
+        "CreatedUserName": "楊昌宏",
+        "CreatedTime": "2019-03-18T10:26:33.94Z",
+        "Items": [],
+        "ModifiedUserId": null,
+        "ModifiedUserName": null,
+        "ModifiedTime": null 
+    }
+]

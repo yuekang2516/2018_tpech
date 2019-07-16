@@ -1,0 +1,20 @@
+<md-bottom-sheet class="md-list md-has-header add-menu-container">
+    <md-subheader>新增</md-subheader>
+    <md-list style="margin-top:5px;">
+        <div layout="column" layout-align="center start">
+            <md-button
+               ng-click="addMenu.selectFiles()"
+                class="md-list-item-content in-add-menu-button" >
+                <md-icon style="color:#747474">cloud_upload</md-icon>
+                <span class="button-label">檔案上傳</span>
+            </md-button>
+            <md-button
+                ng-click="addMenu.newFolder()"
+                class="md-list-item-content in-add-menu-button" >
+                <md-icon style="color:#747474">create_new_folder</md-icon>
+                <span class="button-label">新增資料夾</span>
+            </md-button>
+            
+        </div>
+    </md-list>
+</md-bottom-sheet>

@@ -1,0 +1,264 @@
+<style type="text/css">
+    .peritonealDialysisTabView .inputbox .inputBoxTit{
+        width:300px;
+    }
+    md-dialog md-dialog-actions {
+        min-height: 52px;
+    }
+    .inputbox .inputBoxTit{width:100px;}
+    input{width:100%;}
+    @media (max-width: 599px){
+        /* md-dialog md-dialog-actions {
+            min-height: 120px;
+        } */
+        .peritonealDialysisTabView .inputbox .inputBoxTit{
+            width:inherit;
+        }
+    }
+    @media print{
+        * {
+            -webkit-print-color-adjust: exact !important;
+        }
+        .peritonealDialysisTabView{
+            display: inline-table; /* Not really needed in all cases */
+        }
+        md-dialog{
+            box-shadow: none;
+            width:100%;
+        }
+        div,input,table,select,md-select{
+            page-break-inside :avoid;
+            page-break-after: avoid;
+        }
+    }
+    .patient_name{
+        position: absolute;
+        left: 250px;
+        top: 12px;
+    }
+</style>
+<md-dialog class="peritonealDialysisTabView">
+    <form name="editForm" novalidate ng-cloak>
+        <md-toolbar hide-gt-xs>
+            <div class="md-toolbar-tools">
+                <md-button class="circular md-button ng-scope md-ink-ripple" aria-label="Settings" ng-click="$ctrl.cancel()">
+                    <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+                </md-button>
+                <h3>
+                    <span ng-if="$ctrl.vtPhoneDataObj.isCreate">{{'visitPhone.dialog.createTitle' | translate}}</span>
+                    <span ng-if="!$ctrl.vtPhoneDataObj.isCreate && !$ctrl.vtPhoneDataObj.Status == 'Deleted'">{{'visitPhone.dialog.editTitle' | translate}}</span>
+                    <span ng-show="$ctrl.vtPhoneDataObj.Status == 'Deleted'" >{{'visitPhone.dialog.readTitle' | translate}}</span>
+                </h3>
+                <div
+                    class="{{'patient_name ' + (($ctrl.currentPatient.Gender|gender) == '男' ? 'male ' : '') + (($ctrl.currentPatient.Gender|gender) == '女' ? 'female' : '') }}">
+                    {{ $ctrl.currentPatient.MedicalId + ' - ' + $ctrl.currentPatient.Name }}
+                </div>
+                <span flex></span>
+                <span style="font-size:16px;" ng-show="$ctrl.vtPhoneDataObj.Status == 'Deleted'" class="readonly-text" title="{{ 'customMessage.readonlyTitle' | translate }}" translate>{{ 'customMessage.readonly' }}</span>
+            </div>
+        </md-toolbar>
+        <summary-toolbar ng-if="$ctrl.vtPhoneDataObj.isCreate" ng-click="$ctrl.cancel()" toolbar-title="'visitPhone.dialog.createTitle' | translate"></summary-toolbar>
+        <summary-toolbar ng-if="!$ctrl.vtPhoneDataObj.isCreate" ng-click="$ctrl.cancel()" toolbar-title="'visitPhone.dialog.editTitle' | translate"></summary-toolbar>    
+        <div
+            class="{{'patient_name ' + (($ctrl.currentPatient.Gender|gender) == '男' ? 'male ' : '') + (($ctrl.currentPatient.Gender|gender) == '女' ? 'female' : '') }}">
+            {{ $ctrl.currentPatient.MedicalId + ' - ' + $ctrl.currentPatient.Name }}
+        </div>
+        <span ng-show="$ctrl.vtPhoneDataObj.Status == 'Deleted'" class="readonly-text" title="{{ 'customMessage.readonlyTitle' | translate }}" translate>{{ 'customMessage.readonly' }}</span>
+        <!-- <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 ng-if="$ctrl.vtPhoneDataObj.isCreate" translate="visitPhone.dialog.createTitle"></h2>
+                <h2 ng-if="!$ctrl.vtPhoneDataObj.isCreate" translate="visitPhone.dialog.editTitle"></h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+                    <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar> -->
+        <md-dialog-content>
+            <div class="dialogBoxData">
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem lightblue">
+                        <label>*日期</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.date" type="date" min="1900-01-01" max="2999-12-31" ng-disabled="!$ctrl.vtPhoneDataObj.isCreate"
+                        placeholder="yyyy-MM-ddTHH:mm:ss" name="RecordDate" required>
+                        <div ng-messages="editForm.RecordDate.$error" ng-show="editForm.RecordDate.$dirty">
+                            <div ng-message="required" class="clrRequired">必填選項</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem lightblue">
+                        <label>*時間</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.time" type="time" placeholder="HH:mm" required required >
+                        <div ng-messages="editForm.RecordTime.$error" ng-show="editForm.RecordTime.$dirty">
+                            <div ng-message="required" class="clrRequired">必填選項</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>操作問題</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-checkbox ng-repeat="op in $ctrl.Operational_Problems" ng-checked="op.Check" ng-disabled="op.disabled"
+                            ng-click="$ctrl.checkTheBox('Operational_Problems', $index)">
+                            {{op.Text}}
+                        </md-checkbox>                        
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>水分控制</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <!-- <input ng-model="$ctrl.vtPhoneDataObj.Catheter_Infection" maxlength="100" type="text"> -->
+                        <md-radio-group class="radioGroup" ng-model="$ctrl.vtPhoneDataObj.Moisture_Control">
+                            <md-radio-button value="體液控制">體液控制</md-radio-button>
+                            <md-radio-button value="透析液調整">透析液調整</md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>血液檢查報告</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtPhoneDataObj.Report_Blood_Examination" maxlength="100" type="text">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>飲食調整</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtPhoneDataObj.Dietary_Adjustment" maxlength="100" type="text">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>藥物調整</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtPhoneDataObj.Drug_Adjustment" maxlength="100" type="text">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>透析液</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <!-- <input ng-model="$ctrl.vtPhoneDataObj.Assessment_Muscles" maxlength="100" type="text"> -->                        
+                        <md-radio-group class="radioGroup" ng-model="$ctrl.vtPhoneDataObj.Dialysate">
+                            <md-radio-button value="清澈">清澈</md-radio-button>
+                            <md-radio-button value="混濁">混濁</md-radio-button>
+                            <md-radio-button value="血樣">血樣</md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>導管出口</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-checkbox ng-repeat="co in $ctrl.Catheter_Outlet" ng-checked="co.Check" ng-disabled="co.disabled"
+                            ng-click="$ctrl.OneSelect_All_disabled_Check('Catheter_Outlet', $index)">
+                                {{co.Text}}
+                        </md-checkbox>  
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>約診日期</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtPhoneDataObj.Appointment_Date"  type="date" min="1900-01-01" max="2999-12-31">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>生理變化及處理</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtPhoneDataObj.Physiological_Change" maxlength="100" type="text">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>腹膜炎相關問題</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtPhoneDataObj.Related_Problem_Peritonitis" maxlength="100" type="text">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>緊急事件處理</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtPhoneDataObj.Emergency_Management" maxlength="100" type="text">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>了解病人日常生活調適問題</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtPhoneDataObj.Understanding_Patient_Daily" maxlength="100" type="text">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>透析液儲備及運送</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtPhoneDataObj.Dialysate_Reserve_Transport" maxlength="100" type="text">
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>其他</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtPhoneDataObj.Other" maxlength="100" type="text">
+                    </div>
+                </div>
+                <div row-warp layout="row" layout-sm="row" layout-xs="column">
+                    <div flex="50" flex-xs="100"  ng-show="$ctrl.vtPhoneDataObj.CreatedUserName">
+                        <!-- <span>建立: {{ $ctrl.regForm.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                        <span translate="visitPhone.createdTime"
+                                translate-values='{CreatedTime: $ctrl.vtPhoneDataObj.CreatedTime}'></span>
+                        <seal model="$ctrl.vtPhoneDataObj" modified="none"></seal>
+                    </div>
+                    <div flex="50" flex-xs="100"  ng-show="$ctrl.vtPhoneDataObj.ModifiedTime != null">
+                        <!-- <span>修改: {{ $ctrl.regForm.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                        <span translate="visitPhone.editedTime"
+                                translate-values='{ModifiedTime: $ctrl.vtPhoneDataObj.ModifiedTime}'></span>
+                        <seal model="$ctrl.vtPhoneDataObj" created="none"></seal>
+                    </div>
+                </div>
+                <!-- <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>簽名</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.vtPhoneDataObj.Daily_Assessment_Dietary" maxlength="100" type="text">
+                    </div>
+                </div> -->
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row" ng-hide="$ctrl.vtPhoneDataObj.Status == 'Deleted'" class="no-print">
+            <div layout="row" layout-align="end center">
+                <md-button class="md-raised" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.cancel()">
+                    {{'visitPhone.dialog.cancel' | translate}}
+                </md-button>
+                <md-button class="md-raised md-primary" ng-click="$ctrl.ok()" >
+                    {{$ctrl.vtPhoneDataObj.isCreate ? 'visitPhone.dialog.create' : 'visitPhone.dialog.edit' | translate}}
+                </md-button>
+            </div>
+        </md-dialog-actions>  
+    </form>
+</md-dialog>

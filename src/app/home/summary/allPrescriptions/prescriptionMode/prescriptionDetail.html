@@ -1,0 +1,316 @@
+<div layout="column" class="container">
+    <summary-toolbar ng-if="$ctrl.prescriptionId == 'add'"
+        toolbar-title="'allPrescriptions.prescriptionDetail.createPrescription'|translate" cancel="$ctrl.back()">
+    </summary-toolbar>
+    <summary-toolbar ng-if="$ctrl.prescriptionId != 'add' && $ctrl.serviceData.Status !== 'Deleted'"
+        toolbar-title="'allPrescriptions.prescriptionDetail.editPrescription'|translate" cancel="$ctrl.back()">
+    </summary-toolbar>
+    <summary-toolbar ng-if="$ctrl.serviceData.Status === 'Deleted'"
+        toolbar-title="'allPrescriptions.prescriptionDetail.showDeleted'|translate" cancel="$ctrl.back()">
+    </summary-toolbar>
+
+    <!-- <div hide-xs hide-sm ng-show="!$ctrl.loading">
+        <h3 style="float: left; padding-left: 10px">
+            <span ng-show="$ctrl.prescriptionId == 'add'" translate="allPrescriptions.prescriptionDetail.createPrescription"></span>
+            <span ng-show="$ctrl.prescriptionId != 'add' && $ctrl.serviceData.Status !== 'Deleted'" translate="allPrescriptions.prescriptionDetail.editPrescription"></span>
+            <span ng-show="$ctrl.serviceData.Status === 'Deleted'" translate="allPrescriptions.prescriptionDetail.showDeleted"></span>
+        </h3>
+        <md-button style="float:right; margin-top: 8px" class="md-secondary md-icon-button" ng-click="$ctrl.back()" aria-label="call">
+            <i class="material-icons">cancel</i>
+        </md-button>
+    </div> -->
+    <span ng-if="!$ctrl.canAccess" class="readonly-text" title="{{ 'customMessage.readonlyTitle' | translate }}"
+        translate>{{ 'customMessage.readonly' }}</span>
+
+    <loading ng-show="$ctrl.loading">loading...</loading>
+    <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column">
+        <h3 style="margin:0; padding:10px 0 0 0 " translate>{{'allPrescriptions.prescriptionTabPage.serverError'}}</h3>
+    </div>
+    <md-content class="content" style="padding: 10px;" ng-show="!$ctrl.loading && !$ctrl.isError" layout="column" flex>
+        <!-- <div>
+            <label ng-show="$ctrl.prescriptionId == 'add'" style="color: #42A5F5" translate>
+                {{'allPrescriptions.prescriptionDetail.loadPrev'}}
+                <span>&nbsp;&nbsp;</span>
+            </label>
+            <button ng-show="$ctrl.prescriptionId == 'add'" type="button" class="md-raised md-primary" style="width: 40px" ng-click="$ctrl.ditto()">{{'allPrescriptions.prescriptionDetail.yes' | translate}}</button>
+        </div> -->
+        <form>
+            <div layout="row" class="mode-label-div">
+                <label
+                    style="color: #42A5F5; margin:0px 6px 5px 0px; font-weight: bold">{{('allPrescriptions.prescriptionDetail.Type' | translate) + ' : '}}</label>
+                <!-- <md-radio-group ng-if="!$ctrl.isCloseModeAndType" ng-model="$ctrl.serviceData.Type">
+                    <md-radio-button value="LongTerm" class="md-primary">{{'allPrescriptions.prescriptionDetail.LongTerm' | translate}}</md-radio-button>
+                    <md-radio-button value="ShortTerm">{{'allPrescriptions.prescriptionDetail.ShortTerm' | translate}}</md-radio-button>
+                </md-radio-group> -->
+                <div ng-if="$ctrl.isCloseModeAndType">
+                    <span>{{'allPrescriptions.prescriptionDetail.LongTerm' | translate}}</span>
+                </div>
+                <div ng-if="!$ctrl.isCloseModeAndType">
+                    <span>{{'allPrescriptions.prescriptionDetail.ShortTerm' | translate}}</span>
+                </div>
+            </div>
+            <md-input-container class="md-block inbed" style="margin-bottom:0">
+                <md-checkbox ng-model="$ctrl.serviceData.InBed" ng-true-value="'true'" ng-false-value="'false'">
+                    {{'allPrescriptions.prescriptionDetail.InBed' | translate}}
+                </md-checkbox>
+            </md-input-container>
+            <h3 translate style="margin:0; padding:0">{{'allPrescriptions.prescriptionDetail.mode'}}</h3>
+            <md-radio-group layout="row" layout-wrap ng-if="!$ctrl.isCloseModeAndType && !$ctrl.copy"
+                ng-change="$ctrl.changeMode()" ng-model="$ctrl.DialysisMode" class="mode">
+                <md-radio-button
+                    ng-repeat="p in $ctrl.HospitalSettings['DialysisSetting'].PrescriptionModes track by $index"
+                    ng-value="p">
+                    {{ p }}
+                </md-radio-button>
+            </md-radio-group>
+            <div ng-if="$ctrl.isCloseModeAndType && !$ctrl.copy" class="mode-tag-div">
+                <span>{{$ctrl.tag}}</span>
+            </div>
+            <div ng-if="$ctrl.copy" class="mode-tag-div">
+                <span>{{$ctrl.serviceData.DialysisMode.Name}}</span>
+            </div>
+            <div layout="row" layout-wrap>
+                <md-input-container ng-hide="$ctrl.serviceData.Type === 'ShortTerm'" flex="50" flex-xs="100"
+                    style="margin-bottom:0">
+                    <label translate>{{'allPrescriptions.prescriptionDetail.StandardWeight'}}</label>
+                    <input ng-model="$ctrl.serviceData.StandardWeight"
+                        placeholder="{{'allPrescriptions.prescriptionDetail.enterStandardWeight' | translate}}"
+                        ng-disabled="$ctrl.serviceData.Type === 'ShortTerm'">
+                </md-input-container>
+                <md-input-container ng-hide="$ctrl.serviceData.Type === 'LongTerm'" flex="50" flex-xs="100"
+                    style="margin-bottom:0">
+                    <label translate>{{'allPrescriptions.prescriptionDetail.Dehydration'}}</label>
+                    <input ng-model="$ctrl.serviceData.Dehydration"
+                        placeholder="{{'allPrescriptions.prescriptionDetail.enterDehydration' | translate}}"
+                        ng-disabled="$ctrl.serviceData.Type === 'LongTerm'">
+                </md-input-container>
+            </div>
+
+            <div layout="row" layout-wrap>
+                <md-input-container class="md-block" flex="25" flex-sm="50" flex-xs="50"
+                    style="margin-bottom:0; height:33px">
+                    <label htmlFor="bF" translate>{{'allPrescriptions.prescriptionDetail.BF'}}</label>
+                    <input ng-model="$ctrl.serviceData.BF"
+                        placeholder="{{'allPrescriptions.prescriptionDetail.enterBF' | translate}}">
+                </md-input-container>
+                <md-input-container ng-hide="$ctrl.isCRRT" class="md-block" flex="25" flex-sm="50" flex-xs="50"
+                    style="margin-bottom:0;">
+                    <label translate>{{'allPrescriptions.prescriptionDetail.Frequency'}}</label>
+                    <md-select ng-model="$ctrl.serviceData.Frequency" style="margin:0;">
+                        <md-option value="" translate>{{'allPrescriptions.prescriptionDetail.chooseFrequency'}}
+                        </md-option>
+                        <md-option ng-value="f"
+                            ng-repeat="f in $ctrl.HospitalSettings['DialysisSetting'].Frequencies track by $index">{{f}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container ng-hide="$ctrl.isCRRT" class="md-block" flex="25" flex-sm="50" flex-xs="50"
+                    style="margin-bottom:0;">
+                    <label translate>{{'allPrescriptions.prescriptionDetail.DurationH'}}</label>
+                    <md-select ng-model="$ctrl.serviceData.Duration.Hours" style="margin:0;">
+                        <md-option value="" translate>{{'allPrescriptions.prescriptionDetail.choose'}}</md-option>
+                        <md-option ng-repeat="hour in $ctrl.durationH" ng-value="hour">{{::hour}}</md-option>
+                        <!-- <md-option value="1">1</md-option>
+                        <md-option value="2">2</md-option>
+                        <md-option value="3">3</md-option>
+                        <md-option value="4">4</md-option>
+                        <md-option value="5">5</md-option> -->
+                    </md-select>
+                </md-input-container>
+                <md-input-container ng-hide="$ctrl.isCRRT" class="md-block" flex="25" flex-sm="50" flex-xs="50"
+                    style="margin-bottom:0;">
+                    <label translate>{{'allPrescriptions.prescriptionDetail.DurationM'}}</label>
+                    <md-select ng-model="$ctrl.serviceData.Duration.Minutes" style="margin:0;">
+                        <md-option value="" translate>{{'allPrescriptions.prescriptionDetail.choose'}}</md-option>
+                        <md-option value="0">00</md-option>
+                        <md-option value="5">05</md-option>
+                        <md-option value="10">10</md-option>
+                        <md-option value="15">15</md-option>
+                        <md-option value="20">20</md-option>
+                        <md-option value="25">25</md-option>
+                        <md-option value="30">30</md-option>
+                        <md-option value="35">35</md-option>
+                        <md-option value="40">40</md-option>
+                        <md-option value="45">45</md-option>
+                        <md-option value="50">50</md-option>
+                        <md-option value="55">55</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <h3 translate style="margin:0px; padding:10px 0">{{'allPrescriptions.prescriptionDetail.Anticoagulants'}}
+            </h3>
+            <div ng-repeat="item in $ctrl.HospitalSettings['DialysisSetting'].Anticoagulants track by $index">
+                <md-checkbox ng-checked="$ctrl.exists(item)" ng-click="$ctrl.toggle(item, $ctrl.selected)">
+                    {{ item }}
+                </md-checkbox>
+                <div ng-show="$ctrl.exists(item)" layout="row" layout-wrap>
+                    <md-input-container flex="100" flex-gt-xs="50" style="margin-bottom:0">
+                        <input ng-model="$ctrl.Anticoagulants[item][0]"
+                            placeholder="{{'allPrescriptions.prescriptionDetail.firstAnticoagulants' | translate}}">
+                    </md-input-container>
+                    <md-input-container flex="100" flex-gt-xs="50" style="margin-bottom:0">
+                        <input ng-model="$ctrl.Anticoagulants[item][1]"
+                            placeholder="{{'allPrescriptions.prescriptionDetail.maintainAnticoagulants' | translate}}">
+                    </md-input-container>
+                </div>
+            </div>
+            <md-input-container class="md-block" style="margin-bottom:0">
+                <label translate>{{'allPrescriptions.prescriptionDetail.reason'}}</label>
+                <input ng-model="$ctrl.serviceData.AnticoagulantFreeCause"
+                    placeholder="{{'allPrescriptions.prescriptionDetail.enterReason' | translate}}">
+            </md-input-container>
+            <h3 style="margin:0; padding:10px 0 0 0" translate>{{'allPrescriptions.prescriptionDetail.otherItem'}}</h3>
+            <div layout="row" layout-wrap>
+                <md-input-container class="md-block" flex="50" flex-gt-xs="33" style="margin-bottom:0">
+                    <label translate>{{'allPrescriptions.prescriptionDetail.Dialysate'}}</label>
+                    <md-select ng-model="$ctrl.serviceData.Dialysate">
+                        <md-option value="" translate>{{'allPrescriptions.prescriptionDetail.chooseDialysate'}}
+                        </md-option>
+                        <md-option ng-value="D"
+                            ng-repeat="D in $ctrl.HospitalSettings['DialysisSetting'].Dialysates track by $index">{{D}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <!-- <md-input-container class="md-block" flex="50" flex-gt-xs="33" style="margin-bottom:0">
+                    <label>{{'allPrescriptions.prescriptionDetail.HCO3' | translate}}<sub>3</sub></label>
+                    <input ng-model="$ctrl.serviceData.HCO3" placeholder="{{'allPrescriptions.prescriptionDetail.enterHCO3' | translate}}">
+                </md-input-container> -->
+                <md-input-container class="md-block" flex="50" flex-gt-xs="33" style="margin-bottom:0">
+                    <label>{{'allPrescriptions.prescriptionDetail.Na' | translate}}<sup>+</sup></label>
+                    <input ng-model="$ctrl.serviceData.Na"
+                        placeholder="{{'allPrescriptions.prescriptionDetail.enterNa' | translate}}">
+                </md-input-container>
+                <md-input-container class="md-block" flex="50" flex-gt-xs="33" style="margin-bottom:0">
+                    <label htmlFor="ca" translate>{{'allPrescriptions.prescriptionDetail.DialysateTemperature'}}</label>
+                    <input ng-model="$ctrl.serviceData.DialysateTemperature"
+                        placeholder="{{'allPrescriptions.prescriptionDetail.enterDialysateTemperature' | translate}}">
+                </md-input-container>
+                <md-input-container class="md-block" flex="50" flex-gt-xs="33" style="margin-bottom:0">
+                    <label translate>{{'allPrescriptions.prescriptionDetail.DialysateFlowRate'}}</label>
+                    <md-select ng-model="$ctrl.serviceData.DialysateFlowRate">
+                        <md-option value="" translate>{{'allPrescriptions.prescriptionDetail.chooseDialysateFlowRate'}}
+                        </md-option>
+                        <md-option ng-value="D"
+                            ng-repeat="D in $ctrl.HospitalSettings['DialysisSetting'].DialysateFlowRates track by $index">
+                            {{D}}</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container class="md-block" flex="50" flex-gt-xs="33" style="margin-bottom:0">
+                    <label translate>{{'allPrescriptions.prescriptionDetail.Route'}}</label>
+                    <md-select ng-model="$ctrl.serviceData.Route">
+                        <md-option value="" translate>{{'allPrescriptions.prescriptionDetail.chooseRoute'}}</md-option>
+                        <md-option ng-value="R"
+                            ng-repeat="R in $ctrl.HospitalSettings['DialysisSetting'].Routes track by $index">{{R}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <!-- <md-input-container ng-hide="$ctrl.isCRRT" class="md-block" flex="50" flex-gt-xs="33">
+                    <label translate>{{'allPrescriptions.prescriptionDetail.NeedleArteries'}}</label>
+                    <md-select ng-model="$ctrl.serviceData.Needle.ArteryLength">
+                        <md-option value="" translate>{{'allPrescriptions.prescriptionDetail.chooseNeedleLength'}}</md-option>
+                        <md-option ng-value="A" ng-repeat="A in $ctrl.HospitalSettings['DialysisSetting'].NeedleArteries track by $index">{{A}}</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container ng-hide="$ctrl.isCRRT" class="md-block" flex="50" flex-gt-xs="33">
+                    <label translate>{{'allPrescriptions.prescriptionDetail.NeedleVeins'}}</label>
+                    <md-select ng-model="$ctrl.serviceData.Needle.VeinLength">
+                        <md-option value="" translate>{{'allPrescriptions.prescriptionDetail.chooseNeedleLength'}}</md-option>
+                        <md-option ng-value="V" ng-repeat="V in $ctrl.HospitalSettings['DialysisSetting'].NeedleVeins track by $index">{{V}}</md-option>
+                    </md-select>
+                </md-input-container> -->
+                <md-input-container class="md-block" flex="50" flex-gt-xs="33">
+                    <label translate>{{'allPrescriptions.prescriptionDetail.ArtificialKidneys'}}</label>
+                    <md-select ng-model="$ctrl.serviceData.ArtificialKidney">
+                        <md-option value="" translate>{{'allPrescriptions.prescriptionDetail.chooseArtificialKidneys'}}
+                        </md-option>
+                        <md-option ng-value="A"
+                            ng-repeat="A in $ctrl.HospitalSettings['DialysisSetting'].ArtificialKidneys track by $index">
+                            {{A}}</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+
+            <div class="mode-label-div">
+                <md-input-container class="md-block"
+                    ng-show="($ctrl.DialysisMode.substring($ctrl.DialysisMode.length - 1).toUpperCase() === 'F' || $ctrl.DialysisMode.toUpperCase() === 'CVVH')"
+                    style="margin-bottom:0">
+                    <!--$ctrl.Mode ==='HDF' || $ctrl.Mode === 'OHDF'-->
+                    <label translate>{{'allPrescriptions.prescriptionDetail.SupplementVolume'}}</label>
+                    <input ng-model="$ctrl.serviceData.SupplementVolume"
+                        placeholder="{{'allPrescriptions.prescriptionDetail.enterSupplementVolume' | translate}}">
+                </md-input-container>
+                <md-input-container class="md-block"
+                    ng-show="($ctrl.DialysisMode.substring($ctrl.DialysisMode.length - 1).toUpperCase() === 'F' || $ctrl.DialysisMode.toUpperCase() === 'CVVH')"
+                    style="margin-bottom:0">
+                    <!--$ctrl.Mode ==='HDF' || $ctrl.Mode === 'OHDF'-->
+                    <label translate>{{'allPrescriptions.prescriptionDetail.SupplementPosition'}}</label>
+                    <md-select ng-model="$ctrl.serviceData.SupplementPosition">
+                        <md-option translate>{{'allPrescriptions.prescriptionDetail.choosePosition'}}</md-option>
+                        <md-option value="前" translate>{{'allPrescriptions.prescriptionDetail.front'}}</md-option>
+                        <md-option value="後" translate>{{'allPrescriptions.prescriptionDetail.back'}}</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+
+            <md-input-container class="md-block" style="margin-bottom:0">
+                <label translate>{{'allPrescriptions.prescriptionDetail.dialyzerSurfaceArea'}}</label>
+                <input ng-model="$ctrl.serviceData.DialyzerSurfaceArea"
+                    placeholder="{{'allPrescriptions.prescriptionDetail.dialyzerSurfaceAreaPlaceHolder' | translate}}">
+            </md-input-container>
+
+            <!-- <md-input-container ng-hide="!$ctrl.isCRRT" class="md-block" style="margin-bottom:0">
+                <label translate>{{'allPrescriptions.prescriptionDetail.PBP'}}</label>
+                <input ng-model="$ctrl.serviceData.PBP" placeholder="{{'allPrescriptions.prescriptionDetail.PBPPlaceHolder' | translate}}">
+            </md-input-container>
+
+            <md-input-container ng-hide="!$ctrl.isCRRT" class="md-block" style="margin-bottom:0">
+                <label translate>{{'allPrescriptions.prescriptionDetail.FluidFlowWate'}}</label>
+                <input ng-model="$ctrl.serviceData.FluidFlowWate" placeholder="{{'allPrescriptions.prescriptionDetail.FluidFlowWatePlaceHolder' | translate}}">
+            </md-input-container>
+
+            <md-input-container ng-hide="!$ctrl.isCRRT" class="md-block" style="margin-bottom:0">
+                <label translate>{{'allPrescriptions.prescriptionDetail.ACTControl'}}</label>
+                <input ng-model="$ctrl.serviceData.ACTControl" placeholder="{{'allPrescriptions.prescriptionDetail.ACTControlPlaceHolder' | translate}}">
+            </md-input-container> -->
+
+            <md-input-container class="md-block">
+                <label translate>{{'allPrescriptions.prescriptionDetail.Memo'}}</label>
+                <textarea id="Memo" ng-model="$ctrl.serviceData.Memo"
+                    placeholder="{{'allPrescriptions.prescriptionDetail.enterMemo' | translate}}" md-maxlength="150"
+                    rows="5" md-detect-hidden="true" md-select-on-focus></textarea>
+            </md-input-container>
+            <md-button ng-click="$ctrl.isOpenRight()" class="md-primary no-print">
+                {{'allNursingRecord.nursingRecord.insertPhrase' | translate}}
+            </md-button>
+            <div layout="row" layout-wrap>
+                <div flex="50" flex-xs="100" ng-show="$ctrl.prescriptionId != 'add'">
+                    <!-- <span>建立: {{ $ctrl.serviceData.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                    <span translate="allPrescriptions.prescriptionDetail.createdTime"
+                        translate-values='{CreatedTime: $ctrl.serviceData.CreatedTime}'></span>
+                    <seal model="$ctrl.serviceData" modified="none"></seal>
+                    <!--<span class="seal">{{$ctrl.serviceData.CreatedUserName}}</span>-->
+                </div>
+                <div flex="50" flex-xs="100"
+                    ng-show="$ctrl.prescriptionId!= 'add' && $ctrl.serviceData.ModifiedTime != null">
+                    <!-- <span>修改: {{ $ctrl.serviceData.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                    <span translate="allPrescriptions.prescriptionDetail.editedTime"
+                        translate-values='{ModifiedTime: $ctrl.serviceData.ModifiedTime}'></span>
+                    <seal model="$ctrl.serviceData" created="none"></seal>
+                    <!--<span class="seal">{{$ctrl.serviceData.ModifiedUserName}}</span>-->
+                </div>
+            </div>
+            <md-input-container class="no-print" layout="row" layout-margin layout-align="start center">
+                <md-button type="submit" ng-if="$ctrl.canAccess" class="md-raised md-primary"
+                    ng-click="$ctrl.submit($event)" ng-disabled="$ctrl.isSaving">
+                    {{'allPrescriptions.prescriptionDetail.save' | translate}}</md-button>
+                <md-progress-circular md-diameter="20px" md-mode="indeterminate" ng-show="$ctrl.isSaving">
+                </md-progress-circular>
+            </md-input-container>
+        </form>
+
+    </md-content>
+    <!-- <div flex ng-class="{deleted: $ctrl.serviceData.Status == 'Deleted'}"></div> -->
+    <!-- <md-content layout="column" layout-align="start center" flex>
+    </md-content> -->
+    <phrase id="phrase" callback="$ctrl.phraseInsertCallback(word)"></phrase>
+</div>

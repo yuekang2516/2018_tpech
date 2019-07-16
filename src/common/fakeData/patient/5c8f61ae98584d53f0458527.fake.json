@@ -1,0 +1,103 @@
+{
+    "DateTimestamp": "2019-03-20T14:47:50.0283903+08:00",
+    "Module": "Dialysis",
+    "BarCode": null,
+    "RFID": null,
+    "Name": "方文豪",
+    "Gender": "M",
+    "WardId": "598952092345941e60ae88e0",
+    "WardName": "泉新",
+    "BedNo": null,
+    "AdmissionBedNo": null,
+    "Birthday": "1966-06-07T16:00:00Z",
+    "IdentifierId": "A148433148",
+    "IDType": "IDNumber",
+    "MedicalId": "23561256",
+    "Tags": [
+        {
+            "TagName": "跌倒",
+            "TagColor": "#0D3472",
+            "TagBgColor": "#B6CFF5",
+            "LineThrough": "none",
+            "FontStyle": "normal",
+            "FontWeight": "normal"
+        }
+    ],
+    "Type": null,
+    "BloodTypes": "A",
+    "RH": "+",
+    "Address": null,
+    "Phone": null,
+    "Insurance": null,
+    "Photo": null,
+    "ClinicalDiagnosis": null,
+    "MedicalHistory": null,
+    "AllergicHistory": null,
+    "AllergicMedicine": null,
+    "Memo": "",
+    "State": "1",
+    "AdmissionNumber": null,
+    "AdmissionDate": null,
+    "DischargeDate": null,
+    "Height": null,
+    "Weight": null,
+    "StateChangedDate": null,
+    "DeathDate": null,
+    "DeathReason": null,
+    "RaspberryPiSetting": {
+        "RaspberryPiId": null,
+        "Frequency": null,
+        "Meter": null,
+        "Status": null,
+        "DialysisId": null
+    },
+    "OrganTransplantDate": null,
+    "EntryMode": "步行",
+    "LastDialysisInfo": {
+        "DialysisId": "5c9080ae20c32b17a4c56a3a",
+        "StartTime": "2019-03-19T05:39:58.912Z",
+        "CareUserIds": [
+            "5c8f5c9e98584d53f044eac8"
+        ],
+        "Status": null,
+        "EstimatedEndTime": "2019-03-19T08:10:00Z",
+        "EndTime": null,
+        "BeforeBP": {
+            "BPS": null,
+            "BPD": null
+        },
+        "AfterBP": {
+            "BPS": null,
+            "BPD": null
+        },
+        "BeforeWeight": null,
+        "AfterWeight": null,
+        "CheckInTime": null
+    },
+    "FirstDialysisDate": "2017-02-06T16:00:00Z",
+    "FirstDialysisDateInHospital": "2019-03-17T16:00:00Z",
+    "IsDiabeticNephropathy": false,
+    "PrimaryDisease": "A",
+    "PrimaryDiseaseDetail": "A-01A",
+    "Remark": null,
+    "HospitalId": "56fcc5dd4ead7870942f61c3",
+    "Revision": 1,
+    "HistoryId": null,
+    "Status": "Normal",
+    "CreatedUserId": "5c8f5c9e98584d53f044eac8",
+    "CreatedUserName": "楊昌宏",
+    "CreatedTime": "2019-03-18T09:15:26.995Z",
+    "ModifiedUserId": null,
+    "ModifiedUserName": "SYSTEM",
+    "ModifiedTime": "2019-03-19T07:11:02.103Z",
+    "Id": "5c8f61ae98584d53f0458527",
+    "CreatedOn": "2019-03-18T09:15:26Z",
+    "ModifiedOn": "0001-01-01T00:00:00Z",
+    "ObjectId": {
+        "Timestamp": 1552900526,
+        "Machine": 9984077,
+        "Pid": 21488,
+        "Increment": 4556071,
+        "CreationTime": "2019-03-18T09:15:26Z"
+    }
+}

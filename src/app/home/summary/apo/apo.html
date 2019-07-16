@@ -1,0 +1,96 @@
+<div layout="column" layout-fill>
+
+    <summary-toolbar ng-if="!$ctrl.apoId" toolbar-title="'apo.apo.createApo'|translate" cancel="$ctrl.back()"></summary-toolbar>
+    <summary-toolbar ng-if="$ctrl.apoId && $ctrl.regForm.Status !== 'Deleted'" toolbar-title="'apo.apo.editApo'|translate" cancel="$ctrl.back()"></summary-toolbar>
+    <summary-toolbar ng-if="$ctrl.regForm.Status === 'Deleted'" toolbar-title="'apo.apo.showDeleted'|translate" cancel="$ctrl.back()"></summary-toolbar>
+    <!-- <div hide-xs hide-sm ng-show="!$ctrl.loading">
+        <h3 style="float: left; padding-left: 10px">
+            <span ng-show="!$ctrl.apoId" translate="apo.apo.createApo"></span>
+            <span ng-show="$ctrl.apoId && $ctrl.regform.Status !== 'Deleted'" translate="apo.apo.editApo"></span>
+            <span ng-show="$ctrl.regform.Status === 'Deleted'" translate="apo.apo.showDeleted"></span>
+        </h3>
+        <md-button style="float:right; margin-top: 8px" class="md-secondary md-icon-button" ng-click="$ctrl.back()" aria-label="call">
+            <i class="material-icons">cancel</i>
+        </md-button>
+    </div> -->
+
+    <md-content layout="column" flex>
+        <loading ng-show="$ctrl.loading"></loading>
+        <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate>{{'apo.apos.serverError'}}</h3>
+        </div>
+        <form class="md-padding" name="form" ng-show="!$ctrl.loading && !$ctrl.isError">
+            <date-time-picker-standard my-model="$ctrl.regform.Time" text="'apo.apo.abnormal' | translate" required="true" />
+            <md-input-container class="md-input-has-value">
+                <label translate>{{'apo.apo.shift'}}</label>
+                <md-radio-group ng-model="$ctrl.regform.Shift" layout="row" aria-label="班次">
+                    <md-radio-button ng-value="'morning'">{{'apo.apo.morningShift' | translate}}</md-radio-button>
+                    <md-radio-button ng-value="'afternoon'">{{'apo.apo.afternoonShift' | translate}}</md-radio-button>
+                    <md-radio-button ng-value="'evening'">{{'apo.apo.eveningShift' | translate}}</md-radio-button>
+                </md-radio-group>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label translate>{{'apo.apo.ward'}}</label>
+                <input name="wardName" ng-model="$ctrl.regform.wardName" type="text" disabled>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label translate>{{'apo.apo.patient'}}</label>
+                <input name="Name" ng-model="$ctrl.regform.Name" type="text" disabled>
+            </md-input-container>
+            <!--<md-input-container class="md-block">
+                <label translate>{{'apo.apo.abnormalItem'}}</label>
+                <md-select name="abnormalItem" placeholder="{{'apo.apo.abnormalItem' | translate}}" ng-model="$ctrl.regform.abnormalItem"
+                    ng-change="$ctrl.selectItem($ctrl.regform.abnormalItem)" style="min-width: 200px;" required>
+                    <md-option ng-value="abnormalItem" ng-repeat="abnormalItem in $ctrl.abnormalItems | filter: { ParentId: null }" ng-selected="{{ $ctrl.regform.abnormalItem === abnormalItem.Id ? 'true' : 'false'}}">{{abnormalItem.Name}}</md-option>
+                </md-select>-->
+            <!--{{$ctrl.regform.abnormalItem}}-->
+            <!--<div class="errors" ng-messages="form.abnormalItem.$error">
+                    <div ng-message="required" translate>{{'apo.apo.abnormalItemRequired'}}</div>
+                </div>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label translate>{{'apo.apo.AbnormalItemId'}}</label>
+                <md-select name="AbnormalItemId" placeholder="異常項目子類別" ng-model="$ctrl.regform.AbnormalItemId" style="min-width: 200px;"
+                    required>
+                    <md-option ng-value="AbnormalItemId" ng-repeat="AbnormalItemId in $ctrl.abnormalItems | filter: { ParentId: $ctrl.selectedParentId }"
+                        ng-selected="{{ $ctrl.regform.AbnormalItemId === AbnormalItemId.Id ? 'true' : 'false' }}">{{AbnormalItemId.Name}}</md-option>
+                </md-select>-->
+            <!--{{$ctrl.regform.AbnormalItemId}}-->
+            <!--<div class="errors" ng-messages="form.AbnormalItemId.$error">
+                    <div ng-message="required" translate>{{'apo.apo.AbnormalItemIdRequired'}}</div>
+                </div>
+            </md-input-container>-->
+            <md-input-container class="md-block">
+                <span ng-repeat="abnormalItem in $ctrl.abnormalItems | filter: { ParentId: null }">
+                    {{abnormalItem.Name}}:
+                    <md-checkbox ng-repeat="abnormalItemId in $ctrl.abnormalItems | filter: { ParentId: abnormalItem.Id }" ng-checked="$ctrl.exists(abnormalItem.Id, abnormalItemId.Id)" ng-click="$ctrl.toggle(abnormalItem.Id, abnormalItemId.Id)">
+                        {{abnormalItemId.Name}}
+                    </md-checkbox>
+                    <br>
+                </span>
+            </md-input-container>
+            <md-input-container class="md-icon-float md-icon-right md-block">
+                <label translate>{{'apo.apo.Memo'}}</label>
+                <textarea ng-model="$ctrl.regform.Memo" rows="5" md-detect-hidden="true" md-select-on-focus></textarea>
+                <md-icon md-svg-src="static/img/svg/ic_undo_black_24px.svg" ng-click="$ctrl.redo()"></md-icon>
+            </md-input-container>
+            <div layout="row" layout-wrap>
+                <div flex="50" flex-xs="100" ng-show="$ctrl.regform.CreatedUserName">
+                    <!-- <span>建立: {{ $ctrl.regform.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                    <span translate="apo.apo.createdTime" translate-values='{CreatedTime: $ctrl.regform.CreatedTime}'></span>
+                    <seal model="$ctrl.regform" modified="none"></seal>
+                </div>
+                <div flex="50" flex-xs="100" ng-show="$ctrl.regform.ModifiedTime != null">
+                    <!-- <span>修改: {{ $ctrl.regform.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                    <span translate="apo.apo.editedTime" translate-values='{ModifiedTime: $ctrl.regform.ModifiedTime}'></span>
+                    <seal model="$ctrl.regform" created="none"></seal>
+                </div>
+            </div>
+            <md-input-container class="no-margin" layout="row" layout-margin layout-align="start center">
+                <md-button type="submit" class="md-raised md-primary" ng-show="$ctrl.regform.Status !== 'Deleted'" ng-click="$ctrl.submit($event)" ng-disabled="form.$invalid || $ctrl.abnormalArray.length === 0">{{'apo.apo.save' | translate}}</md-button>
+                <md-progress-circular md-diameter="20px" md-mode="indeterminate" ng-show="$ctrl.isSaving"></md-progress-circular>
+            </md-input-container>
+        </form>
+        <div ng-class="{deleted: $ctrl.regform.Status == 'Deleted'}"></div>
+    </md-content>
+</div>

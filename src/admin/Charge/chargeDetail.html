@@ -1,0 +1,144 @@
+<style scoped>
+    charge-detail {
+        height: 100%;
+    }
+
+    .groupX {
+        font-size: 16px;
+        margin: 0;
+        color: rgb(49, 46, 46);
+        background-color: rgba(224, 224, 224, 0.96);
+        text-transform: none;
+        font-weight: 400;
+        min-width: 100px;
+    }
+
+    .md-button.left {
+        border-radius: 10px 0 0 10px;
+    }
+
+    .md-button.middle {
+        border-radius: 0;
+        border-left: 1px solid rgba(230, 230, 230, 0.96);
+        border-right: 1px solid rgba(230, 230, 230, 0.96);
+    }
+
+    .md-button.right {
+        border-radius: 0 10px 10px 0;
+    }
+
+    .groupX.md-button:not([disabled]):hover {
+        background-color: gray;
+        color: white;
+        transition: 0.3s;
+    }
+
+    .padding {
+        padding: 20px;
+    }
+</style>
+
+<md-content layout-fill layout="column">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.back()">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <h4>
+                <span translate="charge.detailpageTitle" translate-values='{chargename: vm.title}'></span>
+            </h4>
+        </div>
+
+    </md-toolbar>
+    <loading ng-show="vm.loading"></loading>
+    <div flex ng-show="vm.isError" layout="column" layout-fill layout-align="center center">
+        <h3 translate="customMessage.serverError"></h3>
+    </div>
+    <div ng-show="!vm.loading && !vm.isError">
+        <md-subheader class="md-no-sticky" style="height: 46px;">
+        <div layout="row">
+            <div flex><span translate="charge.itemOverview"></span></div>
+            <div style="margin-top:-1.3em"><md-button class="md-raised md-primary" ng-click="vm.edit($event)"><span translate>{{'charge.editbutton'}}</span></md-button></div>
+        </div>
+        </md-subheader>
+        <div class="padding">
+            <md-grid-list md-cols="2" md-row-height="160px">
+                <md-grid-tile md-colspan="2">
+                    <div class="image-container">
+                        <img ng-show="vm.loadingPicture" height="16px" width="16px" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                        <img ng-if="!vm.photo" ng-src="static/img/Unknown.png" />
+                        <img ngf-thumbnail="vm.photo" />
+                    </div>
+                </md-grid-tile>
+            </md-grid-list>
+            <md-grid-list md-cols="2" md-row-height="64px">
+                <md-grid-tile>
+                    <md-input-container class="md-block" flex>
+                        <label translate="charge.codes"></label>
+                        <input type="text" name="Code" ng-model="vm.Code" readonly />
+                    </md-input-container>
+                </md-grid-tile>
+                <md-grid-tile>
+                    <md-input-container class="md-block" flex>
+                        <label>BarCode</label>
+                        <input type="text" name="BarCode" ng-model="vm.BarCode" readonly />
+                    </md-input-container>
+                </md-grid-tile>
+            </md-grid-list>
+            <md-grid-list md-cols="3" md-row-height="64px">
+                <md-grid-tile>
+                    <md-input-container class="md-block" flex>
+                        <label translate="charge.price"></label>
+                        <input type="text" name="Price" ng-model="vm.Price" readonly />
+                    </md-input-container>
+                </md-grid-tile>
+                <md-grid-tile>
+                    <md-input-container class="md-block" flex>
+                        <label translate="charge.nowStocks"></label>
+                        <input type="text" name="Stock" ng-model="vm.Stock" readonly />
+                    </md-input-container>
+                </md-grid-tile>
+                <md-grid-tile>
+                    <md-input-container class="md-block" flex>
+                        <label translate="charge.safeStocks"></label>
+                        <input type="text" name="SafetyStock" ng-model="vm.SafetyStock" readonly />
+                    </md-input-container>
+                </md-grid-tile>
+            </md-grid-list>
+            <div layout="row">
+                <md-button class="md-raised md-warn" ng-click="vm.PSW($event, '進貨')"><span translate>{{'charge.purchase'}}</span></md-button>
+                <md-button class="md-raised md-warn" ng-click="vm.PSW($event, '銷貨')"><span translate>{{'charge.sales'}}</span></md-button>
+                <md-button class="md-raised md-warn" ng-click="vm.PSW($event, '退貨')"><span translate>{{'charge.returns'}}</span></md-button>
+                <md-button class="md-raised md-warn" ng-click="vm.PSW($event, '盤點')"><span translate>{{'charge.inventory'}}</span></md-button>
+            </div>
+            <!--<section layout="row">
+                    <md-button class="groupX left" ng-click="vm.PSW($event, '進貨')">進貨</md-button>
+                    <md-button class="groupX middle" ng-click="vm.PSW($event, '銷貨')">銷貨</md-button>
+                    <md-button class="groupX middle" ng-click="vm.PSW($event, '退貨')">退貨</md-button>
+                    <md-button class="groupX right" ng-click="vm.PSW($event, '盤點')">盤點</md-button>
+                </section>-->
+        </div>
+    </div>
+    <md-subheader class="md-no-sticky" ng-show="!vm.isError"><span translate="charge.useList"></span></md-subheader>
+    <md-content layout-fill flex ng-show="!vm.isError">
+        <div ng-show="!vm.loading" infinite-scroll="vm.loadMore()" infinite-scroll-disabled='vm.loading' infinite-scroll-distance='2' infinite-scroll-parent>
+            <md-list>
+                <md-list-item class="md-2-line" ng-repeat="w in vm.showWarehouse | orderBy:'-RecordDateTime'" ng-click="vm.PSWEdit($event, $index)" ng-disabled="vm.checkInventory(w.Type)">
+                    <div class="md-list-item-text" layout="row">
+                        <h3>No. {{ $index + 1 }}</h3>
+                        <h3 flex ng-if="w.Type === 'Purchase'" translate="charge.purchaseDate" translate-values='{CreatedTime: w.RecordDateTime}'></h3>
+                        <h3 flex ng-if="w.Type === 'Destroy'" translate="charge.salesDate" translate-values='{CreatedTime: w.RecordDateTime}'></h3>
+                        <h3 flex ng-if="w.Type === 'Return'" translate="charge.returnsDate" translate-values='{CreatedTime: w.RecordDateTime}'></h3>
+                        <h3 flex ng-if="w.Type === 'Inventory'" translate="charge.inventoryDate" translate-values='{CreatedTime: w.RecordDateTime}'></h3>
+                        <h3 flex ng-if="w.Type === 'Use'" translate="charge.useDate" translate-values='{CreatedTime: w.CreatedTime}'></h3>
+                        <h3 flex translate="charge.user" translate-values='{user: w.CreatedUserName}'></h3>
+                        <h3 flex ng-if="w.Deposit !== 0" translate="charge.cnt" translate-values='{unit: vm.Unit , count: + w.Deposit}'></h3>
+                        <h3 flex ng-if="w.Withdraw !== 0" translate="charge.cnt" translate-values='{unit: vm.Unit , count: - w.Withdraw}'></h3>
+                        <h3 flex ng-if="w.Withdraw === w.Deposit" translate="charge.cnt" translate-values='{unit: vm.Unit , count: 0}'></h3>
+                        <h3 flex translate="charge.cnt" translate-values='{unit: vm.Unit , count: w.Stock}'></h3>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </div>
+    </md-content>
+</md-content>

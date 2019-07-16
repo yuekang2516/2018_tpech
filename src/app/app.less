@@ -1,0 +1,560 @@
+//Sets the height and width for ui-view so whenever a page gets injected will have a fixed hight.
+//This solves the fixed Toolbar problem.
+ui-view {
+    height: 100%;
+    width: 100%;
+}
+
+// ui-view.ng-scope.layout-column.flex{
+//     height: 100%;
+//     width: 100%;
+// }
+
+/*@media print {
+    @page {
+        // portrait 
+        size: A4 portrait;
+        // you can also specify margins here: 
+        // margin: 5mm;
+    }
+
+    body {
+        font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+        font-size: 0.8em;
+        color: #333333;
+    }
+}*/
+
+// 把 global label 設定為灰色, 以利跟旁邊的 input 或 select 做顏色區分
+label {
+    color: rgba(0, 0, 0, 0.48);
+}
+
+md-toolbar {
+    background: #0e99dc !important;
+    height: 48px !important;
+    max-height: 48px !important;
+    min-height: 48px !important;
+
+    .md-toolbar-tools {
+        height: 48px !important;
+        max-height: 48px !important;
+        min-height: 48px !important;
+    }
+}
+
+.md-button.md-default-theme.md-accent[disabled],
+.md-button.md-accent[disabled],
+.md-button.md-default-theme.md-fab[disabled],
+.md-button.md-fab[disabled],
+.md-button.md-default-theme.md-raised[disabled],
+.md-button.md-raised[disabled],
+.md-button.md-default-theme.md-warn[disabled],
+.md-button.md-warn[disabled],
+.md-button.md-default-theme[disabled],
+.md-button[disabled] {
+    color: rgba(0, 0, 0, 0.28);
+}
+
+// 把 global input 背景設定淡黃色
+// 因 material design 會把 border 設成只有下線, 所以一律改為外框線
+input:not([disabled]),
+input:not([readonly]),
+textarea,
+md-select:not([disabled]) {
+    background-color: lightgoldenrodyellow !important;
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+    height: 1.8em;
+    box-sizing: border-box;
+}
+
+input:required,
+textarea:required,
+md-select[required] {
+    background-color: lightpink !important;
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+    height: 1.8em;
+    box-sizing: border-box;
+}
+
+input:disabled,
+input[readonly],
+textarea:disabled {
+    background-color: lightgray !important;
+    color: black !important;
+    opacity: 1;
+}
+
+textarea {
+    max-height: 300px !important;
+    height: auto !important;
+    overflow-y: auto !important;
+}
+
+.md-select-value {
+    min-height: auto;
+
+    >span:not(.md-select-icon) {
+        text-overflow: initial;
+    }
+}
+
+// global img 設定兩種尺吋
+img {
+    &.x24 {
+        width: 24px;
+        height: 24px;
+    }
+
+    &.x16 {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+// global 的 list item 統一灰背景
+md-list-item {
+    &.deleted {
+        background-color: #9e9e9e;
+        font-style: italic;
+        text-decoration: line-through;
+    }
+}
+
+md-list {
+    padding: 0;
+
+    md-switch {
+        margin: 0;
+    }
+
+    // 為避免md-list 中有新增按鈕, 在滑到最底時, 按鈕會擋到刪除鈕
+    // 所以把所有的 md-list 最下方加入一個 margin
+    margin-bottom: 5rem;
+}
+
+// 用共的 tab 字體顏色由 0.54 改為 1
+md-tabs .md-tab {
+    color: rgba(0, 0, 0, 1);
+}
+
+md-tabs.md-default-theme md-ink-bar,
+md-tabs md-ink-bar {
+    color: #106187;
+    background-color: #106187;
+    height: 3px;
+}
+
+// 前台及後台左邊選單共用下面的 css
+md-sidenav {
+    width: 280px !important;
+
+    .nav-header {
+        //margin: 0 auto;
+        // background-color: #0d47a1;
+        background: url(./static/img/sidenav.png);
+        color: #003b75;
+        padding: 0.5em;
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            text-align: center;
+            font-weight: bolder;
+            margin: 0.5em;
+        }
+
+        .md-avatar {
+            height: 48px;
+            width: 48px;
+            border-radius: 50%;
+        }
+
+        md-button {
+            margin: 0 auto;
+        }
+    }
+
+    >md-content {
+        //background-color: #2196f3;
+        //color: white;
+        background-color: white;
+    }
+
+    md-list {
+        margin: 0;
+
+        .md-list-item-inner {
+            font-weight: bolder !important;
+        }
+    }
+
+    .menu {
+        .material-icons {
+            margin: 0 1em 0 0;
+            color: rgba(0, 0, 0, 0.54);
+        }
+    }
+}
+
+// 可以放在 md-list 上方, 將開關, 更新時間等等, 放在 div.list-header 裡
+.list-header {
+    // line-height: 46px;
+    height: 2.8em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0.5em;
+    background-color: #BBDEFB;
+
+    >div {}
+
+    md-switch {
+        margin: 0 8px;
+    }
+
+    // * {
+    //     vertical-align: middle;
+    // }
+    input {
+        height: 1.8em;
+    }
+
+    md-select {
+        margin: 0 8px;
+        padding: 0;
+    }
+}
+
+// 圖章樣式, 可以用在護理記錄等列表
+// .seal {
+//     border: 1px solid red;
+//     font-size: xx-small;
+//     position: absolute;
+//     bottom: 8px;
+//     right: 10px;
+//     color: red;
+//     transform: rotate(-15deg);
+//     line-height: 1em;
+//     padding: 3px;
+// }
+// span.seal {
+//     position: relative;
+//     display: inline-block;
+// }
+// patient tag
+.badge {
+    color: white;
+    padding: 2px 4px;
+    border-radius: 4px;
+    background-color: springgreen;
+    height: 20px;
+    line-height: 20px;
+    margin: 0 4px;
+    display: inline;
+
+    &.pointer {
+        cursor: pointer;
+    }
+}
+
+.icon-button-badge {
+    position: absolute;
+    color: white;
+    background-color: red;
+    right: 0.5em;
+    top: 0.5em;
+    height: 1em;
+    width: 1em;
+    border-radius: 50%;
+    line-height: 1em;
+}
+
+// 病人及使用者大頭貼
+.image-container {
+    position: relative;
+    width: 10em;
+    height: 10em;
+    margin: 0 auto;
+
+    img {
+        width: 10em;
+        height: 10em;
+    }
+
+    input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+    }
+}
+
+// Logo圖檔
+.logo-container {
+    position: relative;
+    // width: 8em;
+    // height: 8em;
+    margin: auto auto;
+
+    img {
+        max-height: 110px;
+    }
+
+    @media only screen and (max-width: 1100px) {
+        img {
+            width: 100%;
+            max-height: inherit
+        }
+    }
+
+    input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+    }
+}
+
+.fullscreenMask {
+    position: fixed;
+    display: flex;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    font-size: xx-large;
+    font-weight: bolder;
+    z-index: 50;
+}
+
+// 唯讀模式用的遮罩
+.inner {
+    position: relative;
+    height: auto;
+
+    .readonly-inner {
+        position: absolute;
+        width: 100%;
+        box-sizing: border-box;
+        padding-left: calc(~'100% - 50px'); // 調整字的位置
+        top: 0;
+        bottom: 0;
+        background-color: rgba(10, 10, 10, 0.03);
+        z-index: 99;
+    }
+}
+
+// 唯讀提示
+.readonly-text {
+    position: absolute;
+    right: 10%;
+    top: 0;
+    background-color: #ffe6e6;
+    color: #d92018;
+    font-weight: bold;
+    padding: 6px;
+}
+
+// 用於一左一右的排列方式, 例如 patientdetail 裡的畫面
+.yuekang-input-container {
+    >div.layout-row {
+        padding: 3px;
+
+        * {
+            margin: 0;
+            // display: flex;
+        }
+
+        >label {
+            min-width: 6rem;
+            margin: 0 0.2em;
+            text-align: left;
+            font-weight: normal;
+            white-space: nowrap;
+            height: 1.6rem;
+            line-height: 1.6rem;
+        }
+
+        input,
+        md-select,
+        textarea,
+        >div {
+            flex: 1;
+            min-width: 3rem;
+            margin: 0 0.2em;
+            // height: 1.6rem;
+            line-height: 1.6rem;
+        }
+
+        .date>md-select {
+            flex: 1;
+            min-width: 3rem;
+        }
+    }
+
+    div[ng-message] {
+        color: red;
+        text-align: right;
+    }
+}
+
+.error-message {
+    text-align: right;
+    color: red;
+}
+
+.for-doctor {
+    color: #0091EA !important;
+
+    * {
+        color: #0091EA !important;
+    }
+}
+
+// seal 相關
+.seal {
+    font-size: xx-small;
+    font-weight: bold;
+    color: red;
+    line-height: 1em;
+    white-space: nowrap;
+    text-align: center;
+}
+
+// seal 於列表中固定於右邊的位置
+.seal .fixed {
+    border: 1px solid red;
+    transform: rotate(-10deg);
+    padding: 3px;
+    max-width: 4.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: absolute;
+    bottom: 20px;
+    right: 60px;
+}
+
+.seal .fixedMiddle {
+    border: 1px solid red;
+    transform: rotate(-10deg);
+    padding: 3px;
+    max-width: 4.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: absolute;
+    bottom: 40px;
+    right: 60px;
+}
+
+.seal .fixedTop {
+    border: 1px solid red;
+    transform: rotate(-10deg);
+    padding: 3px;
+    max-width: 4.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: absolute;
+    bottom: 60px;
+    right: 60px;
+}
+
+// seal 使用相對位置
+.seal .floated {
+    color: red !important;
+    border: 1px solid red;
+    transform: rotate(-10deg);
+    padding: 3px;
+    max-width: 4.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    display: inline-block;
+}
+
+// patient list 中病人目前狀態的標籤 (轉癒棄退歿)
+.state-style .seal .label {
+    position: absolute;
+    height: 15px;
+    width: 15px;
+    border: 0;
+    background: #1b5e20;
+    color: white;
+    border-radius: 50%;
+    line-height: 15px;
+    font-size: small;
+    top: 43px;
+    left: 43px;
+    z-index: 9;
+}
+
+.card {
+    & .ulInline {
+        position: absolute;
+        right: 0;
+        top: 0px;
+    }
+
+    & .inputbox .ulInline li {
+        margin-right: 8px;
+    }
+
+    & .inputbox .ulInline li:last-child {
+        margin-right: 0px;
+    }
+
+    & md-card-title {
+        position: relative;
+        padding: 0;
+    }
+}
+
+.cardTitBox {
+    min-height: 80px;
+}
+
+
+// 印表時不印出的區域
+@media print {
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: visible;
+
+        // 為了解決微軟正黑體的 bug 將字體不粗體，由於轉向的關係會更不清楚，因此將之放平
+        // http://mypaper.pchome.com.tw/kisgccc/post/1326007630
+        .seal {
+            * {
+                transform: initial !important;
+            }
+            font-weight: normal;
+            vertical-align: sub;
+        }
+
+    }
+
+    .no-print,
+    .no-print * {
+        display: none !important;
+    }
+
+    // showMessage 也需要隱藏
+    md-toast {
+        display: none !important;
+    }
+}

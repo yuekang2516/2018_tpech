@@ -1,0 +1,132 @@
+{
+    "DateTimestamp": "2019-03-20T09:43:01.4827983+08:00",
+    "Type": "post",
+    "Items": [
+      {
+        "Item": "Nursing Intervention",
+        "Options": [
+          "Psychological support",
+          "Trendelenburg position",
+          "Monitor vital signs",
+          "Pause ultrafiltration",
+          "Decrease dialysate temperature",
+          "Oxygen therapy",
+          "Hot compression",
+          "Strength exercise",
+          "Cold compression",
+          "Aspirate precaution",
+          "Monitor EKG",
+          "Decrease BFR",
+          "Monitor access flow",
+          "Change dialyzer",
+          "Change blood line",
+          "Notified physician",
+          "Others"
+        ],
+        "IncludeOther": false
+      },
+      {
+        "Item": "Health Education",
+        "Options": [
+          "Nutrition",
+          "Vascular access",
+          "Exercise",
+          "Personal hygiene",
+          "Medication",
+          "Fluid control",
+          "KT preparation"
+        ],
+        "IncludeOther": false
+      },
+      {
+        "Item": "意識",
+        "Options": [
+          "清醒",
+          "嗜睡",
+          "混亂",
+          "妄",
+          "木僵",
+          "半昏迷",
+          "昏迷"
+        ],
+        "IncludeOther": false
+      },
+      {
+        "Item": "呼吸",
+        "Options": [
+          "快",
+          "慢",
+          "深",
+          "淺"
+        ],
+        "IncludeOther": true
+      },
+      {
+        "Item": "皮膚顏色",
+        "Options": [
+          "正常",
+          "蒼白",
+          "潮紅",
+          "發紺",
+          "黃疸"
+        ],
+        "IncludeOther": false
+      },
+      {
+        "Item": "水腫",
+        "Options": [
+          "無",
+          "有"
+        ],
+        "IncludeOther": true
+      },
+      {
+        "Item": "外傷",
+        "Options": [
+          "無",
+          "有"
+        ],
+        "IncludeOther": true
+      },
+      {
+        "Item": "活動力",
+        "Options": [
+          "正常",
+          "軟弱",
+          "臥床",
+          "肢體障礙"
+        ],
+        "IncludeOther": true
+      },
+      {
+        "Item": "身體狀況",
+        "Options": [
+          "肌肉痙攣",
+          "頭痛",
+          "頭暈",
+          "耳鳴"
+        ],
+        "IncludeOther": false
+      }
+    ],
+    "HospitalId": "56fcc5dd4ead7870942f61c3",
+    "Revision": 44,
+    "HistoryId": null,
+    "Status": "Normal",
+    "CreatedUserId": null,
+    "CreatedUserName": null,
+    "CreatedTime": "2018-09-04T03:43:56.378Z",
+    "ModifiedUserId": "570600fdd53d3c61d6794f95",
+    "ModifiedUserName": "Admin",
+    "ModifiedTime": "2019-03-14T08:05:02.53Z",
+    "Id": "5c8a0b2ea033ed3e30fd830b",
+    "CreatedOn": "2018-09-04T03:43:56Z",
+    "ModifiedOn": "0001-01-01T00:00:00Z",
+    "ObjectId": {
+      "Timestamp": 1552550702,
+      "Machine": 10499053,
+      "Pid": 15920,
+      "Increment": 16614155,
+      "CreationTime": "2019-03-14T08:05:02Z"
+    }
+  }

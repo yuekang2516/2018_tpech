@@ -1,0 +1,43 @@
+<loading ng-show="$ctrl.loading"></loading>
+<md-content style="height: 100%;" ng-show="!$ctrl.loading && $ctrl.serviceData.length > 0" flex>
+    <div ui-grid="gridOptions" id="i18nGrid" class="grid" ui-grid-auto-resize ui-grid-pinning ui-grid-resize-columns ui-grid-exporter></div>
+</md-content>
+<!-- <div ng-show="!$ctrl.loading && $ctrl.serviceData.length === 0" layout="row" layout-align="center center" layout-fill>
+    <h4 translate>{{'labexam.labexam.noData'}}</h4>
+</div> -->
+<nodata-page flex ng-show="!$ctrl.loading && $ctrl.serviceData.length === 0" nodata-title="{{'labexam.labexam.noData' | translate}}"></nodata-page>
+<server-error-page flex ng-show="!$ctrl.loading && $ctrl.isError" refresh="$ctrl.refresh()"></server-error-page>
+<!-- <div ng-show="!$ctrl.loading && $ctrl.isError" layout="row" layout-align="center center" layout-fill>
+    <h4 translate>{{'labexam.labexam.serverError'}}</h4>
+</div> -->
+
+<script type="text/ng-template" id="dialog.html">
+    <md-dialog aria-label="刪除確認" style="height:auto">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2 translate>{{'labexam.labexam.confirmDelete'}}</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="vm.cancel()">
+                        <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content" translate>
+                    {{'labexam.labexam.deleteRecord'}}
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+                <md-button ng-click="vm.cancel()">
+                    {{'labexam.labexam.cancel' | translate}}
+                </md-button>
+                <md-button ng-click="vm.ok()">
+                    {{'labexam.labexam.delete' | translate}}
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>

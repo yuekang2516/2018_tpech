@@ -1,0 +1,42 @@
+dialysis-form {
+    height: 100%;
+
+    .dialysisForm-container {
+        height: 100%;
+        md-content {
+            background-color: #fff;
+        }
+
+        .function-bar {
+            margin: 6px 16px;
+
+            md-select {
+                margin: 2px 0 6px 0;
+            }
+
+            div + div {
+                margin-left: 6px;
+            }
+        }
+
+        .md-subheader {
+            background-color: #fff;
+        }
+    }
+
+    // 每張表單列印時都要換頁
+    .summaryContent {
+        page-break-after: always;
+    }
+
+    @media print {
+        // 不印 white-frame 的部分
+        .md-whiteframe-10dp {
+            box-shadow: initial;
+        }
+
+        .dialysisForm-container {
+            height: initial;
+        }
+    }
+}

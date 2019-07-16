@@ -1,0 +1,43 @@
+<md-content layout-fill>
+    {{ $ctrl.message }}
+    <loading ng-show="$ctrl.Loading"></loading>
+    <div layout="row" class="main" layout-padding layout-wrap ng-show="!$ctrl.Loading" ng-cloak>
+        <div class="box" ng-class="{boxselect: item.Name, alertborder: item.alarmAry.length > 0}" ng-click="$ctrl.showDetail(item)" ng-repeat="item in $ctrl.serverData"
+            style="padding:0">
+            <div style="position: relative" ng-if="item.Name">
+                <div class="number" ng-class="{abnormal: item.alarmAry.length > 0}" ng-click="$event.stopPropagation(); $ctrl.toggleAlarm(item)" layout="row" layout-wrap>
+                    <span class="bedNo">{{ item.BedNo }}</span>
+                    <span ng-if="item.Group">({{ item.Group }})</span>
+                    <span flex></span>
+                    <div class="right">
+                        <span style="font-size:13px">{{item.status}}</span>
+                    </div>
+                </div>
+                <div class="boxtxt">
+                    <p class="patientname">{{ item.Name }}</p>
+                    <p class="patientnameh2">{{ item.MedicalId }}</p>
+                    <ul>
+                        <!-- <li>透析液流速：{{ item.MachineData.DialysisateFlowRate }}</li> -->
+                        <li translate="machineDataBoard.dialysisFR" translate-values="{dialysisFR: item.MachineData.DialysisateFlowRate}"></li>
+                        <!-- <li>血液流速：{{ item.MachineData.BloodFlowRate }}</li> -->
+                        <li translate="machineDataBoard.bloodFR" translate-values="{bloodFR: item.MachineData.BloodFlowRate}"></li>
+                        <!-- <li>血壓：{{ item.MachineData.BPS }}/{{ item.MachineData.BPD }}</li> -->
+                        <li ng-class="{warning: item.MachineData.IsBloodPressureAlarm}" translate="machineDataBoard.bloodP" translate-values="{BPS: item.MachineData.BPS, BPD: item.MachineData.BPD}"></li>
+                        <li><span ng-class="{warning: item.MachineData.IsPulseAlarm}">脈博</span>／呼吸：<span ng-class="{warning: item.MachineData.IsPulseAlarm}">{{ item.MachineData.Pulse }}</span>／{{ item.MachineData.Breath }}</li>
+                        <!-- <li translate="machineDataBoard.respiration" translate-values="{Pulse: item.MachineData.Pulse, Breath: item.MachineData.Breath}"></li> -->
+                        <!-- <li>體溫：{{ item.MachineData.Temperature }}</li> -->
+                        <li translate="machineDataBoard.temp" translate-values="{temp: item.MachineData.Temperature}"></li>
+                        <li>{{ $ctrl.calculationTime(item.MachineData.DialysisTime) }}</li>
+                    </ul>
+
+                </div>
+                <div layout="column" ng-if="item.alarmAry.length > 0 && !item.toggleAlarm" class="warningArea">
+                    <span ng-repeat="msg in item.alarmAry">{{::msg}}</span>
+                </div>
+            </div>
+            <div ng-if="!item.Name">
+                <div class="whitetxt">{{item.BedNo}}</div>
+            </div>
+        </div>
+    </div>
+</md-content>

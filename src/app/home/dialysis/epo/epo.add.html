@@ -1,0 +1,66 @@
+<div layout="column" layout-fill flex>
+  <summary-toolbar toolbar-title="'epoRecord.epoAdd.createEpo' | translate" cancel="vm.goback()"></summary-toolbar>
+  <!-- <div hide-xs hide-sm ng-show="!vm.loading">
+    <h3 translate style="float: left; padding-left: 10px">{{'epoRecord.epoAdd.createEpo'}}</h3>
+    <md-button style="float:right; margin-top: 8px" class="md-secondary md-icon-button" ng-click="vm.goback()" aria-label="call">
+      <i class="material-icons">cancel</i>
+    </md-button>
+  </div> -->
+
+  <md-content flex layout-fill layout-padding>
+
+    <form name="regForm" class="yuekang-input-container">
+
+      <div layout="row" ng-show="vm.epoAddId === 'create'">
+        <label translate>{{'epoRecord.epoAdd.count'}}</label>
+        <div flex ng-click="vm.minus()">
+          <h1>-</h1>
+        </div>
+        <div flex>
+          <h1>{{vm.Withdraw}}</h1>
+        </div>
+        <div flex ng-click="vm.plus()">
+          <h1>+</h1>
+        </div>
+      </div>
+      <div layout="row">
+        <label translate>{{'epoRecord.epoAdd.medicine'}}</label>
+        <md-select ng-model="vm.EPO.EPOId" ng-change="vm.changeEPO()" required>
+          <md-option ng-value="" translate>{{'epoRecord.epoAdd.choose'}}</md-option>
+          <md-option ng-repeat="item in vm.serviceData" ng-value="item.Id"> {{::item.Name}} </md-option>
+        </md-select>
+      </div>
+      <div layout="row">
+        <label translate>{{'epoRecord.epoAdd.route'}}</label>
+        <md-select ng-model="vm.EPO.Route" required>
+          <md-option ng-value="" translate>{{'epoRecord.epoAdd.choose'}}</md-option>
+          <md-option ng-repeat="item in vm.selectEPO" ng-value="item"> {{::item}} </md-option>
+        </md-select>
+      </div>
+      <div layout="row">
+        <label translate>{{'epoRecord.epoAdd.Quantity'}}</label>
+        <input required type="number" ng-model="vm.EPO.Quantity" min="0" placeholder="{{'epoRecord.epoAdd.Quantity' | translate}}" ng-change="vm.changeQuantity()" />
+      </div>
+      <div layout="row">
+        <label translate>{{'epoRecord.epoAdd.Dosage'}}</label>
+        <input type="number" ng-model="vm.EPO.Dose" ng-disabled="true" />
+      </div>
+      <div class="action-area" layout="row" layout-margin layout-align="start center">
+        <md-button ng-click="vm.submit()" class="md-raised md-primary" ng-disabled="regForm.$invalid || vm.isSaving">{{'epoRecord.epoAdd.save' | translate}}</md-button>
+        <md-progress-circular md-diameter="20px" md-mode="indeterminate" ng-show="vm.isSaving"></md-progress-circular>
+      </div>
+    </form>
+    <div layout="row" layout-wrap>
+      <div flex="50" flex-xs="100" ng-show="vm.EPO.CreatedUserName">
+        <!-- <span>建立: {{::vm.EPO.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+        <span translate="epoRecord.epoAdd.createdTime" translate-values='{CreatedTime: vm.EPO.CreatedTime}'></span>
+        <seal model="vm.EPO" modified="none"></seal>
+      </div>
+      <div flex="50" flex-xs="100" ng-show="vm.EPO.ModifiedTime != null">
+        <!-- <span>修改: {{::vm.EPO.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+        <span translate="epoRecord.epoAdd.editedTime" translate-values='{ModifiedTime: vm.EPO.ModifiedTime}'></span>
+        <seal model="vm.EPO" created="none"></seal>
+      </div>
+    </div>
+  </md-content>
+</div>

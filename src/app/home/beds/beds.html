@@ -1,0 +1,127 @@
+<style scoped>
+    #bed-cards {
+        flex-wrap: wrap
+    }
+</style>
+
+<div flex layout="column" layout-fill>
+    <md-toolbar class="no-print">
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.openLeftMenu()" hide-gt-md>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <md-button style="margin-left: -8px" class="md-icon-button" aria-label="Settings" ng-click="vm.toggleSideNav()" hide-md hide-sm hide-xs show-gt-md>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <div layout="row" translate>
+                {{'beds.todayBeds'}}
+            </div>
+            <!-- <span flex></span> -->
+        </div>
+    </md-toolbar>
+
+    <div layout="column" class="list-header no-print" layout-align="center">
+        <div layout="row" layout-align="start center">
+            <div hide-xs>
+                <span hide-xs>{{'beds.ward' | translate}}:</span>
+                <label ng-if="vm.data.wardKeys.length == 1">{{::vm.data.wards[vm.data.options.ward]}}</label>
+                <md-input-container ng-if="vm.data.wardKeys.length > 1">
+                    <md-select ng-model="vm.data.options.ward" ng-change="vm.changeWard()">
+                        <md-option ng-repeat="k in vm.data.wardKeys" ng-value="k">{{::vm.data.wards[k]}}</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <span flex hide-xs></span>
+            <md-button class="md-icon-button" ng-click="vm.changeDate(-1)">
+                <i class="material-icons">navigate_before</i>
+            </md-button>
+
+            <input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.data.currentDate" ng-change="vm.changeDate(0)" />
+
+            <md-button class="md-icon-button" ng-click="vm.changeDate(1)">
+                <i class="material-icons">navigate_next</i>
+            </md-button>
+
+            <md-button ng-if="vm.isBrowser && !vm.data.loadingBeds && !vm.isError" class="md-icon-button" aria-label="More" ng-click="vm.print()">
+                <i class="material-icons">print</i>
+            </md-button>
+        </div>
+        <div layout="row" layout-align="start center">
+            <md-radio-group class="radioGroup" ng-model="vm.data.options.shift" ng-change="vm.changeShift()" layout="column" required hide-xs>
+                <div layout="row">
+                    <md-radio-button value="all" class="md-primary">{{'beds.all' | translate}}</md-radio-button>
+                    <md-radio-button value="morning" class="md-primary margin-left">{{'beds.morning' | translate}}</md-radio-button>
+                    <md-radio-button value="afternoon" class="md-primary margin-left">{{'beds.afternoon' | translate}}</md-radio-button>
+                    <md-radio-button value="evening" class="md-primary margin-left">{{'beds.evening' | translate}}</md-radio-button>
+                    <md-radio-button value="night" class="md-primary margin-left">{{'beds.night' | translate}}</md-radio-button>
+                    <md-radio-button value="temp" class="md-primary margin-left">{{'beds.temp' | translate}}</md-radio-button>
+                </div>
+            </md-radio-group>
+
+            <div class="margin-bottom" hide-gt-xs>
+                <span hide-xs>{{'beds.ward' | translate}}:</span>
+                <label ng-if="vm.data.wardKeys.length == 1">{{::vm.data.wards[vm.data.options.ward]}}</label>
+                <md-input-container ng-if="vm.data.wardKeys.length > 1">
+                    <md-select ng-model="vm.data.options.ward" ng-change="vm.changeWard()">
+                        <md-option ng-repeat="k in vm.data.wardKeys" ng-value="k">{{::vm.data.wards[k]}}</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <md-input-container class="margin-bottom" hide-gt-xs>
+                <md-select ng-model="vm.data.options.shift" ng-change="vm.changeShift()">
+                    <md-option value="all">{{'beds.all' | translate}}</md-option>
+                    <md-option value="morning">{{'beds.morning' | translate}}</md-option>
+                    <md-option value="afternoon">{{'beds.afternoon' | translate}}</md-option>
+                    <md-option value="evening">{{'beds.evening' | translate}}</md-option>
+                    <md-option value="night">{{'beds.night' | translate}}</md-option>
+                    <md-option value="temp">{{'beds.temp' | translate}}</md-option>
+                </md-select>
+            </md-input-container>
+            <md-switch ng-model="vm.data.showDayoff">
+                <span translate="beds.showDayoff"></span>
+            </md-switch>
+        </div>
+    </div>
+    <md-content flex layout-fill>
+        <div class="print-only">
+            <div style="width: 80px; float: left;">
+                <div style="width: 15px; height: 15px; display: inline-blick; float: left; background:#BBDEFB "></div>
+                <span translate>{{'beds.male'}}</span>
+            </div>
+            <div style="width: 80px; float: left;">
+                <div style="width: 15px; height: 15px; display: inline-blick; float: left; background:#F8BBD0 "></div>
+                <span translate>{{'beds.female'}}</span>
+            </div>
+            <div style="width: 100px; float: left;">
+                <div style="width: 15px; height: 15px; display: inline-blick; float: left; background:#fff; border: #ccc solid 1px "></div>
+                <span translate>{{'beds.na'}}</span>
+            </div>
+        </div>
+        <div style="clear: both"></div>
+
+        <loading ng-show="vm.data.loadingBeds">{{'bads.loadingWard' | translate}}</loading>
+
+        <beds-content ng-show="!vm.data.loadingBeds && !vm.isError" data="vm.data"></beds-content>
+
+        <div flex ng-show="!vm.data.loadingBeds && vm.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate>{{'beds.serverError'}}</h3>
+            <md-button class="md-icon-button" ng-click="vm.refresh();">
+                <i class="material-icons">refresh</i>
+            </md-button>
+        </div>
+    </md-content>
+    <div class="no-print" style="padding-left: 10px">
+        <div style="width: 80px; float: left;">
+            <div style="width: 15px; height: 15px; display: inline-blick; float: left; background:#BBDEFB "></div>
+            <span translate>{{'beds.male'}}</span>
+        </div>
+        <div style="width: 80px; float: left;">
+            <div style="width: 15px; height: 15px; display: inline-blick; float: left; background:#F8BBD0 "></div>
+            <span translate>{{'beds.female'}}</span>
+        </div>
+        <div style="width: 100px; float: left;">
+            <div style="width: 15px; height: 15px; display: inline-blick; float: left; background:#fff; border: #ccc solid 1px "></div>
+            <span translate>{{'beds.na'}}</span>
+        </div>
+    </div>
+</div>

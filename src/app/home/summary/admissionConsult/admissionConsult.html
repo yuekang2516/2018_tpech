@@ -1,0 +1,20 @@
+<div layout="column" layout-fill ui-view flex>
+    <summary-toolbar toolbar-title="'admissionConsult.admissionConsult' | translate" cancel="$ctrl.back()">
+    </summary-toolbar>
+    <div class="list-header" ng-show="!$ctrl.loading" layout="row" layout-wrap layout-align="center center">
+        <h5>區間：</h5>
+        <input type="date" ng-model="$ctrl.startDate" ng-change="$ctrl.changeQueryDate()" required> ～
+        <input type="date" ng-model="$ctrl.endDate" ng-change="$ctrl.changeQueryDate()" required>
+        <button ng-click="$ctrl.checkValue()">查詢</button>
+        <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+    </div>
+    <md-content style="height: 100%;" layout="column" flex>
+        <loading ng-show="$ctrl.loading"></loading>
+        <div ag-grid="$ctrl.gridOptions" ng-show="!$ctrl.loading && $ctrl.serviceData.length > 0" class="ag-theme-blue" style="height: 100%"></div>
+        <!-- <div ui-grid="gridOptions" ng-show="!$ctrl.loading && $ctrl.serviceData.length > 0" class="grid"
+            ui-grid-auto-resize ui-grid-pinning ui-grid-resize-columns></div> -->
+        <nodata-page flex ng-show="!$ctrl.loading && $ctrl.serviceData.length == 0 && !$ctrl.isError"
+            nodata-title="{{'admissionConsult.admissionConsults.noData' | translate}}"></nodata-page>
+        <server-error-page flex ng-show="!$ctrl.loading && $ctrl.isError" refresh="$ctrl.refresh()"></server-error-page>
+    </md-content>
+</div>

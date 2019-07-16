@@ -1,0 +1,158 @@
+<style scoped>
+    dialysis-tab-view {
+        height: 100%;
+    }
+
+    .tabCount {
+        background-color: red;
+    }
+
+    /*prevents word wrap on certain resolution  */
+
+    .md-tab {
+        padding: 16px;
+    }
+</style>
+<div layout="column" layout-fill>
+    <!-- hide when width is greater than 600px -->
+    <md-toolbar hide-gt-sm>
+        <div class="md-toolbar-tools">
+            <md-button id="back-button" class="md-icon-button" ng-click="$ctrl.back()">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <div layout="row" flex>
+                <span ng-click="$ctrl.switchPatient()">{{::$ctrl.patient.Name }}</span>
+                <span flex hide-xs>({{::$ctrl.patient.MedicalId}})</span>
+                <span flex></span>
+            </div>
+            <md-menu>
+                <!-- <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdMenu.open($event)">
+                    <md-icon md-menu-origin md-svg-icon="call:business"></md-icon>
+                </md-button> -->
+                <span translate="dialysisTabView.dialysisRecord" translate-values='{StartTime: $ctrl.dialysisRecord.StartTime}' ng-click="$mdMenu.open($event)"></span>
+                <md-menu-content width="3">
+                    <md-menu-item ng-if="!$ctrl.loading" ng-repeat="record in $ctrl.dialysisRecords">
+                        <md-button ng-click="$ctrl.changeDialysisDate(record)" ng-style="$ctrl.dialysisRecord.StartTime === record.StartTime ? {'background-color':'#b3e5fc'} : {}">
+                            {{::record.CreatedString}}
+                        </md-button>
+                    </md-menu-item>
+                    <loading ng-if="$ctrl.loading"></loading>
+                </md-menu-content>
+            </md-menu>
+            <md-button id="right-menu" class="md-icon-button" aria-label="More" ng-click="$ctrl.openMenu()">
+                <md-icon md-svg-icon="static/img/svg/ic_menu_white_24px.svg"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <!-- md-selected="$ctrl.selectedIndex" -->
+    <md-tabs md-stretch-tabs="never" md-center-tabs="false" md-swipe-content="true">
+        <!-- id="{{item.htmlId}}" -->
+        <md-tab md-active="$ctrl.currentName === item.active" ui-sref="{{item.uiSref}}" ui-sref-opts="{{item.uiSrefOpts}}"  ng-if="item.ngIf" ng-repeat="item in $ctrl.allTabs track by $index">
+            <md-tab-label >
+                <span ng-class="{'for-doctor': item.isClassForDoctor}">{{item.label}}</span>
+                <span ng-show="item.ngShowLabelCount">
+                    <!-- 執行紀錄 count -->
+                    <span class="badge tabCount md-secondary" ng-if="item.active === 'allExecutionRecord'">{{$ctrl.tabExecuteCount}}</span>
+                    <!-- epo count -->
+                    <span class="badge tabCount md-secondary" ng-if="item.active === 'epo'">{{$ctrl.tabEpoCount}}</span>
+                </span>
+            </md-tab-label>
+        </md-tab>
+        <!-- <md-tab md-active="$ctrl.currentName === 'overview'" ui-sref="overview" ui-sref-opts="{location: 'replace'}" label="{{'dialysisTabView.overview' | translate}}"></md-tab> -->
+        <!-- <md-tab md-active="$ctrl.currentName ==='shiftIssues'" ui-sref="shiftIssues" ui-sref-opts="{location: 'replace'}" label="{{'dialysisTabView.shiftIssue' | translate}}"></md-tab> -->
+        <!-- <md-tab md-active="$ctrl.currentName ==='assessment'" ui-sref="assessment" ui-sref-opts="{location: 'replace'}" label="{{'dialysisTabView.assessment' | translate}}"></md-tab> -->
+        <!-- <md-tab md-active="$ctrl.currentName ==='postAssessment'" ng-if="$ctrl.ModuleFunctions.PostAssessment === '1'" ui-sref="postAssessment" ui-sref-opts="{location: 'replace'}" label="{{'dialysisTabView.postAssessment' | translate}}"></md-tab> -->
+        <!-- <md-tab md-active="$ctrl.currentName ==='machineData'" ui-sref="machineData" ui-sref-opts="{location: 'replace'}" label="{{'dialysisTabView.machine' | translate}}"></md-tab> -->
+        <!-- <md-tab md-active="$ctrl.currentName ==='continuousMachineData'" ui-sref="continuousMachineData" ui-sref-opts="{location: 'replace'}" label="{{'dialysisTabView.machineContinuous' | translate}}" ng-if="$ctrl.ModuleFunctions === null || $ctrl.ModuleFunctions.MachineType === '1'"></md-tab> -->
+        <!-- <md-tab id="execute" md-active="$ctrl.currentName ==='allExecutionRecord'" ui-sref="allExecutionRecord" ui-sref-opts="{location: 'replace'}" >
+            <md-tab-label>
+                {{'dialysisTabView.executionRecord' | translate}}
+                <span class="badge tabCount md-secondary" ng-show="$ctrl.tabExecuteCount > 0">{{$ctrl.tabExecuteCount}}</span>
+            </md-tab-label>
+        </md-tab> -->
+        <!-- <md-tab md-active="$ctrl.currentName ==='nursingRecord'" ui-sref="nursingRecord" ui-sref-opts="{location: 'replace'}" label="{{'dialysisTabView.nursingRecord' | translate}}"></md-tab> -->
+        <!-- <md-tab md-active="$ctrl.currentName ==='prescribingRecord'" ui-sref="prescribingRecord" ui-sref-opts="{location: 'replace'}">
+            <md-tab-label>
+                <span class="for-doctor" translate>{{'dialysisTabView.prescribingRecord'}}</span>
+            </md-tab-label>
+        </md-tab> -->
+        <!-- <md-tab md-active="$ctrl.currentName ==='doctorNote'" ui-sref="doctorNote" ui-sref-opts="{location: 'replace'}">
+            <md-tab-label>
+                <span class="for-doctor" translate>{{'dialysisTabView.doctorNote'}}</span>
+            </md-tab-label>
+        </md-tab> -->
+        <!-- <md-tab md-active="$ctrl.currentName ==='bloodTransfusion'" ui-sref="bloodTransfusion" ui-sref-opts="{location: 'replace'}" label="{{'dialysisTabView.bloodTransfusion' | translate}}" ng-if="$ctrl.ModuleFunctions === null || $ctrl.ModuleFunctions.BloodTransfusion === '1'"></md-tab> -->
+        <!-- <md-tab md-active="$ctrl.currentName ==='charge'" ui-sref="charge" ui-sref-opts="{location: 'replace'}" label="{{'dialysisTabView.charge' | translate}}" ng-if="$ctrl.ModuleFunctions === null || $ctrl.ModuleFunctions.Charge === '1'"></md-tab> -->
+        <!-- <md-tab md-active="$ctrl.currentName ==='epo'" ui-sref="epo" ui-sref-opts="{location: 'replace'}" id="EPO" ng-if="$ctrl.ModuleFunctions === null || $ctrl.ModuleFunctions.Epo === '1'">
+            <md-tab-label>
+                {{'dialysisTabView.EPO' | translate}}
+                <span class="badge tabCount md-secondary" ng-show="$ctrl.tabEpoCount > 0">{{$ctrl.tabEpoCount}}</span>
+            </md-tab-label>
+        </md-tab> -->
+
+    </md-tabs>
+    <ui-view style="z-index: 3" layout="column" flex></ui-view>
+
+    <md-sidenav layout="column" class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
+        <md-content>
+            <md-list flex>
+                <md-list-item ui-sref="allDialysisRecords({patientId: $ctrl.patientId})">
+                    <md-icon md-svg-icon="static/img/svg/ic_assignment_black_24px.svg"></md-icon>
+                    <p translate>{{'dialysisTabView.allDialysisRecords'}}</p>
+                </md-list-item>
+                <md-list-item ui-sref="vesselAssessmentAllRecords({patientId: $ctrl.patientId})">
+                    <md-icon md-svg-icon="static/img/svg/ic_assignment_black_24px.svg"></md-icon>
+                    <p translate>{{'dialysisTabView.vesselAssessmentAllRecords'}}</p>
+                </md-list-item>
+                <!-- <md-list-item ui-sref="vesselassessment({patientId: $ctrl.patientId})">
+                    <md-icon md-svg-icon="static/img/svg/ic_assignment_black_24px.svg"></md-icon>
+                    <p>歷次血管通路評估紀錄</p>
+                </md-list-item>
+                <md-list-item ui-sref="abnormalVesselAssessment({patientId: $ctrl.patientId})">
+                    <md-icon md-svg-icon="static/img/svg/ic_assignment_black_24px.svg"></md-icon>
+                    <p>歷次血管通路異常紀錄</p>
+                </md-list-item>
+                <md-list-item ui-sref="nursingProblemList({patientId: $ctrl.patientId})">
+                    <md-icon md-svg-icon="static/img/svg/ic_assignment_black_24px.svg"></md-icon>
+                    <p translate>{{'dialysisTabView.nursingProblemList'}}</p>
+                </md-list-item> -->
+                <md-list-item ui-sref="allNursingRecords({patientId: $ctrl.patientId})">
+                    <md-icon md-svg-icon="static/img/svg/ic_assignment_black_24px.svg"></md-icon>
+                    <p translate>{{'dialysisTabView.allNursingRecords'}}</p>
+                </md-list-item>
+                <md-list-item ui-sref="allMedicationRecords({patientId: $ctrl.patientId})">
+                    <md-icon md-svg-icon="static/img/svg/ic_assignment_black_24px.svg"></md-icon>
+                    <p translate>{{'dialysisTabView.allMedicationRecords'}}</p>
+                </md-list-item>
+                <md-list-item ui-sref="apo({patientId: $ctrl.patientId})">
+                    <md-icon md-svg-icon="static/img/svg/ic_assignment_black_24px.svg"></md-icon>
+                    <p translate>{{'dialysisTabView.apo'}}</p>
+                </md-list-item>
+                <md-list-item ui-sref="annualEpo({patientId: $ctrl.patientId})" ng-if="$ctrl.ModuleFunctions === null || $ctrl.ModuleFunctions.Epo === '1'">
+                    <md-icon md-svg-icon="static/img/svg/ic_assignment_black_24px.svg"></md-icon>
+                    <p translate>{{'dialysisTabView.annualEpo'}}</p>
+                </md-list-item>
+                <md-list-item ui-sref="labexam({patientId: $ctrl.patientId})">
+                    <md-icon md-svg-icon="static/img/svg/ic_assignment_black_24px.svg"></md-icon>
+                    <p translate>{{'dialysisTabView.labexam'}}</p>
+                </md-list-item>
+                <md-list-item ui-sref="album({patientId: $ctrl.patientId})">
+                    <md-icon md-svg-icon="static/img/svg/ic_assignment_black_24px.svg"></md-icon>
+                    <p translate>{{'dialysisTabView.album'}}</p>
+                </md-list-item>
+            </md-list>
+            <md-list class="for-doctor">
+                <md-divider></md-divider>
+                <md-subheader class="md-no-sticky">{{'dialysisTabView.doctor' | translate}}</md-subheader>
+                <md-list-item ui-sref="allPrescriptions({patientId: $ctrl.patientId})">
+                    <md-icon md-svg-icon="static/img/svg/ic_assignment_black_24px.svg"></md-icon>
+                    <p translate>{{'dialysisTabView.allPrescriptions'}}</p>
+                </md-list-item>
+                <!-- <md-list-item ui-sref="allDoctorNoteList({patientId: $ctrl.patientId})">
+                    <md-icon md-svg-icon="static/img/svg/ic_assignment_black_24px.svg"></md-icon>
+                    <p translate>{{'dialysisTabView.doctorNote'}}</p>
+                </md-list-item> -->
+            </md-list>
+        </md-content>
+    </md-sidenav>
+</div>

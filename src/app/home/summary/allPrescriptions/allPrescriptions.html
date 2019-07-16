@@ -1,0 +1,28 @@
+<div layout="column" style="position:relative" layout-fill>
+    <!-- <md-content  layout="column" layout-fill> -->
+    <!-- <md-toolbar hide-gt-sm>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="$ctrl.goback()">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <div layout="row">
+                {{'allPrescriptions.allPrescriptions.prescribingRecord' | translate}}
+            </div>
+            <span flex></span>
+        </div>
+    </md-toolbar>
+    <patient-name hide-gt-sm ng-show="!$ctrl.loading" name="$ctrl.currentPatient.Name" medical-id="$ctrl.currentPatient.MedicalId"></patient-name> -->
+    <summary-toolbar toolbar-title="'allPrescriptions.allPrescriptions.prescribingRecord' | translate" cancel="$ctrl.goback()"></summary-toolbar>
+    <loading ng-show="$ctrl.loading"> </loading>
+    <md-tabs style="background: #fff" md-stretch-tabs="never" md-center-tabs="true" md-swipe-content="true" md-selected="$ctrl.selectedIndex">
+        <!-- {{'vesselAssessmentAllRecords.vesselAssessmentTab' | translate}} -->
+        <md-tab label="{{'allPrescriptions.allPrescriptions.HD' | translate}}"></md-tab>
+        <md-tab label="{{'allPrescriptions.allPrescriptions.HDF' | translate}}"></md-tab>
+        <md-tab label="{{'allPrescriptions.allPrescriptions.SLEDDF' | translate}}"></md-tab>
+        <md-tab label="{{'allPrescriptions.allPrescriptions.interim' | translate}}"></md-tab>
+    </md-tabs>
+    <!-- <md-content ui-view flex></md-content> -->
+    <ui-view layout="column" flex></ui-view>
+    <!-- </md-content> -->
+</div>
+    

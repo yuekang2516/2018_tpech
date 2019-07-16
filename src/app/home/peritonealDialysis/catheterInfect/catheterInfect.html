@@ -1,0 +1,80 @@
+<style>
+    catheter-infect{
+        height: 100%;
+    }
+    .inputbox .inputBoxTit{width:100px;}
+    input{width:100%;}
+    @media print{
+        .md-dialog-container {
+            display: inline-table;
+        }
+        @page{
+            size: A4 portrait;
+            margin: 0.5cm;
+            orphans:4;
+            widows:2;
+        }
+        div,input,table,select,md-select{
+            page-break-inside :avoid;
+            page-break-after: avoid;
+        }
+    }
+</style>
+<md-content layout="column" layout-fill>
+        <loading ng-show="$ctrl.loading && $ctrl.peritonitisList.length == 0"></loading>
+        <div class="list-header" ng-show="!$ctrl.loading && $ctrl.peritonitisList.length > 0" layout="row" layout-align="center center">
+            <md-switch ng-model="$ctrl.showDeleted" aria-label="Switch data">
+                <span translate="highRiskFaller.Records.showDeleted" translate-values='{deletedItemsLength: $ctrl.deletedItemsLength}'></span>
+            </md-switch>
+            <span flex></span>
+            <h6 translate="highRiskFaller.Records.totalRecord" translate-values='{totalCnt: $ctrl.totalCnt}'></h6>
+            <span flex></span>
+            <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+        </div>
+        <md-content layout="column" flex>
+            <div ng-if="$ctrl.peritonitisList.length > 0"><!-- | orderBy:['-Treatment_Date', '-CreatedTime']-->
+                <md-list ng-show="!$ctrl.loading">
+                    <md-list-item ng-repeat="p in $ctrl.peritonitisList"
+                    ng-class="{deleted: p.Status == 'Deleted'}"  
+                    ng-show="p.Status !== 'Deleted' || $ctrl.showDeleted"
+                    ng-click="$ctrl.openEditDialog(p)" class="md-2-line">
+                        <div class="md-list-item-text" layout="row">
+                            <div>
+                                <h3>第&nbsp;{{p.Times}}&nbsp;次感染記錄</h3>
+                                <p>記錄日期:{{p.ModifiedTime === null ? (p.CreatedTime | moment:'YYYY/MM/DD (dd) HH:mm') : (p.ModifiedTime | moment:'YYYY/MM/DD (dd) HH:mm')}}</p>
+                                <p>治療日期:{{(p.Treatment_Date | moment:'YYYY/MM/DD (dd) HH:mm')}}
+                                    {{((p.Treatment_Result != "" && p.Treatment_Result != null) ? '(' + p.Treatment_Result.replace('OTHER_', '其他:') + ')' : '') }}
+                                </p>                            
+                                <div class="btnGrp" ng-if="p.Status !== 'Deleted'">
+                                    <seal model="p" modified="hideIfSame" fixed="true"></seal>
+                                    <i class="material-icons" ng-click="$ctrl.deleteOne($event, p)"><md-tooltip>刪除</md-tooltip>delete</i>                                
+                                </div>
+                            </div>
+                            
+                            <!-- <h3 ng-bind="ti.Prescription_Startdate | moment:'YYYY/MM/DD (dd) HH:mm'"></h3> -->
+                        </div>
+                        <md-divider ng-if="!$last"></md-divider>
+                    </md-list-item>
+                </md-list>
+            </div>
+            <md-content ng-show="!$ctrl.loading && $ctrl.peritonitisList.length == 0" flex layout="column" layout-align="center center">
+                <h1 translate>{{'catheterInfect.component.noData' | translate}}</h1>
+                <h4></h4>
+            </md-content> 
+        </md-content>
+</md-content>
+
+
+<md-button class="no-print md-fab md-fab-bottom-right" style="position: fixed;" ng-click="$ctrl.openCreateDialog()">
+    <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+</md-button>
+
+<!-- <div class="contentDetail">
+    <div class="dataList">
+        <div class="inputbox bdrBtm list" ng-click="$ctrl.OpenEditDialog()">
+            <div class="inputboxflex">
+                <label>導管出口感染記錄</label><span class="txtBlueDef">（第1次）</span>
+            </div>
+        </div>
+    </div>
+</div> -->

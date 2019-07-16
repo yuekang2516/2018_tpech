@@ -1,0 +1,42 @@
+<md-content layout="column" layout-fill class="shifts-container">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="$ctrl.back();">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <div layout="row" translate>
+                {{'shifts.arrangeShift'}}
+            </div>
+            <span flex></span>
+        </div>
+    </md-toolbar>
+    <div class="table-head" layout="row">
+        <div class="scroll" layout="row" layout-align="start center">
+            <div class="calendar-btn">
+                <!-- <span>{{$ctrl.data.currentYear}} 年 {{$ctrl.data.currentMonth}} 月</span> -->
+                <span translate="shifts.yearAndMonth" translate-values='{year: $ctrl.data.currentYear, month: $ctrl.data.currentMonth}'></span>
+                <md-button class="md-raised md-primary" ng-click="$ctrl.today()" ng-disabled="$ctrl.data.loading">{{'shifts.currentMonth' | translate}}</md-button>
+                <md-button class="square md-raised md-primary" aria-label="上個月" ng-click="$ctrl.lastMonth()" ng-disabled="$ctrl.data.loading">
+                    <md-icon class="material-icons">chevron_left</md-icon>
+                </md-button>
+                <md-button class="square md-raised md-primary" aria-label="下個月" ng-click="$ctrl.nextMonth()" ng-disabled="$ctrl.data.loading">
+                    <md-icon class="material-icons">chevron_right</md-icon>
+                </md-button>
+            </div>
+            <div class="ward" layout="row" layout-align="start center">
+                <label translate>{{'shifts.ward'}}</label>
+                <label class="title" ng-if="$ctrl.data.keys.length == 1" readonly>{{::$ctrl.data.wards[$ctrl.data.ward]}}</label>
+                <md-select ng-model="$ctrl.data.ward" ng-if="$ctrl.data.keys.length > 1" ng-change="$ctrl.changeWard($ctrl.data.ward)" ng-disabled="$ctrl.data.loading">
+                    <md-option ng-repeat="k in $ctrl.data.keys" ng-value="k">{{::$ctrl.data.wards[k]}}</md-option>
+                </md-select>
+            </div>
+            <div layout="row" layout-align="start center">
+                <md-button class="md-raised md-primary" ng-click="$ctrl.cloneShifts()" ng-disabled="$ctrl.data.loading" title="將當前月份的排班資料複製至下個月">{{'shifts.copyShifts' | translate}}</md-button>
+            </div>
+        </div>
+    </div>
+    <md-content layout-padding layout="column" flex>
+        <loading ng-show="$ctrl.data.loading"></loading>
+        <shifts-content ng-if="$ctrl.data.daysInMonth.length > 0" data="$ctrl.data"></shifts-content>
+    </md-content>
+</md-content>

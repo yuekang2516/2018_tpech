@@ -1,0 +1,837 @@
+<md-content layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.back()">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <h2>
+                <span>{{vm.patientId ? ('patientDetail.basicInfo' | translate) : ('patientDetail.createPatient' | translate) }}</span>
+            </h2>
+            <span flex></span>
+            <md-button ng-if="!vm.patientId" class="md-icon-button" aria-label="Settings" ng-click="vm.addpatient()">
+                <i class="material-icons">cloud_download</i>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <patient-name ng-show="vm.patientId" name="vm.patient.Name" medical-id="vm.patient.MedicalId"></patient-name>
+    <md-content id="patientDetail" flex layout-padding>
+        <loading ng-show="vm.loading">loading...</loading>
+        <form name="projectForm" novalidate ng-show="!vm.loading">
+            <div class="image-container">
+                <img ng-show="vm.loadingPicture" height="16px" width="16px"
+                    src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                <img ng-if="!vm.photo" ng-src="static/img/avatar.png" />
+                <img ng-if="vm.photo" ng-src="{{vm.photo}}" />
+                <button-Camera ng-model="vm.photo" callback="vm.getPicture(getPicture)"
+                    re-size="{width: 160, height: 160, centerCrop: true}">
+                </button-Camera>
+            </div>
+
+            <div layout-gt-sm="row" layout="column">
+                <md-card flex>
+                    <md-card-content class="yuekang-input-container">
+                        <div layout="row">
+                            <label translate>{{'patientDetail.name'}}</label>
+                            <input readonly ng-model="vm.patient.Name" name="name">
+                        </div>
+                        <div ng-messages="projectForm.name.$error">
+                            <div ng-message="required" translate>
+                                {{'patientDetail.requiredName'}}
+                            </div>
+                        </div>
+                        <div layout="row">
+                            <md-radio-group ng-model="vm.patient.IDType" ng-style="{textAlign: 'center'}" layout="row"
+                                flex="100"
+                                ng-change="vm.checkDuplicate({ Field: 'IdentifierId', PatientId: vm.patientId || null, Value: vm.patient.IdentifierId }, 'identifierId')">
+                                <md-radio-button ng-repeat="d in vm.Identity" ng-value="d.id">
+                                    {{d.value}}
+                                </md-radio-button>
+                            </md-radio-group>
+                        </div>
+                        <div layout="row">
+                            <label
+                                translate>{{vm.patient.IDType === 'IDNumber' ? 'patientDetail.identifierId': 'patientDetail.component.OtherDocuments'}}</label>
+                            <input readonly type="text" ng-model="vm.patient.IdentifierId" name="identifierId"
+                                autocomplete="off">
+                            <!-- <input  type="text" 
+                                    required 
+                                    ng-model="vm.patient.IdentifierId" 
+                                    name="identifierId" 
+                                    autocomplete="off" 
+                                    form-validator="{ Field: 'IdentifierId', PatientId: vm.patientId || null, Id: vm.identifierId, Identity: vm.patient.IDType}"
+                                    callback="vm.VaildCallback(vailed)" 
+                                    patient-validator> -->
+                        </div>
+                        <div layout="row">
+                            <label translate>{{'patientDetail.gender'}}</label>
+                            <input readonly type="text" ng-model="vm.gender">
+                            <!-- <md-option value="M">{{'patientDetail.male' | translate}}</md-option>
+                                <md-option value="F">{{'patientDetail.female' | translate}}</md-option> -->
+                            </input>
+                        </div>
+                        <div layout="row">
+                            <label translate>{{'patientDetail.birthday'}}</label>
+                            <input type="date" min="1900-01-01" max="2999-12-31" name="Birthday"
+                                ng-model="vm.patient.Birthday" readonly />
+                        </div>
+                        <div ng-messages="projectForm.Birthday.$error">
+                            <div ng-message="required" class="help-block" translate>{{'patientDetail.requiredBirthday'}}
+                            </div>
+                        </div>
+                        <div layout="row">
+                            <label translate>{{'patientDetail.bloodTypes'}}</label>
+                            <div layout="row">
+                                <md-select ng-model="vm.patient.BloodTypes" flex>
+                                    <md-option ng-repeat="b in vm.BloodTypes" value="{{b}}"
+                                        ng-model="vm.patient.BloodTypes">{{b}}</md-option>
+                                </md-select>
+                                <md-select ng-model="vm.patient.RH" flex ng-disabled="vm.patient.BloodTypes === '未知'">
+                                    <md-option value="">{{'patientDetail.select' | translate}}</md-option>
+                                    <md-option ng-repeat="b in vm.Rh" value="{{b}}" ng-model="vm.patient.RH">{{b}}
+                                    </md-option>
+                                </md-select>
+                            </div>
+                        </div>
+                        <div layout="row">
+                            <label translate>身高</label>
+                            <input ng-model="vm.patient.Height">
+                        </div>
+                        <div layout="row">
+                            <label translate>體重</label>
+                            <input ng-model="vm.patient.Weight">
+                        </div>
+                        <div layout="row">
+                            <label>家裡電話</label>
+                            <input ng-model="vm.patient.Phone[0]" readonly>
+                        </div>
+                        <div layout="row">
+                            <label>手機</label>
+                            <input ng-model="vm.patient.Phone[1]" readonly>
+                        </div>
+                        <!-- <div layout="row" ng-show="vm.Phone2 !== '' && vm.Phone2 !== null && vm.Phone2 !== undefined">
+                            <label>　　</label>
+                            <input ng-model="vm.Phone2">
+                            <i class="material-icons delete-btn" ng-click="vm.Phone2=''"
+                                ng-show="vm.Phone2 !== '' && vm.Phone2 !== null && vm.Phone2 !== undefined">clear</i>
+                        </div>
+                        <div layout="row" ng-show="vm.Phone3 !== '' && vm.Phone3 !== null && vm.Phone3 !== undefined">
+                            <label>　　</label>
+                            <input ng-model="vm.Phone3">
+                            <i class="material-icons delete-btn" ng-click="vm.Phone3=''"
+                                ng-show="vm.Phone3 !== '' && vm.Phone3 !== null && vm.Phone3 !== undefined">clear</i>
+                        </div> -->
+                        <div layout="row">
+                            <label translate>{{'patientDetail.address'}}</label>
+                            <input ng-model="vm.patient.Address" readonly>
+                        </div>
+                        <div layout="row">
+                            <label translate>現居地址</label>
+                            <input ng-model="vm.patient.CurrentAddress" readonly>
+                        </div>
+                        <div layout="row">
+                            <label translate>送貨地址</label>
+                            <input ng-model="vm.DeliveryAddress1">
+                            <!--<md-button ng-click="vm.FieldAdd('DeliveryAddress')" ng-show="vm.DeliveryAddress2 === '' || vm.DeliveryAddress2 === null || vm.DeliveryAddress2 === undefined || vm.DeliveryAddress3 === '' || vm.DeliveryAddress3 === null || vm.DeliveryAddress3 === undefined">+</md-button>-->
+                            <i class="material-icons plus-btn" ng-click="vm.FieldAdd('DeliveryAddress')"
+                                ng-show="vm.DeliveryAddress2 === '' || vm.DeliveryAddress2 === null || vm.DeliveryAddress2 === undefined || vm.DeliveryAddress3 === '' || vm.DeliveryAddress3 === null || vm.DeliveryAddress3 === undefined">
+                                add
+                            </i>
+                        </div>
+                        <div layout="row"
+                            ng-show="vm.DeliveryAddress2 !== '' && vm.DeliveryAddress2 !== null && vm.DeliveryAddress2 !== undefined">
+                            <label>　　　　</label>
+                            <input ng-model="vm.DeliveryAddress2">
+                            <i class="material-icons delete-btn" ng-click="vm.DeliveryAddress2=''"
+                                ng-show="vm.DeliveryAddress2 !== '' && vm.DeliveryAddress2 !== null && vm.DeliveryAddress2 !== undefined">clear</i>
+                        </div>
+                        <div layout="row"
+                            ng-show="vm.DeliveryAddress3 !== '' && vm.DeliveryAddress3 !== null && vm.DeliveryAddress3 !== undefined">
+                            <label>　　　　</label>
+                            <input ng-model="vm.DeliveryAddress3">
+                            <i class="material-icons delete-btn" ng-click="vm.DeliveryAddress3=''"
+                                ng-show="vm.DeliveryAddress3 !== '' && vm.DeliveryAddress3 !== null && vm.DeliveryAddress3 !== undefined">clear</i>
+                        </div>
+                        <div layout="row">
+                            <label translate>職業</label>
+                            <input ng-model="vm.patient.Job">
+                        </div>
+                        <div layout="row">
+                            <label translate>籍貫</label>
+                            <input ng-model="vm.patient.Birthplace">
+                        </div>
+                        <div layout="row">
+                            <label translate>婚姻狀況</label>
+                            <md-radio-group ng-model="vm.patient.MaritalStatus">
+                                <md-radio-button ng-repeat="m in vm.MaritalStr" ng-value="m" class="radioInlineBlock">
+                                    {{m}}
+                                </md-radio-button>
+                            </md-radio-group>
+                        </div>
+                        <div layout="row">
+                            <label translate>教育</label>
+                            <md-radio-group ng-model="vm.patient.Education">
+                                <md-radio-button ng-repeat="e in vm.EducationStr" ng-value="e" class="radioInlineBlock">
+                                    {{e}}
+                                </md-radio-button>
+                            </md-radio-group>
+                        </div>
+                        <div layout="row">
+                            ---------------------------------------------------
+                        </div>
+                        <div layout="row">
+                            <label translate>聯絡人姓名</label>
+                            <input ng-model="vm.patient.ContactName1">
+                        </div>
+                        <div layout="row">
+                            <label translate>聯絡人關係</label>
+                            <input ng-model="vm.patient.ContactRelationship1">
+                        </div>
+                        <div layout="row">
+                            <label translate>聯絡人電話</label>
+                            <input ng-model="vm.ContactPhone11">
+                            <!--<md-button ng-click="vm.FieldAdd('ContactPhone1')" ng-show="vm.ContactPhone12 === '' || vm.ContactPhone12 === null || vm.ContactPhone12 === undefined || vm.ContactPhone13 === '' || vm.ContactPhone13 === null || vm.ContactPhone13 === undefined">+</md-button>-->
+                            <i class="material-icons plus-btn" ng-click="vm.FieldAdd('ContactPhone1')"
+                                ng-show="vm.ContactPhone12 === '' || vm.ContactPhone12 === null || vm.ContactPhone12 === undefined || vm.ContactPhone13 === '' || vm.ContactPhone13 === null || vm.ContactPhone13 === undefined">
+                                add
+                            </i>
+                        </div>
+                        <div layout="row"
+                            ng-show="vm.ContactPhone12 !== '' && vm.ContactPhone12 !== null && vm.ContactPhone12 !== undefined">
+                            <label>　　　　　</label>
+                            <input ng-model="vm.ContactPhone12">
+                            <i class="material-icons delete-btn" ng-click="vm.ContactPhone12=''"
+                                ng-show="vm.ContactPhone12 !== '' && vm.ContactPhone12 !== null && vm.ContactPhone12 !== undefined">clear</i>
+                        </div>
+                        <div layout="row"
+                            ng-show="vm.ContactPhone13 !== '' && vm.ContactPhone13 !== null && vm.ContactPhone13 !== undefined">
+                            <label>　　　　　</label>
+                            <input ng-model="vm.ContactPhone13">
+                            <i class="material-icons delete-btn" ng-click="vm.ContactPhone13=''"
+                                ng-show="vm.ContactPhone13 !== '' && vm.ContactPhone13 !== null && vm.ContactPhone13 !== undefined">clear</i>
+                        </div>
+                        <div layout="row" layout-align="end center">
+                            <md-button class="md-primary" ng-click="vm.FieldAdd('Contact')"
+                                ng-show="vm.patient.ContactName2 === '' || vm.patient.ContactName2 === null || vm.patient.ContactName2 === undefined">
+                                {{'overview.addOneData' | translate}}</md-button>
+                        </div>
+                        <div layout="row"
+                            ng-show="vm.patient.ContactName2 !== '' && vm.patient.ContactName2 !== null && vm.patient.ContactName2 !== undefined">
+                            <label translate>聯絡人姓名2</label>
+                            <input ng-model="vm.patient.ContactName2">
+                        </div>
+                        <div layout="row"
+                            ng-show="vm.patient.ContactName2 !== '' && vm.patient.ContactName2 !== null && vm.patient.ContactName2 !== undefined">
+                            <label translate>聯絡人關係2</label>
+                            <input ng-model="vm.patient.ContactRelationship2">
+                        </div>
+                        <div layout="row"
+                            ng-show="vm.patient.ContactName2 !== '' && vm.patient.ContactName2 !== null && vm.patient.ContactName2 !== undefined">
+                            <label translate>聯絡人電話2</label>
+                            <input ng-model="vm.ContactPhone21">
+                            <!--<md-button ng-click="vm.FieldAdd('ContactPhone2')" ng-show="vm.ContactPhone22 === '' || vm.ContactPhone22 === null || vm.ContactPhone22 === undefined || vm.ContactPhone23 === '' || vm.ContactPhone23 === null || vm.ContactPhone23 === undefined">+</md-button>-->
+                            <i class="material-icons plus-btn" ng-click="vm.FieldAdd('ContactPhone2')"
+                                ng-show="vm.ContactPhone22 === '' || vm.ContactPhone22 === null || vm.ContactPhone22 === undefined || vm.ContactPhone23 === '' || vm.ContactPhone23 === null || vm.ContactPhone23 === undefined">
+                                add
+                            </i>
+                        </div>
+                        <div layout="row"
+                            ng-show="vm.ContactPhone22 !== '' && vm.ContactPhone22 !== null && vm.ContactPhone22 !== undefined">
+                            <label>　　　　　</label>
+                            <input ng-model="vm.ContactPhone22">
+                            <i class="material-icons delete-btn" ng-click="vm.ContactPhone22=''"
+                                ng-show="vm.ContactPhone22 !== '' && vm.ContactPhone22 !== null && vm.ContactPhone22 !== undefined">clear</i>
+                        </div>
+                        <div layout="row"
+                            ng-show="vm.ContactPhone23 !== '' && vm.ContactPhone23 !== null && vm.ContactPhone23 !== undefined">
+                            <label>　　　　　</label>
+                            <input ng-model="vm.ContactPhone23">
+                            <i class="material-icons delete-btn" ng-click="vm.ContactPhone23=''"
+                                ng-show="vm.ContactPhone23 !== '' && vm.ContactPhone23 !== null && vm.ContactPhone23 !== undefined">clear</i>
+                        </div>
+                        <div layout="row" layout-align="end center">
+                            <md-button class="md-primary" ng-click="vm.FieldDel('Contact')"
+                                ng-show="vm.patient.ContactName2 !== '' && vm.patient.ContactName2 !== null && vm.patient.ContactName2 !== undefined">
+                                {{'overview.delOneData' | translate}}</md-button>
+                        </div>
+                        <div layout="row">
+                            ---------------------------------------------------
+                        </div>
+                    </md-card-content>
+                </md-card>
+                <md-card flex>
+                    <md-card-content class="yuekang-input-container">
+                        <div layout="row">
+                            <label translate>{{'patientDetail.ward'}}</label>
+                            <input ng-if="vm.keys.length == 1 && vm.patient.WardId"
+                                ng-model="vm.wards[vm.patient.WardId]" readonly />
+                            <md-select ng-if="vm.keys.length > 1 || !vm.patient.WardId"
+                                ng-change="vm.changeWard(vm.patient.WardId)" ng-model="vm.patient.WardId" name="Ward"
+                                ng-required="vm.keys.length > 1 || !vm.patient.WardId">
+                                <md-option ng-repeat="(k, v) in vm.wards" value="{{k}}">{{v}}</md-option>
+                            </md-select>
+                            <label class="err-msg" ng-if="vm.wardErr" translate>{{'patientDetail.wardErr'}}</label>
+                        </div>
+                        <div ng-messages="projectForm.Ward.$error">
+                            <div ng-message="required" translate>
+                                {{'patientDetail.requiredWard'}}
+                            </div>
+                        </div>
+                        <div layout="row">
+                            <label translate>{{'patientDetail.medicalId'}}</label>
+                            <input required ng-model="vm.patient.MedicalId" name="medicalId"
+                                ng-disabled="vm.disabledInput === 'medicalId'"
+                                ng-blur="vm.checkDuplicate({ Field: 'MedicalId', PatientId: vm.patientId || null, Value: vm.patient.MedicalId }, 'medicalId')">
+                            <!-- <input  required 
+                                    ng-model="vm.patient.MedicalId" 
+                                    name="medicalId" 
+                                    form-validator="{ Field: 'MedicalId', PatientId: vm.patientId || null, Id: vm.medicalId }"
+                                    patient-validator> -->
+                        </div>
+                        <div ng-messages="projectForm.medicalId.$error">
+                            <div ng-message="required" translate>
+                                {{'patientDetail.requiredMedicalId'}}
+                            </div>
+                            <div ng-message="existed" translate>
+                                {{'patientDetail.existedMedicalId'}}
+                            </div>
+                            <div ng-message="isChecking" translate>
+                                {{'patientDetail.checking'}}
+                            </div>
+                        </div>
+                        <div layout="row">
+                            <!-- {{'patientDetail.bedNo'}} -->
+                            <label translate>{{'patientDetail.clinicBedNo'}}</label>
+                            <md-select ng-model="vm.patient.BedNo"
+                                ng-class="{'notExistBedNo': vm.patient.BedNo === vm.notExistBedNo}"
+                                ng-disabled="vm.bedNoMsg">
+                                <md-option value=""></md-option>
+                                <md-optgroup label="{{bedNos.Name}}" ng-repeat="(bedGroup, bedNos) in vm.bedGroups">
+                                    <md-option ng-style="bedNo === vm.notExistBedNo ? {'color': 'red'} : {'color': 'initial'}" ng-value="bedNo" ng-repeat="bedNo in bedNos.BedNos">
+                                        {{bedNo}}
+                                    </md-option>
+                                </md-optgroup>
+                            </md-select>
+                            <!-- <input ng-model="vm.patient.BedNo"> -->
+                        </div>
+                        <div class="err-msg" ng-show="vm.bedNoMsg">
+                            {{vm.bedNoMsg}}
+                            <md-button class="md-icon-button" ng-show="vm.bedNoMsg !== '取得床位資料中...'" ng-click="$ctrl.changeWard($ctrl.dialysisHeader.WardId);">
+                                <i class="material-icons">refresh</i>
+                            </md-button>
+                        </div>
+                        <div class="err-msg" ng-show="vm.patient.BedNo && vm.patient.BedNo === vm.notExistBedNo">此床號已不存在設定裡</div>
+
+                        <div layout="row">
+                            <label translate>{{'patientDetail.admissionBedNo'}}</label>
+                            <input ng-model="vm.patient.AdmissionBedNo">
+                        </div>
+
+                        <div layout="row">
+                            <label translate>{{'patientDetail.patientState'}}</label>
+                            <md-select ng-model="vm.patient.State" ng-change="vm.stateChangedDateDialog(true)">
+                                <md-option value="">{{'patientDetail.select' | translate}}</md-option>
+                                <md-option value="-">{{'patientDetail.state.-' | translate}}</md-option>
+                                <md-option value=".">{{'patientDetail.state..' | translate}}</md-option>
+                                <md-option value="/">{{'patientDetail.state./' | translate}}</md-option>
+                                <md-option value="0">{{'patientDetail.state.0' | translate}}</md-option>
+                                <md-option value="1">{{'patientDetail.state.1' | translate}}</md-option>
+                                <md-option value="2">{{'patientDetail.state.2' | translate}}</md-option>
+                                <md-option value="3">{{'patientDetail.state.3' | translate}}</md-option>
+                                <md-option value="5">{{'patientDetail.state.5' | translate}}</md-option>
+                                <md-option value="6">{{'patientDetail.state.6' | translate}}</md-option>
+                                <md-option value="7">{{'patientDetail.state.7' | translate}}</md-option>
+                                <md-option value="8">{{'patientDetail.state.8' | translate}}</md-option>
+                                <md-option value="9">{{'patientDetail.state.9' | translate}}</md-option>
+                                <md-option value="10">{{'patientDetail.state.10' | translate}}</md-option>
+                            </md-select>
+                            <i class="material-icons cursor" title="病人狀況異動時間"
+                                ng-click="vm.stateChangedDateDialog()">date_range</i>
+                        </div>
+                        <div class="yuekang-input-container" ng-if="vm.patient.State == 9">
+                            <div layout="row">
+                                <label translate>{{'patientDetail.deathDate'}}</label>
+                                <input type="date" max="{{vm.today}}" ng-model="vm.patient.DeathDate" />
+                            </div>
+                            <div layout="row">
+                                <label translate>{{'patientDetail.deathReason'}}</label>
+                                <md-select ng-model="vm.patient.DeathReason">
+                                    <md-option value="">{{'patientDetail.select' | translate}}</md-option>
+                                    <md-option ng-repeat="item in vm.deathReasonSetting track by $index"
+                                        ng-value="item">{{::item}}</md-option>
+                                    <md-option value="other">{{'patientDetail.other' | translate}}</md-option>
+                                </md-select>
+                                <input ng-if="vm.patient.DeathReason =='other'" ng-model="vm.inputDeathReason">
+                            </div>
+                        </div>
+                        <div class="yuekang-input-container" ng-if="vm.patient.State == 9">
+                            <div layout="row">
+                                <label translate>死亡地點</label>
+                                <!-- <input  ng-model="vm.patient.deathplace" /> -->
+                                <md-select ng-model="vm.patient.DeathPlace">
+                                    <md-option value="">{{'patientDetail.select' | translate}}</md-option>
+                                    <md-option ng-repeat="item in vm.deathPlace track by $index" ng-value="item">
+                                        {{::item}}</md-option>
+                                    <md-option value="other">{{'patientDetail.other' | translate}}</md-option>
+                                </md-select>
+                                <input ng-if="vm.patient.DeathPlace =='other'" ng-model="vm.inputDeathPlace">
+                            </div>
+                        </div>
+                        <div layout="row">
+                            <label translate>{{'patientDetail.entryMode'}}</label>
+                            <md-select ng-model="vm.patient.EntryMode">
+                                <md-option>{{'patientDetail.select' | translate}}</md-option>
+                                <md-option ng-repeat="e in vm.EntryModes" value="{{e}}">{{e}}</md-option>
+                            </md-select>
+                        </div>
+                        <div layout="row">
+                            <label translate>{{'patientDetail.barCode'}}</label>
+                            <input id="barcode" ng-model="vm.patient.BarCode" name="barcode"
+                                ng-disabled="vm.disabledInput === 'barcode'"
+                                ng-blur="vm.checkDuplicate({ Field: 'BarCode', PatientId: vm.patientId || null, Value: vm.patient.BarCode }, 'barcode', projectForm)">
+                            <!-- <input  id="barcode" 
+                                    ng-model="vm.patient.BarCode" 
+                                    name="barcode" 
+                                    form-validator="{ Field: 'barcode', PatientId: vm.patientId || null, Id: vm.barcode }"
+                                    callback="vm.vaildField(vailed, field)" patient-validator> -->
+                        </div>
+                        <div ng-messages="projectForm.barcode.$error">
+                            <div ng-message="existed" translate>
+                                {{'patientDetail.existedBarCode'}}
+                            </div>
+                            <div ng-message="isChecking" translate>
+                                {{'patientDetail.checking'}}
+                            </div>
+                        </div>
+                        <div layout="row">
+                            <label translate>{{'patientDetail.RFID'}}</label>
+                            <input ng-model="vm.patient.RFID" name="rfid" ng-disabled="vm.disabledInput === 'rfid'"
+                                ng-blur="vm.checkDuplicate({ Field: 'RFID', PatientId: vm.patientId || null, Value: vm.patient.RFID }, 'rfid', projectForm)">
+                            <!-- <input  ng-model="vm.patient.RFID" 
+                                    name="rfid" 
+                                    form-validator="{ Field: 'rfid', PatientId: vm.patientId || null, Id: vm.rfid }"    
+                                    callback="vm.vaildField(vailed, field)" 
+                                    patient-validator> -->
+                        </div>
+                        <div ng-messages="projectForm.rfid.$error">
+                            <div ng-message="existed" translate>
+                                {{'patientDetail.existedRFID'}}
+                            </div>
+                            <div ng-message="isChecking" translate>
+                                {{'patientDetail.checking'}}
+                            </div>
+                        </div>
+                        <div layout="row">
+                            <label translate>{{'patientDetail.FirstDialysisDate'}}</label>
+                            <input type="date" min="1900-01-01" max="2999-12-31"
+                                ng-model="vm.patient.FirstDialysisDate" />
+                        </div>
+                        <div layout="row">
+                            <label translate>首次腹膜透析日期</label>
+                            <input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.patient.FirstPDDate" />
+                        </div>
+                        <div layout="row">
+                            <label>首次透析醫院</label>
+                            <md-select ng-model="vm.patient.FirstDialysisHospital">
+                                <md-option value=""></md-option>
+                                <md-option value="none">手動輸入醫院</md-option>
+                                <md-option
+                                    ng-repeat="state in vm.catheterHospitals['DialysisSetting'].CatheterHospitals"
+                                    ng-value="state">
+                                    {{state}}
+                                </md-option>
+                            </md-select>
+                        </div>
+                        <div layout="row" ng-show="vm.patient.FirstDialysisHospital === 'none'">
+                            <label>手動輸入首次透析醫院</label>
+                            <input name="UserKeyIn" ng-model="vm.firstDialysisHospitalManual"
+                                ng-required="vm.patient.FirstDialysisHospital === 'none'" type="text">
+                            <div ng-messages="data.UserKeyIn.$error" role="alert">
+                                <div ng-message="required" translate>
+                                    {{'vesselAssessment.vesselAssessment.enterCatheterHospitalRequired'}}</div>
+                            </div>
+                        </div>
+                        <div layout="row">
+                            <label translate>{{'patientDetail.FirstDialysisDateInHospital'}}</label>
+                            <input type="date" min="1900-01-01" max="2999-12-31"
+                                ng-model="vm.patient.FirstDialysisDateInHospital" />
+                        </div>
+                        <div layout="row" ng-if="vm.language === 'zh-tw'">
+                            <label>原發病大類</label>
+                            <md-select ng-model="vm.primaryDisease" flex>
+                                <md-option value="{{null}}">{{'patientDetail.select' | translate}}</md-option>
+                                <md-option ng-repeat="(pdKey, pdValue) in vm.primaryDiseaseList" value="{{pdKey}}">
+                                    {{pdValue}}</md-option>
+                            </md-select>
+                        </div>
+                        <div layout="row" ng-if="vm.language === 'zh-tw'">
+                            <label>原發病細類</label>
+                            <md-select ng-model="vm.primaryDiseaseDetail" flex>
+                                <md-option value="{{null}}">{{'patientDetail.select' | translate}}</md-option>
+                                <md-option ng-repeat="(pdKey, pdValue) in vm.primaryDiseaseDetailList"
+                                    value="{{pdKey}}">{{pdValue}}</md-option>
+                            </md-select>
+                        </div>
+                        <div layout="row">
+                            <label translate>轉外科腎臟移植日期</label>
+                            <input type="date" min="1900-01-01" max="2999-12-31"
+                                ng-model="vm.patient.OrganTransplantDate" />
+                        </div>
+                        <div layout="row">
+                            <label>轉外科腎臟移植醫院</label>
+                            <md-select ng-model="vm.patient.OrganTransplantHospital">
+                                <md-option value=""></md-option>
+                                <md-option value="none">手動輸入醫院</md-option>
+                                <md-option
+                                    ng-repeat="state in vm.catheterHospitals['DialysisSetting'].CatheterHospitals"
+                                    ng-value="state">
+                                    {{state}}
+                                </md-option>
+                            </md-select>
+                        </div>
+                        <div layout="row" ng-show="vm.patient.OrganTransplantHospital === 'none'">
+                            <label>手動輸入轉外科腎臟移植醫院</label>
+                            <input name="UserKeyInOrgan" ng-model="vm.organTransplantDateManual"
+                                ng-required="vm.patient.OrganTransplantHospital === 'none'" type="text">
+                            <div ng-messages="data.UserKeyInOrgan.$error" role="alert">
+                                <div ng-message="required"></div>
+                            </div>
+                        </div>
+                        <div layout="row">
+                            <label translate>轉CAPD日期</label>
+                            <input ng-model="vm.patient.TransferCAPDDate" type="date" min="1900-01-01" max="2999-12-31">
+                        </div>
+                        <div layout="row">
+                            <label translate>血液透析主治醫師</label>
+                            <md-select ng-class="{notInList: vm.notInListFlag[0]}"
+                                ng-model="vm.patient.AttendingPhysician" ng-change="vm.changeStyle()">
+                                <md-optgroup ng-class="{optGroupNoValue:!vm.inDoctorList}" label="{{vm.inDoctorList}}">
+                                    <md-option value="{{null}}">{{'patientDetail.select' | translate}}</md-option>
+                                    <!-- <md-option value="{{vm.patient.AttendingPhysician}}"></!-->
+                                
+                                <md-option ng-repeat="d in vm.doctorList" value="{{d.Id}}">{{d.Name}}</md-option>
+                                </md-optgroup>
+                                <md-optgroup ng-class="{optGroupNoValue:!vm.inDoctorList}" label="{{vm.notInList}}">
+                                    <md-option style="color:red;" ng-repeat="d in vm.notInListDoctor" value="{{d.Id}}">
+                                        {{d.Name}}</md-option>
+                                </md-optgroup>
+                            </md-select>
+                            <!-- <input ng-model="vm.patient.AttendingPhysician"> -->
+                        </div>
+                        <div layout="row">
+                            <label translate>腹膜透析主治醫師</label>
+                            <md-select ng-class="{notInList: vm.notInListFlag[1]}"
+                                ng-model="vm.patient.PDAttendingPhysician" ng-change="vm.changeStyle()">
+                                <md-optgroup ng-class="{optGroupNoValue:!vm.inDoctorList}" label="{{vm.inDoctorList}}">
+                                    <md-option value="{{null}}">{{'patientDetail.select' | translate}}</md-option>
+                                    <!-- <md-option value="{{vm.patient.AttendingPhysician}}"></!-->
+                                
+                                <md-option ng-repeat="d in vm.doctorList" value="{{d.Id}}">{{d.Name}}</md-option>
+                                </md-optgroup>
+                                <md-optgroup ng-class="{optGroupNoValue:!vm.inDoctorList}" label="{{vm.notInList}}">
+                                    <md-option style="color:red;" ng-repeat="d in vm.notInListDoctor" value="{{d.Id}}">
+                                        {{d.Name}}</md-option>
+                                </md-optgroup>
+                            </md-select>
+                            <!-- <input ng-model="vm.patient.AttendingPhysician"> -->
+                        </div>
+                        <div layout="column">
+                            <md-input-container style="margin:0; margin-top:20px">
+                                <label translate>DNR註記</label>
+                                <textarea ng-model="vm.patient.DNRFlag" rows="2" disabled></textarea>
+                            </md-input-container>
+                            <md-input-container style="margin:0">
+                                <label translate>DNR同意書</label>
+                                <textarea ng-model="vm.patient.DNRConsent" rows="2" disabled></textarea>
+                            </md-input-container>
+                        </div>
+                        <div layout="row">
+                            <label translate>殘障手冊鑑定日期</label>
+                            <input ng-model="vm.patient.HandicapHandbook" type="date" min="1900-01-01" max="2999-12-31">
+                        </div>
+                        <div layout="row">
+                            ---------------------------------------------------
+                        </div>
+                        <div layout="row">
+                            <label translate>重大傷病卡號</label>
+                            <input ng-model="vm.patient.MajorDiseasesNo1" readonly>
+                        </div>
+                        <!-- <div layout="row">
+                            <label translate>　　　　　　</label>
+                            起:<input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.patient.StartDate1"> ~ 迄:<input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.patient.EndDate1">
+                        </div> -->
+                        <div layout="column" layout-align="end end">
+                            <div layout="row">
+                                <label>起：</label>
+                                <input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.patient.StartDate1"
+                                    style="margin-right: 6px;" disabled>
+                            </div>
+                            <div layout="row">
+                                <label>迄：</label>
+                                <input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.patient.EndDate1"
+                                    style="margin-right: 6px;" disabled>
+                            </div>
+                        </div>
+                        <!-- <div layout="row" layout-align="end center">
+                            <md-button class="md-primary" ng-click="vm.FieldAdd('MajorDiseases')" ng-show="vm.patient.MajorDiseasesNo2 === '' || vm.patient.MajorDiseasesNo2 === null || vm.patient.MajorDiseasesNo2 === undefined">
+                                {{'overview.addOneData' | translate}}</md-button>
+                        </div> -->
+                        <div layout="row"
+                            ng-show="vm.patient.MajorDiseasesNo2 !== '' && vm.patient.MajorDiseasesNo2 !== null && vm.patient.MajorDiseasesNo2 !== undefined">
+                            <label translate>重大傷病卡號</label>
+                            <input ng-model="vm.patient.MajorDiseasesNo2" readonly>
+                        </div>
+                        <!-- <div layout="row" ng-show="vm.patient.MajorDiseasesNo2 !== '' && vm.patient.MajorDiseasesNo2 !== null && vm.patient.MajorDiseasesNo2 !== undefined">
+                            <label translate>　　　　　　</label>
+                            起:<input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.patient.StartDate2"> ~ 迄:<input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.patient.EndDate2">
+                        </div> -->
+                        <div layout="column" layout-align="end end"
+                            ng-show="vm.patient.MajorDiseasesNo2 !== '' && vm.patient.MajorDiseasesNo2 !== null && vm.patient.MajorDiseasesNo2 !== undefined">
+                            <div layout="row">
+                                <label>起：</label>
+                                <input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.patient.StartDate2"
+                                    style="margin-right: 6px;" disabled>
+                            </div>
+                            <div layout="row">
+                                <label>迄：</label>
+                                <input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.patient.EndDate2"
+                                    style="margin-right: 6px;" disabled>
+                            </div>
+                        </div>
+
+                        <!-- <div layout="row" layout-align="end center">
+                            <md-button class="md-primary" ng-click="vm.FieldDel('MajorDiseases')" ng-show="vm.patient.MajorDiseasesNo2 !== '' && vm.patient.MajorDiseasesNo2 !== null && vm.patient.MajorDiseasesNo2 !== undefined">
+                                {{'overview.delOneData' | translate}}</md-button>
+                        </div> -->
+                        <div layout="row">
+                            ---------------------------------------------------
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+
+            <div layout-gt-lg="row" layout="column">
+                <md-card flex flex-gt-lg="66">
+                    <md-card-content>
+                        <md-input-container class="md-block">
+                            <label translate>{{'patientDetail.Memo'}}</label>
+                            <textarea ng-model="vm.patient.Memo" name="Memo" md-maxlength="5000" rows="3"
+                                md-detect-hidden="true" md-select-on-focus></input>
+                            <div ng-messages="projectForm.Memo.$error">
+                                <div ng-message="md-maxlength" translate>
+                                    {{'patientDetail.maxlengthMemo'}}
+                                </div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label translate>{{'patientDetail.ClinicalDiagnosis'}}</label>
+                            <textarea ng-model="vm.patient.ClinicalDiagnosis" name="ClinicalDiagnosis"
+                                md-maxlength="5000" rows="3" md-detect-hidden="true" md-select-on-focus></textarea>
+                            <div ng-messages="projectForm.ClinicalDiagnosis.$error">
+                                <div ng-message="md-maxlength" translate>
+                                    {{'patientDetail.maxlengthClinicalDiagnosis'}}
+                                </div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label translate>{{'patientDetail.MedicalHistory'}}</label>
+                            <textarea ng-model="vm.patient.MedicalHistory" name="MedicalHistory" md-maxlength="5000"
+                                rows="3" md-detect-hidden="true" md-select-on-focus></textarea>
+                            <div ng-messages="projectForm.MedicalHistory.$error">
+                                <div ng-message="md-maxlength" translate>
+                                    {{'patientDetail.maxlengthMedicalHistory'}}
+                                </div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label translate>{{'patientDetail.allergicHistory'}}</label>
+                            <textarea ng-model="vm.patient.AllergicHistory" name="AllergicHistory" rows="2"
+                                disabled></textarea>
+                            <div ng-messages="projectForm.AllergicHistory.$error">
+                                <div ng-message="md-maxlength" translate>
+                                    {{'patientDetail.maxlengthAllergicHistory'}}
+                                </div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label translate>{{'patientDetail.Remark'}}</label>
+                            <textarea ng-model="vm.patient.Remark" name="Remark" md-maxlength="5000" rows="3"
+                                md-detect-hidden="true" md-select-on-focus></textarea>
+                            <div ng-messages="projectForm.Remark.$error">
+                                <div ng-message="md-maxlength" translate>
+                                    {{'patientDetail.maxlengthRemark'}}
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </md-card-content>
+                </md-card>
+                <!-- <md-card flex>
+                    <md-card-content>
+                        <div layout="column">
+                            <label translate>{{'patientDetail.allergicMedicine'}}</label>
+                        </div>
+                        <div style="display:inline;" ng-repeat="item in vm.patient.AllergicMedicine">{{item}}
+                            <div style="display:inline;" ng-if="!$last">、</div>
+                        </div>
+                        <div layout="row" full>
+                        <md-autocomplete md-clear-button="true" md-require-match="true" id="autocompleteField" md-selected-item="vm.selectedMedicine" md-search-text-change="vm.searchMedicines()" md-search-text="vm.searchMedicinesText" md-min-length="0" md-items="m in vm.selectMedicines" md-item-text="m" placeholder="請輸入或挑選藥品名稱" md-no-cache="true" flex>
+                            <md-item-template>
+                                <span md-highlight-text="m" md-highlight-flags="^i">{{m}}</span>
+                            </md-item-template>
+                            <md-not-found>
+                                <span translate>{{'patientDetail.noMatch'}}</span>
+                            </md-not-found>
+                        </md-autocomplete>
+                        <md-button class="md-raised md-primary" ng-disabled="vm.selectedMedicine===null || vm.selectedMedicine===''" ng-click="vm.addmed($index)" style="width: 100px"><span translate>{{'patientDetail.addin'}}</span></md-button>
+                        </div>
+                        <md-chips ng-model="vm.patient.AllergicMedicine" name="medicinechip" readonly="true" md-enable-chip-edit="false" md-removable="true" ng-change="vm.itemChange()" md-on-remove="vm.itemChange()"></md-chips>
+
+                        <select id="allergicMedicine">
+                            <option ng-repeat="m in vm.selectMedicines" ng-value="m">{{m}}</option>
+                        </select>
+                        <md-button class="md-raised md-warn" ng-click="vm.removegroupitem($event, git, 'Bed')"><span translate>{{'patientDetail.deleteGroupbutton'}}</span></md-button>
+                        <select name="gsName" ng-model="vm.optAccessBed" ng-options="member for member in vm.optAccessBed">
+                            <option value="" translate></option>
+                        </select>
+                       
+
+                    </md-card-content>
+                </md-card> -->
+                <md-card flex>
+                    <md-card-content>
+                        <div layout="row">
+                            <h2 translate>{{'patientDetail.tag'}}</h2>
+                            <span flex></span>
+                            <md-input-container>
+                                <md-button ng-click="vm.tagDialog()" md-colors="{background: 'blue-grey'}"
+                                    class="open-dialog-btn">{{'patientDetail.createTag' | translate}}</md-button>
+                            </md-input-container>
+                        </div>
+                        <div>
+                            <patient-tag ng-repeat="tag in vm.patient.Tags track by $index"
+                                on-edit="vm.tagDialog($event, tag, $index)" tag="tag" on-delete="vm.deleteTag($index)"
+                                editable=true></patient-tag>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+            <md-button type="submit" ng-click="vm.submit(projectForm)" class="md-raised md-primary"
+                ng-disabled="projectForm.$invalid || vm.isSaving || vm.isChecking">{{'patientDetail.save' | translate}}
+            </md-button>
+            <span ng-show=" vm.isSaving" translate>{{'patientDetail.saving'}}</span>
+            <span ng-show="vm.isChecking" translate>{{'patientDetail.checking'}}</span>
+        </form>
+    </md-content>
+</md-content>
+<mask-loading ng-show="vm.downloading" style="z-index:99" is-show-title="true" title-text="讀取病人資料中"></mask-loading>
+
+<script type="text/ng-template" id="dialog.html">
+    <md-dialog aria-label="新增標籤">
+        <form ng-cloak name="tagForm" novalidate>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2 translate>{{tag.index === null ? ('patientDetail.createTag') : ('patientDetail.editTag') }}</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="tag.cancel()">
+                        <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-dialog-content>
+                <div class="md-dialog-content" layout="column">
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label translate>{{'patientDetail.tagName'}}</label>
+                        <input ng-model="tag.tagForm.TagName" name="TagName" required>
+                        <div ng-messages="tagForm.TagName.$error" ng-if="tagForm.TagName.$touched || !tagForm.$submitted">
+                            <div ng-message="required" translate>
+                                {{'patientDetail.requiredTagName'}}
+                            </div>
+                        </div>
+                    </md-input-container>
+                    <h4 translate>{{'patientDetail.tagColor'}}</h4>
+                    <div layout-wrap layout-align="center center" ng-style="{textAlign: 'center'}" layout-gt-xs="row" layout="row">
+                        <span ng-repeat="color in tag.colorgroups" ng-style="{background: color.background, color: color.word, padding: '12px 10px 12px 10px', whiteSpace: 'nowrap'}"
+                            ng-click="tag.selectColor(color)" ng-class="{active : tag.tagForm.TagBgColor === color.background}"
+                            flex="30" flex-gt-xs="30" translate>{{'patientDetail.tag'}}</span>
+                    </div>
+                    <h4 translate>{{'patientDetail.tagStyle'}}</h4>
+                    <div layout-wrap layout-align="center center" ng-style="{textAlign: 'center'}" layout-gt-xs="row" layout="row">
+                        <md-radio-group ng-model="tag.tagForm.FontStyle" layout="row" flex="100">
+                            <md-radio-button ng-repeat="i in ['normal', 'oblique', 'italic']" ng-value="i" flex="30">
+                                <span ng-style="{fontStyle: i, fontSize: '17px'}">A</span>
+                            </md-radio-button>
+                        </md-radio-group>
+                    </div>
+                    <h4 translate>{{'patientDetail.tagStrike'}}</h4>
+                    <div layout-wrap layout-align="center center" ng-style="{textAlign: 'center'}" layout-gt-xs="row" layout="row">
+                        <md-radio-group ng-model="tag.tagForm.LineThrough" layout="row" flex="100">
+                            <md-radio-button ng-repeat="i in ['none', 'overline', 'line-through', 'underline']" ng-value="i" flex="30">
+                                <span ng-style="{textDecoration: i, fontSize: '17px'}">A</span>
+                            </md-radio-button>
+                        </md-radio-group>
+                    </div>
+                    <h4 translate>{{'patientDetail.tagFontWeight'}}</h4>
+                    <div layout-wrap layout-align="center center" ng-style="{textAlign: 'center'}" layout-gt-xs="row" layout="row">
+                        <md-radio-group ng-model="tag.tagForm.FontWeight" layout="row" flex="100">
+                            <md-radio-button ng-repeat="i in ['normal', 'bold']" ng-value="i" flex="30">
+                                <span ng-style="{fontWeight: i, fontSize: '17px'}">A</span>
+                            </md-radio-button>
+                        </md-radio-group>
+                    </div>
+                    <h4 translate>{{'patientDetail.tagPreview'}}</h4>
+                    <div layout-gt-xs="row">
+                        <span class="badge" ng-if="tag.tagForm.TagName" ng-style="{color: tag.tagForm.TagColor, backgroundColor: tag.tagForm.TagBgColor, fontStyle: tag.tagForm.FontStyle, textDecoration: tag.tagForm.LineThrough, fontWeight: tag.tagForm.FontWeight}"
+                            ng-bind="tag.tagForm.TagName"></span>
+                        <span class="badge" ng-if="!tag.tagForm.TagName" ng-style="{color: tag.tagForm.TagColor, backgroundColor: tag.tagForm.TagBgColor, fontStyle: tag.tagForm.FontStyle, textDecoration: tag.tagForm.LineThrough, fontWeight: tag.tagForm.FontWeight}"
+                            ng-bind="'patientDetail.tagExample' | translate"></span>
+                    </div>
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+                <md-button class="md-raised" ng-click="tag.cancel()">
+                    {{'patientDetail.cancel' | translate}}
+                </md-button>
+                <md-button class="md-raised md-primary" ng-click="tag.ok(tagForm)">
+                    {{tag.index === null ? ('patientDetail.create' | translate) : ('patientDetail.edit' | translate)}}
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>
+
+<script type="text/ng-template" id="stateChangedDate.html">
+    <md-dialog aria-label="狀態異動時間">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 translate>{{'patientDetail.patientTimeChange'}}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="state.cancel()">
+                    <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content class="md-padding">
+            <div ng-if="state.isChange" style="color:blue; max-width:250px; margin-bottom:10px;" translate>
+                {{'patientDetail.timeChangeMsg'}}
+            </div>
+            <div class="yuekang-input-container">
+                <div layout="row">
+                    <label translate>{{'patientDetail.dateChange'}}</label>
+                    <input type="date" min="1900-01-01" max="2999-12-31" ng-model="state.stateChangedDate" />
+                </div>
+                <div layout="row">
+                    <label translate>{{'patientDetail.timeChange'}}</label>
+                    <input type="time" ng-model="state.stateChangedDate" />
+                </div>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button class="md-raised" ng-click="state.cancel()">
+                {{'patientDetail.cancel' | translate}}
+            </md-button>
+            <md-button class="md-raised md-primary" ng-click="state.ok()">
+                {{'patientDetail.ok' | translate}}
+            </md-button>
+        </md-dialog-actions>
+    </md-dialog>
+</script>

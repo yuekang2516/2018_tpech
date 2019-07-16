@@ -1,0 +1,32 @@
+[
+    {
+      "DateTimestamp": "2019-03-19T17:15:54.0514021+08:00",
+      "PatientId": "5c8f61ae98584d53f0458527",
+      "RelativeId": "5c9080ae20c32b17a4c56a3a",
+      "Content": "    點    分推床(意識    )、輪椅、步行入洗腎室，今日測量體重  公斤，增加   公斤(增加   %)，醫師評估預計脫水    公斤，血管功能(有/無)或透析管路通暢(是/否)，呼吸平順(是/否)，下肢水腫(是/否)，開始進行透析 透析過程中無不適反應，共透析   小時，透析脫水   公斤，血壓   /  mmHg、結束體重   kg，血管功能正常無滲血，由家屬陪同輪椅、步行離開洗腎室 血壓偏低    /    mmHg，暫停脫水，並注意血壓變化，依醫囑給予50%葡萄糖    支及生理食鹽水      cc",
+      "NursingTime": "2019-03-19T07:11:02.402Z",
+      "SourceId": "5c90960420c32b17a4c61832",
+      "SourceType": "DialysisData",
+      "HospitalId": "56fcc5dd4ead7870942f61c3",
+      "Revision": 1,
+      "HistoryId": null,
+      "Status": "Normal",
+      "CreatedUserId": null,
+      "CreatedUserName": "SYSTEM-Dialysis_FirstData",
+      "CreatedTime": "2019-03-19T07:11:02.402Z",
+      "ModifiedUserId": null,
+      "ModifiedUserName": null,
+      "ModifiedTime": null,
+      "Id": "5c90960620c32b17a4c61842",
+      "CreatedOn": "2019-03-19T07:11:02Z",
+      "ModifiedOn": "0001-01-01T00:00:00Z",
+      "ObjectId": {
+        "Timestamp": 1552979462,
+        "Machine": 2147115,
+        "Pid": 6052,
+        "Increment": 12982338,
+        "CreationTime": "2019-03-19T07:11:02Z"
+      }
+    }
+  ]
+  

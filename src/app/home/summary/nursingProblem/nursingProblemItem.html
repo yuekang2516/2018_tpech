@@ -1,0 +1,43 @@
+<div layout="column" layout-fill ui-view>
+    <md-toolbar hide-gt-sm>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="$ctrl.back();">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <div layout="row">
+                {{!$ctrl.loading ? $ctrl.patient.Name + '(' + $ctrl.patient.MedicalId + ')' : null }} {{'nursingProblem.nursingProblemItem.nursingItemList' | translate}}
+            </div>
+            <span flex></span>
+        </div>
+    </md-toolbar>
+    <div hide-xs hide-sm ng-show="!$ctrl.loading">
+        <h3 style="float: left; padding-left: 10px">{{!$ctrl.loading ? $ctrl.patient.Name + '(' + $ctrl.patient.MedicalId + ')' : null }} {{'nursingProblem.nursingProblemItem.nursingItemList' | translate}}</h3>
+        <md-button style="float:right; margin-top: 8px" class="md-secondary md-icon-button" ng-click="$ctrl.back()"
+            aria-label="call">
+            <i class="material-icons">cancel</i>
+        </md-button>
+    </div>
+    <div class="list-header" ng-show="!$ctrl.loading" layout="row" layout-align="center center">
+        <!-- <h6>共 {{$ctrl.serviceData.length}} 筆</h6> -->
+        <h6 translate="nursingProblem.nursingProblemItem.totalRecord" translate-values='{length: $ctrl.serviceData.length}' flex="30"></h6>
+        <input id="search" onClick="this.select();" type="text" ng-model="searchText" ng-model-options="{debounce:600}"
+                placeholder="{{'nursingProblem.nursingProblemItem.search' | translate}}" flex/>
+    </div>
+    <md-content layout="column" flex>
+        <loading ng-show="$ctrl.loading"></loading>
+        <md-list>
+            <md-list-item ng-repeat="item in $ctrl.serviceData | filter: {Title: searchText}" ng-click="$ctrl.goto(item.Key,item.Title)" ng-show="item.Status !== 'Deleted' || $ctrl.showDeleted">
+                <div class="md-list-item-text" layout="column">
+                    <p ng-bind="item.Title" />
+                </div>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+        </md-list>
+        <div flex ng-show="!$ctrl.loading && !$ctrl.serviceData.length && !$ctrl.isError" layout="column" layout-fill layout-align="center center">
+            <h1 translate>{{'nursingProblem.nursingProblemItem.noData'}}</h1>
+        </div>
+        <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate>{{'nursingProblem.nursingProblemItem.serverError'}}</h3>
+        </div>
+    </md-content>
+</div>

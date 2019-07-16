@@ -1,0 +1,91 @@
+{
+  "DateTimestamp": "2019-03-22T18:38:41.4375148+08:00",
+  "Type": "pre",
+  "Items": [
+    {
+      "Item": "上次透析返家後情形",
+      "Options": [
+        "特殊狀況",
+        "跌倒次數"
+      ],
+      "IncludeOther": false
+    },
+    {
+      "Item": "透析用物準備",
+      "Options": [
+        "機器功能",
+        "正確裝置人工腎臟、迴路管及外管，確認功能正"
+      ],
+      "IncludeOther": false
+    },
+    {
+      "Item": "核對病人",
+      "Options": [
+        "病人辨識",
+        "確認醫囑每週HD頻次及透析治療時間"
+      ],
+      "IncludeOther": false
+    },
+    {
+      "Item": "查看病人檢驗報告",
+      "Options": [
+        "HBsAg、 Anti-HBs",
+        "Anti-HCV、HCV RNA",
+        "RPR、HIV",
+        "其他異常檢驗，如K+、Hb…"
+      ],
+      "IncludeOther": false
+    },
+    {
+      "Item": "病人身體評估",
+      "Options": [
+        "意識狀況",
+        "生命徵象",
+        "疼痛指數",
+        "體重變化",
+        "呼吸型態",
+        "水腫情形"
+      ],
+      "IncludeOther": true
+    },
+    {
+      "Item": "血管通路功能",
+      "Options": [
+        "視診：評估外觀有無異常現象，如紅腫熱痛",
+        "觸診：評估血管彈性與震顫音(thrill)",
+        "聽診：聽診器評估血管血流嘈音(Bruit)"
+      ],
+      "IncludeOther": false
+    },
+    {
+      "Item": "透析機設定",
+      "Options": [
+        "血流流速",
+        "脫水量",
+        "鈉離子濃度",
+        "肝素用量"
+      ],
+      "IncludeOther": false
+    }
+  ],
+  "HospitalId": "56fcc5dd4ead7870942f61c3",
+  "Revision": 270,
+  "HistoryId": null,
+  "Status": "Normal",
+  "CreatedUserId": null,
+  "CreatedUserName": null,
+  "CreatedTime": "2017-09-20T01:43:47.645Z",
+  "ModifiedUserId": "59478096d8d3321118c6678a",
+  "ModifiedUserName": "Yuting",
+  "ModifiedTime": "2019-03-22T10:32:47.445Z",
+  "Id": "5c94b9cf9b5d1a1f6cd7de91",
+  "CreatedOn": "2017-10-03T12:39:07Z",
+  "ModifiedOn": "2018-01-19T02:03:04.492Z",
+  "ObjectId": {
+    "Timestamp": 1553250767,
+    "Machine": 10181914,
+    "Pid": 8044,
+    "Increment": 14147217,
+    "CreationTime": "2019-03-22T10:32:47Z"
+  }
+}

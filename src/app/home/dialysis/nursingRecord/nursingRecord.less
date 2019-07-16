@@ -1,0 +1,28 @@
+nursing-record {
+    height: 100%;
+    position: relative;
+    // 最多三行
+    .md-list-item-text p {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        padding-bottom: 8px;
+    }
+}
+
+nursing-record-detail {
+    height: 100%;
+
+    div.deleted {
+        background-color: rgba(10, 10, 10, 0.2);
+        position: absolute;
+        height: 100%;
+        width: 100%;
+    }
+    .action-area {
+        md-progress-circular {
+            margin-left: 18px !important;
+        }
+    }
+}

@@ -1,0 +1,60 @@
+<style>
+  #vertical-container {
+    height: 292px;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .repeated-item {
+    border-bottom: 1px solid #ddd;
+    box-sizing: border-box;
+    height: 40px;
+    padding-top: 10px;
+  }
+</style>
+<md-content layout="column" layout-fill>
+  <summary-toolbar toolbar-title="'allMedicationRecords.medicationRecord' | translate" cancel="$ctrl.back()" ng-hide="$ctrl.stateName.substr(0, 2) === 'pd'"></summary-toolbar>
+  <!-- <md-toolbar hide-gt-sm>
+    <div class="md-toolbar-tools">
+      <md-button class="md-icon-button" ng-click="$ctrl.back()">
+        <i class="material-icons">keyboard_backspace</i>
+      </md-button>
+      <div layout="row">
+        {{'allMedicationRecords.medicationRecord' | translate}}
+      </div>
+      <span flex></span>
+    </div>
+  </md-toolbar> -->
+  <md-content layout="column" flex>
+    <loading ng-show="$ctrl.loading && $ctrl.serviceData.length === 0">loading...</loading>
+    <div infinite-scroll="$ctrl.myPagingFunction()" infinite-scroll-disabled='$ctrl.loading' infinite-scroll-distance='1' infinite-scroll-parent>
+      <md-list ng-repeat="g in $ctrl.serviceData">
+        <md-subheader style="background-color: aliceblue">{{ ::g[0].SortTime | moment: 'YYYY/MM/DD(dd)' }}</md-subheader>
+        <md-list-item ng-repeat="item in g" ng-click="null">
+          <div flex>
+            <span ng-if="item.ProcessTime">{{ :: item.ProcessTime | date: 'HH:mm'}}</span>
+            <span ng-if="item.ProcessTime == null && $ctrl.DateDifference(g[0].SortTime, item.EndTime, 'days') > 0">~ {{ ::item.EndTime | moment: 'MM/DD(dd)' }}</span>
+          </div>
+          <div flex>
+            {{ ::item.OrderMode === 'Performed' ? 'allMedicationRecords.execute': item.OrderMode === 'Neglect' ? 'allMedicationRecords.dontExecute' : 'allMedicationRecords.unexecuted' | translate}}
+            <seal model="item" created="none"></seal>
+          </div>
+          <div flex>
+            {{ ::item.Name }}
+          </div>
+          <div flex>
+            {{ ::item.OrderMode === 'Performed' ? item.ActualQuantity : '-' }} / {{ ::item.Quantity }} {{ ::item.QuantityUnit }} {{::item.Route}} {{ ::item.Frequency }}
+          </div>
+          <div flex>{{ ::item.DoctorMemo }}</div>
+        </md-list-item>
+        <md-divider></md-divider>
+      </md-list>
+      </div>
+       <div flex ng-show="!$ctrl.loading && !$ctrl.isError && ($ctrl.serviceData === null || $ctrl.serviceData.length === 0)" layout="column" layout-fill layout-align="center center">
+          <h1 translate>{{'allMedicationRecords.noData'}}</h1>
+      </div> 
+      <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate>{{'allMedicationRecords.serverError'}}</h3>
+      </div>
+  </md-content>
+</md-content>

@@ -1,0 +1,84 @@
+<md-content layout="column" layout-fill>
+    <md-toolbar hide-gt-sm layout="row">
+        <div class="md-toolbar-tools">
+            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.goback('nursingProblemList')" aria-label="call">
+                <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+            </md-button>
+            <h3>
+                <span ng-if="$ctrl.nursingProblemId && $ctrl.nursingProblemDetail.Status !== 'Deleted'" translate>{{'nursingProblem.nursingProblemDetail.edit'}}</span>
+                <span ng-if="$ctrl.nursingProblemDetail.Status === 'Deleted'" translate>{{'nursingProblem.nursingProblemDetail.showDeleted'}}</span>
+                <span translate="nursingProblem.nursingProblemDetail.nursingProblemRecord" translate-values='{Name: $ctrl.patient.Name, MedicalId: $ctrl.patient.MedicalId}'></span>
+            </h3>
+        </div>
+    </md-toolbar>
+    <div hide-xs hide-sm ng-show="!$ctrl.loading">
+        <h3 style="float: left; padding-left: 10px">
+            <span ng-if="$ctrl.nursingProblemId && $ctrl.nursingProblemDetail.Status !== 'Deleted'" translate>{{'nursingProblem.nursingProblemDetail.edit'}}</span>
+            <span ng-if="$ctrl.nursingProblemDetail.Status === 'Deleted'" translate>{{'nursingProblem.nursingProblemDetail.showDeleted'}}</span>
+            <span translate="nursingProblem.nursingProblemDetail.nursingProblemRecord" translate-values='{Name: $ctrl.patient.Name, MedicalId: $ctrl.patient.MedicalId}'></span>
+        </h3>
+        <md-button style="float:right; margin-top: 8px" class="md-secondary md-icon-button" ng-click="$ctrl.goback('nursingProblemList')"
+            aria-label="call">
+            <i class="material-icons">cancel</i>
+        </md-button>
+    </div>
+    <md-content layout="column" flex>
+        <loading ng-show="$ctrl.loading"></loading>
+        <div class="readonly-container md-padding">
+            <form ng-show="!$ctrl.loading" layout="column" name="nursingProblemDetail">
+                <div layout="column">
+                    <!-- card  1 start -->
+                    <md-card flex>
+                        <md-card-content class="yuekang-input-container">
+
+                            <div layout="row">
+                                <label translate>{{'nursingProblem.nursingProblemDetail.StartDate'}}</label>
+                                <input type="date" min="1900-01-01" max="2999-12-31" ng-model="$ctrl.nursingProblemDetail.StartDate" />
+                            </div>
+                            <div layout="row">
+                                <label translate>{{'nursingProblem.nursingProblemDetail.nursingProblem'}}</label>
+                                <div>[{{$ctrl.nursingProblemDetail.ItemId}}] {{$ctrl.nursingProblemDetail.ItemName}}</div>
+                            </div>
+                            <div layout="row" layout-align="end center">
+                                <md-button class="md-raised md-primary" ng-click="$ctrl.changeNursingProblemItem()">{{'nursingProblem.nursingProblemDetail.editNursingProblem' | translate}}</md-button>
+                            </div>
+                            <div layout="row">
+                                <label translate>{{'nursingProblem.nursingProblemDetail.Measures'}}</label>
+                                <div ng-repeat="(key,value) in $ctrl.nursingProblemDetail.Measures">
+                                    [{{::key}}] {{::value}}
+                                </div>
+                            </div>
+                            <div layout="row" layout-align="end center">
+                                <md-button class="md-raised md-primary" ng-click="$ctrl.changeNursingProblemItemDetail()">{{'nursingProblem.nursingProblemDetail.editMeasures' | translate}}</md-button>
+                            </div>
+                            <div layout="row">
+                                <label translate>{{'nursingProblem.nursingProblemDetail.ResolveDate'}}</label>
+                                <input type="date" min="{{$ctrl.nursingProblemDetail.StartDate | moment: 'YYYY-MM-DD'}}" ng-model="$ctrl.nursingProblemDetail.ResolveDate"
+                                />
+                            </div>
+
+                        </md-card-content>
+                    </md-card>
+                    <!-- card  1 end -->
+                </div>
+                <div layout="row" layout-wrap>
+                    <div flex="50" flex-xs="100" ng-show="$ctrl.nursingProblemDetail.CreatedUserName">
+                        <!-- <span>建立: {{ $ctrl.nursingProblemDetail.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                        <span translate="nursingProblem.nursingProblemDetail.createdTime" translate-values='{CreatedTime: $ctrl.nursingProblemDetail.CreatedTime}'></span>
+                        <seal model="$ctrl.nursingProblemDetail" modified="none"></seal>
+                    </div>
+                    <div flex="50" flex-xs="100" ng-show="$ctrl.nursingProblemDetail.ModifiedTime != null">
+                        <!-- <span>修改: {{ $ctrl.nursingProblemDetail.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                        <span translate="nursingProblem.nursingProblemDetail.editedTime" translate-values='{ModifiedTime: $ctrl.nursingProblemDetail.ModifiedTime}'></span>
+                        <seal model="$ctrl.nursingProblemDetail" created="none"></seal>
+                    </div>
+                </div>
+                <div layout="row">
+                    <md-button ng-click="$ctrl.submit($event)" ng-show="$ctrl.nursingProblemDetail.Status !== 'Deleted'" class="md-raised md-primary"
+                        ng-disabled="nursingProblemDetail.$invalid">{{'nursingProblem.nursingProblemDetail.save' | translate}}</md-button>
+                </div>
+                <div ng-class="{deleted: $ctrl.nursingProblemDetail.Status == 'Deleted'}"></div>
+            </form>
+        </div>
+    </md-content>
+</md-content>

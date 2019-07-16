@@ -1,0 +1,7 @@
+<div class="ui-grid-cell-contents custom" layout="row" layout-align="start center">
+    <div ng-repeat="item in row.entity[col.displayName]" ng-attr-title="正常範圍 {{item.NormalDown}}~{{item.NormalUpper}}&#013;
+    {{item.CheckTime | moment: 'HH:mm:ss'}}" hm-tap="grid.appScope.edit(item)" hm-press="grid.appScope.del($event, item)" ng-class="{isAbnormal: item.isAbnormal}" class="action" flex>
+        <!-- {{ COL_FIELD }} -->
+        {{ item.Value }}
+    </div>
+</div>

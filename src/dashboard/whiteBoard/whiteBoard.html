@@ -1,0 +1,68 @@
+<!-- <div>
+    <textarea ckeditor="editorOptions" ng-model="modelName"></textarea>
+</div> -->
+
+<md-content layout-fill class="white-board-content">
+    {{ $ctrl.message }}
+    <loading ng-show="$ctrl.loading"></loading>
+    <div class="textarea">
+        <div class="edit-btn">
+            <md-button class="md-icon-button" title="編輯" ng-if="!$ctrl.editable && !$ctrl.loading" ng-click="$ctrl.changeMode(true)">
+                <i class="material-icons">mode_edit</i>
+            </md-button>
+            <md-button class="md-icon-button" title="儲存並離開編輯模式" ng-if="$ctrl.editable && !$ctrl.loading" ng-click="$ctrl.changeMode(false)">
+                <i class="material-icons">chrome_reader_mode</i>
+            </md-button>
+        </div>
+        <div ng-if="$ctrl.editable && !$ctrl.loading">
+            <table class="tinymces">
+                <tr>
+                    <td rowspan="2" width="65%">
+                        <div ui-tinymce="tinymceOptionsLeftOne" ng-model="$ctrl.boardData.leftOne.Content"></div>
+                    </td>
+                    <td>
+                        <div ui-tinymce="tinymceOptionsRightOne" ng-model="$ctrl.boardData.rightOne.Content"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div ui-tinymce="tinymceOptionsRightTwo" ng-model="$ctrl.boardData.rightTwo.Content"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="65%">
+                        <div ui-tinymce="tinymceOptionsLeftTwo" ng-model="$ctrl.boardData.leftTwo.Content"></div>
+                    </td>
+                    <td>
+                        <div ui-tinymce="tinymceOptionsRightThree" ng-model="$ctrl.boardData.rightThree.Content"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div ng-if="!$ctrl.editable && !$ctrl.loading" layout-fill>
+            <div layout="row" layout-fill>
+                <div layout="column" class="readonly" flex="66"> 
+                    <div flex="66" class="left top">
+                        <span ng-bind-html="$ctrl.trustedHtml($ctrl.boardData.leftOne.Content)"></span>
+                    </div>
+                    <div flex class="left bottom">
+                        <span class="small" ng-bind-html="$ctrl.trustedHtml($ctrl.boardData.leftTwo.Content)"></span>
+                    </div>
+                </div>
+                <div layout="column" class="readonly" flex>
+                    <div flex="33" class="right top">
+                        <span ng-bind-html="$ctrl.trustedHtml($ctrl.boardData.rightOne.Content)"></span>
+                    </div>
+                    <div flex="33" class="right">
+                        <span ng-bind-html="$ctrl.trustedHtml($ctrl.boardData.rightTwo.Content)"></span>
+                    </div>
+                    <div flex class="right bottom">
+                        <span ng-bind-html="$ctrl.trustedHtml($ctrl.boardData.rightThree.Content)"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</md-content>

@@ -1,0 +1,18 @@
+// import 'jquery';
+import 'angular';
+import 'angular-material';
+import 'angular-messages';
+import 'angular-material/angular-material.css';
+import 'angular-animate';
+import 'angular-cookies';
+import 'angular-ui-router';
+import 'angular-ui-router.statehelper';
+import 'ngstorage';
+import 'chart.js';
+import 'lodash';
+import 'moment';
+import 'angular-moment';
+import 'less';
+import 'ng-infinite-scroll';
+import 'ng-file-upload/dist/ng-file-upload.min.js';
+import 'angular-translate';

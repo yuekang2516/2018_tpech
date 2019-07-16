@@ -1,0 +1,31 @@
+
+<div class="list-container" layout="column">
+    <loading ng-show="$ctrl.loading"></loading>
+    <div class="list-header" layout="row" layout-align="center end" ng-show="!$ctrl.loading">
+        <!-- <div flex-xs="50" flex-order="1" flex-order-xs="1">
+                    <md-switch ng-model="$ctrl.showDeleted" aria-label="Switch data">
+                        <h6 translate="labexam.labexam.showdeletedAndTotal" translate-values='{deletedItemsLength: $ctrl.deletedItemsLength, length: $ctrl.serviceData.length}'></h6>
+                    </md-switch>
+                </div> -->
+        <h6 translate="labexam.labexam.totalRecord" translate-values='{length: $ctrl.data.length ? $ctrl.data.length - 2 : 0}'></h6>
+        <div class="datetime" layout="row" layout-align="center center" flex>
+            <md-button class="md-icon-button" ng-click="$ctrl.changeDate(-1)">
+                <i class="material-icons">navigate_before</i>
+            </md-button>
+            <input type="month" min="1900-01" max="{{$ctrl.thisMonth}}" ng-model="$ctrl.currentDate" ng-change="$ctrl.changeDate(0)" />
+            <md-button class="md-icon-button" ng-disabled="$ctrl.disableNextMonth" ng-click="$ctrl.changeDate(1)">
+                <i class="material-icons">navigate_next</i>
+            </md-button>
+        </div>
+        <div layout="row">
+            <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+        </div>
+    </div>
+    <ro-card-list flex ng-show="!$ctrl.loading && !$ctrl.isError && $ctrl.data.length > 0" data="$ctrl.data"></ro-card-list>
+    <div flex ng-show="!$ctrl.loading && !$ctrl.isError && $ctrl.data.length == 0" layout="column" layout-fill layout-align="center center">
+        <h1 translate>{{'roprocess.noDataThisMonth'}}</h1>
+    </div>
+    <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+        <h3 translate>{{'roprocess.serverError'}}</h3>
+    </div>
+</div>

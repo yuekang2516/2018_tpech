@@ -1,0 +1,123 @@
+<div layout-fill layout="column" ui-view>
+    <md-toolbar layout="row" class="disablePrint">
+        <div class="md-toolbar-tools">
+            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.goback('labexamTable')" aria-label="call">
+                <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+            </md-button>
+            <h3 flex>
+                <span>檢驗記錄表列印</span>
+            </h3>
+            <md-button ng-if="$ctrl.isBrowser" class="md-icon-button" aria-label="More" ng-click="$ctrl.print()">
+                <i class="material-icons">print</i>
+            </md-button>
+            <!-- <md-button class="md-icon-button" aria-label="More" ng-click="$ctrl.gotoHomePage()">
+                    <i class="material-icons">home</i>
+                </md-button> -->
+        </div>
+    </md-toolbar>
+    <loading ng-if="$ctrl.loading"></loading>
+    <md-content layout="column" flex class="labexam-table-print-container" layout-align="center center">
+        <form flex class="out-form" ng-if="!$ctrl.loading && !$ctrl.isError" layout="column" name="labexamTablePrint" >
+            <!-- style="width: 21.4cm;  box-sizing: border-box; padding: 18px;" -->
+            <md-whiteframe class="md-whiteframe-10dp" layout-align="center center" >
+                <!-- width: 19.5cm; -->
+                <div style="width: 21.4cm; clear: both; min-height: 25cm;">
+                    <!-- <img ng-src="{{'static/img/TV_logo.jpg'}}" width="250px" height="250px" alt="Hospital logo" /> -->
+                    <!-- <img ng-src="{{'static/img/TV_logo.jpg'}}" alt="" style="float: left; width: 10%; margin-left: 15px"> -->
+                    <div style="text-align: center; margin-bottom: 5px;">
+                        <h3>檢驗記錄表</h3>
+                        <!-- <h4>Referral Sheet from Hemodialysis unit of Taipei Veterans General Hospital</h4> -->
+                    </div>
+                    <!-- <div style="clear: both;"></div> -->
+                    <table class="table_content" border="0" style="margin-top: 8px" width="100%">
+                        <tbody>
+                            <!-- <tr>
+                                    <td colspan="4" style="text-align: center; height:15px;">
+                                    </td>
+                                </tr> -->
+                            <tr>
+                                <td colspan="4">
+                                    <ul>
+                                        <li>
+                                            <span class="patient-table-text">印表日期 Printing Date：{{$ctrl.printData.PrintingDate }}</span>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            <span class="patient-table-text">姓名 Name：{{$ctrl.printData.Name}}</span>
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            <span class="patient-table-text">性別 Sex：{{$ctrl.printData.Gender}}</span>
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            <span class="patient-table-text">病歷號碼 Chart No.：{{$ctrl.printData.MedicalId}}</span>
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            <span class="patient-table-text">身分證號 ID No.：{{$ctrl.printData.IdentifierId}}</span>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <div layout="row" layout-align="start center">
+                        <h5>檢驗紀錄 Laboratory Data：</h5>
+                    </div>
+                    <div ng-if="$ctrl.finalData.length == 0">
+                        <ul>
+                            <li>
+                                無檢驗資料
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- layout-wrap -->
+                    <div ng-if="$ctrl.finalData" class="lab-table" layout="column" ng-repeat="(key, item) in $ctrl.finalData" flex>
+                        <table border="0" cellpadding="0" cellspacing="0" class="table center" style="margin-bottom: -1px;" >
+                            <tr>
+                                <td colspan="5" style="text-align: left;">
+                                    <span ng-if="key != 'null'" class="lab-table-title">{{key}}</span>
+                                    <span ng-if="key == 'null'" class="lab-table-title">其他</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="gray" width="180">項目<br>Item</td>
+                                <td class="gray" width="120">日期<br>Date</td>
+                                <td class="gray" width="100">結果<br>Result</td>
+                                <td class="gray" width="120">檢驗區間<br>Area</td>
+                                <td class="gray">備註<br>Memo</td>
+                            </tr>
+                            <tr ng-repeat="i in item">
+                                <td class="gray">{{i.Name}}</td>
+                                <td >{{i.CheckTime}}</td>
+                                <td ng-class="{warning:i.isAbnormal}">{{i.Value}}</td>
+                                <td >{{i.Area}}</td>
+                                <td >{{i.isAbnormal ? i.PatientMemo : '-'}}</td>
+                            </tr>
+                        </table>
+                        <br/>
+                    </div>
+                </div>
+            </md-whiteframe>
+        </form>
+        <div ng-if="!$ctrl.loading && $ctrl.isError" layout="column" flex layout-align="center center">
+            <h4>伺服器錯誤，請重新整理</h4>
+        </div>
+    </md-content>
+</div>

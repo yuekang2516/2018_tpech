@@ -1,0 +1,54 @@
+<div layout-fill layout="column" flex style="background:#f3f3f3">
+    <h2 ng-hide="allEpo.loading" translate="reports.allEpo.title" translate-values='{selectedYear: allEpo.selectedYear, selectedMonth: allEpo.selectedMonth}' style="margin-top: 25px ; margin-bottom: 0; padding-left: 15px;">
+        <!-- {{ allEpo.selectedYear }} 年 {{ allEpo.selectedMonth}} 月EPO統計表 -->
+    </h2>
+    <loading ng-show="allEpo.loading"></loading>
+    <md-content flex layout-fill layout-padding layout="column" ng-show="!allEpo.loading" style="background:#f3f3f3">
+        <div>
+            <!-- {{'reports.allEpo.ward' | translate}}
+            <md-input-container>
+                <md-select ng-model="allEpo.selectedWards" ng-change="allEpo.getAllEPO()">
+                    <md-option ng-repeat="i in allEpo.keys" ng-value="i">{{::allEpo.wards[i]}}</md-option>
+                </md-select>
+            </md-input-container> -->
+            {{'reports.allEpo.year' | translate}}
+            <md-input-container style="margin:0px">
+                <md-select ng-model="allEpo.selectedYear">
+                    <md-option ng-repeat="j in allEpo.optionYear" ng-value="j">{{::j}}</md-option>
+                </md-select>
+            </md-input-container >
+            {{'reports.allEpo.month' | translate}}
+            <md-input-container style="margin:0px">
+                <md-select ng-model="allEpo.selectedMonth">
+                    <md-option ng-repeat="k in allEpo.optionMonth" ng-value="k">{{::k}}</md-option>
+                </md-select>
+            </md-input-container>
+            <md-card-actions>
+            <md-button class="md-raised md-primary" ng-click="allEpo.getAllEPO()">查詢</md-button>
+        </md-card-actions>
+        </div>
+        <loading ng-show="allEpo.searching"></loading>
+        <div ng-show="allEpo.searchContent && !allEpo.isError">
+            <table>
+                <!--tbody-->
+                <tr>
+                    <!-- <td class="alleporeport" colspan="34">{{allEpo.selectedYear}}年 {{allEpo.selectedMonth}}月</td> -->
+                    <td class="serviceQuality" colspan="34" translate="reports.allEpo.yearMonthHeading" translate-values='{selectedYear: allEpo.contentYear, selectedMonth: allEpo.contentMonth}'></td>
+                </tr>
+                <tr>
+                    <td translate>{{'reports.allEpo.patient'}}</td>
+                    <td translate>{{'reports.allEpo.itemAndDay'}}</td>
+                    <td ng-repeat="day in [] | range : allEpo.daysOfMonth:1">{{::day}}</td>
+                    <td translate>{{'reports.allEpo.total'}}</td>
+                </tr>
+                <tbody id="reportContent">
+                </tbody>
+            </table>
+        </div>
+        <div ng-if="!allEpo.searching && allEpo.isError" layout-fill flex layout="column" layout-align="center center" style="background:#f3f3f3">
+            <h3>
+                伺服器錯誤，請重新整理
+            </h3>
+        </div>
+    </md-content>
+</div>

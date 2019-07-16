@@ -1,0 +1,82 @@
+<div ng-show="!$ctrl.data.loading" class="shifts-container">
+    <table id="shifts">
+        <tbody>
+            <tr style="background: #fdfaac">
+                <th class="firstCol bk" translate>{{'shifts.shiftsContent.staff'}}</th>
+                <th ng-repeat="day in $ctrl.data.daysInMonth track by $index" ng-class="{weekends: (day.isoWeekday() == 6) || (day.isoWeekday() == 7)}">
+                    <div>
+                        {{day.format('DD')}}
+                    </div>
+                    <div>
+                        ({{day.Weekday}})
+                    </div>
+                    <div class="totalbtn" ng-click="$ctrl.showTotalPerDay(day)" translate>{{'shifts.shiftsContent.total'}}</div>
+                    <!-- <div class="init-margin-padding" ng-repeat="item in $ctrl.data.shiftOptions track by $index">
+                        <span>{{::item}}: {{day.Counts[item]}}</span>
+                    </div> -->
+                </th>
+                <th translate>{{'shifts.shiftsContent.totalStaff'}}</th>
+            </tr>
+            <tr ng-repeat="e in $ctrl.data.employees track by e.Id" ng-class="{currentedit: e.isEditable}">
+                <td class="name bk">
+                    {{e.Name}}
+                    <div ng-if="!e.isEditable && $ctrl.data.currentUser.Access == 99 && !$ctrl.data.isDashboard" ng-class="{edit: !$ctrl.data.isDashboard}" ng-click="$ctrl.checkEditable(e)" translate>{{'shifts.shiftsContent.edit'}}</div>
+                    <div ng-if="e.isEditable">
+                        <div class="editBtn" ng-click="$ctrl.save(e.Id)" translate>{{'shifts.shiftsContent.save'}}</div>
+                        <div class="editBtn" ng-click="$ctrl.reset(e.Id)" translate>{{'shifts.shiftsContent.reset'}}</div>
+                    </div>
+                </td>
+                <td ng-repeat="day in $ctrl.data.daysInMonth track by $index" ng-class="{repeat: day.Shifts[e.Id].isRepeat, weekends: (day.isoWeekday() == 6) || (day.isoWeekday() == 7), today: day.format('YYYY-MM-DD') == $ctrl.today}">
+                    <span ng-if="!e.isEditable || ($ctrl.data.currentUser.Access != 99 && $ctrl.data.currentUser.Id != e.Id)">
+                        <div class="shifts" title="{{day.Shifts[e.Id].Shift || '班次'}}" ng-class="{selected: day.Shifts[e.Id].Shift}" translate>
+                            {{day.Shifts[e.Id].Shift || 'shifts.shiftsContent.shift'}}
+                        </div>
+
+                        <div class="bedGroup" title="{{day.Shifts[e.Id].BedGroup || '床組'}}" ng-class="{selected:day.Shifts[e.Id].BedGroup}" translate>
+                            {{day.Shifts[e.Id].BedGroup || 'shifts.shiftsContent.BedGroup'}}
+                        </div>
+                        
+                        <div class="memoContent" ng-click="$ctrl.showMemoPerDay(day, e.Id, false)" ng-class="{selected: day.Shifts[e.Id].Memo}">
+                            {{'shifts.shiftsContent.memo' | translate}}
+                        </div>
+                    </span>
+                    <span ng-if="e.isEditable || ($ctrl.data.currentUser.Access != 99 && $ctrl.data.currentUser.Id == e.Id && !$ctrl.data.isDashboard)">
+                        <div class="shifts" title="{{day.Shifts[e.Id].Shift || '班次'}}" ng-class="{selected: day.Shifts[e.Id].Shift}">
+                            <select ng-model="day.Shifts[e.Id].Shift" ng-change="$ctrl.checkShiftsRepeat(e, day, 'shift', '{{day.Shifts[e.Id].Shift}}')">
+                                <option value="" translate>{{'shifts.shiftsContent.shift'}}</option>
+                                <option ng-value="s" ng-repeat="s in $ctrl.data.shiftOptions track by $index">{{ ::s }}</option>
+                            </select>
+                        </div>
+
+                        <div class="bedGroup" title="{{day.Shifts[e.Id].BedGroup || '床組'}}" ng-class="{selected:day.Shifts[e.Id].BedGroup}">
+                            <select ng-model="day.Shifts[e.Id].BedGroup" ng-change="$ctrl.checkShiftsRepeat(e, day, 'bedGroup', '{{day.Shifts[e.Id].BedGroup}}')">
+                                <option value="" translate>{{'shifts.shiftsContent.BedGroup'}}</option>
+                                <option ng-repeat="bedGroup in $ctrl.data.bedGroups track by $index" ng-value="bedGroup">{{bedGroup}}</option>
+                            </select>
+                        </div>
+                        <!-- add/edit memo -->
+                        <div class="memoContent" ng-click="$ctrl.showMemoPerDay(day, e.Id, e.isEditable)" ng-class="{selected: day.Shifts[e.Id].Memo}">
+                            {{'shifts.shiftsContent.memo' | translate}}
+                        </div>
+                    </span>
+                </td>
+                <td>
+                    <!-- <div class="totalbtn" ng-click="$ctrl.showTotalPerEmployee(e)">總計</button> -->
+                        <span class="init-margin-padding" ng-repeat="item in $ctrl.data.shiftOptions track by $index">{{::item}}: {{e.Counts[item]}}; </span>
+                    <!-- <div ng-show="$ctrl.showTotalPerEmployee" class="init-margin-padding" ng-repeat="item in $ctrl.data.shiftOptions track by $index">
+                        <span>{{::item}}: {{e.Counts[item]}}</span>
+                    </div> -->
+                </td>
+            </tr>
+            <tr class="table-foot">
+                <td class="bk" translate>
+                    {{'shifts.shiftsContent.dailyTotal'}}
+                </td>
+                <td ng-repeat="day in $ctrl.data.daysInMonth track by $index" ng-class="{weekends: (day.isoWeekday() == 6) || (day.isoWeekday() == 7), today: day.format('YYYY-MM-DD') == $ctrl.today}">
+                    <div class="init-margin-padding" ng-repeat="item in $ctrl.data.shiftOptions track by $index">{{::item}}: {{day.Counts[item]}}; </div>
+                </td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

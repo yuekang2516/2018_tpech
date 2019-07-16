@@ -1,0 +1,221 @@
+ro-process {
+    height: 100%;
+
+    .md-toolbar-tools {
+        padding: 0;
+    }
+
+    .list-header {
+        .md-button.md-icon-button {
+            margin: 0;
+        }
+
+        last-refresh-time {
+            .list-header {
+                padding: 0;
+            }
+        }
+    }
+
+    .list-container {
+        height: 100%;
+    }
+
+    .datetime {
+        input {
+            width: initial;
+        }
+    }
+
+    md-card {
+        outline: none !important
+    }
+    md-card:active {
+        background: #f6f6f6;
+        outline: none !important;
+    }
+
+    .main_card {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        .title {
+            color: darkgray;
+            font-size: small;
+            padding-left: 6px;
+            white-space: nowrap;
+        }
+        .title:after {
+            content: '：'
+        }
+        .content {
+            padding-left: 6px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            margin-bottom: 8px;
+        }
+        // 當尚未處理時，不顯示處理方式，異常原因需填滿空間
+        .layout-row > .flex-50 {
+            &.flex100 {
+                max-width: 100%;
+            }
+        }
+    }
+    .main_card .card {
+        float: left;
+        width: 50%;
+        box-sizing: border-box;
+        border-right: rgb(214, 214, 214) solid 1px;
+    }
+    .main_card .card:nth-child(2n+2) {
+        border-right: none
+    }
+    .main_card .card:last-of-type {
+        border-bottom: rgb(214, 214, 214) solid 1px !important;
+    }
+    @media only screen and (max-width: 768px) {
+        .main_card .card {
+            float: left;
+            width: 100%;
+            margin-right: 0;
+            border-right: none
+        }
+    }
+
+    // ui-grid related
+    .grid {
+        height: calc(~"100vh - 159px");
+
+        .ui-grid-row:nth-last-child(-n+2) .ui-grid-cell {
+            background-color: transparent;
+        }
+
+        .ui-grid-cell-contents {
+            font-size: 14px;
+            text-align: center;
+        }
+        .ui-grid-header-cell-primary-focus {
+            background-color: #e3f2fd;
+            font-size: 14px;
+            height: 30px;
+        }
+
+        .action {
+            outline: none;
+            i {
+                cursor: pointer;
+                padding: 5px;
+            }
+        }
+
+        // 配合 toolbar 的高度變化
+        // @media (max-width: 959px) and (min-width: 0) and (orientation: portrait) {
+        //     height: calc(~"100vh - 155px");
+        // }
+    }
+
+    .message {
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-top: 4px;
+        // width: 30%;
+    }
+    .alertcolor {
+        color: #ff0000
+    }
+
+    // 避免加號按鈕擋住
+    .main_card:last-child {
+        margin-bottom: 85px;
+    }
+}
+
+// 新增、修改 RO 異常紀錄對話框
+.roDetail-dialog {
+    min-width: 500px;
+
+    .widthlable {
+        width: 40%;
+        &.system {
+            width: initial;
+        }
+        line-height: 26px;
+        float: left;
+    }
+    .widthinput {
+        width: 60%;
+        float: left;
+    }
+    .floatbuttomleft {
+        float: left;
+        width: 30%;
+    }
+    .floatbuttomright {
+        float: right;
+        width: 70%;
+        text-align: right
+    }
+    .buttom0 {
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+        background: #fff
+    }
+    .errMsg {
+        color: #d92018;
+    }
+    // md-dialog-content {
+    //     margin-bottom: 60px
+    // }
+    // @media only screen and (max-width: 900px) {
+    //     .floatbuttomleft, .floatbuttomright {
+    //         width: 100%!important;
+    //         float: none;
+    //     }
+    //     md-dialog-content {
+    //         margin-bottom: 80px
+    //     }
+    // }
+    @media only screen and (max-width: 600px) {
+        .widthlable, .widthinput {
+            width: 100%;
+            float: none;
+        }
+    }
+    .md-dialog-content {
+        input {
+            margin-bottom: 6px;
+            padding-left: 4px;
+            float: right;
+            width: 100%!important
+        }
+        h3{ display: inline;}
+    }
+    md-checkbox {
+        white-space: nowrap!important;
+    }
+}
+
+ro-process-pending {
+    height: 100%;
+}
+
+ro-process-resolved {
+    height: 100%;
+
+    .content-container {
+        height: calc(~"100vh - 141px");
+    }
+
+    // 因應 md-tool-bar 會隨瀏覽器大小變化，content-container 也需要調整
+    @media (max-width: 959px) and (min-width: 0) and (orientation:portrait) {
+        .content-container {
+            height: calc(~"100vh - 149px");
+        }
+    }
+}

@@ -1,0 +1,68 @@
+consumable-report {
+    height: 100%;
+
+    background: #f3f3f3;
+    
+    md-content {
+        min-height: 100%;
+    }
+    table {
+        // table-layout: fixed;
+        width: 100%;
+        border: 1px solid #000000; 
+        border-collapse: collapse;
+
+        tr, td {
+            border: 1px solid rgb(195, 195, 195); 
+            padding: 8px 5px; 
+            color: rgb(56, 56, 56);  
+            font-size: 15px;
+            text-align: center;
+        }
+
+        td.content:not(:first-child) {
+            white-space:nowrap;
+            min-width: 75px;
+            text-align: center;
+        }
+    }
+
+    th {
+        min-width: 40px!important;
+        background: #fff!important;
+        // background-color: #f3f3f3!important;
+    }
+    tr:nth-child(even) {background-color: #fdfdfd};
+
+    .margin-left-10 {
+        margin-left: 10px;
+    }
+
+    
+    .nowrap {
+        white-space:nowrap;
+    }
+
+    .excel-button {
+        position: absolute; 
+        right: 0; 
+        top: 50px;
+    }
+
+    .breakLine{
+        width: 300px; 
+        // word-wrap:break-word!important;
+        white-space: normal!important;
+        text-align: left;
+    }
+
+    .title-area {
+        background-color: #BBDEFB;
+        font-size: 1.2em;
+        text-align: center;
+        font-weight: bold
+    }
+
+
+    
+}

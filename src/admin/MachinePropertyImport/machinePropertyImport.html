@@ -1,0 +1,74 @@
+<style scoped>
+    machine-property-import {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+    }
+
+    .padding {
+        padding: 10px;
+    }
+</style>
+<div flex layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.openLeftMenu()" hide-gt-sm>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <h3 translate="machinePropertyImport.pageTitle"></h3>
+        </div>
+    </md-toolbar>
+    <md-content>
+            <!--資料匯入功能改寫需要import angular-file-upload-shim-->
+        <md-card>
+            <div class="padding">
+                <input type="file" onchange="angular.element(this).scope().vm.importf(this)" accept=".txt, .csv, .xls, .xlsx" ngf-select ng-model="vm.Photo1" name="Photo1" ngf-fix-orientation="true" />
+                <div layout="row" layout-sm="column" layout-align="space-around" id="loading" ng-show="vm.loading">
+                    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                </div>
+                <pre ng-show="vm.Message.length > 0">{{vm.Message}}</pre>
+                <p><span translate="machinePropertyImport.inputDesc"></span></p>
+                <p><span translate="machinePropertyImport.desc1"></span></p>
+                <p><span translate="machinePropertyImport.desc2"></span></p>
+                <p><span translate="machinePropertyImport.desc3"></span></p>
+                <p><span translate="machinePropertyImport.desc4"></span></p>
+                <p><span translate="machinePropertyImport.desc5"></span></p>
+                <p><span translate="machinePropertyImport.desc6"></span></p>
+                <p><span translate="machinePropertyImport.desc7"></span>
+                    <a download href="./static/MachinePropertyImportSample.xlsx" ng-if="vm.lang==='zh-tw'"> <span translate="machinePropertyImport.download"></span> </a>
+                    <a download href="./static/MachinePropertyImportSample_cn.xlsx" ng-if="vm.lang==='zh-cn'"> <span translate="machinePropertyImport.download"></span> </a>
+                    <a download href="./static/MachinePropertyImportSample_us.xlsx" ng-if="vm.lang==='en-us'"> <span translate="machinePropertyImport.download"></span> </a>
+                    <span translate="machinePropertyImport.required"></span></p>
+            </div>
+        </md-card>
+    </md-content>
+    <md-content layout-fill flex>
+        <div ng-show="vm.MachinePropertyResult.length > 0">
+        <md-list>
+            <md-list-item>
+                <div layout="row" layout-fill>
+                    <span flex=20 translate="machinePropertyImport.propertyNumber"></span>
+                    <span flex=20 translate="machinePropertyImport.brand"></span>
+                    <span flex=20 translate="machinePropertyImport.model"></span>
+                    <span flex=20 translate="machinePropertyImport.bluetoothNumber"></span>
+                    <span flex=20 translate="machinePropertyImport.result"></span>
+                </div>
+            </md-list-item>
+            <md-list-item ng-repeat="rec in vm.MachinePropertyResult">
+                <div layout="row" layout-fill>
+                    <span flex=20>{{rec.PropertyNumber}}</span>
+                    <span flex=20>{{rec.Brand}}</span>
+                    <span flex=20>{{rec.Model}}</span>
+                    <span flex=20>{{rec.BluetoothNumber}}</span>
+                    <span flex=20 style="color:blue;">{{rec.CheckStatus}}</span>
+                </div>
+            </md-list-item>
+        </md-list>
+        </div>
+    </md-content>
+    <div layout="row" ng-show="vm.MachinePropertyResult.length > 0">
+        <md-button class="md-raised md-primary" ng-click="vm.sendFile()" ng-disabled="vm.buttonrun">
+            <span translate>{{'machinePropertyImport.importbutton'}}</span>
+        </md-button>
+    </div>
+</div>

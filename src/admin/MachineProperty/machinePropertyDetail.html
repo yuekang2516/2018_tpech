@@ -1,0 +1,99 @@
+<style scoped>
+    machine-property-detail {
+        height: 100%;
+    }
+
+    .padding {
+        padding: 20px;
+    }
+
+    .padding-bottom {
+        padding-bottom: 20px;
+    }
+
+    div.deleted {
+        background-color: rgba(10, 10, 10, 0.2);
+        position: absolute;
+        width: 100%;
+    }
+</style>
+
+<md-content layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.back()">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <h4>
+                <span ng-show="vm.type === 'create'" translate="property.detailpageTitleAdd"></span>
+                <span ng-show="vm.formData.Status === 'Deleted'" translate="property.detailpageTitleDelete" translate-values='{name: vm.formData.PropertyNumber}'></span>
+                <span ng-show="vm.type !== 'create' && vm.formData.Status !== 'Deleted'" translate="property.detailpageTitle" translate-values='{name: vm.formData.PropertyNumber}'></span>
+            </h4>
+        </div>
+    </md-toolbar>
+    <md-content flex>
+        <loading ng-show="vm.loading"></loading>
+        <div flex ng-show="!vm.loading && vm.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate="customMessage.serverError"></h3>
+        </div>
+        <div ng-show="!vm.loading && !vm.isError" ng-class="{deleted: vm.formData.Status == 'Deleted'}">
+            <form name="editForm" class="padding">
+                <md-grid-list md-cols="2" md-row-height="64px">
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="property.propertyNumber"></label>
+                            <input type="text" name="PropertyNumber" ng-model="vm.formData.PropertyNumber" required ng-readonly="vm.readonly" />
+                            <div ng-messages="editForm.PropertyNumber.$error">
+                                <div ng-message="required"><span translate="customMessage.dataRequired"></span></div>
+                            </div>
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="property.brand"></label>
+                            <input type="text" name="Brand" ng-model="vm.formData.Brand" ng-readonly="vm.readonly" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="property.model"></label>
+                            <input type="text" name="Model" ng-model="vm.formData.Model" ng-readonly="vm.readonly" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="property.serialNumber"></label>
+                            <input type="text" name="SerialNumber" ng-model="vm.formData.SerialNumber" ng-readonly="vm.readonly" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label translate="property.bluetoothNumber"></label>
+                            <input type="text" name="BluetoothNumber" ng-pattern="/^(([a-fA-F0-9]{2}){5}|([a-fA-F0-9]{2}:){5}|([a-fA-F0-9]{2}-){5})[a-fA-F0-9]{2}$/" ng-model="vm.formData.BluetoothNumber" ng-change="vm.formData.BluetoothNumber = vm.formData.BluetoothNumber.toUpperCase();" ng-model-options="{updateOn: 'default blue'}" ng-readonly="vm.readonly" />
+                            <div ng-messages="editForm.BluetoothNumber.$error" role="alert">
+                                <div ng-message="pattern"><span translate="property.pattern"></span></div>
+                            </div>
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <div layout="row" layout-xs="column" flex>
+                        <div style="margin-top:-1.2em">
+                            <md-button class="md-raised md-warn" ng-click="vm.write($event)" ng-disabled="vm.notNFC"><span translate>{{'property.writebutton'}}</span></md-button>
+                        </div>
+                        <div style="margin-top:-0.6em; font-size:0.8em;">
+                            <label ng-show="vm.notNFC" translate="property.notNFC"></label>
+                        </div>
+                        </div>
+                    </md-grid-tile>
+                </md-grid-list>
+                <md-input-container class="md-block" flex>
+                    <label>Memo</label>
+                    <textarea name="Memo" ng-model="vm.formData.Memo" rows="2" ng-disabled="vm.readonly"></textarea>
+                </md-input-container>
+                <md-button class="md-raised md-warn" ng-show="vm.formData.Status === 'Deleted'" ng-click="vm.recover()" ng-disabled="vm.isSaving"><span translate>{{'property.recoverbutton'}}</span></md-button>
+                <md-button class="md-warn md-raised" ng-show="vm.formData.Status === 'Normal'" ng-click="vm.delete($event)" ng-if="vm.type==='edit'" ng-disabled="vm.isSaving"><span translate>{{'property.deletebutton'}}</span></md-button>
+                <md-button type="submit" class="md-primary md-raised" ng-show="vm.formData.Status !== 'Deleted'" ng-click="vm.save()" ng-disabled="editForm.$invalid || vm.isSaving"><span translate>{{'property.savebutton'}}</span></md-button>
+            </form>
+        </div>
+    </md-content>
+</md-content>

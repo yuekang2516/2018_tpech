@@ -1,0 +1,122 @@
+<!-- <md-toolbar layout="row">
+<div class="md-toolbar-tools">
+    <md-button class="md-secondary md-icon-button" ng-click="$ctrl.goback()" aria-label="call">
+        <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+    </md-button>
+    <h3>
+        <span ng-show="$ctrl.nursingProblemId === 'create'">新增護理措施</span>
+        <span ng-show="$ctrl.nursingProblemId !== 'create' && $ctrl.nursingProblemItemDetail.Status !== 'Deleted'">修改護理措施</span>
+        <span ng-show="$ctrl.nursingProblemItemDetail.Status === 'Deleted'">查看己刪除護理措施</span>
+    </h3>
+</div>
+</md-toolbar>
+<md-dialog-content >
+<loading ng-show="$ctrl.loading"></loading>
+<form ng-show="!$ctrl.loading" class="md-padding" layout="column" name="nursingProblemItemDetail">
+
+    <div layout-gt-xs="row" layout="column">
+        <md-card flex>
+            <md-card-content class="yuekang-input-container">
+                <div layout="row">
+                    <label> 開始日期:</label>
+                    <input type="date" ng-model="$ctrl.nursingProblemItemDetail.StartDate" />
+                </div>
+                <div layout="row">
+                    <label> 護理問題:</label>
+                    <input ng-model="$ctrl.data.nursingProblem.Title" />
+                </div>
+                <div layout="row">
+                    <label>護理措施:</label>
+                </div>
+                <div layout="column">
+                    <label style="color:black" layout="row" ng-repeat="(key,value) in $ctrl.nursingProblemItemDetailList">
+                        <input type="checkbox" ng-model="$ctrl.nursingProblemItemDetail.Measures[$index]" ng-true-value="{{value}}" ng-false-value="{{null}}"
+                        /> 
+                        [{{::key}}] {{::value}}
+                    </label>
+                </div>
+                <div layout="row">
+                    <label> 解決日期:</label>
+                    <input type="date" ng-model="$ctrl.nursingProblemItemDetail.ResolveDate" />
+                </div>
+
+            </md-card-content>
+        </md-card>
+
+    </div>
+
+    <div layout="row" layout-wrap>
+        <div flex="50" flex-xs="100" ng-show="$ctrl.nursingProblemItemDetail.CreatedUserName">
+            <span>建立: {{ $ctrl.nursingProblemItemDetail.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span>
+            <seal model="$ctrl.nursingProblemItemDetail" modified="none"></seal>
+        </div>
+        <div flex="50" flex-xs="100" ng-show="$ctrl.nursingProblemItemDetail.ModifiedTime != null">
+            <span>修改: {{ $ctrl.nursingProblemItemDetail.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span>
+            <seal model="$ctrl.nursingProblemItemDetail" created="none"></seal>
+        </div>
+    </div>
+
+    <div layout="row">
+        <md-button ng-click="$ctrl.submit($event)" ng-show="$ctrl.nursingProblemItemDetail.Status !== 'Deleted'" class="md-raised md-primary"
+            ng-disabled="nursingProblemItemDetail.$invalid">OK</md-button>
+    </div>
+
+</form>
+<div ng-class="{deleted: $ctrl.nursingProblemItemDetail.Status == 'Deleted'}"></div>
+</md-dialog-content> -->
+
+<form ng-show="!$ctrl.loading" class="md-padding" layout="column" name="nursingProblemItemDetail">
+
+    <div layout-gt-xs="row" layout="column">
+        <!-- row 1 -->
+
+        <!-- card  1 start -->
+        <md-card flex>
+            <md-card-content class="yuekang-input-container">
+                <div layout="row">
+                    <label translate>{{'nursingProblem.nursingProblemItemDetail.StartDate'}}</label>
+                    <input type="date" min="1900-01-01" max="2999-12-31" ng-model="$ctrl.nursingProblemItemDetail.StartDate" />
+                </div>
+                <div layout="row">
+                    <label translate>{{'nursingProblem.nursingProblemItemDetail.nursingProblem'}}</label>
+                    <input ng-model="$ctrl.data.nursingProblemItemName" />
+                </div>
+                <div layout="row">
+                    <label translate>{{'nursingProblem.nursingProblemItemDetail.Measures'}}</label>
+                </div>
+                <div ng-repeat="(key,value) in $ctrl.nursingProblemItemDetailList">
+                    <div layout="row" layout-align="start center">
+                        <input type="checkbox" ng-checked="$ctrl.exists(key, $ctrl.nursingProblemItemDetail.Measures)" ng-click="$ctrl.toggle(key, $ctrl.nursingProblemItemDetail.Measures)"/>
+                        <span flex>[{{::key}}] {{::value}}</span>
+                    </div>
+                    <md-divider></md-divider>
+                </div>
+                <div layout="row">
+                    <label translate>{{'nursingProblem.nursingProblemItemDetail.ResolveDate'}}</label>
+                    <input type="date" min="{{$ctrl.nursingProblemItemDetail.StartDate | moment: 'YYYY-MM-DD'}}" ng-model="$ctrl.nursingProblemItemDetail.ResolveDate" />
+                </div>
+
+            </md-card-content>
+        </md-card>
+        <!-- card  1 end -->
+
+    </div>
+
+    <div layout="row" layout-wrap>
+        <div flex="50" flex-xs="100" ng-show="$ctrl.nursingProblemItemDetail.CreatedUserName">
+            <!-- <span>建立: {{ $ctrl.nursingProblemItemDetail.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+            <span translate="nursingProblem.nursingProblemItemDetail.createdTime" translate-values='{CreatedTime: $ctrl.nursingProblemItemDetail.CreatedTime}'></span>
+            <seal model="$ctrl.nursingProblemItemDetail" modified="none"></seal>
+        </div>
+        <div flex="50" flex-xs="100" ng-show="$ctrl.nursingProblemItemDetail.ModifiedTime != null">
+            <!-- <span>修改: {{ $ctrl.nursingProblemItemDetail.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+            <span translate="nursingProblem.nursingProblemItemDetail.editedTime" translate-values='{ModifiedTime: $ctrl.nursingProblemItemDetail.ModifiedTime}'></span>
+            <seal model="$ctrl.nursingProblemItemDetail" created="none"></seal>
+        </div>
+    </div>
+
+    <div layout="row">
+        <md-button ng-click="$ctrl.submit($event)" ng-show="$ctrl.nursingProblemItemDetail.Status !== 'Deleted'" class="md-raised md-primary"
+            ng-disabled="nursingProblemItemDetail.$invalid">{{'nursingProblem.nursingProblemItemDetail.ok' | translate}}</md-button>
+    </div>
+</form>

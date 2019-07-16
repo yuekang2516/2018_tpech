@@ -1,0 +1,98 @@
+<style scoped>
+    .padding-bottom {
+        padding-bottom: 20px;
+    }
+
+    .width {
+        width: 600px;
+    }
+</style>
+
+<md-dialog aria-label="{{'charge.dialopageTitle3' | translate: '{title: dvm.title , action: dvm.action}'}}">
+    <form ng-cloak class="width">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 translate="charge.dialopageTitle3" translate-values='{title: dvm.title , action: dvm.action}'></h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="dvm.cancel()">
+                    <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content" flex>
+                <form name="editForm">
+                    <md-grid-list md-cols="2" md-row-height="64px">
+                        <md-grid-tile>
+                            <md-input-container class="md-block" flex>
+                                <label translate="charge.actionQty" translate-values='{action: dvm.action}'></label>
+                                <input ng-model="dvm.Qty" ng-change="dvm.QtyChange()" type="number" name="Qty" min="0" required>
+                                <div ng-messages="editForm.Qty.$error">
+                                    <div ng-message="required"><span translate="customMessage.dataRequired"></span></div>
+                                </div>
+                            </md-input-container>
+                        </md-grid-tile>
+                        <md-grid-tile>
+                            <md-input-container class="md-block" flex>
+                                <label translate="charge.price"></label>
+                                <input type="text" name="Memo" ng-model="dvm.price" readonly/>
+                            </md-input-container>
+                        </md-grid-tile>
+                        <md-grid-tile>
+                            <md-input-container class="md-block" flex>
+                                <label translate="charge.qty1" translate-values='{action: dvm.action}'></label>
+                                <input type="text" name="oldStock" ng-model="dvm.oldStockText" readonly/>
+                            </md-input-container>
+                        </md-grid-tile>
+                        <md-grid-tile>
+                            <md-input-container class="md-block" flex>
+                                <label translate="charge.qty2" translate-values='{action: dvm.action}'></label>
+                                <input type="text" name="oldQty" ng-model="dvm.oldQtyText" readonly/>
+                            </md-input-container>
+                        </md-grid-tile>
+                        <md-grid-tile>
+                            <md-input-container class="md-block" flex>
+                                <label translate="charge.qty3" translate-values='{action: dvm.action}'></label>
+                                <input type="text" name="Qty" ng-model="dvm.QtyText" readonly/>
+                            </md-input-container>
+                        </md-grid-tile>
+                        <md-grid-tile>
+                            <md-input-container class="md-block" flex>
+                                <label translate="charge.safeStock2"></label>
+                                <input type="text" name="SafetyStock" ng-model="dvm.SafetyStockText" readonly/>
+                            </md-input-container>
+                        </md-grid-tile>
+                        <md-grid-tile>
+                            <md-input-container class="md-block" flex>
+                                <label translate="charge.qty4"></label>
+                                <input type="text" name="Stock" ng-model="dvm.StockText" readonly/>
+                            </md-input-container>
+                        </md-grid-tile>
+                        <md-grid-tile>
+                            <md-input-container class="md-block" flex>
+                                <label translate="charge.qty5"></label>
+                                <input type="text" name="newStock" ng-model="dvm.newStockText" readonly/>
+                                <span style="padding-top: 10px; color: red" ng-if="dvm.notSafety" translate="charge.lowStock"></span>
+                                <span style="padding-top: 10px; color: red" ng-if="dvm.notEnough" translate="charge.errorStock"></span>
+                            </md-input-container>
+                        </md-grid-tile>
+                        <md-grid-tile>
+                            <md-input-container class="md-block" flex>
+                                <label translate="charge.recordTime"></label>
+                                <input type="text" name="RecordDateTime" ng-model="dvm.RecordDateTime" readonly/>
+                            </md-input-container>
+                        </md-grid-tile>
+                        <md-grid-tile>
+                            <md-input-container class="md-block" flex>
+                                <label translate="charge.memo"></label>
+                                <input type="text" name="Memo" ng-model="dvm.Memo" readonly/>
+                            </md-input-container>
+                        </md-grid-tile>
+                    </md-grid-list>
+
+                    <md-button type="submit" class="md-raised md-primary" ng-click="dvm.save()" ng-disabled="dvm.Qty == null || dvm.Qty == 0 || dvm.IsFixed || dvm.isSaving"><span translate>{{'charge.savebutton'}}</span></md-button>
+                </form>
+            </div>
+        </md-dialog-content>
+    </form>
+</md-dialog>

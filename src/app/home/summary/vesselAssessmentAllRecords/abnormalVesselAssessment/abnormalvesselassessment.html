@@ -1,0 +1,106 @@
+<!-- <md-content layout="column" layout-fill> -->
+<div layout="column" layout-fill>
+    <summary-toolbar ng-if="!$ctrl.abnormalVesselAssessmentId" toolbar-title="'abnormalVesselAssessment.abnormalVesselAssessment.createAbnormalVessel'|translate" cancel="$ctrl.goback()"></summary-toolbar>
+    <summary-toolbar ng-if="$ctrl.abnormalVesselAssessmentId && $ctrl.regform.Status !== 'Deleted'" toolbar-title="'abnormalVesselAssessment.abnormalVesselAssessment.editAbnormalVessel'|translate" cancel="$ctrl.goback()"></summary-toolbar>
+    <summary-toolbar ng-if="$ctrl.regform.Status === 'Deleted'" toolbar-title="'abnormalVesselAssessment.abnormalVesselAssessment.showDeleted'|translate" cancel="$ctrl.goback()"></summary-toolbar>
+    
+    <!-- <div hide-xs hide-sm ng-show="!$ctrl.loading">
+        <h3 style="float: left; padding-left: 10px">
+            <span ng-show="!$ctrl.abnormalVesselAssessmentId" translate="abnormalVesselAssessment.abnormalVesselAssessment.createAbnormalVessel"></span>
+            <span ng-show="$ctrl.abnormalVesselAssessmentId && $ctrl.regform.Status !== 'Deleted'" translate="abnormalVesselAssessment.abnormalVesselAssessment.editAbnormalVessel"></span>
+            <span ng-show="$ctrl.regform.Status === 'Deleted'" translate="abnormalVesselAssessment.abnormalVesselAssessment.showDeleted"></span>
+        </h3>
+        <md-button style="float:right; margin-top: 8px" class="md-secondary md-icon-button" ng-click="$ctrl.goback()" aria-label="call">
+            <i class="material-icons">cancel</i>
+        </md-button>
+    </div> -->
+
+    <md-content layout="column" flex>
+        <loading ng-show="$ctrl.loading"></loading>
+        <form class="md-padding" name="form" ng-show="!$ctrl.loading && !$ctrl.isError">
+            <date-time-picker-standard my-model="$ctrl.regform.AbnormalTime" text="'abnormalVesselAssessment.abnormalVesselAssessment.abnormal' | translate" required="true"></date-time-picker-standard>
+            <!-- <md-input-container class="md-block">
+                <label translate>{{'abnormalVesselAssessment.abnormalVesselAssessment.Complications'}}</label>
+                <md-select name="Complications" placeholder="{{'abnormalVesselAssessment.abnormalVesselAssessment.ComplicationsItems' | translate}}" ng-model="$ctrl.complications" ng-change="$ctrl.changeDisposalResults();" complications-Validator required>
+                    <md-option ng-value="'請選擇'" translate>{{'abnormalVesselAssessment.abnormalVesselAssessment.choose'}}</md-option>
+                    <md-option ng-value="complication" ng-repeat="complication in $ctrl.Complications" ng-selected="{{ $ctrl.regform.Complications === complication ? 'true' : 'false'}}">{{complication}}</md-option>
+                </md-select>
+                <div ng-messages="form.Complications.$error" ng-show="form.Complications.$touched">
+                    <div ng-message="required" translate>{{'abnormalVesselAssessment.abnormalVesselAssessment.ComplicationsRequired'}}</div>
+                    <div ng-message="warring" translate>{{'abnormalVesselAssessment.abnormalVesselAssessment.ComplicationsRequired'}}</div>
+                </div>
+            </md-input-container> -->
+            <md-input-container class="md-block">
+                <label translate>{{'abnormalVesselAssessment.abnormalVesselAssessment.Disposal'}}</label>
+                <md-select name="Disposal" placeholder="{{'abnormalVesselAssessment.abnormalVesselAssessment.DisposalItems' | translate}}" ng-model="$ctrl.disposal" ng-change="$ctrl.changeDisposalResults();" complications-Validator required>
+                    <md-option ng-value="'請選擇'" translate>{{'abnormalVesselAssessment.abnormalVesselAssessment.choose'}}</md-option>
+                    <md-option ng-value="disposal" ng-repeat="disposal in $ctrl.Disposals" ng-selected="{{ $ctrl.regform.Disposal === disposal ? 'true' : 'false'}}">{{disposal}}</md-option>
+                </md-select>
+                <div ng-messages="form.Disposal.$error" ng-show="form.Disposal.$touched">
+                    <div ng-message="required" translate>{{'abnormalVesselAssessment.abnormalVesselAssessment.DisposalRequired'}}</div>
+                    <div ng-message="warring" translate>{{'abnormalVesselAssessment.abnormalVesselAssessment.DisposalRequired'}}</div>
+                </div>
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <label translate>{{'abnormalVesselAssessment.abnormalVesselAssessment.DisposalHospital'}}</label>
+                <md-select name="DisposalHospital" ng-model="$ctrl.regform.DisposalHospital">
+                    <md-option value="none" translate>{{'abnormalVesselAssessment.abnormalVesselAssessment.enterDisposalHospital'}}</md-option>
+                    <md-option ng-repeat="state in $ctrl.DisposalHospitals['DialysisSetting'].CatheterHospitals" ng-value="state">
+                        {{state}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
+            <md-input-container class="md-block" ng-show="$ctrl.regform.DisposalHospital === 'none'">
+                <label translate>{{'abnormalVesselAssessment.abnormalVesselAssessment.enterDisposalHospital'}}</label>
+                <!-- ng-required="$ctrl.regform.DisposalHospital === 'none'" -->
+                <input name="UserKeyIn" ng-model="$ctrl.useHospitalKeyIn" type="text">
+                <!-- <div ng-messages="form.UserKeyIn.$error" ng-show="form.UserKeyIn.$touched">
+                    <div ng-message="required" translate>手動輸入處置醫院不能為空白</div>
+                </div> -->
+            </md-input-container>
+
+
+            <md-input-container class="md-icon-float md-icon-right md-block">
+                <label translate>{{'abnormalVesselAssessment.abnormalVesselAssessment.DisposalResults'}}</label>
+                <textarea id="DisposalResults" name="DisposalResults" ng-model="$ctrl.regform.DisposalResults" ng-model-options="{ allowInvalid: true }" rows="5" md-detect-hidden="true" required></textarea>
+                <md-icon md-svg-src="static/img/svg/ic_undo_black_24px.svg" ng-click="$ctrl.redo()"></md-icon>
+                <div ng-messages="form.DisposalResults.$error" ng-show="form.DisposalResults.$touched">
+                    <div ng-message="required" translate>{{'abnormalVesselAssessment.abnormalVesselAssessment.DisposalResultsRequired'}}</div>
+                </div>
+            </md-input-container>
+            <!--<div layout="column" ng-show="$ctrl.regform.CreatedUserName" layout-margin>
+                <p ng-bind="$ctrl.regform.CreatedUserName + ' 於 ' + ($ctrl.regform.CreatedTime | moment: 'YYYY-MM-DD (dd) HH:mm') + ' 建立'"></p>
+            </div>
+            <div layout="column" ng-show="$ctrl.regform.ModifiedUserName" layout-margin>
+                <p ng-bind="$ctrl.regform.ModifiedUserName + ' 於 ' + ($ctrl.regform.ModifiedTime | moment: 'YYYY-MM-DD (dd) HH:mm') + ' 修改'"></p>
+            </div>-->
+            <div layout="row">
+                <md-button ng-click="$ctrl.isOpenRight()" class="md-primary" flex>{{'abnormalVesselAssessment.abnormalVesselAssessment.insertPhrase' | translate}}</md-button>
+            </div>
+            <div layout="row" layout-wrap>
+                <div flex="50" flex-xs="100" ng-show="$ctrl.regform.CreatedUserName">
+                    <!-- <span>建立: {{ $ctrl.regform.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                    <span translate="abnormalVesselAssessment.abnormalVesselAssessment.createdTime" translate-values='{CreatedTime: $ctrl.regform.CreatedTime}'></span>
+                    <seal model="$ctrl.regform" modified="none"></seal>
+                </div>
+                <div flex="50" flex-xs="100" ng-show="$ctrl.regform.ModifiedTime != null">
+                    <!-- <span>修改: {{ $ctrl.regform.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                    <span translate="abnormalVesselAssessment.abnormalVesselAssessment.editedTime" translate-values='{ModifiedTime: $ctrl.regform.ModifiedTime}'></span>
+                    <seal model="$ctrl.regform" created="none"></seal>
+                </div>
+            </div>
+            <md-input-container class="no-margin" layout="row" layout-margin layout-align="start center">
+                <md-button type="submit" class="md-raised md-primary" ng-show="$ctrl.regform.Status !== 'Deleted'" ng-click="$ctrl.submit($event)" ng-disabled="form.$invalid || $ctrl.isSaving">{{'abnormalVesselAssessment.abnormalVesselAssessment.save' | translate}}</md-button>
+                <md-progress-circular md-diameter="20px" md-mode="indeterminate" ng-show="$ctrl.isSaving"></md-progress-circular>
+            </md-input-container>
+        </form>
+        <div ng-class="{deleted: $ctrl.regform.Status === 'Deleted'}"></div>
+        <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate>{{'abnormalVesselAssessment.abnormalVesselAssessments.serverError'}}</h3>
+        </div>
+    </md-content>
+    <phrase id="phrase" callback="$ctrl.phraseInsertCallback(word)" layout-padding></phrase>
+    <!-- </md-content> -->
+</div>

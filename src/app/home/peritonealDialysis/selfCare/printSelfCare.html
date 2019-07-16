@@ -1,0 +1,285 @@
+<style>
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td{margin:0;padding:0;border:0;outline:0;}
+
+h1{font-size: 24px; line-height: 34px; letter-spacing: 5px; color: #000}
+h2{font-size: 22px; line-height: 26px; letter-spacing: 5px; color: #000}
+/*h3{font-size: 16px; line-height: 20px; color: #000; padding-top: 8px}*/
+
+ul{ display: inline-block; }
+/*ul li{ margin-left: 20px;  font-size: 10pt  }*/
+.rightbox{float: right; } .rightbox span{ padding-left: 10px}
+.button{ display: inline-block; color: #fff; padding: 10px 18px; font-size: 18pt; font-weight: bold; margin:4px ; border-radius: 6px; cursor: pointer;  }
+.submit{ background: #2993c9 } .submit:active{ background: #1578aa }
+.clear{ background: #6e6a67 } .clear:active{ background: #554f4b }
+/*div{font-size: 10pt }*/
+.option{font-size: 10pt; padding:1px 2px; border-radius: 4px }
+.radio{vertical-align: middle; margin-top: -2px}
+/*body { padding: 10px; line-height: 24px; }*/
+input{font-size: 10pt; padding:4px 2px; border-radius: 4px; border: 1px solid #ccc; margin:1px }
+.bdaytime{ padding:2px!important}
+.radio{ width: 17px; height: 17px; vertical-align: middle; margin:-2px 0px 0 8px }
+.table{ border-collapse: collapse; border-spacing: 0;  }
+.table tr td{border-collapse: collapse; font-size: 10pt;border: #000 solid 1px; padding:2px ; word-break: break-all; line-height: 15px;}
+.table tr th{border-collapse: collapse; font-size: 10pt; border: #000 solid 1px; padding:2px ; padding-bottom:4px; word-break: break-all; line-height: 15px; text-align: left; white-space: pre-wrap; }
+
+
+.bar{ background: #BBDEFB; padding:10px 6px; font-size: 10px; font-weight: bold; }
+.list{ padding: 10px 6px; border-bottom: #ccc solid 1px; background: url(baseline-delete-24px.svg) no-repeat right center; background-size: 55px } .list p{ font-size: 15px;  }
+
+@media print {
+    .md-whiteframe-10dp {
+        box-shadow:none;
+    }
+}
+</style>
+<md-toolbar layout="row" class="disablePrint no-print">
+    <div class="md-toolbar-tools">
+        <md-button class="md-secondary md-icon-button" ng-click="$ctrl.gotoState('selfCare')" aria-label="call">
+            <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+        </md-button>
+
+        <h3 flex>
+            <span ng-show="!$ctrl.referralSheetId">自我照顧</span>
+        </h3>
+        <md-button ng-if="$ctrl.isBrowser" class="md-icon-button" aria-label="More" ng-click="$ctrl.print()">
+            <i class="material-icons">print</i>
+        </md-button>
+        <!-- <md-button class="md-icon-button" aria-label="More" ng-click="$ctrl.gotoHomePage()">
+            <i class="material-icons">home</i>
+        </md-button> -->
+    </div>
+</md-toolbar>
+    <md-content layout="column" flex class="all-referral-sheet-form-container" layout-align="center center">
+        <form flex class="out-form" ng-if="!$ctrl.loading && !$ctrl.isError" layout="column" name="referralSheetForm">
+            <md-whiteframe class="md-whiteframe-10dp" layout-align="center center" style="width: 21.4cm; padding: 18px;">
+                <table style="width:20cm;margin-bottom:10px;">
+                    <tbody>
+                        <tr>
+                            <td colspan="5" style="text-align:center;letter-spacing:5px;">
+                                <h1>臺北市立聯合醫院&nbsp;&nbsp;&nbsp;&nbsp;{{$ctrl.reportHospitaArea}}</h1>
+                                <h2>自我照護評估表</h2>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table style="width:20cm" border="0" cellpadding="0" cellspacing="0">
+                <tbody>
+                    <tr>
+                        <td>
+                            姓名:{{$ctrl.currentPatient.Name}}
+                        </td>
+                        <td>
+                            病歷號:{{$ctrl.currentPatient.MedicalId}}
+                        </td>
+                        <td>
+                            出生日期：{{$ctrl.currentPatient.Birthday | moment: 'YYYY/MM/DD'}}
+                        </td>
+                        <td>
+                            性別:{{$ctrl.currentPatient.Gender === 'M' ? '男' : '女'}}
+                        </td>
+                        <!-- <td>
+                            床號:{{$ctrl.data.DialysisHeader.BedNo}}({{$ctrl.currentPatient.AdmissionBedNo}})
+                        </td> -->
+                    </tr>
+                </tbody>
+                </table>
+                <h3>腹膜透析環境介紹</h3>
+                <table style="width:20cm" border="0" cellpadding="0" cellspacing="0" class="table">
+                    <tr>
+                        <th width="600px">指導對象</th>
+                        <td>{{$ctrl.sCareDataObj.Environment_Target.replace('其他|','')}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出腹膜透析所在位置及緊急逃生方向</th>
+                        <td>{{$ctrl.sCareDataObj.Emergency_Exit}}</td>
+                    </tr>
+                </table>
+                <h3>腹膜透析認識</h3>
+                <table style="width:20cm" border="0" cellpadding="0" cellspacing="0" class="table">
+                    <tr>
+                        <th width="600px">指導對象</th>
+                        <td>{{$ctrl.sCareDataObj.Knowdialysis_Target.replace('其他|','')}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出末期腎衰竭替代療法四種</th>
+                        <td>{{$ctrl.sCareDataObj.Last_Renal_Fail}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出腹膜透析治療的原理</th>
+                        <td>{{$ctrl.sCareDataObj.Pd_Treat_Principle}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出透析導管之構造及功能</th>
+                        <td>{{$ctrl.sCareDataObj.Catheter_Function}}</td>
+                    </tr>
+                </table>
+                <h3>腹膜透析液認識及自我管理</h3>
+                <table style="width:20cm" border="0" cellpadding="0" cellspacing="0" class="table">
+                    <tr>
+                        <th width="600px">指導對象</th>
+                        <td>{{$ctrl.sCareDataObj.Selfcontrol_Target.replace('其他|','')}}</td>
+                    </tr>
+                    <tr>
+                        <th>能正確說出自己目前使用之透析處方(透析液種類、濃度及總量)</th>
+                        <td>{{$ctrl.sCareDataObj.Self_Pd_Treatment}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出腹膜透析液的儲存管理與取用注意事項</th>
+                        <td>{{$ctrl.sCareDataObj.Liquid_Save_Use}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出腹膜透析液使用前正確的加溫方法</th>
+                        <td>{{$ctrl.sCareDataObj.Liquid_Heat_Method}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出透析引流液檢查方式</th>
+                        <td>{{$ctrl.sCareDataObj.Liquid_Check_Method}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出何種情況需來院加抗凝劑</th>
+                        <td>{{$ctrl.sCareDataObj.Antic_Situation}}</td>
+                    </tr>
+                </table>
+                <h3>正確操作腹膜透析技術</h3>
+                <table style="width:20cm" border="0" cellpadding="0" cellspacing="0" class="table">
+                    <tr>
+                        <th width="600px">指導對象</th>
+                        <td>{{$ctrl.sCareDataObj.Correct_User.replace('其他|','')}}</td>
+                    </tr>
+                    <tr>
+                        <th>能正確執行雙連袋換液技術及引流不順處理</th>
+                        <td>{{$ctrl.sCareDataObj.Twinbag_Unsmooth}}</td>
+                    </tr>
+                    <tr>
+                        <th>能正確執行空袋引流操作技術</th>
+                        <td>{{$ctrl.sCareDataObj.Emptybag_Drainage}}</td>
+                    </tr>
+                    <tr>
+                        <th>能正確執行全自動腹膜透析機換液技術及警訊排除</th>
+                        <td>{{$ctrl.sCareDataObj.Auto_Change_Alarm}}</td>
+                    </tr>
+                    <tr>
+                        <th>能正確執行導管出口換藥技術</th>
+                        <td>{{$ctrl.sCareDataObj.Catheter_Medicine}}</td>
+                    </tr>
+                    <tr>
+                        <th>能正確執行沐浴用人工肛門袋使用方式</th>
+                        <td>{{$ctrl.sCareDataObj.Artifical_Anus}}</td>
+                    </tr>
+                </table>
+                <h3>日常生活居家注意事項</h3>
+                <table style="width:20cm" border="0" cellpadding="0" cellspacing="0" class="table">
+                    <tr>
+                        <th width="600px">指導對象</th>
+                        <td>{{$ctrl.sCareDataObj.Living_Target.replace('其他|','')}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出腹膜炎原因及預防注意事項至少3項</th>
+                        <td>{{$ctrl.sCareDataObj.Peritonitis_Prevent}} </td>
+                    </tr>
+                    <tr>
+                        <th>能說出導管出口照護注意事項至少4項</th>
+                        <td>{{$ctrl.sCareDataObj.Catheter_Care}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出導管固定方法及重要性</th>
+                        <td>{{$ctrl.sCareDataObj.Catheter_Fix_Method}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出每天測量體重、血壓及確實記錄透析記錄本重要性</th>
+                        <td>{{$ctrl.sCareDataObj.Daily_Measure}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出貧血原因、症狀及日常生活、飲食注意事項</th>
+                        <td>{{$ctrl.sCareDataObj.Anemia_Situation}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出透析相關用藥居家使用注意事項(ESA紅血球生成刺激素、磷結合劑、降血壓藥、降血糖藥)</th>
+                        <td>{{$ctrl.sCareDataObj.Dialysis_Drug}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出個人衛生、沐浴與皮膚照護注意事項</th>
+                        <td>{{$ctrl.sCareDataObj.Hygiene_Care}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出運動的重要性及合適的運動方式</th>
+                        <td>{{$ctrl.sCareDataObj.Suitable_Exercise}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出預防跌倒注意事項至少3項</th>
+                        <td>{{$ctrl.sCareDataObj.Prevent_Faller}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出須立即與醫院聯繫或返院就診的緊急情況至少3項</th>
+                        <td>{{$ctrl.sCareDataObj.Back_Hosp_Situation}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出與醫院聯繫方式</th>
+                        <td>{{$ctrl.sCareDataObj.Hosp_Contact_Way}}</td>
+                    </tr>
+                </table>                
+                <h3>腹膜透析飲食</h3>
+                <table style="width:20cm" border="0" cellpadding="0" cellspacing="0" class="table">
+                    <tr>
+                        <th width="600px">指導對象</th>
+                        <td>{{$ctrl.sCareDataObj.Diet_Target.replace('其他|','')}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出優質高蛋白食物3項</th>
+                        <td>{{$ctrl.sCareDataObj.Great_High_Protein}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出高磷食物3項</th>
+                        <td>{{$ctrl.sCareDataObj.High_Phosphorous}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出高鉀食物3項</th>
+                        <td>{{$ctrl.sCareDataObj.High_Potassium}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出含鐵質食物3項</th>
+                        <td>{{$ctrl.sCareDataObj.Irony_Food}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出含高vit-C食物3項</th>
+                        <td>{{$ctrl.sCareDataObj.High_Vit_C_Food}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出優質油脂3種</th>
+                        <td>{{$ctrl.sCareDataObj.Great_Cook_Oil}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出水分攝取注意事項3項</th>
+                        <td>{{$ctrl.sCareDataObj.Water_Absorb}}</td>
+                    </tr>
+                </table>
+            
+                <h3>出院準備</h3>
+                <table style="width:20cm" border="0" cellpadding="0" cellspacing="0" class="table">
+                    <tr>
+                        <th width="600px">指導對象</th>
+                        <td>{{$ctrl.sCareDataObj.Outhosp_Target.replace('其他|','')}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出腹膜透析診回診注意事項3項</th>
+                        <td>{{$ctrl.sCareDataObj.Pd_Back_Hosp}}</td>
+                    </tr>
+                    <tr>
+                        <th>能說出家中透析液送貨注意事項3項</th>
+                        <td>{{$ctrl.sCareDataObj.Home_Transport}}</td>
+                    </tr>
+                    <tr>
+                        <th>長期透析之重大傷病及身心障礙手冊申請流程</th>
+                        <td>{{$ctrl.sCareDataObj.Long_Pd_Govhelp}}</td>
+                    </tr>
+                </table>
+                <table style="width:20cm" border="0" cellpadding="0" cellspacing="0" >
+                        <tr><td>&nbsp;</td></tr>
+                        <tr>
+                            <td width="550px"><p style="float: left;font-size:10pt;">評估日期：{{$ctrl.sCareDataObj.Record_Date | moment: 'YYYY/MM/DD(dd) HH:mm'}}    評值者：{{$ctrl.sCareDataObj.Environment_User}}</p></td>
+                            <td>病人簽名:_________________</td>
+                        </tr>
+                </table>
+            </md-whiteframe>
+        </form>
+    </md-content>

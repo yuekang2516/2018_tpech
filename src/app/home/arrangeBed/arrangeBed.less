@@ -1,0 +1,380 @@
+arrange-bed {
+    // height: 100%;
+}
+.bed-container {
+    // 排床、全部複製排床按鈕
+    .right-button {
+        &.md-button {
+            width: 140px;
+            margin: 6px 0 10px 8px;
+
+            &.first {
+                margin-bottom: 0;
+            }
+        }
+    }
+    .hide {
+        display: none;
+    } // table 不能用 ng-show 的方式，會取不到原本的高度，故利用此方式不顯示於畫面上
+    .away {
+        position: absolute;
+        top: -9999px;
+    } // 搜尋
+    #search {
+        background: url(../../static/img/ic_search.png) no-repeat scroll 2.5px 2.5px;
+        padding-left: 25px;
+        margin: 0 0 4px 4px;
+        width: 145px;
+        border-radius: 5px;
+        font-size: 13px;
+    } // table 上方的工具列 (日期、透析室、儲存...)
+    .table-head {
+        overflow: auto; // white-space: nowrap;
+        font-size: 20px;
+        font-weight: bold;
+        margin-left: 16px;
+        border-bottom: 1px solid #eeeeee;
+        padding-top: 10px;
+        .scroll {
+            min-width: 1080px;
+            margin-bottom: 10px;
+        }
+        .scroll-smaller {
+            min-width: 300px;
+            margin-bottom: 10px;
+        }
+        .calendar-btn {
+            .md-button {
+                min-height: initial;
+                min-width: initial;
+                &.square {
+                    height: 36px;
+                    width: 36px;
+                    margin: 0;
+                }
+            }
+        }
+        .ward {
+            margin: 0 42px 0 50px;
+            .title {
+                color: black;
+                margin-left: 5px;
+                min-width: 45px;
+                padding: 5px;
+                background-color: lightgoldenrodyellow;
+                border: 1px solid rgba(0, 0, 0, 0.12);
+                height: 1.8em;
+            }
+            md-select {
+                margin: 0;
+                margin-left: 5px;
+                width: auto;
+                min-width: 45px;
+                padding: 0 3px;
+            }
+            .memo {
+                margin-left: 10px;
+                color: blue;
+                font-size: 17px;
+                font-weight: normal;
+            }
+        }
+    }
+    .md-primary {
+        p {
+            color: #3949ab;
+            margin: 0.5em 0;
+        }
+        input {
+            color: black;
+        }
+        md-input-container {
+            margin: 0.5em 0;
+        }
+    }
+    .hint {
+        width: 150px;
+    }
+    .patients {
+        width: 150px;
+        .active {
+            background-color: #b3e5fc !important;
+        }
+        .md-list-item-text {
+            h3 {
+                font-size: 13px !important;
+            }
+            p {
+                font-size: 13px !important;
+            }
+        }
+    }
+
+    // 床組顯示
+    .bedGroup {
+        border: #3949ab 2px solid;
+        border-radius: 4px;
+        font-weight: bold;
+        color: red;
+    }
+
+    .beds {
+        width: 180px;
+    }
+    .active {
+        background-color: #b3e5fc !important;
+    }
+
+    // virtual-repeat related
+    #vertical-container {
+        height: 100%;
+    }
+    
+    // grid table fixed first column and first row
+    #table-container {
+        -webkit-overflow-scrolling: auto; // 於 ios 上 scroll 才會正常
+        table {
+            position: relative;
+            overflow: hidden;
+            border-collapse: collapse;
+            table-layout: fixed;
+            background-color: #ffffff;
+            // width: calc(~"100vw - 150px");
+        }
+        
+        /*thead*/
+        thead {
+            position: relative;
+            display: block;
+            /*seperates the header from the body allowing it to be positioned*/
+            overflow: visible;
+            th {
+                width: 77px;
+                min-width: 77px;
+                border-right: #e8e8e8 solid 1px; // background: #fdfaac;
+                background: #d5d4d4;
+                color: #3e3e3e;
+                border-bottom: #ffffff solid 1px !important;
+                border-top: 0 !important;
+                font-size: 13px !important;
+                line-height: 24px !important;
+                text-align: center !important;
+                .weekends {
+                    color: red;
+                }
+            }
+            /*first cell in the header*/
+            th:nth-child(1) {
+                position: relative;
+                width: 66px !important;
+                min-width: 66px !important;
+                background: #d5d4d4;
+                /*seperates the first cell in the header from the header*/
+            }
+        }
+        tr {
+            outline: none;
+            &:nth-child(even) {
+                td {
+                    // background: #f2f2f1;
+                }
+            }
+        }
+        .bed-no {
+            background-color: #ffffff;
+            width: 68px;
+            min-width: 68px;
+        }
+        /*tbody*/
+        tbody {
+            position: relative;
+            display: block;
+            /*seperates the tbody from the header*/
+            overflow: scroll;
+            max-height: calc(~"100vh - 200px");
+        }
+        tbody td {
+            position: relative;
+            display: table-cell;
+            width: 80px;
+            min-width: 80px; // border: 1px solid #222;
+            border-bottom: #a0a0a0 solid 1px;
+            border-right: #e8e8e8 solid 1px; // outline: none;
+            font-size: 12px;
+            text-align: center;
+            box-sizing: border-box;
+            word-break: break-all;
+            &.active:active {
+                background: #8eacbb;
+            }
+            .title {
+                color: #a0a0a0;
+                font-weight: bold;
+            }
+            &.today {
+                // background-color: #f1f8e9 !important;
+                background-color: lightgoldenrodyellow !important;
+            }
+            .shiftBadge {
+                position: relative;
+                i {
+                    color: initial;
+                    font-size: 16px;
+                    position: absolute;
+                    top: 0px;
+                    right: 0;
+                    outline: none;
+                }
+                i:hover {
+                    color:red;
+                }
+            }
+            .border {
+                outline: none;
+                cursor: pointer; // background: #ffffff;
+                border: 1px solid #cecece;
+                border-radius: 3px;
+                margin: 5px;
+                padding: 2px 14px 2px 4px;
+                &.assigned {
+                    border: #ffc107 solid 1px;
+                    background: #ffcc80;
+                    text-align: left;
+                    .title {
+                        color: #424242;
+                    }
+                    .tableTitle {
+                        color: #666666;
+                    }
+                }
+                &.assigned:hover {
+                    border: #666666 solid 1px;
+                }
+
+                &.patientInBed {
+                    background-color: #7ad8fa !important;
+                    border: 1px solid #57c1e8;
+                    text-align: left
+                }
+                &.patientInBed:hover {
+                    border: #000 solid 1px !important;
+                }
+                &.patientInFixed {
+                    background-color: initial !important; // #ffe371   rgba(0,0,0,0.15)
+                    border: 2px dashed #bdbdbd; // #fcc256  rgba(0,0,0,0.3)
+                    // color: rgba(0,0,0,0.28)!important;
+                    text-align: left
+                }
+                &.patientInFixed:hover {
+                    // border: #000 solid 1px !important;
+                    border: 2px dashed #bdbdbd !important; //rgba(0,0,0,0.5)
+                }
+                &.patientInFixed span {
+                    // color: #424242 !important;
+                    color: rgba(0,0,0,0.48) !important;
+                }
+                &.differentPatient {
+                    background-color: #ffb1b1 !important;
+                    border: 1px solid #ff9898;
+                    text-align: left
+                }
+                &.differentPatient:hover {
+                    border: #000 solid 1px;
+                }
+
+                .dayoffSelected {
+                    color: #ff5722;
+                    font-weight: bold;
+                }
+
+                &.selected {
+                    border: #ff5722 2px solid !important; // color: #ffffff;
+                }
+                &.selected:hover {
+                    border: #ff5722 2px solid !important; // color: #ffffff;
+                }
+
+                &.disableHover {
+                    cursor: default;
+                    border: 1px solid #cecece !important;
+                }
+                &.patientInFixed.disableHover {
+                    // background-color: #fff4ca !important; // rgba(0,0,0,0.12)  #ffe371
+                    border: 2px dashed #bdbdbd !important; // rgba(0,0,0,0.32)  #fcc256
+                    font-weight: normal;
+                }
+            }
+            .border:hover {
+                // background: #d5d4d4;
+                border: #000 solid 1px;
+                color: red;
+                font-weight: bold;
+            }
+        }
+        tbody tr td:nth-child(1) {
+            /*the first cell in each tr*/
+            position: relative;
+            background-color: #fff;
+            z-index: 1;
+        }
+
+        @media (max-width: 959px) and (min-width: 0) and (orientation: portrait) {
+            tbody {
+                height: calc(~"100vh - 212px");
+            }
+        }
+        @media (max-width: 959px) and (min-width: 0) and (orientation: landscape) {
+            tbody {
+                height: calc(~"100vh - 180px");
+            }
+        }
+    } // way the hell off screen
+    .scrollbar-measure {
+        width: 100px;
+        height: 100px;
+        overflow: scroll;
+        position: absolute;
+        top: -9999px;
+    }
+
+    .legenddiv {
+        padding: 0 0 4px 4px
+    }
+    .legenddiv span {
+        vertical-align: top;
+        font-size: 14px
+    }
+    .legendbox {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border-radius: 3px;
+        margin-left: 4px;
+
+        &.assigned {
+            border: #ffc107 solid 1px;
+            background: #ffcc80; 
+        }
+
+        &.differentPatient {
+            background-color: #ffb1b1 !important;
+            border: 1px solid #ff9898 !important;
+        }
+        &.patientInFixed {
+            // background-color: #ffe371 !important;
+            // border: 1px solid #fcc256 !important;
+            // background-color: #fff4ca !important;
+            border: 2px dashed #b8b8b8;
+        }
+        &.patientInBed {
+            background-color: #7ad8fa !important;
+            border: 1px solid #57c1e8 !important;
+        }
+    }
+    .arrangeBedMessage {
+        margin-left: 50px;
+        font-weight: bold;
+        color: red;
+    }
+
+}

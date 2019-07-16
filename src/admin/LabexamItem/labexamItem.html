@@ -1,0 +1,55 @@
+<style scoped>
+    labexam-item {
+        height: 100%;
+    }
+</style>
+<div flex layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.openLeftMenu()" hide-gt-sm>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <h3 translate="labexamItem.pageTitle"></h3>
+        </div>
+    </md-toolbar>
+    <div class="list-header" ng-show="!vm.loading && !vm.isError">
+        <span translate="labexamItem.totalRecord" translate-values='{total: vm.labexams.length}'></span>
+        <span flex></span>
+    </div>
+    <md-content layout-fill flex>
+        <loading ng-show="vm.loading"></loading>
+        <div flex ng-show="vm.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate="customMessage.serverError"></h3>
+        </div>
+        <div ng-show="!vm.loading && !vm.isError" infinite-scroll="vm.loadMore()" infinite-scroll-disabled='vm.loading' infinite-scroll-distance='2' infinite-scroll-parent>
+            <div ng-show="vm.labexams && vm.labexams.length == 0" layout="column" layout-fill layout-align="center center" flex>
+                <i class="fa fa-file-o"></i>
+                <h3 translate="customMessage.noData"></h3>
+                <h4 translate="labexamItem.addNew"></h4>
+            </div>
+            <md-list ng-show="vm.labexams && vm.labexams.length > 0">
+                <md-list-item>
+                    <div layout="row" layout-fill>
+                        <div flex><label translate="labexamItem.name"></label></div>
+                        <div flex><label translate="labexamItem.unit"></label></div>
+                        <div flex><label translate="labexamItem.lowerLimit"></label> - <label translate="labexamItem.upperLimit"></label></div>
+                        <div flex><label translate="labexamItem.gender"></label></div>
+                    </div>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-list-item>
+                <md-list-item ng-repeat="equ in vm.showLabexams | orderBy: 'Name' track by equ.Id" ng-click="vm.go(equ)">
+                    <div layout="row" layout-fill>
+                        <div flex>{{ equ.Name }}</div>
+                        <div flex>{{ equ.Unit }}</div>
+                        <div flex>{{ equ.NormalDown }} - {{ equ.NormalUpper }}</div>
+                        <div flex>{{ vm.showGender(equ.Gender) }}</div>
+                    </div>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-list-item>
+            </md-list>
+        </div>
+    </md-content>
+    <md-button class="md-fab" ng-click="vm.gotoCreate()" aria-label="Eat cake" style="position:fixed;right:24px;bottom:24px">
+        <md-icon md-font-icon="mdi mdi-plus" style="font-size: 24px;height: 33px">+</md-icon>
+    </md-button>
+</div>

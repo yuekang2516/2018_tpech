@@ -1,0 +1,138 @@
+<md-dialog class="year-event-dialog-container" ng-class="{loading: dialog.loading}">
+    <form name="eventForm" style="height:100%" ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools" layout="row">
+                
+                <p flex ng-if="dialog.editType === 'update'">修改年度計畫</p>
+
+                <md-button class="md-icon-button" ng-click="dialog.cancel()">
+                    <i class="material-icons">clear</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content layout="column">
+            <loading ng-if="dialog.loading"></loading>
+            <div class="md-dialog-content" ng-if="!dialog.loading">
+
+                <div layout="row" class="row">
+                    <label class="label-margin">記事標題</label>
+                    <input required ng-model="dialog.title">
+                </div>
+
+                <!--  ng-if="!dialog.noEndDate" -->
+                <!-- <div layout="row" class="row">
+                    <label class="label-margin">全天時段</label>
+                    <md-checkbox ng-model="dialog.allDay" ng-change="dialog.changeAllDay(dialog.allDay)" class="all-day"></md-checkbox>
+                </div> -->
+
+
+                <!-- <div layout="row" class="row">
+                    <label class="label-margin">開始日期</label>
+                    <input name="date" class="calendar" type="date" ng-model="dialog.startDate" ng-change="dialog.dateChanged('start')" required />
+                </div>
+                
+
+                <div layout="row" class="row" ng-if="!dialog.allDay">
+                    <label class="label-margin">開始時間</label>
+                    <input name="time" class="calendar" type="time" ng-model="dialog.startTime" ng-change="dialog.dateChanged('start')" required />
+                </div>
+
+                <div layout="row" class="row" ng-if="!dialog.allDay">
+                    <label class="label-margin">結束日期</label>
+                    <input id="endDate" name="date" class="calendar" type="date" ng-model="dialog.endDate" ng-change="dialog.dateChanged('end')" required />
+                </div>
+
+                <div layout="row" class="row" ng-if="!dialog.allDay">
+                    <label class="label-margin">結束時間</label>
+                    <input id="endTime" name="time" class="calendar" type="time" ng-model="dialog.endTime" ng-change="dialog.dateChanged('end')" required />
+                </div> -->
+
+
+                <!-- <div layout="row" class="row">
+                    <label class="label-margin">持續記事</label>
+                    <md-checkbox ng-model="dialog.noEndDate" ng-change="dialog.changeNoEndDate(dialog.noEndDate)" class="no-end-date"></md-checkbox>
+                    <span style="font-size: 14px;">(未執行自動延展，顯示於年度行事表)</span>
+                </div> -->
+
+
+
+                <div layout="row" class="row">
+                    <label class="label-margin">記事內容</label>
+                    <!-- <md-input-container md-no-float md-no-asterisk> -->
+                    <textarea ng-model="dialog.content" style="min-height: 80px; width: 100%;" rows="2" placeholder="請填寫記事內容"></textarea>
+                    <!-- </md-input-container> -->
+                </div>
+
+                <!-- <div layout="row" class="row">
+                    <label class="label-margin">執行狀態</label>
+                    <md-radio-group ng-model="dialog.executeStatus" layout="row" aria-label="執行" ng-change="dialog.executeStatusChanged(dialog.executeStatus)">
+                        <md-radio-button ng-value="'none'">無</md-radio-button>
+                        <md-radio-button ng-value="'pending'">未執行</md-radio-button>
+                        <md-radio-button ng-value="'done'">已執行</md-radio-button>00
+                    </md-radio-group>
+                </div> -->
+
+                <div layout="row" class="row">
+                    <label class="label-margin">執行狀態</label>
+                    <md-checkbox ng-model="dialog.executeStatus" ng-change="dialog.executeStatusChanged(dialog.executeStatus)" class="all-day">已執行</md-checkbox>
+                </div>
+
+
+                <div layout="row" class="row" ng-if="dialog.executeStatus">
+                    <label class="label-margin">執行日期</label>
+                    <input id="processDate" name="date" class="calendar" type="date" ng-model="dialog.processTime" ng-change="dialog.dateChanged('execute')" />
+                </div>
+
+                <div layout="row" class="row" ng-if="dialog.executeStatus">
+                    <label class="label-margin">執行時間</label>
+                    <input id="processTime" name="time" class="calendar" type="time" ng-model="dialog.processTime" ng-change="dialog.dateChanged('execute')" />
+                </div>
+
+
+                <div layout="row" class="row"ng-if="dialog.executeStatus">
+
+                    <label class="label-margin">執行人員</label>
+                    <md-select ng-model="dialog.processUser" ng-model-options="{trackBy: '$value.Id'}" md-on-close="dialog.clearSearch(dialog.processUser)" style="display: inline-flex;"  ng-change="dialog.selectProcessUser(dialog.processUser)">
+                        <md-select-header>
+                            <input style="background: url(../../static/img/ic_search.png) no-repeat scroll 2.5px 2.5px;padding-left: 25px;border-radius: 5px;font-size: 13px;" class="searchDoc" ng-model="dialog.searchStr" type="search" ng-keydown="$event.stopPropagation()" ng-change="dialog.searchProcessUser(dialog.searchStr)" placeholder="執行人員姓名">
+                        </md-select-header>
+                        <md-option ng-repeat="user in dialog.allProcessUser track by user.Id" ng-value="user">
+                            <span ng-if="user.Name === 'NoUser'">無</span>
+                            <span ng-if="user.Name !== 'NoUser'">{{::user.Name}}</span>
+                            <!-- <span ng-if="user.EmployeeId"> - {{::user.EmployeeId}}</span> -->
+                        </md-option>
+                    </md-select>
+                </div>
+
+
+                <div class="div-created-modified" layout="row" layout-xs="column" ng-if="dialog.editType === 'update'">
+                    <!-- <label class="label-margin">建立者</label> -->
+                    <div class="created" ng-if="dialog.createdTime !== null" flex='50'>
+                        建立: {{dialog.createdTime}} {{dialog.createdUserName}}
+                    </div>
+                    <!-- <label class="label-margin">建立者</label> -->
+                    <div class="modified" ng-if="dialog.modifiedTime !== null" flex='50' >
+                        修改: {{dialog.modifiedTime}} {{dialog.modifiedUserName}}
+                    </div>
+                </div>
+
+                
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout-align="end end" ng-if="!dialog.loading">
+            <md-button class="md-raised" ng-click="dialog.cancel()">
+                取消
+            </md-button>
+            <md-button ng-if="dialog.editType === 'update'" class="md-raised md-warn md-btn-white-text" ng-click="dialog.deleteEvent(dialog.id, dialog.title)" ng-disabled="">
+                刪除記事
+            </md-button>
+            <md-button ng-if="dialog.editType === 'update'" class="md-raised md-primary md-btn-white-text" ng-click="dialog.editEvent(eventForm)" ng-disabled="eventForm.$invalid || dialog.timeError">
+                修改記事
+            </md-button>
+            <!-- <md-progress-circular md-diameter="20px" md-mode="indeterminate" ng-show="dialog.isLoading"></md-progress-circular> -->
+        </md-dialog-actions>
+
+    </form>
+</md-dialog>

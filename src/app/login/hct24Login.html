@@ -1,0 +1,394 @@
+<div class="loginHct24">
+    <a href="#" id="top">
+        <div class="top"></div>
+    </a>
+    <div class="head">
+        <div class="logo">
+            <img ng-src="static/img/cloud_login/logo.png" alt="">
+            <br>
+            <span class="name">{{'hct24Login.SmartECareDialysisSystem' | translate}}</span>
+            <br>
+            <span>{{'hct24Login.SmartECareDialysisSystemSamllText' | translate}}</span>
+        </div>
+        <div class="lan">
+            <select ng-model="vm.language" placeholder="語言" ng-change="vm.changeLanguage()">
+                <option value="zh-tw">繁體中文</md-option>
+                <option value="zh-cn">简体中文</md-option>
+                <option value="en-us">English</md-option>
+            </select>
+        </div>
+        <div class="link">
+            <a href="#" class="about">{{'hct24Login.aboutSystem' | translate}}</a>
+            <a href="#" class="function">{{'hct24Login.systemFunction' | translate}}</a>
+            <a href="#" class="price">{{'hct24Login.applySystem' | translate}}</a>
+        </div>
+    </div>
+    <div class="bar"></div>
+    <div class="slider">
+        <div class="slider_in">
+            <div class="fL">
+                <div class="screenshow">
+                    <h1>{{'hct24Login.SmartECareDialysisSystem' | translate}}</h1>
+                    <p>{{'hct24Login.firstChoiceMessage' | translate}}</p>
+                    <p>
+                        {{'hct24Login.unLimitedMessage' | translate}}
+                    </p>
+                    <br>
+                    <a href="#" class="price">
+                        <div class="button">{{'hct24Login.free30Days' | translate}}</div>
+                    </a>
+                </div>
+            </div>
+            <!-- <div class="fR">
+                <div style="text-align: center; padding-bottom: 8px">
+                    <h2 class="marginB12" style="color: #fff">{{'hct24Login.memberLogin' | translate}}</h2>
+                </div>
+                <form ng-submit="vm.submit()">
+                    <input type="text" ng-model="vm.formData.account" placeholder="{{'hct24Login.enterUsername' | translate}}">
+                    <input type="password" ng-model="vm.formData.password" placeholder="{{'hct24Login.enterPassword' | translate}}">
+                    <br>
+                    <button type="submit">{{'hct24Login.login' | translate}}
+                        <img ng-if="vm.loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+                        />
+                    </button>
+                    <a href="#" class="price">
+                        <button type="" form="nameform" value="Submit" class="screenhide pinkyellow">{{'hct24Login.free30Days' | translate}}</button>
+                    </a>
+                </form>
+            </div> -->
+        </div>
+    </div>
+    <div class="container">
+        <h2>{{'hct24Login.clinic.clinicTitle' | translate}}</h2>
+        <div class="now">
+            <div class="box" style="background: url(static/img/cloud_login/1.jpg) bottom no-repeat ; background-size: 100% auto">
+                <div class="title">{{'hct24Login.clinic.problem1' | translate}}</div>
+                <p>{{'hct24Login.clinic.message1' | translate}}</p>
+                <!-- <img ng-src="static/img/cloud_login/1.jpg" alt=""> -->
+                <img ng-src="static/img/cloud_login/blank.png" alt="">
+            </div>
+            <div class="box" style="background: url(static/img/cloud_login/2.jpg) bottom no-repeat ; background-size: 100% auto">
+                <div class="title">{{'hct24Login.clinic.problem2' | translate}}</div>
+                <p>{{'hct24Login.clinic.message2' | translate}}</p>
+                <!-- <img ng-src="static/img/cloud_login/2.jpg" alt=""> -->
+                <img ng-src="static/img/cloud_login/blank.png" alt="">
+            </div>
+            <div class="box" style="background: url(static/img/cloud_login/3.jpg) bottom no-repeat ; background-size: 100% auto">
+                <div class="title">{{'hct24Login.clinic.problem3' | translate}}</div>
+                <p>{{'hct24Login.clinic.message3' | translate}}</p>
+                <!-- <img ng-src="static/img/cloud_login/3.jpg" alt=""> -->
+                <img ng-src="static/img/cloud_login/blank.png" alt="">
+            </div>
+        </div>
+        <div class="cl"></div>
+        <br>
+        <br>
+        <!---->
+        <div id="about">
+            <h1>{{'hct24Login.choice.choiceTitle' | translate}}</h1>
+        </div>
+        <div class="features">
+            <div class="box4">
+                <img ng-src="static/img/cloud_login/a.jpg" alt="">
+                <p>{{'hct24Login.choice.picture1' | translate}}</p>
+            </div>
+            <div class="box4">
+                <img ng-src="static/img/cloud_login/b.jpg" alt="">
+                <p>{{'hct24Login.choice.picture2' | translate}}</p>
+            </div>
+            <div class="box4">
+                <img ng-src="static/img/cloud_login/c.jpg" alt="">
+                <p>{{'hct24Login.choice.picture3' | translate}}</p>
+            </div>
+            <div class="box4">
+                <img ng-src="static/img/cloud_login/d.jpg" alt="">
+                <p>{{'hct24Login.choice.picture4' | translate}}</p>
+            </div>
+            <div class="cl"></div>
+        </div>
+        <br>
+        <hr>
+        <div id="function">
+            <h1>{{'hct24Login.function.functionTitle' | translate}}</h1>
+            <h2>{{'hct24Login.function.functionMessage' | translate}}</h2>
+            <div class="flow">
+                <div class="box3">
+                    <img ng-src="static/img/cloud_login/flow1.gif" alt="">
+                    <p>{{'hct24Login.function.picture1' | translate}}</p>
+                </div>
+                <div class="box3">
+                    <img ng-src="static/img/cloud_login/flow2.gif" alt="">
+                    <p>{{'hct24Login.function.picture2' | translate}}</p>
+                </div>
+                <div class="box3">
+                    <img ng-src="static/img/cloud_login/flow3.gif" alt="">
+                    <p>{{'hct24Login.function.picture3' | translate}}</p>
+                </div>
+            </div>
+            <div class="cl"></div>
+            <br>
+            <hr>
+            <form name="myForm" novalidate>
+                <div id="price">
+                    <h1>{{'hct24Login.apply.applyTitle' | translate}}</h1>
+                    <div class="cards">
+
+                        <div class="block" ng-class="{blockborder: vm.package === '基本版'}" hidden>
+                            <label for="basic">
+                                <ul style="height: 107%">
+                                    <li class="header">
+                                        <span>{{'hct24Login.apply.basic.title' | translate}}</span>
+                                    </li>
+                                    <li>
+                                        <h1>
+                                            <span>{{'hct24Login.apply.dollarIcon' | translate}}</span> {{'hct24Login.apply.basic.price' | translate}}
+                                        </h1>
+                                        <p style="color:#000; margin-top:0; font-size:14px;">{{'hct24Login.apply.or' | translate}}&nbsp;&nbsp;&nbsp;
+                                            <span class="smallRedDollar">{{'hct24Login.apply.dollarIcon' | translate}}</span>
+                                            <b>{{'hct24Login.apply.basic.eachPrice' | translate}}</b>
+                                            <span style="color:#000; margin-top:0; font-size:14px;">{{'hct24Login.apply.eachDollarMessage' | translate}}
+                                            </span>
+                                        </p>
+                                    </li>
+                                    <li style="border-top: #ccc solid 1px; width: 90%; margin: auto">
+                                        <!-- <p style="font-weight: bold; color: #000">{{'hct24Login.apply.function.functionTitle' | translate}}</p> -->
+                                        <p>{{'hct24Login.apply.function.0' | translate}}</p>
+                                        <p>{{'hct24Login.apply.function.1' | translate}}</p>
+                                        <p>{{'hct24Login.apply.function.2' | translate}}</p>
+                                        <p>{{'hct24Login.apply.function.3' | translate}}</p>
+                                        <p>{{'hct24Login.apply.function.4' | translate}}</p>
+                                    </li>
+                                </ul>
+                                <div class="decision">
+                                    <input type="radio" value="基本版" id="basic" ng-model="vm.package" style="display:none">
+                                    <span class="check">{{'hct24Login.apply.choiceThis' | translate}}</span>
+                                </div>
+                                </lable>
+                        </div>
+                        <div class="block" ng-class="{blockborder: vm.package === '進階版'}">
+                            <label for="advance">
+                                <ul style="height: 107%">
+                                    <li class="header">
+                                        <span>{{'hct24Login.apply.advanced.title' | translate}}</span>
+                                    </li>
+                                    <li ng-if="vm.language !== 'en-us'">
+                                        <h1>
+                                            <span>{{'hct24Login.apply.dollarIcon' | translate}}</span> {{'hct24Login.apply.advanced.price' | translate}}
+                                        </h1>
+                                        
+                                        <p style="color:#000; margin-top:0; font-size:14px;">{{'hct24Login.apply.or' | translate}}&nbsp;&nbsp;&nbsp;
+                                            <span class="smallRedDollar">{{'hct24Login.apply.dollarIcon' | translate}}</span>
+                                            <b>{{'hct24Login.apply.advanced.eachPrice' | translate}}</b>
+                                            <span style="color:#000; margin-top:0; font-size:14px;">{{'hct24Login.apply.eachDollarMessage' | translate}}
+                                            </span>
+                                        </p>
+
+                                    </li>
+                                    <li style="border-top: #ccc solid 1px; width: 90%; margin: auto">
+                                        <!-- <p style="font-weight: bold; color: #000">{{'hct24Login.apply.function.functionTitle' | translate}}</p> -->
+                                        <p>{{'hct24Login.apply.function.0' | translate}}</p>
+                                        <p>{{'hct24Login.apply.function.1' | translate}}</p>
+                                        <p>{{'hct24Login.apply.function.2' | translate}}</p>
+                                        <p>{{'hct24Login.apply.function.3' | translate}}</p>
+                                        <p>{{'hct24Login.apply.function.4' | translate}}</p>
+                                        <p>{{'hct24Login.apply.function.5' | translate}}</p>
+                                        <p>{{'hct24Login.apply.function.6' | translate}}</p>
+                                        <p>{{'hct24Login.apply.function.7' | translate}}</p>
+                                        <p>{{'hct24Login.apply.function.8' | translate}}</p>
+                                    </li>
+                                </ul>
+                                <div class="decision">
+                                    <input type="radio" value="進階版" id="advance" ng-model="vm.package" style="display:none">
+                                    <span class="check">{{'hct24Login.apply.choiceThis' | translate}}</span>
+                                </div>
+                            </label>
+
+                        </div>
+                        <div class="block" ng-class="{blockborder: vm.package === '完整版'}">
+                            <label for="full">
+                                <ul style="height: 107%">
+                                    <li class="header">
+                                        <span>{{'hct24Login.apply.premium.title' | translate}}</span>
+                                    </li>
+                                    <li ng-if="vm.language !== 'en-us'">
+                                        <h1>
+                                            <span>{{'hct24Login.apply.dollarIcon' | translate}}</span> {{'hct24Login.apply.premium.price' | translate}}
+                                        </h1>
+
+                                        <p style="color:#000; margin-top:0; font-size:14px;">{{'hct24Login.apply.or' | translate}}&nbsp;&nbsp;&nbsp;
+                                            <span class="smallRedDollar">{{'hct24Login.apply.dollarIcon' | translate}}</span>
+                                            <b>{{'hct24Login.apply.premium.eachPrice' | translate}}</b>
+                                            <span style="color:#000; margin-top:0; font-size:14px;">{{'hct24Login.apply.eachDollarMessage' | translate}}
+                                            </span>
+                                        </p>
+
+                                    </li>
+                                    <li style="border-top: #ccc solid 1px; width: 90%; margin: auto">
+                                        <!-- <p style="font-weight: bold; color: #000">{{'hct24Login.apply.function.functioSnTitle' | translate}}</p> -->
+                                        <p>{{'hct24Login.apply.function.0' | translate}}</p>
+                                        <p>{{'hct24Login.apply.function.1' | translate}}</p>
+                                        <p>{{'hct24Login.apply.function.2' | translate}}</p>
+                                        <p>{{'hct24Login.apply.function.3' | translate}}</p>
+                                        <p>{{'hct24Login.apply.function.4' | translate}}</p>
+                                        <p>{{'hct24Login.apply.function.5' | translate}}</p>
+                                        <p>{{'hct24Login.apply.function.6' | translate}}</p>
+                                        <p>{{'hct24Login.apply.function.7' | translate}}</p>
+                                        <p>{{'hct24Login.apply.function.8' | translate}}</p>
+                                        <p>{{'hct24Login.apply.function.9' | translate}}</p>
+                                        <p>{{'hct24Login.apply.function.10' | translate}}</p>
+                                        <p>{{'hct24Login.apply.function.11' | translate}}</p>
+                                    </li>
+                                </ul>
+                                <div class="decision">
+                                    <input type="radio" value="完整版" id="full" ng-model="vm.package" style="display:none">
+                                    <span class="check">{{'hct24Login.apply.choiceThis' | translate}}</span>
+                                </div>
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="add">
+                    <h2>{{'hct24Login.apply.plusBuy' | translate}}</h2>
+                    <div class="pro">
+                        <div class="cards">
+                            <div class="block" ng-class="{blockborder: vm.optionalItems.weight === '體重機連線系統'}">
+                                <label>
+                                    <ul style="height: 136%">
+                                        <li class="header">
+                                            <span>{{'hct24Login.apply.weightScale.title' | translate}}</span>
+                                        </li>
+                                        <li>
+                                            <p>{{'hct24Login.apply.weightScale.function1' | translate}}</p>
+                                            <p>{{'hct24Login.apply.weightScale.function2' | translate}}</p>
+                                        </li>
+                                    </ul>
+                                    <div class="decision">
+                                        <input type="checkbox" name="" ng-model="vm.optionalItems.weight" ng-true-value="'體重機連線系統'" class="checkbox" style="display:none">
+                                        <span class="check">{{'hct24Login.apply.choiceThis' | translate}}</span>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="block" ng-class="{blockborder: vm.optionalItems.BP === '血壓計連線系統'}">
+                                <label>
+                                    <ul style="height: 136%">
+                                        <li class="header">
+                                            <span>{{'hct24Login.apply.bloodPressure.title' | translate}}</span>
+                                        </li>
+                                        <li>
+                                            <p>{{'hct24Login.apply.bloodPressure.function1' | translate}}</p>
+                                            <p>{{'hct24Login.apply.bloodPressure.function2' | translate}}</p>
+                                        </li>
+                                    </ul>
+                                    <div class="decision">
+                                        <input type="checkbox" name="" ng-model="vm.optionalItems.BP" ng-true-value="'血壓計連線系統'" class="checkbox" style="display:none">
+                                        <span class="check">{{'hct24Login.apply.choiceThis' | translate}}</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+                <h1>{{'hct24Login.contact.title' | translate}}</h1>
+                <div class="width66">
+                  <div class="col-sm-5box">
+                    <div class="col-sm-5">
+                        <p>{{'hct24Login.contact.companyName' | translate}}</p>
+                        <input type="text" ng-model="vm.form.CompanyName" >
+
+                        <div ng-class="{ 'has-error' : myForm.compTel.$invalid && vm.submitted}">
+                            <p class="required-star">{{'hct24Login.contact.companyPhone' | translate}}</p>
+                            <input type="text" name="compTel" ng-model="vm.form.CompanyTel" required="" ng-pattern="/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/" >
+                            <div ng-messages="myForm.compTel.$error" role="alert">
+                                <div style="color:red" ng-show="(vm.submitted)" ng-message="required">{{'hct24Login.contact.phoneEmpty' | translate}}</div>
+                                <div style="color:red" ng-show="(vm.submitted)" ng-message="pattern">{{'hct24Login.contact.phoneError' | translate}}</div>
+                            </div>
+                        </div>
+
+
+                        <div ng-class="{ 'has-error' : myForm.compName.$invalid && vm.submitted}">
+                            <p class="required-star">{{'hct24Login.contact.contactPerson' | translate}}</p>
+                            <input type="text" name="compName" ng-model="vm.form.Name" required="" >
+                            <div ng-messages="myForm.compName.$error" role="alert">
+                                <div style="color:red" ng-show="(vm.submitted)" ng-message="required">{{'hct24Login.contact.contactPersonEmpty' | translate}}</div>
+                            </div>
+                        </div>
+
+                        <div ng-class="{ 'has-error' : myForm.email.$invalid && vm.submitted}">
+                            <p class="required-star">{{'hct24Login.contact.email' | translate}}</p>
+                            <input type="email" name="email" ng-model="vm.form.Email" required="" >
+                            <div ng-messages="myForm.email.$error" role="alert">
+                                <div style="color:red" ng-show="(vm.submitted)" ng-message="required">{{'hct24Login.contact.emailEmpty' | translate}}</div>
+                                <div style="color:red" ng-show="(vm.submitted)" ng-message="email">{{'hct24Login.contact.emailError' | translate}}</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-5">
+                        <p>{{'hct24Login.contact.memo' | translate}}</p>
+                        <textarea name="" id="" cols="10" rows="10" ng-model="vm.formMessage"></textarea>
+                    </div>
+                  </div>
+                  <div class="cl"></div>
+                  <div class="centerbutton">
+                    <button class="w30" style="padding: 6px 15px; " ng-click="vm.submitForm(myForm.email.$valid, myForm.compName.$valid, myForm.compTel.$valid)">{{'hct24Login.contact.submit' | translate}}
+                        <img ng-if="vm.loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+                        />
+                    </button>
+                    <button class="w30" ng-click="vm.clearForm()" style="padding: 6px 15px; ">{{'hct24Login.contact.clear' | translate}}</button>
+                  </div>
+                </div>
+            </div>
+            </form>
+        
+            <div class="width33">
+                <div class="qr">
+                    <img ng-src="static/img/cloud_login/qr.jpg" alt="">
+                </div>
+                <div class="downapk">
+                    <hr>
+                    <a href="http://yuekang.hct24.com/dialysis.apk">
+                    <div class="downapkbutton">
+                        <img ng-src="static/img/cloud_login/logo.png" alt="">{{'hct24Login.downloadAPK' | translate}}
+                    </div>
+                    </a>
+                </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer_in">
+            <img ng-src="static/img/cloud_login/logo.jpg" alt="">
+            <div class="right">
+                <span>© Copyright {{vm.year}} &nbsp |&nbsp Tel：+886-2-2701-1100</span>
+                <p>eMail：service@catchyourhealth.com.tw</p>
+                <p>{{vm.appVersion}}</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script language="javascript">
+    $(function () {
+        $('.top').click(function () {
+            $('html,body').animate({ scrollTop: '0px' }, 800);
+        });
+
+        $('.about').click(function () {
+            $('html,body').animate({ scrollTop: $('#about').offset().top }, 800);
+        });
+        $('.function').click(function () {
+            $('html,body').animate({ scrollTop: $('#function').offset().top }, 800);
+        });
+        $('.price').click(function () {
+            $('html,body').animate({ scrollTop: $('#price').offset().top }, 800);
+        });
+        $('.form').click(function () {
+            $('html,body').animate({ scrollTop: $('#form').offset().top }, 800);
+        });
+    });
+</script>

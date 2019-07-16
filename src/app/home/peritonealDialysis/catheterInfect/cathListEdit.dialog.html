@@ -1,0 +1,820 @@
+<style>
+    /* This prevents the row from moving to the next line on safari.
+            Rows needs to be wrapped according to their percentage.
+        */
+
+    .layout-column .layout-wrap>* {
+        -webkit-flex: 1 1 auto;
+        flex: 1 1 50%;
+    }
+
+    .layout-gt-xs-row>.flex {
+        min-width: 0;
+        width: 100%;
+    }
+
+    @media (max-width: 599px) {
+        .layout-row>.flex-xs-100 {
+            -webkit-flex: 1 1 100%;
+            flex: 1 1 100%;
+        }
+    }
+
+    .wf-container {
+        margin: 0 auto;
+    }
+
+    .wf-container:before,
+    .wf-container:after {
+        content: '';
+        display: table;
+    }
+
+    .wf-container:after {
+        clear: both;
+    }
+
+    .wf-box {
+        /* margin: 10px; */
+    }
+
+    .wf-box img {
+        display: block;
+        width: 100%;
+    }
+
+    .wf-box .content {
+        border: 1px solid #ccc;
+        border-top-width: 0;
+        padding: 5px 8px;
+    }
+
+    .wf-column {
+        float: left;
+    }
+
+    .infectionTbUpdate {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+    }
+
+    .radioWidth {
+        width: 220px;
+    }
+
+    .radioWidthOther {
+        width: 100px !important;
+    }
+    .box {
+        transition: height 2s;
+    }
+    .box-close {
+        display: none;
+    }
+    
+    .box-open {
+        display: flex;
+    }
+    .peritonealDialysisTabView .tbInfectionReport .freezeTb {
+        width: 100%;
+        min-width: 700px;
+    }
+    .peritonealDialysisTabView .inputbox .inputBoxTit {
+        margin-top: 0px;
+    }
+    @media print{
+        * {
+            -webkit-print-color-adjust: exact !important;
+        }
+        .peritonealDialysisTabView{
+            display: inline-table; /* Not really needed in all cases */
+        }
+        md-dialog{
+            box-shadow: none;
+            width:100%;
+        }
+        div,input,table,select,md-select{
+            page-break-inside :avoid;
+            page-break-after: avoid;
+        }
+    }
+</style>
+
+<md-dialog style="width:80%" class="peritonealDialysisTabView">
+    <!-- 感染記錄 form -->
+    <form name="EditForm" novalidate ng-cloak ng-if="$ctrl.formType === 'catheter'">
+        <!-- <summary-toolbar ng-if="$ctrl.isCreate" ng-click="$ctrl.cancel()" toolbar-title="'catheterInfect.dialog.createTitle' | translate"></summary-toolbar>
+        <summary-toolbar ng-if="!$ctrl.isCreate" ng-click="$ctrl.cancel()" toolbar-title="'catheterInfect.dialog.editTitle' | translate"></summary-toolbar> -->
+        <md-dialog-toolbar>
+            <div class="md-toolbar-tools">
+                <md-button class="md-fab" aria-label="Settings" ng-click="$ctrl.cancel()">
+                    <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+                </md-button>
+                <h2 ng-if="$ctrl.isCreate" translate="catheterInfect.dialog.createTitle"></h2>
+                <h2 ng-if="!$ctrl.isCreate" translate="catheterInfect.dialog.editTitle"></h2>
+                <span style="font-size:16px;" ng-show="$ctrl.cathItem.Status == 'Deleted'" class="readonly-text" title="{{ 'customMessage.readonlyTitle' | translate }}" translate>{{ 'customMessage.readonly' }}</span>
+                <div
+                    class="{{'patient_name ' + (($ctrl.currentPatient.Gender|gender) == '男' ? 'male ' : '') + (($ctrl.currentPatient.Gender|gender) == '女' ? 'female' : '') }}">
+                    {{ $ctrl.currentPatient.MedicalId + ' - ' + $ctrl.currentPatient.Name }}
+                </div>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+                    <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-dialog-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content" layout="column" style="padding-top: 0">
+                <div layout="column">
+                    <div layout="row" style="margin-bottom:10px;margin-top:10px;vertical-align:middle;">
+                        <label class="lightblue">感染記錄次數:</label>
+                        <input type="text" style="width:100px;margin-left:10px;" ng-model="$ctrl.cathItem.Times"
+                            readonly />
+                    </div>
+                    <div class="cardContent">
+                        <div class="cardTit">
+                            <h2>感染記錄</h2>
+                            <i ng-show="$ctrl.cathItem.Status != 'Deleted'" class="material-icons" ng-click="$ctrl.createOneTreat()">add</i>
+                        </div>
+                        <div class="freezeDivShorter tbInfectionReport autoHieght">
+                            <table class="freezeTb tb" ng-show="$ctrl.cathItem.Status != 'Deleted'">
+                                <thead>
+                                    <tr>
+                                        <th>天數</th>
+                                        <th>日期</th>
+                                        <th>治療記錄</th>
+                                        <th>Culture 菌種</th>
+                                        <th>備註</th>
+                                        <th>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="ti in $ctrl.germAry" ng-if="ti.Status !== 'Deleted'">
+                                        <td ng-click="$ctrl.openEditDialog(ti,$index)">{{$ctrl.calculateDays(ti)}}</td>
+                                        <td ng-click="$ctrl.openEditDialog(ti,$index)">
+                                            <a>{{ti.Recorddate | moment:'YYYY/MM/DD'}}</a></td>
+                                        <td ng-click="$ctrl.openEditDialog(ti,$index)">
+                                            <div class="ellipsis">
+                                                <md-tooltip md-direction="Bottom" class="tooltip-multiline">{{ti.Treatment_Record}}</md-tooltip>
+                                                {{ti.Treatment_Record}}
+                                            </div>
+                                        </td>
+                                        <td class="ellipsis" ng-click="$ctrl.openEditDialog(ti,$index)"><a>{{ti.Culture_Strain}}</a></td>
+                                        <td class="ellipsis" ng-click="$ctrl.openEditDialog(ti,$index)">
+                                            <div class="ellipsis">
+                                                <md-tooltip md-direction="Bottom" class="tooltip-multiline">{{ti.Memo}}</md-tooltip>
+                                                {{ti.Memo}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <i class="material-icons delete-btn" ng-click="$ctrl.deleteOneTreat(ti, $index)">clear</i>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="freezeTb tb" ng-show="$ctrl.cathItem.Status == 'Deleted'">
+                                    <thead>
+                                        <tr>
+                                            <th>天數</th>
+                                            <th>日期</th>
+                                            <th>治療記錄</th>
+                                            <th>Culture 菌種</th>
+                                            <th>備註</th>
+                                            <th>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="ti in $ctrl.germAry" ng-if="ti.Status !== 'Deleted'">
+                                            <td>{{$ctrl.calculateDays(ti)}}</td>
+                                            <td>
+                                                <a>{{ti.Recorddate | moment:'YYYY/MM/DD'}}</a></td>
+                                            <td><a>{{ti.Treatment_Record}}</a></td>
+                                            <td><a>{{ti.Culture_Strain}}</a></td>
+                                            <td><a>{{ti.Memo}}</a></td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                        </div>
+                    </div>
+                    <div class="cardContent">
+                        <div class="cardTit">
+                            <!-- <h2>症狀</h2> -->
+                            <h2 translate>{{'catheterInfect.dialog.symptons'}}</h2>
+                        </div>
+                        <div class="wf-container">
+                            <div class="wf-box">
+                                <md-card class="feature-area">
+                                    <md-card-content>
+                                        <h4>導管出口評估</h4>
+                                        <div style="display:block;margin-left:10px;display:inline-block;"
+                                            class=" autoWidth">
+                                            <md-input-container-flat class="md-block">
+                                                <md-checkbox ng-repeat="COECheck in $ctrl.CatheterOutletEvaluateCheck"
+                                                    ng-checked="COECheck.Check" ng-disabled="COECheck.Disabled"
+                                                    ng-click="$ctrl.checkTheBox('CatheterOutletEvaluate', $index)"
+                                                    ng-if="COECheck.Type == 'Coe'">
+                                                    {{COECheck.Text}}
+                                                </md-checkbox>
+                                                <div ng-if="$ctrl.CatheterOutletEvaluateCheck[4].Check"
+                                                    style="display:inline-block;width:unset;text-align:left;margin-left:-15px;">
+                                                    <label>第</label>
+                                                    <input ng-model="$ctrl.CatheterOutletTimes" class="txtSS">
+                                                    <label>次</label>
+                                                </div>
+                                                <md-checkbox ng-repeat="COECheck in $ctrl.CatheterOutletEvaluateCheck"
+                                                    ng-checked="COECheck.Check"
+                                                    ng-click="$ctrl.checkTheBox('CatheterOutletEvaluate', $index)"
+                                                    ng-if="COECheck.Type == 'CoeOther'">
+                                                    {{COECheck.Text}}
+                                                </md-checkbox>
+                                                <input
+                                                    ng-if="$ctrl.CatheterOutletEvaluateCheck[($ctrl.CatheterOutletEvaluateCheck.length - 1)].Check"
+                                                    type="text" placeholder=""
+                                                    ng-model="$ctrl.CatheterOutletEvaluateCheckOther">
+                                            </md-input-container-flat>
+                                        </div>
+                                    </md-card-content>
+                                </md-card>
+                                <md-card class="feature-area autoWidth">
+                                    <md-card-content>
+                                        <h4>分泌物、性狀</h4>
+                                        <md-radio-group class="radioGroup" ng-model="$ctrl.SecretionTraitRadio">
+                                            <md-radio-button value="N">無分泌物</md-radio-button>
+                                            <md-radio-button value="Y">有分泌物</md-radio-button>
+                                        </md-radio-group>
+                                        <md-input-container-flat class="md-block"
+                                            ng-if="$ctrl.SecretionTraitRadio == 'Y'">
+                                            <md-checkbox ng-repeat="STCheck in $ctrl.SecretionTraitCheck"
+                                                ng-checked="STCheck.Check"
+                                                ng-click="$ctrl.checkTheBox('SecretionTrait', $index)">
+                                                {{STCheck.Text}}
+                                            </md-checkbox>
+                                            <input
+                                                ng-show="$ctrl.SecretionTraitCheck[($ctrl.SecretionTraitCheck.length - 1)].Check"
+                                                type="text" placeholder="" ng-model="$ctrl.SecretionTraitCheckOther">
+                                        </md-input-container-flat>
+                                    </md-card-content>
+                                </md-card>
+                                <md-card class="feature-area autoWidth">
+                                    <md-card-content>
+                                        <h4>顏色</h4>
+                                        <md-input-container-flat class="md-block">
+                                            <md-checkbox ng-repeat="SCCheck in $ctrl.SecretionColorCheck"
+                                                ng-checked="SCCheck.Check" ng-disabled="SCCheck.Disabled"
+                                                ng-click="$ctrl.checkTheBox('SecretionColor', $index)">
+                                                {{SCCheck.Text}}
+                                            </md-checkbox>
+                                            <input
+                                                ng-show="$ctrl.SecretionColorCheck[($ctrl.SecretionColorCheck.length - 1)].Check"
+                                                type="text" placeholder="" ng-model="$ctrl.SecretionColorCheckOther">
+                                        </md-input-container-flat>
+                                    </md-card-content>
+                                </md-card>
+                                <md-card class="feature-area autoWidth">
+                                    <md-card-content>
+                                        <h4>感染狀態描述</h4>
+                                        <md-input-container-flat class="md-block">
+                                            <md-checkbox ng-repeat="DISCheck in $ctrl.DescriptionInfectionStatusCheck"
+                                                ng-checked="DISCheck.Check"
+                                                ng-click="$ctrl.checkTheBox('DescriptionInfectionStatus', $index)">
+                                                {{DISCheck.Text}}
+                                            </md-checkbox>
+                                            <input
+                                                ng-show="$ctrl.DescriptionInfectionStatusCheck[($ctrl.DescriptionInfectionStatusCheck.length - 1)].Check"
+                                                type="text" placeholder=""
+                                                ng-model="$ctrl.DescriptionInfectionStatusCheckOther">
+                                        </md-input-container-flat>
+                                    </md-card-content>
+                                </md-card>
+                                <md-card class="feature-area">
+                                    <md-card-content>
+                                        <h4>其他</h4>
+                                        <input type="text" placeholder="" ng-model="$ctrl.cathItem.Symptoms">
+                                    </md-card-content>
+                                </md-card>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cardContent">
+                        <div class="cardTit">
+                            <h2 translate>{{'catheterInfect.dialog.occurrence'}}</h2>
+                        </div>
+                        <div class="wf-container autoWidth">
+                            <div class="wf-box">
+                                <md-card class="feature-area">
+                                    <md-card-content>
+                                        <md-input-container-flat class="md-block">
+                                            <md-checkbox class="radioWidth" ng-repeat="oi in $ctrl.occurrenceCheck"
+                                                ng-checked="oi.Check"
+                                                ng-click="$ctrl.checkTheBox('occurrence', $index)">
+                                                {{oi.Text}}
+                                            </md-checkbox>
+                                            <!--其他-->
+                                            <input
+                                                ng-show="$ctrl.occurrenceCheck[($ctrl.occurrenceCheck.length - 1)].Check"
+                                                type="text" placeholder="" ng-model="$ctrl.occurrenceCheckOther">
+                                        </md-input-container-flat>
+                                    </md-card-content>
+                                </md-card>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cardContent">
+                        <div class="cardTit">
+                            <h2 translate>{{'catheterInfect.dialog.nursing_measure'}}</h2>
+                        </div>
+                        <div class="wf-container autoWidth">
+                            <div class="wf-box">
+                                <md-card class="feature-area">
+                                    <md-card-content>
+                                        <md-input-container-flat class="md-block">
+                                            <md-checkbox ng-repeat="ni in $ctrl.nursingMeasureCheck"
+                                                ng-checked="ni.Check"
+                                                ng-click="$ctrl.checkTheBox('nursingMeasure', $index)">
+                                                {{ni.Text}}
+                                            </md-checkbox>
+                                            <!--其他-->
+                                            <input
+                                                ng-show="$ctrl.nursingMeasureCheck[($ctrl.nursingMeasureCheck.length - 1)].Check"
+                                                type="text" placeholder="" ng-model="$ctrl.nursingMeasureCheckOther">
+                                        </md-input-container-flat>
+                                    </md-card-content>
+                                </md-card>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cardContent">
+                        <div class="cardTit">
+                            <h2 translate>{{'catheterInfect.dialog.treatment_result'}}</h2>
+                        </div>
+                        <div class="wf-container autoWidth">
+                            <div class="wf-box">
+                                <md-card class="feature-area">
+                                    <md-card-content>
+                                        <md-input-container-flat class="md-block">
+                                            <label>日期:</label>
+                                            <input type="date" min="1900-01-01" max="2999-12-31"   min="1900-01-01" max="2999-12-31" style="width:200px;"
+                                                ng-model="$ctrl.cathItem.Treatment_Date" />
+                                            <br>
+                                            <md-checkbox ng-repeat="ti in $ctrl.treatmentResultCheck"
+                                                ng-checked="ti.Check"
+                                                ng-click="$ctrl.checkTheBox('treatmentResult', $index)">
+                                                {{ti.Text}}
+                                            </md-checkbox>
+                                            <!--其他-->
+                                            <input
+                                                ng-show="$ctrl.treatmentResultCheck[($ctrl.treatmentResultCheck.length - 1)].Check"
+                                                type="text" placeholder="" ng-model="$ctrl.treatmentResultCheckOther">
+                                        </md-input-container-flat>
+                                    </md-card-content>
+                                </md-card>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cardContent">
+                        <div class="cardTit">
+                            <h2 translate>{{'catheterInfect.dialog.evaluation_result'}}</h2>
+                        </div>
+                        <div class="wf-container autoWidth">
+                            <div class="wf-box">
+                                <md-card class="feature-area">
+                                    <md-card-content>
+                                        <md-input-container-flat class="md-block">
+                                            <label>日期:</label>
+                                            <input type="date" min="1900-01-01" max="2999-12-31"  style="width:200px;"
+                                                ng-model="$ctrl.cathItem.Evaluation_Date" />
+                                            <br>
+                                            <md-checkbox ng-repeat="ei in $ctrl.evaluationResultCheck"
+                                                ng-checked="ei.Check"
+                                                ng-click="$ctrl.checkTheBox('evaluationResult', $index)">
+                                                {{ei.Text}}
+                                            </md-checkbox>
+                                            <!--其他-->
+                                            <input
+                                                ng-show="$ctrl.evaluationResultCheck[($ctrl.evaluationResultCheck.length - 1)].Check"
+                                                type="text" placeholder="" ng-model="$ctrl.evaluationResultCheckOther">
+                                        </md-input-container-flat>
+                                    </md-card-content>
+                                </md-card>
+                            </div>
+                        </div>
+                    </div>
+                    <div row-warp layout="row" layout-sm="column" layout-xs="column" style="margin-top:10px;">
+                        <div flex="50" flex-xs="100"  ng-show="$ctrl.cathItem.CreatedUserName">
+                            <span translate="catheterInfect.createdTime"
+                                    translate-values='{CreatedTime: $ctrl.cathItem.CreatedTime}'></span>
+                            <seal model="$ctrl.cathItem" modified="none"></seal>
+                        </div>
+                        <div flex="50" flex-xs="100"  ng-show="$ctrl.cathItem.ModifiedTime != null">                    
+                            <span translate="catheterInfect.editedTime"
+                                    translate-values='{ModifiedTime: $ctrl.cathItem.ModifiedTime}'></span>
+                            <seal model="$ctrl.cathItem" created="none"></seal>
+                        </div>
+                    </div>
+                    <!-- <div class="inputbox">
+                        <div class="signinGroup" ng-show="!$ctrl.isCreate">
+                            <label
+                                class="signinTime">建立:{{$ctrl.cathItem.CreatedTime | moment:'YYYY-MM-DD(dd) HH:mm'}}</label>
+                            <label class="signinNm"><span
+                                    class="fixed">{{$ctrl.cathItem.CreatedUserName}}</span></label>
+                        </div>
+                        <div class="signinGroup" ng-show="$ctrl.cathItem.ModifiedTime !== null">
+                            <label class="signinTime">修改:{{$ctrl.cathItem.ModifiedTime | moment:'YYYY-MM-DD(dd) HH:mm'}}</label>
+                            <label class="signinNm"><span class="fixed">{{$ctrl.cathItem.ModifiedUserName}}</span></label>         
+                        </div>
+                    </div> -->
+                    <!-- <div class="cardContent">
+                        <div class="cardTit">
+                            <h2 translate>{{'catheterInfect.dialog.evaluation_result'}}</h2>
+                        </div>
+                        <div class="wf-container">
+                            <div class="wf-box">
+                                <md-card class="feature-area">
+                                    <md-card-content>
+                                        <h3 translate></h3>
+                                        
+                                    </md-card-content>
+                                </md-card>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+
+            <!-- 專門 for Excel 的 Div, 不呈現 -->
+            <div id="excelDiv"></div>
+
+
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row" ng-show="$ctrl.cathItem.Status != 'Deleted'" class="no-print">
+            <md-button class="md-raised btnBlue" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.exportExcel()"
+                ng-if="!$ctrl.isCreate">
+                {{'catheterInfect.dialog.toExcel' | translate}}
+            </md-button>
+            <md-button class="md-raised" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.cancel()">
+                {{'catheterInfect.dialog.cancel' | translate}}
+            </md-button>
+            <md-button class="md-raised md-primary" ng-click="$ctrl.ok()">
+                {{$ctrl.isCreate ? 'catheterInfect.dialog.create' : 'catheterInfect.dialog.edit' | translate}}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+
+    <!-- 感染菌種記錄 form -->
+    <form name="petEditForm" novalidate ng-cloak ng-if="$ctrl.formType === 'germ'">
+        <md-dialog-toolbar>
+            <div class="md-toolbar-tools">
+                <md-button class="md-fab" aria-label="Settings" ng-click="$ctrl.cancelGerm()">
+                    <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+                </md-button>
+                <h2 ng-if="$ctrl.isCreateGerm">導管出口感染菌種記錄 - 新增</h2>
+                <h2 ng-if="!$ctrl.isCreateGerm">導管出口感染菌種記錄 - 修改</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="$ctrl.cancelGerm()">
+                    <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-dialog-toolbar>
+
+        <md-dialog-content>
+            <div class="dialogBoxData">
+                <div class="inputbox mgnBtm5">
+                    <div class="lightblue inputBoxTit" flex>
+                        <label>開始日期</label>
+                    </div>
+                    <div flex>
+                        <input style="width:150px;" ng-model="$ctrl.petDataObj.Startdate" type="date" min="1900-01-01" max="2999-12-31"  ng-disabled="!$ctrl.isCreateGerm"
+                            required>
+                        <div ng-messages="petEditForm.Startdate.$error" ng-show="petEditForm.Startdate.$dirty">
+                            <div ng-message="required" class="clrRequired">必填選項</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="inputbox mgnBtm5">
+                    <div class="lightblue inputBoxTit" flex>
+                        <label>記錄日期</label>
+                    </div>
+                    <div flex>
+                        <input style="width:150px;" ng-model="$ctrl.petDataObj.Recorddate" type="date" min="1900-01-01" max="2999-12-31"  required>
+                        <div ng-messages="petEditForm.Recorddate.$error" ng-show="petEditForm.Recorddate.$dirty">
+                            <div ng-message="required" class="clrRequired">必填選項</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cardContent">
+                    <div class="cardTit">
+                        <h2>治療記錄</h2>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <textarea ng-model="$ctrl.petDataObj.Treatment_Record" rows="3" style="width:100%;height: 40px;">&nbsp;</textarea>
+                        <!-- <input class="mgnBtm5" ng-model="$ctrl.petDataObj.Treatment_Record" type="text"> -->
+                        <md-button class="btnSearch" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.viewUseMedicine()">
+                            用藥記錄
+                        </md-button>
+                    </div>
+                </div>
+                <div class="cardContent">
+                    <div class="cardTit">
+                        <h2>Culture 菌種</h2>
+                    </div>
+                    <div>
+                        <textarea ng-model="$ctrl.petDataObj.Culture_Strain" rows="3" style="width:100%;height: 40px;">&nbsp;</textarea>
+                        <!-- <input class="mgnBtm5" ng-model="$ctrl.petDataObj.Culture_Strain" type="text"> -->
+                        <md-button class="btnSearch" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.viewLabexam(false)">
+                            檢驗記錄表
+                        </md-button>
+                        &nbsp;
+                        <md-button class="btnSearch" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.viewMicroResult()">
+                            報告查詢
+                        </md-button>
+
+                    </div>
+                </div>
+                <div class="cardContent">
+                    <div class="cardTit">
+                        <h2>Cell Count</h2>
+                    </div>
+                   <div>
+                        <input class="mgnBtm5" ng-model="$ctrl.petDataObj.Cell_Count" style="width:100px;" type="text">
+                        <!-- <md-button class="btnSearch" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.viewLabexam(false)">
+                            檢驗記錄表
+                        </md-button>
+                        &nbsp;
+                        <md-button class="btnSearch" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.viewMicroResult()">
+                            微生物報告
+                        </md-button> -->
+
+                    </div>
+                </div>
+                <div class="cardContent">
+                    <div class="cardTit">
+                        <h2>備註</h2>
+                    </div>
+                    <div>
+                        <textarea ng-model="$ctrl.petDataObj.Memo" rows="4" style="width:100%;height: 40px;">&nbsp;</textarea>
+                        <!-- <input ng-model="$ctrl.petDataObj.Memo" type="text"> -->
+                    </div>
+                </div>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <md-button class="md-raised" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.cancelGerm()">
+                {{'peritonitis.treat.cancel' | translate}}
+            </md-button>
+            <md-button class="md-raised md-primary" ng-click="$ctrl.okGerm()">
+                {{$ctrl.isCreateGerm ? 'peritonitis.treat.create' : 'peritonitis.treat.edit' | translate}}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+
+    <!-- 用藥記錄 form -->
+    <form name="viewUseMedicineForm" class="viewUseMedicineForm" novalidate ng-cloak ng-if="$ctrl.formType === 'usemedicine'">
+            <md-dialog-toolbar>
+                <div class="md-toolbar-tools">
+                    <md-button class="md-fab" aria-label="Settings" ng-click="$ctrl.cancelUseMedicine()">
+                        <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+                    </md-button>
+                    <h2>用藥記錄查詢</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="$ctrl.cancelUseMedicine()">
+                        <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                    </md-button>
+                </div>
+            </md-dialog-toolbar>
+    
+            <md-dialog-content ng-hide="$ctrl.isMedicineError" class="drug-check-container">
+                <div layout="column" class="search-area-hide-gtxs">
+                    <div layout="row" layout-align="start center" class="margin-bottom-5">
+                        <b>時間區間查詢：</b>
+                        <div class="margin-left-10">
+                            <span class="timeSearchBtn-span" ng-click="$ctrl.getCheckMedicineItems()">時間查詢</span>
+                        </div>
+                    </div>
+                    <div layout="row" layout-align="start center" class="margin-bottom-5">
+                        <span class="nowrap-text ">起：</span>
+                        <div style="margin-right: 10px;">
+                            <input type="date" min="1900-01-01" max="2999-12-31"  ng-model="$ctrl.MedicineStartDate" ng-change="$ctrl.dateChange()"/>
+                        </div>
+                        <span class="nowrap-text ">訖：</span>
+                        <div>
+                            <input type="date" min="1900-01-01" max="2999-12-31"  ng-model="$ctrl.MedicineEndDate" ng-change="$ctrl.dateChange()"/>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- hide-xs -->
+                <div layout="row" style="margin-left: 10px;" layout-align="start center" class="search-area-hide-xs margin-bottom-10">
+                    <div><b>時間區間查詢：</b></div>
+                    <span class="nowrap-text margin-left-5">起：</span>
+                    <div style="margin-right: 10px;">
+                        <input type="date" min="1900-01-01" max="2999-12-31"  ng-model="$ctrl.MedicineStartDate" ng-change="$ctrl.dateChange()"/>
+                    </div>
+                    <span class="nowrap-text margin-left-5">訖：</span>
+                    <div>
+                        <input type="date" min="1900-01-01" max="2999-12-31"  ng-model="$ctrl.MedicineEndDate" ng-change="$ctrl.dateChange()"/>
+                    </div>
+                    <div class="margin-left-10">
+                        <span class="timeSearchBtn-span" ng-click="$ctrl.getCheckMedicineItems()">時間查詢</span>
+                    </div>
+                </div>
+                <div layout="row" style="margin-left: 10px;" layout-align="start center" class="margin-bottom-10">
+                    <div><b>搜尋：</b></div>
+                    <input type="text" class="lab-search-input" ng-disabled="$ctrl.drugData.length == 0" ng-model="$ctrl.searchText" ng-change="$ctrl.onQuickFilterMediciChanged()" placeholder="請輸入要查詢的內容..." />
+                    <span flex></span>
+            
+                </div>
+            
+                <!-- ng-if="$ctrl.drugData.length > 0" -->
+                <div ag-grid="$ctrl.gridOptionsMedicine" class="mygrid ag-theme-balham" flex></div>
+                <!-- <div>
+                    <md-list ng-repeat="g in $ctrl.useMedicineData">
+                        <md-subheader style="background-color: aliceblue">{{ ::g[0].SortTime | moment: 'YYYY/MM/DD(dd)' }}
+                        </md-subheader>
+                        <md-list-item ng-repeat="item in g" ng-click="null">
+                            <div flex>
+                                <span ng-if="item.ProcessTime">{{ :: item.ProcessTime | date: 'HH:mm'}}</span>
+                                <span
+                                    ng-if="item.ProcessTime == null && $ctrl.DateDifference(g[0].SortTime, item.EndTime, 'days') > 0">~
+                                    {{ ::item.EndTime | moment: 'MM/DD(dd)' }}</span>
+                            </div>
+                            <div flex>
+                                {{ ::item.Mode === 'Performed' ? 'allMedicationRecords.execute': item.Mode === 'Neglect' ? 'allMedicationRecords.dontExecute' : 'allMedicationRecords.unexecuted' | translate}}
+                                <seal model="item" created="none"></seal>
+                            </div>
+                            <div flex>
+                                {{ ::item.Name }}
+                            </div>
+                            <div flex>
+                                {{ ::item.Mode === 'Performed' ? item.ActualQuantity : '-' }} / {{ ::item.Quantity }}
+                                {{ ::item.QuantityUnit }} {{::item.Route}} {{ ::item.Frequency }}
+                            </div>
+                            <div flex>{{ ::item.DoctorMemo }}</div>
+                        </md-list-item>
+                        <md-divider></md-divider>
+                    </md-list>
+                </div>
+                <div flex
+                    ng-show="!$ctrl.useMedicineLoading && !$ctrl.isErrorUseMedicine && ($ctrl.useMedicineData === null || $ctrl.useMedicineData.length === 0)"
+                    layout="column" layout-fill layout-align="center center">
+                    <h1 translate>{{'allMedicationRecords.noData'}}</h1>
+                </div>
+                <div flex ng-show="!$ctrl.useMedicineLoading && $ctrl.isErrorUseMedicine" layout="column" layout-fill
+                    layout-align="center center">
+                    <h3 translate>{{'allMedicationRecords.serverError'}}</h3>
+                </div> -->
+            </md-dialog-content>
+            <md-dialog-actions layout="row" ng-hide="$ctrl.isMedicineError">
+                <div  class="labCheckBtn-div" layout="row" layout-align="end center" ng-hide="$ctrl.isMedicineError">
+                    <span ng-class="{disabled: $ctrl.drugData.length == 0, 'labCheckBtn-span': $ctrl.drugData.length > 0}" ng-click="$ctrl.saveMediciChecked()">勾選完畢儲存</span>
+                </div>
+            </md-dialog-actions>
+            <div ng-if="$ctrl.isMedicineError" layout="column" flex layout-align="center center">
+                <h3>伺服器錯誤，請重新整理</h3>
+            </div>
+        </form>
+        <!-- 檢驗記錄 form -->
+        <form class="viewLabexamForm" name="viewLabexamForm" novalidate ng-cloak ng-if="$ctrl.formType === 'labexam'">
+            <md-dialog-toolbar>
+                <div class="md-toolbar-tools">
+                    <md-button class="md-fab" aria-label="Settings" ng-click="$ctrl.cancelLabexam()">
+                        <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+                    </md-button>
+                    <h2>檢驗記錄表</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="$ctrl.cancelLabexam()">
+                        <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                    </md-button>
+                </div>
+            </md-dialog-toolbar>
+            <md-dialog-content>
+                <md-content ng-if="!$ctrl.islabError" flex class="labexam-check-container">
+                    <div layout="row" layout-align="start center">
+                        <b>時間條件：</b>
+    
+                        <md-select ng-model="$ctrl.queryCondition" ng-model-options="{trackBy: '$value.name'}" ng-change="$ctrl.changeQueryCondition()">
+                            <md-option ng-repeat="(key, item) in $ctrl.conditionTypes" ng-value="item">{{ item.name | labexamQueryName }}</md-option>
+                        </md-select>
+                    </div>
+                    <div layout="row" layout-align="start center" ng-if="$ctrl.queryCondition.name === 'times'" class="margin-bottom-10">
+                        <b>天數查詢：</b>
+                        <md-select ng-model="$ctrl.queryCondition.value.days" ng-change="$ctrl.changeQueryCondition()">
+                            <md-option ng-repeat="item in $ctrl.queryCondition.conditions" ng-value="item">{{::item | labexamTimes}}</md-option>
+                        </md-select>
+                        <div class="margin-left-10">
+                            <span class="timeSearchBtn-span" ng-click="$ctrl.getCheckItems()">天數查詢</span>
+                        </div>
+                    </div>
+                    <div layout="column" class="search-area-hide-gtxs"  ng-if="$ctrl.queryCondition.name === 'duration'">
+                        <div layout="row" layout-align="start center" class="margin-bottom-5">
+                            <b>時間區間查詢：</b>
+                            <div class="margin-left-10">
+                                <span class="timeSearchBtn-span" ng-click="$ctrl.getCheckItems()">時間查詢</span>
+                            </div>
+                        </div>
+                        <div layout="row" layout-align="start center" class="margin-bottom-5">
+                            <span class="nowrap-text ">起：</span>
+                            <div style="margin-right: 10px;">
+                                <input type="date" min="1900-01-01" max="2999-12-31"  ng-model="$ctrl.queryCondition.value.startDate" />
+                            </div>
+                            <span class="nowrap-text ">訖：</span>
+                            <div>
+                                <input type="date" min="1900-01-01" max="2999-12-31"  ng-model="$ctrl.queryCondition.value.endDate" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- hide-xs -->
+                    <div layout="row" layout-align="start center" class="search-area-hide-xs margin-bottom-10" ng-if="$ctrl.queryCondition.name === 'duration'">
+                        <div><b>時間區間查詢：</b></div>
+                        <span class="nowrap-text margin-left-5">起：</span>
+                        <div style="margin-right: 10px;">
+                            <input type="date" min="1900-01-01" max="2999-12-31"  ng-model="$ctrl.queryCondition.value.startDate"/>
+                        </div>
+                        <span class="nowrap-text margin-left-5">訖：</span>
+                        <div>
+                            <input type="date" min="1900-01-01" max="2999-12-31"  ng-model="$ctrl.queryCondition.value.endDate" />
+                        </div>
+                        <div class="margin-left-10">
+                            <span class="timeSearchBtn-span" ng-click="$ctrl.getCheckItems()">時間查詢</span>
+                        </div>
+                    </div>
+                    <div layout="row" layout-align="start center" class="margin-bottom-10">
+                        <div><b>搜尋：</b></div>
+                        <input type="text" class="lab-search-input" ng-disabled="$ctrl.labData.length == 0" ng-model="$ctrl.searchText" ng-change="$ctrl.onQuickFilterChanged()" placeholder="請輸入要查詢的內容..." />
+                        <span flex></span>
+                    </div>
+                    <!-- ng-if="$ctrl.labData.length > 0" -->
+                    <div ag-grid="$ctrl.gridOptions" class="mygrid ag-theme-balham" flex></div>
+                </md-content>
+                <div ng-if="$ctrl.islabError" layout="column" flex layout-align="center center">
+                    <h3>伺服器錯誤，請重新整理</h3>
+                </div>
+                <!-- 可點選檢驗檢查清單 end-->
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <div ng-if="!$ctrl.islabError"  class="labCheckBtn-div" layout="row" layout-align="end center">
+                    <span ng-class="{disabled: $ctrl.labData.length == 0, 'labCheckBtn-span': $ctrl.labData.length > 0}" ng-click="$ctrl.saveChecked()">勾選完畢儲存</span>
+                </div>
+            </md-dialog-actions>
+        </form>
+
+    <!-- 微生物報告 form -->
+    <form name="viewMicroResultForm" novalidate ng-cloak ng-if="$ctrl.formType === 'microresult'">
+        <md-dialog-toolbar>
+            <div class="md-toolbar-tools">
+                <md-button class="md-fab" aria-label="Settings" ng-click="$ctrl.cancelMicroResult()">
+                    <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+                </md-button>
+                <h2>報告查詢</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="$ctrl.cancelMicroResult()">
+                    <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-dialog-toolbar>
+
+        <md-dialog-content>
+            <div class="list-header" ng-show="!$ctrl.loading" layout="row" layout-align="center center">
+                <select ng-model="$ctrl.mrClass">
+                    <option value="ALL">ALL</option>
+                    <option value="50">微生物</option>
+                    <option value="17">體液</option>
+                </select>
+                <input type="date" min="1900-01-01" max="2999-12-31"  ng-model="$ctrl.mrStDate" />
+                ~
+                <input type="date" min="1900-01-01" max="2999-12-31"  ng-model="$ctrl.mrEdDate" />
+                <md-button class="md-raised md-primary" ng-click="$ctrl.checkMicroResult()">
+                    查詢
+                </md-button>
+            </div>
+            <loading ng-show="$ctrl.mrLoading && $ctrl.microResultAry.length === 0"></loading>
+            <md-list ng-if="!$ctrl.mrLoading && $ctrl.microResultAry.length>0">
+                <md-list-item class="md-2-line" ng-repeat="item in $ctrl.microResultAry | orderBy:['-REPORT_TIME']">
+                    <div class="md-list-item-text" layout="column">
+                        <h3 ng-bind="item.REPORT_TIME | moment:'YYYY/MM/DD (dd) HH:mm'"></h3>
+                        <p>科別：{{item.HDEPT_NAME}} 代碼：{{item.REP_TYPE_CODE}} 名稱：{{item.REP_TYPE_NAME}} SW：{{item.RES_SW}}
+                            <i class="material-icons headitem expand"
+                                ng-click="$ctrl.toggleFunc($index)">keyboard_arrow_down</i>
+                        </p>
+                        <pre style="background: aliceblue;" ng-class="$ctrl.boxMicroResultClass[$index]"><code>{{item.RESULT}}</code></pre>
+                    </div>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-list-item>
+            </md-list>
+            <div flex ng-show="!$ctrl.mrLoading && $ctrl.microResultAry.length === 0" layout="column" layout-fill
+                layout-align="top center">
+                <h2>無報告</h2>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+        </md-dialog-actions>
+    </form>
+
+</md-dialog>

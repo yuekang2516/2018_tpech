@@ -1,0 +1,81 @@
+<div layout-fill layout="column" flex style="background:#f3f3f3">
+    <h2 ng-hide="$ctrl.loading" translate="reports.allApo.title" translate-values='{selectedYear: $ctrl.selectedYear, selectedMonth: $ctrl.selectedMonth}' style="margin-top: 25px ; margin-bottom: 0; padding-left: 15px;">
+    </h2>
+    <loading ng-show="$ctrl.loading"></loading>
+    <md-content flex layout-fill layout-padding layout="column" ng-show="!$ctrl.loading" style="background:#f3f3f3">
+        <div>
+            {{'reports.allApo.ward' | translate}}
+            <md-input-container style="margin:0px">
+                <md-select ng-model="$ctrl.selectedWards">
+                    <md-option ng-repeat="i in $ctrl.keys" ng-value="i">{{::$ctrl.wards[i]}}</md-option>
+                </md-select>
+            </md-input-container>
+            {{'reports.allApo.year' | translate}}
+            <md-input-container style="margin:0px">
+                <md-select ng-model="$ctrl.selectedYear">
+                    <md-option ng-repeat="j in $ctrl.optionYear" ng-value="j">{{::j}}</md-option>
+                </md-select>
+            </md-input-container>
+            {{'reports.allApo.month' | translate}}
+            <md-input-container style="margin:0px">
+                <md-select ng-model="$ctrl.selectedMonth">
+                    <md-option ng-repeat="k in $ctrl.optionMonth" ng-value="k">{{::k}}</md-option>
+                </md-select>
+            </md-input-container style="margin:0px">
+            <md-card-actions>
+            <md-button class="md-raised md-primary" ng-click="$ctrl.getApoData()">查詢</md-button>
+        </md-card-actions>
+            <md-card-actions class="excel-button">
+                <md-button class="md-raised md-primary" ng-click="$ctrl.exportExcel()" ng-disabled="!$ctrl.searchContent">{{'reports.allApo.exportExcel' | translate}}</md-button>
+            </md-card-actions>
+        </div>
+        <loading ng-show="$ctrl.searching"></loading>
+        <div ng-show="$ctrl.searchContent && !$ctrl.isError">
+            <table id="myTable">
+                <thead>
+                <tr>
+                    <td class="serviceQuality" colspan="{{$ctrl.shifts.length + 3}}" translate="reports.allApo.yearMonthHeading" translate-values='{selectedYear: $ctrl.contentYear, selectedMonth: $ctrl.contentMonth}'></td>
+                </tr>
+                <tr>
+                    <td>{{'reports.allApo.abnormalItem' | translate}}</td>
+                    <td style="white-space: nowrap;">{{'assessment.assessment.date' | translate}}</td>
+                    <td class="content" colspan="3" ng-repeat="day in [] | range : $ctrl.daysOfMonth:1">{{::day}}</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><span class="item-name">{{'apo.apo.shift' | translate}}</span></td>
+                    <td class="content" ng-repeat="shift in $ctrl.shifts track by $index">{{::shift}}</td>
+                    <td>{{'reports.allApo.total' | translate}}</td>
+                </tr>
+                </thead>
+                <tbody ng-repeat="item in $ctrl.AbnormalItems">
+                <tr>
+                    <td colspan="2">{{::item.Title}}</td>
+                    <td class="content" colspan="3" ng-repeat="day in [] | range : $ctrl.daysOfMonth:1"></td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr ng-if="item.child" ng-repeat="child in item.child">
+                    <td>{{child.Code}}</td>
+                    <td style="min-width:100px; white-space: nowrap;">{{child.Name}}</td>
+                    <td class="content" ng-repeat="(key, value) in $ctrl.shifts track by $index">
+                        <span ng-repeat="n in child.Report">
+                            {{n.ShiftN === key ? n.Values : null}}
+                        </span>
+                    </td>
+                    <td>
+                        <span>
+                            {{$ctrl.setTotals(child)}}
+                        </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div ng-if="!$ctrl.searching && $ctrl.isError" layout-fill flex layout="column" layout-align="center center" style="background:#f3f3f3">
+            <h3>
+                伺服器錯誤，請重新整理
+            </h3>
+        </div>
+    </md-content>
+</div>

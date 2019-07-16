@@ -1,0 +1,82 @@
+<div flex layout="column" layout-fill>
+    <summary-toolbar toolbar-title="'dialysisTabView.shiftIssue' | translate" cancel="$ctrl.goback()"></summary-toolbar>
+    <div ng-show="!$ctrl.loading && $ctrl.shiftIssueData.length > 0">
+        <div class="list-header" layout="row" layout-align="center center">
+            <md-switch ng-model="$ctrl.showDeleted" aria-label="Switch data">
+                <span translate="shiftIssues.shiftIssues.showDeleted" translate-values='{deletedItemsLength: $ctrl.deletedItemsLength}'></span>
+            </md-switch>
+            <span flex></span>
+            <h6 translate="shiftIssues.shiftIssues.totalRecord" translate-values='{length: $ctrl.shiftIssueData.length}'></h6>
+            <span flex></span>
+            <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+        </div>
+    </div>
+
+    <md-content flex layout="column">
+        <loading ng-show="$ctrl.loading"></loading>
+        <div ng-show="!$ctrl.loading && $ctrl.shiftIssueData.length > 0">
+            <md-list>
+                <md-list-item class="md-2-line" ng-class="{deleted: item.Status == 'Deleted'}" ng-repeat="item in $ctrl.shiftIssueData | orderBy:'-RecordTime'" ng-click="$ctrl.goto(item.Id)"
+                    ng-show="item.Status !== 'Deleted' || $ctrl.showDeleted">
+                    <div class="md-list-item-text" layout="column">
+                        <h3 ng-bind="item.RecordTime | moment:'YYYY/MM/DD (dd) HH:mm'"></h3>
+                        <p style=" -webkit-line-clamp: 3; overflow: hidden; text-overflow: ellipsis;  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+                                    width: 80%;" ng-bind="item.Content" />
+                        <seal model="item" modified="hideIfSame" fixed="true"></seal>
+                        <md-icon class="md-secondary" ng-show="$ctrl.checkCanAccess(item.CreatedUserId,item.Status, item.ModifiedUserId)" ng-click="$ctrl.showDialog($event, item)" md-svg-icon="static/img/svg/ic_delete_black_24px.svg"></md-icon>
+                        <md-divider ng-if=!$last></md-divider>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </div>
+
+        <div flex ng-show="!$ctrl.loading && !$ctrl.showDeleted && $ctrl.deletedItemsLength == $ctrl.shiftIssueData.length && !$ctrl.isError"
+            layout="column" layout-fill layout-align="center center">
+            <h1 translate>{{'shiftIssues.shiftIssues.noData'}}</h1>
+            <h4 translate>{{'shiftIssues.shiftIssues.clickBottomRight'}}</h4>
+        </div>
+
+        <server-error-page flex ng-show="!$ctrl.loading && $ctrl.isError" refresh="$ctrl.refresh()"></server-error-page>
+
+        <!-- <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate>{{'shiftIssues.shiftIssues.serverError'}}</h3>
+        </div> -->
+
+    </md-content>
+
+    <md-button class="md-fab md-fab-bottom-right" ng-click="$ctrl.goto()">
+        <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+    </md-button>
+
+</div>
+
+<script type="text/ng-template" id="shiftdialog.html">
+    <md-dialog aria-label="刪除確認">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2 translate>{{'shiftIssues.shiftIssues.deleteRecord'}}</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="vm.cancel()">
+                        <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content" translate>
+                    {{'shiftIssues.shiftIssues.confirmDelete'}}
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+                <md-button ng-click="vm.cancel()">
+                    {{'shiftIssues.shiftIssues.cancel' | translate}}
+                </md-button>
+                <md-button ng-click="vm.ok()">
+                    {{'shiftIssues.shiftIssues.delete' | translate}}
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>

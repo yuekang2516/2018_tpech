@@ -1,0 +1,2588 @@
+peritoneal-dialysis-tab-view {
+  width: 100%;
+  height: 100%;
+}
+peritoneal-dialysis-tab-view a {
+  text-decoration: none;
+  color: #333;
+}
+.peritonealDialysisTabView {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  /* 腹膜透析醫療追蹤-長期醫囑 tbTrackShort  */
+  /* 腹膜透析醫療追蹤-長期醫囑 tbTrackShort  */
+  /* 腹膜透析醫療追蹤-長期醫囑 tbTrackLong  */
+  /* 腹膜透析醫療追蹤-長期醫囑 tbTrackLong  */
+  /* 腹膜透析電話訪談 tbTelVisit  */
+  /* 腹膜透析電話訪談 tbTelVisit  */
+  /* 腹膜透析居家訪視 tbVisit  */
+  /* 腹膜透析居家訪視 tbVisit  */
+  /* 透析病人跌倒高危險群 tbHighRisk 12 */
+  /* 透析病人跌倒高危險群 tbHighRisk 12 */
+  /* 腹膜炎感染記錄 tbInfectionReport 7 */
+  /* 腹膜炎感染記錄 tbInfectionReport 7 */
+  /* 導管出口感染記錄 tbcatheter 7 */
+  /* 導管出口感染記錄 tbcatheter 7 */
+  /* tbcapd 8*/
+  /* tbcapd 8*/
+  /* tbpet 16*/
+  /* tbpet 16*/
+  /* tbcapdrcr 11*/
+  /* tbcapdrcr 11*/
+  /* tbApdSetting 11*/
+  /* tbApdSetting 11*/
+  /* tbSelfCare*/
+  /*tbFI*/
+  /*tbFI*/
+}
+.peritonealDialysisTabView div,
+.peritonealDialysisTabView span,
+.peritonealDialysisTabView label,
+.peritonealDialysisTabView a,
+.peritonealDialysisTabView p,
+.peritonealDialysisTabView h1,
+.peritonealDialysisTabView h2,
+.peritonealDialysisTabView h3,
+.peritonealDialysisTabView h4,
+.peritonealDialysisTabView h5,
+.peritonealDialysisTabView a,
+.peritonealDialysisTabView input {
+  font-family: '\5FAE\8EDF\6B63\9ED1\9AD4', Arial, Helvetica, sans-serif;
+}
+.peritonealDialysisTabView input,
+.peritonealDialysisTabView textarea,
+.peritonealDialysisTabView select {
+  width: 100%;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  padding: 7px;
+  display: inline-block;
+  border: 1px solid #d5d5d5;
+  border-radius: 4px;
+  color: #3a3f51;
+  font-size: 14px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  border-radius: 0;
+  height: 30px;
+}
+.peritonealDialysisTabView h4 {
+  margin: 6px 0px;
+  padding: 0;
+}
+.peritonealDialysisTabView .input,
+.peritonealDialysisTabView .md-select,
+.peritonealDialysisTabView .textarea {
+  min-width: 4em;
+  margin: 0 0.5em;
+  height: 30px;
+}
+.peritonealDialysisTabView .sortNo {
+  background: #07b9db;
+  color: #fff;
+  border-radius: 7px;
+  display: block;
+  width: 22px;
+  text-align: center;
+  margin: auto;
+  padding: 2px;
+}
+.peritonealDialysisTabView .sortNoHover {
+  background: #037e97;
+  color: #fff;
+}
+.peritonealDialysisTabView .autoWidth input,
+.peritonealDialysisTabView .autoWidth select {
+  width: auto;
+  height: auto;
+}
+.peritonealDialysisTabView label {
+  font-weight: normal;
+}
+.peritonealDialysisTabView .switchBar {
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  position: absolute;
+  right: 10%;
+  top: 6px;
+}
+.peritonealDialysisTabView .switchBar .switch {
+  background: #e89e0b;
+  border: 1px solid #fff;
+  width: 100px;
+}
+.peritonealDialysisTabView .switchBar .switch .off {
+  color: #fff;
+}
+.peritonealDialysisTabView .switchBar .switch .on {
+  color: #999;
+}
+.peritonealDialysisTabView .switchBar .switch .on,
+.peritonealDialysisTabView .switchBar .switch .off {
+  top: 5%;
+  line-height: 27px;
+}
+.peritonealDialysisTabView .switchBar .switch.checked small {
+  left: 72px;
+}
+.peritonealDialysisTabView .switchBar .switch small {
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 0px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+.peritonealDialysisTabView .switchBar .switch {
+  height: 28px;
+}
+.peritonealDialysisTabView .switchBar .switch.checked {
+  background: rgba(255, 255, 255, 0.6);
+  width: 100px;
+  border: 1px solid #fff;
+}
+.peritonealDialysisTabView .md-select-value {
+  min-height: 100%;
+  padding: 0;
+}
+.peritonealDialysisTabView .btnBlue {
+  background: #6bc3e6;
+  color: #fff;
+}
+.peritonealDialysisTabView .btnBlue:hover {
+  color: #000;
+}
+.peritonealDialysisTabView md-select {
+  margin: 2px 2px;
+}
+.peritonealDialysisTabView md-radio-button {
+  margin: 0;
+}
+.peritonealDialysisTabView last-refresh-time {
+  outline: none;
+}
+.peritonealDialysisTabView md-list-item .material-icons {
+  margin: 0 0.6em 0 0;
+  color: #000;
+}
+.peritonealDialysisTabView md-list-item p {
+  line-height: 18px;
+}
+.peritonealDialysisTabView .signNm {
+  display: block;
+  width: 100%;
+  height: 400px;
+  border: 1px solid #ddd;
+}
+.peritonealDialysisTabView .signinGroup {
+  position: relative;
+  display: inline-block;
+  flex: 1;
+  padding: 2px 20px;
+}
+.peritonealDialysisTabView .signinGroup .signinNm {
+  vertical-align: top;
+}
+.peritonealDialysisTabView .signinGroup .signinTime {
+  color: #585858;
+  font-size: 0.9em;
+}
+.peritonealDialysisTabView .signinGroup .signinNm .fixed {
+  left: -3px;
+  top: 0px;
+}
+.peritonealDialysisTabView .signinNm {
+  position: relative;
+}
+.peritonealDialysisTabView .signinNm .fixed {
+  border: 1px solid red;
+  transform: rotate(-10deg);
+  padding: 3px;
+  overflow: hidden;
+  position: absolute;
+  color: #e20000;
+  top: 0;
+  left: 0;
+  font-size: 10px;
+}
+.peritonealDialysisTabView td.ellipsis,
+.peritonealDialysisTabView .ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.peritonealDialysisTabView .tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+.peritonealDialysisTabView .tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+.peritonealDialysisTabView .tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+.peritonealDialysisTabView .btnGrp {
+  position: absolute;
+  top: 0;
+  right: 0px;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+}
+.peritonealDialysisTabView .btnGrp .sealGrp {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+}
+.peritonealDialysisTabView .btnGrp .sealGrp .sealGrpDiv {
+  flex: 1;
+  padding: 0px 10px;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+}
+.peritonealDialysisTabView .sealTit {
+  color: #adadad;
+  font-size: 0.8em;
+  padding-right: 2px;
+  margin-right: 2px;
+}
+.peritonealDialysisTabView .mdDialogActions {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-ordinal-group: 3;
+  -webkit-order: 2;
+  order: 2;
+  box-sizing: border-box;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+  margin-bottom: 0;
+  padding-right: 8px;
+  padding-left: 16px;
+  min-height: 52px;
+  overflow: hidde;
+}
+.peritonealDialysisTabView .tempDelText td {
+  text-decoration-line: line-through;
+}
+.peritonealDialysisTabView .tempDelText h3,
+.peritonealDialysisTabView .tempDelText p,
+.peritonealDialysisTabView .tempDelText md-button {
+  text-decoration-line: line-through;
+}
+.peritonealDialysisTabView .away {
+  position: fixed;
+  top: -9999px;
+}
+.peritonealDialysisTabView .md-toolbar-tools .circular {
+  min-height: initial;
+  min-width: initial;
+  padding: 0;
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+}
+.peritonealDialysisTabView .md-toolbar-tools .first-child {
+  margin-left: 0px;
+  background-color: unset;
+  color: #000;
+  box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.26);
+}
+.peritonealDialysisTabView .md-toolbar-tools .toolbar-date {
+  font-size: 16px;
+}
+.peritonealDialysisTabView md-dialog-toolbar {
+  background: #fff;
+  color: #000;
+}
+.peritonealDialysisTabView md-dialog-toolbar h2 {
+  font-weight: bold;
+  font-size: 0.92em;
+}
+.peritonealDialysisTabView md-dialog-toolbar:not(.md-menu-toolbar) md-icon {
+  color: #000;
+  fill: #000;
+}
+.peritonealDialysisTabView md-dialog-toolbar .headerBox {
+  height: 48px;
+}
+.peritonealDialysisTabView md-dialog-toolbar .md-button.md-fab {
+  box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.26);
+  background-color: #fff;
+  color: #000;
+}
+.peritonealDialysisTabView md-dialog-toolbar .md-button.md-fab:hover {
+  background-color: #fff;
+}
+.peritonealDialysisTabView .toolbar-function-button {
+  margin-right: -8px;
+}
+.peritonealDialysisTabView .toolbar-function-button button.md-button {
+  margin: 0;
+}
+.peritonealDialysisTabView .toolbar-function-button button.md-button.md-icon {
+  margin: 0;
+}
+.peritonealDialysisTabView .today:before {
+  content: '今天';
+  position: absolute;
+  transform: rotate(-15deg);
+  top: 0;
+  left: 0;
+  font-size: small;
+  font-weight: bold;
+  color: red;
+}
+.peritonealDialysisTabView .md-sidenav-right {
+  width: 320px !important;
+}
+.peritonealDialysisTabView .lastaccesstime {
+  position: fixed;
+  bottom: 0;
+  z-index: 1;
+  width: 180px;
+}
+.peritonealDialysisTabView .lastaccesstime .list-header {
+  padding-right: 22px!important;
+  background: url(static/img/svg/stretch.svg) no-repeat right;
+  background-size: 30px 30px;
+  background-color: rgba(187, 222, 251, 0.7);
+  cursor: pointer;
+}
+.peritonealDialysisTabView .summary-container {
+  background-color: rgba(16, 16, 16, 0.04);
+}
+.peritonealDialysisTabView .tabCount {
+  background-color: red;
+  position: absolute;
+}
+.peritonealDialysisTabView .list_tab {
+  position: fixed;
+  right: -1px;
+  bottom: 0;
+  width: 50px;
+  border: #ccc solid 1px;
+  background: #fff;
+  z-index: 2;
+  text-align: center;
+  padding: 0;
+}
+.peritonealDialysisTabView .list_tab img {
+  outline: none;
+  cursor: pointer;
+}
+.peritonealDialysisTabView .list_tab .expand {
+  -webkit-transition: all ease 0.3s;
+  transition: all ease 0.3s;
+  transform: rotate(-180deg);
+}
+.peritonealDialysisTabView .list_tab .expand.less {
+  transform: rotate(0);
+}
+.peritonealDialysisTabView .list_tab .functionTab {
+  outline: none;
+}
+.peritonealDialysisTabView .list_tab .functionTab.animate-show-hide.ng-hide {
+  opacity: 0;
+}
+.peritonealDialysisTabView .list_tab .functionTab.animate-show-hide.ng-hide-add,
+.peritonealDialysisTabView .list_tab .functionTab.animate-show-hide.ng-hide-remove {
+  -webkit-transition: all ease 0.3s;
+  transition: all linear 0.3s;
+}
+.peritonealDialysisTabView .list_tab .tabCount {
+  font-size: 12px;
+  font-weight: bold;
+  left: -12px;
+  top: -3px;
+}
+.peritonealDialysisTabView .list_tab img {
+  width: 25px;
+}
+.peritonealDialysisTabView .list_tab .item {
+  position: relative;
+  padding: 8px 0;
+  outline: none;
+}
+.peritonealDialysisTabView .list_tab .item:hover,
+.peritonealDialysisTabView .list_tab .item:active {
+  background: #eeeeee;
+  cursor: pointer;
+}
+.peritonealDialysisTabView #card-container {
+  padding: 0 80px 10px 80px;
+}
+.peritonealDialysisTabView #card-container .card {
+  border: #ccc solid 1px;
+  border-radius: 8px;
+  padding: 10px;
+  position: relative;
+  background: #fff;
+  height: 300px;
+  margin-bottom: 8px;
+}
+.peritonealDialysisTabView #card-container .card.higher {
+  height: 400px;
+}
+.peritonealDialysisTabView #card-container .card .md-subheader {
+  top: 0px !important;
+  /*simon*/
+  background: #fff;
+}
+.peritonealDialysisTabView #card-container .card .md-subheader span,
+.peritonealDialysisTabView #card-container .card .md-subheader i {
+  vertical-align: middle;
+}
+.peritonealDialysisTabView #card-container .card .md-subheader i {
+  cursor: pointer;
+}
+.peritonealDialysisTabView #card-container .card .md-subheader .md-subheader-inner {
+  border-bottom: 1px solid #ccc;
+  padding: 0;
+  margin-bottom: 8px;
+}
+.peritonealDialysisTabView #card-container .card .md-subheader .md-subheader-inner .md-subheader-content {
+  line-height: 33px;
+  color: black;
+  margin-bottom: 4px;
+}
+.peritonealDialysisTabView #card-container .card .md-subheader .md-subheader-inner .md-subheader-content span {
+  font-size: 20px;
+}
+.peritonealDialysisTabView #card-container .card .md-subheader .md-subheader-inner .md-subheader-content .tabCount {
+  font-size: 16px;
+  font-weight: bold;
+}
+.peritonealDialysisTabView #card-container .card .card-content {
+  position: relative;
+  height: calc(100% - 46px);
+  overflow: auto;
+}
+.peritonealDialysisTabView #card-container .card .card-content .md-button.md-fab {
+  display: none;
+}
+.peritonealDialysisTabView #card-container .card .card-content h1 {
+  font-size: 18px;
+  color: #9e9e9e;
+}
+.peritonealDialysisTabView #card-container .card .card-content h4 {
+  display: none;
+  font-size: 16px;
+  color: #9e9e9e;
+  margin: 0;
+}
+.peritonealDialysisTabView #card-container .card .card-content md-tabs {
+  min-height: initial;
+}
+.peritonealDialysisTabView #card-container .card .card-content prescription-tab-page,
+.peritonealDialysisTabView #card-container .card .card-content labexam-table,
+.peritonealDialysisTabView #card-container .card .card-content labexam-week-table {
+  height: calc(100% - 48px);
+}
+.peritonealDialysisTabView #card-container .card .card-content prescription-tab-page .prescriptionTabPageContainer,
+.peritonealDialysisTabView #card-container .card .card-content labexam-table .prescriptionTabPageContainer,
+.peritonealDialysisTabView #card-container .card .card-content labexam-week-table .prescriptionTabPageContainer {
+  height: calc(100% - 48px);
+  min-height: initial;
+}
+.peritonealDialysisTabView #card-container .card .card-content prescription-tab-page md-content,
+.peritonealDialysisTabView #card-container .card .card-content labexam-table md-content,
+.peritonealDialysisTabView #card-container .card .card-content labexam-week-table md-content {
+  height: calc(100% - 48px) !important;
+}
+.peritonealDialysisTabView #card-container .card h2 {
+  font-size: 17px;
+  line-height: 30px;
+}
+.peritonealDialysisTabView #card-container .card .list-header {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  background-color: transparent;
+}
+.peritonealDialysisTabView #card-container .card .list-header * {
+  display: none;
+}
+.peritonealDialysisTabView #card-container .card .list-header last-refresh-time {
+  display: flex;
+  height: initial;
+  background-color: transparent;
+  color: #9e9e9e;
+  min-width: 140px;
+}
+.peritonealDialysisTabView #card-container .card .list-header last-refresh-time * {
+  display: initial;
+}
+.peritonealDialysisTabView #card-container .card .list-header last-refresh-time .md-icon-button {
+  margin: 0;
+}
+.peritonealDialysisTabView #card-container .card continuous-machine-data.hide {
+  display: none;
+}
+.peritonealDialysisTabView #card-container .card continuous-machine-data .list-header {
+  position: relative;
+  bottom: initial;
+  left: initial;
+  background-color: #BBDEFB;
+}
+.peritonealDialysisTabView #card-container .card continuous-machine-data .list-header * {
+  display: flex;
+}
+.peritonealDialysisTabView #card-container .card continuous-machine-data .list-header last-refresh-time {
+  display: flex;
+  height: initial;
+  color: initial;
+  min-width: initial;
+}
+.peritonealDialysisTabView #card-container .card continuous-machine-data .list-header last-refresh-time * {
+  display: flex;
+}
+.peritonealDialysisTabView .toggleSideNav {
+  display: none;
+}
+.peritonealDialysisTabView .state-btn {
+  cursor: pointer;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  opacity: 0.6;
+}
+.peritonealDialysisTabView .state-btn .md-button.md-fab.md-mini {
+  background-color: #0e99dc !important;
+}
+.peritonealDialysisTabView .head {
+  padding: 5px 95px 5px 80px;
+  font-size: 10pt;
+  position: relative;
+  display: flex;
+}
+.peritonealDialysisTabView .head .hide {
+  display: none;
+}
+.peritonealDialysisTabView .head.err {
+  color: red;
+  font-weight: bold;
+}
+.peritonealDialysisTabView .head.morePatientInfo {
+  padding: 5px 95px 5px 80px;
+  background: rgba(14, 153, 220, 0.2);
+}
+.peritonealDialysisTabView .head img {
+  vertical-align: middle;
+  width: 18px;
+  margin-right: 3px;
+}
+.peritonealDialysisTabView .head .patient_name {
+  border: 0;
+  border-radius: 100px;
+  padding: 4px 10px;
+  display: inline-block;
+  color: #fff;
+  font-size: 10pt;
+  font-weight: bold;
+  margin-right: 8px;
+  max-width: 200px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  flex: 1;
+}
+.peritonealDialysisTabView .head .patient_name.male {
+  background-color: #43c4f3;
+}
+.peritonealDialysisTabView .head .patient_name.female {
+  background-color: #fb8189;
+}
+.peritonealDialysisTabView .head select {
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background: url('static/img/svg/dropdown.svg') no-repeat center right;
+  background-size: 20px;
+}
+.peritonealDialysisTabView .head select.patient_name {
+  padding: 4px 24px 4px 10px;
+}
+.peritonealDialysisTabView .head select.male:hover {
+  background-color: #2aaad9;
+}
+.peritonealDialysisTabView .head select.female:hover {
+  background-color: #e3616a;
+}
+.peritonealDialysisTabView .head .tag {
+  display: inline-block;
+  border-radius: 4px;
+  margin-right: 3px;
+  margin-bottom: 5px;
+}
+.peritonealDialysisTabView .head i.headitem {
+  outline: none;
+  display: inline-block;
+  vertical-align: -webkit-baseline-middle;
+}
+.peritonealDialysisTabView .head i.headitem:hover,
+.peritonealDialysisTabView .head i.headitem :active {
+  background: #e2e2e2;
+  cursor: pointer;
+}
+.peritonealDialysisTabView .head i.expand {
+  -webkit-transition: all ease 0.3s;
+  transition: all ease 0.3s;
+  transform: rotate(-180deg);
+}
+.peritonealDialysisTabView .head i.expand.less {
+  transform: rotate(0);
+}
+.peritonealDialysisTabView .remarks {
+  font-size: 10pt;
+  max-height: 34px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  color: #e40101;
+  background: #ffe3db;
+  margin: 0;
+  padding: 0;
+  padding: 5px 95px 5px 80px;
+}
+.peritonealDialysisTabView .remarks.animate-show-hide.ng-hide {
+  opacity: 0;
+}
+.peritonealDialysisTabView .remarks.animate-show-hide.ng-hide-add,
+.peritonealDialysisTabView .remarks.animate-show-hide.ng-hide-remove {
+  -webkit-transition: all ease 0.3s;
+  transition: all linear 0.3s;
+}
+.peritonealDialysisTabView .recordChoose {
+  background-color: #fff;
+  font-size: 10pt;
+}
+.peritonealDialysisTabView .recordChoose .md-button.md-icon-button {
+  margin: 0;
+}
+.peritonealDialysisTabView .latestRecord {
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  padding: 3px 5px;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: bold;
+  background: #8BC34A;
+  display: inline-block;
+}
+.peritonealDialysisTabView .latestRecord[disabled] {
+  background: #ccc;
+}
+.peritonealDialysisTabView #summary-content-container {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 50;
+}
+.peritonealDialysisTabView #summary-content-container #summary-content {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  height: 80%;
+  width: 80%;
+}
+.peritonealDialysisTabView #summary-content-container #summary-content #phrase {
+  position: absolute;
+}
+.peritonealDialysisTabView #compose-area {
+  position: fixed;
+  top: -9999px;
+  bottom: 0;
+  right: 0;
+  z-index: 20;
+  height: 70%;
+  width: 70%;
+  background-color: aliceblue;
+}
+.peritonealDialysisTabView #compose-area #phrase {
+  position: absolute;
+}
+.peritonealDialysisTabView .memo {
+  color: red;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  padding: 0;
+  margin: 8px;
+}
+.peritonealDialysisTabView .md-tab {
+  padding: 12px 12px;
+}
+.peritonealDialysisTabView md-checkbox {
+  margin-bottom: 0px;
+}
+.peritonealDialysisTabView .lightblue {
+  background-color: lightblue;
+}
+.peritonealDialysisTabView .cardContent {
+  border: #ccc solid 1px;
+  border-radius: 8px;
+  padding: 10px;
+  position: relative;
+  background: #fff;
+  margin-bottom: 8px;
+}
+.peritonealDialysisTabView .cardTit {
+  border-bottom: 1px solid #ccc;
+  padding: 0;
+  margin-bottom: 8px;
+}
+.peritonealDialysisTabView .cardTit h2 {
+  margin: 0;
+  display: inline-block;
+  font-size: 1.2em;
+  vertical-align: top;
+}
+.peritonealDialysisTabView .cardTit .material-icons {
+  display: inline-block;
+  vertical-align: top;
+  cursor: pointer;
+}
+.peritonealDialysisTabView .menuBox {
+  padding: 0;
+  margin: 0;
+  background: rgba(14, 153, 220, 0.9);
+  text-align: center;
+  color: #fff;
+  position: relative;
+}
+.peritonealDialysisTabView .menuBox a {
+  color: #fff;
+}
+.peritonealDialysisTabView .menuBox a.clickPg {
+  color: #fdd863;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  height: inherit;
+  border-bottom: 2px solid #ffee00;
+}
+.peritonealDialysisTabView .menuBox .sliderNav {
+  display: block;
+  width: 100%;
+  margin: auto;
+  position: absolute;
+}
+.peritonealDialysisTabView .menuBox .sliderNav .prev {
+  position: absolute;
+  top: 15px;
+  left: 5%;
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+.peritonealDialysisTabView .menuBox .sliderNav .next {
+  position: absolute;
+  top: 15px;
+  right: 5%;
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+.peritonealDialysisTabView .menuBox .sliderNav .prev img,
+.peritonealDialysisTabView .menuBox .sliderNav .next img {
+  width: 100%;
+}
+.peritonealDialysisTabView .menuBox .sliderNav .sliderNavBox {
+  display: block;
+  width: 80%;
+  margin: auto;
+  overflow: hidden;
+}
+.peritonealDialysisTabView .menuBox .sliderNav .sliderNavUlBox {
+  width: 500%;
+}
+.peritonealDialysisTabView .menuBox .menuUl a {
+  display: block;
+  width: 100%;
+  height: inherit;
+}
+.peritonealDialysisTabView .menuBox .menuUl a:hover {
+  text-decoration: none;
+  border-bottom: 2px solid #ffee00;
+}
+.peritonealDialysisTabView .menuBox .menuUl {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.peritonealDialysisTabView .menuBox .menuUl li {
+  float: left;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  margin-right: 30px;
+  text-align: center;
+}
+.peritonealDialysisTabView .menuBox .menuUl li:last-child {
+  margin-right: 0px;
+}
+.peritonealDialysisTabView .menuBox .menuUl::after {
+  clear: both;
+  content: '';
+  display: block;
+  width: 100%;
+  height: 0;
+}
+.peritonealDialysisTabView md-tabs.menuBox .md-tab {
+  color: #fff;
+}
+.peritonealDialysisTabView md-tabs.menuBox .md-tab.md-active {
+  color: #fdd863;
+  border-bottom: 2px solid #fdd863;
+}
+.peritonealDialysisTabView .menuBox_doctor {
+  padding: 0;
+  margin: 0;
+  background: rgba(14, 153, 220, 0.9);
+  text-align: center;
+  color: #fff;
+  position: relative;
+}
+.peritonealDialysisTabView .menuBox_doctor a {
+  color: #fff;
+}
+.peritonealDialysisTabView .menuBox_doctor a.clickPg {
+  color: #fdd863;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  height: inherit;
+  border-bottom: 2px solid #ffee00;
+}
+.peritonealDialysisTabView .menuBox_doctor .sliderNav {
+  display: block;
+  width: 100%;
+  margin: auto;
+  position: absolute;
+}
+.peritonealDialysisTabView .menuBox_doctor .sliderNav .prev {
+  position: absolute;
+  top: 15px;
+  left: 5%;
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+.peritonealDialysisTabView .menuBox_doctor .sliderNav .next {
+  position: absolute;
+  top: 15px;
+  right: 5%;
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+.peritonealDialysisTabView .menuBox_doctor .sliderNav .prev img,
+.peritonealDialysisTabView .menuBox_doctor .sliderNav .next img {
+  width: 100%;
+}
+.peritonealDialysisTabView .menuBox_doctor .sliderNav .sliderNavBox {
+  display: block;
+  width: 80%;
+  margin: auto;
+  overflow: hidden;
+}
+.peritonealDialysisTabView .menuBox_doctor .sliderNav .sliderNavUlBox {
+  width: 500%;
+}
+.peritonealDialysisTabView .menuBox_doctor .menuUl a {
+  display: block;
+  width: 100%;
+  height: inherit;
+}
+.peritonealDialysisTabView .menuBox_doctor .menuUl a:hover {
+  text-decoration: none;
+  border-bottom: 2px solid #ffee00;
+}
+.peritonealDialysisTabView .menuBox_doctor .menuUl {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.peritonealDialysisTabView .menuBox_doctor .menuUl li {
+  float: left;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  margin-right: 30px;
+  text-align: center;
+}
+.peritonealDialysisTabView .menuBox_doctor .menuUl li:last-child {
+  margin-right: 0px;
+}
+.peritonealDialysisTabView .menuBox_doctor .menuUl::after {
+  clear: both;
+  content: '';
+  display: block;
+  width: 100%;
+  height: 0;
+}
+.peritonealDialysisTabView md-tabs.menuBox_doctor .md-tab {
+  color: #fff;
+}
+.peritonealDialysisTabView md-tabs.menuBox_doctor .md-tab.md-active {
+  color: #fdd863;
+  border-bottom: 2px solid #fdd863;
+}
+.peritonealDialysisTabView md-tabs.menuBox_doctor .md-tab:nth-child(1) {
+  color: blue;
+}
+.peritonealDialysisTabView md-tabs.menuBox_doctor .md-tab:nth-child(2) {
+  color: blue;
+}
+.peritonealDialysisTabView md-tabs.menuBox_doctor .md-tab:nth-child(3) {
+  color: blue;
+}
+.peritonealDialysisTabView md-icon.md-default-theme,
+.peritonealDialysisTabView md-icon {
+  color: rgba(255, 255, 255, 0.54);
+}
+.peritonealDialysisTabView md-content.md-default-theme,
+.peritonealDialysisTabView md-content {
+  background: #fff;
+}
+.peritonealDialysisTabView .md-button.btnSearch {
+  background: #6bc3e6;
+  min-height: 30px;
+  color: #fff;
+  line-height: 30px;
+  vertical-align: unset;
+  margin: 0;
+}
+.peritonealDialysisTabView .dataList,
+.peritonealDialysisTabView .container {
+  padding: 10px;
+}
+.peritonealDialysisTabView .inputbox {
+  padding: 0.2em 0;
+  display: flex;
+  display: -webkit-flex;
+  position: relative;
+  width: 100%;
+  margin: auto;
+  padding: 0;
+  clear: both;
+  font-weight: normal;
+  /*width:calc(100% - 110px);*/
+}
+.peritonealDialysisTabView .inputbox .inputBoxTit {
+  min-width: 10em;
+  max-width: 20em;
+  flex: none;
+  text-align: left;
+  display: inline-block;
+  vertical-align: top;
+  line-height: 1.5rem;
+  font-weight: normal;
+  margin: 0.25rem;
+}
+.peritonealDialysisTabView .inputbox .inputBoxTit.widthUnset {
+  min-width: unset;
+  max-width: unset;
+  width: unset;
+}
+.peritonealDialysisTabView .inputbox .inputboxflex.txtRight {
+  text-align: right;
+}
+.peritonealDialysisTabView .inputbox .inputboxflex {
+  flex: 1;
+  text-align: left;
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  line-height: 30px;
+  padding-right: 3px;
+}
+.peritonealDialysisTabView .inputbox .inputboxflex.txtCenter {
+  text-align: center;
+}
+.peritonealDialysisTabView .inputbox .inputboxflex.txtCenter button {
+  width: 90%;
+}
+.peritonealDialysisTabView .inputbox .inputboxflex input:checked,
+.peritonealDialysisTabView .inputbox .slider {
+  height: auto;
+}
+.peritonealDialysisTabView .inputbox .inputboxflex h2 {
+  font-weight: normal;
+  margin: 0;
+  font-size: 20px;
+}
+.peritonealDialysisTabView .inputbox .inputboxflex h3 {
+  font-weight: normal;
+  margin: 0;
+  font-size: 14px;
+}
+.peritonealDialysisTabView .inputbox label {
+  padding: 2px;
+  flex: none;
+  display: inline-block;
+}
+.peritonealDialysisTabView .inputbox a {
+  display: inline-block;
+}
+.peritonealDialysisTabView .inputbox .formIcon {
+  display: inline-block;
+  vertical-align: top;
+}
+.peritonealDialysisTabView .inputbox .formIcon img {
+  width: 36px;
+}
+.peritonealDialysisTabView .inputbox md-input-container {
+  margin: 0;
+}
+.peritonealDialysisTabView .inputbox.list {
+  border-bottom: 1px solid #ddd;
+  padding: 2px;
+}
+.peritonealDialysisTabView .inputbox.list::before {
+  content: '\00bb';
+  font-size: 20px;
+  line-height: 30px;
+  padding-right: 2px;
+}
+.peritonealDialysisTabView .inputbox.list:hover {
+  background: #fff;
+  cursor: pointer;
+  color: #ff2cd1;
+  border-bottom: 1px dotted #00ccff;
+}
+.peritonealDialysisTabView .inputbox.listRisCenter .inputboxflex {
+  line-height: 18px;
+}
+.peritonealDialysisTabView .diaHighRisk .inputbox .inputBoxTit {
+  flex: 1;
+}
+.peritonealDialysisTabView .inputItem {
+  background: no-repeat 10px center;
+  background-size: 37px 37px;
+  border-bottom: #b7b7b7 solid 1px;
+  height: 60px;
+}
+.peritonealDialysisTabView .inpubboxtxt {
+  margin-bottom: 5px ;
+  border: 1px solid #d8d7d7;
+  border-radius: 3px;
+  padding: 4px;
+}
+.peritonealDialysisTabView .inputbox.autoWidth .inputBoxTit {
+  flex: none;
+}
+.peritonealDialysisTabView .inputbox.autoWidth .inputBoxTit,
+.peritonealDialysisTabView .inputbox.autoWidth .inputboxflex,
+.peritonealDialysisTabView .inputbox .inputboxflex.autoWidth input,
+.peritonealDialysisTabView .inputbox .inputboxflex.autoWidth select,
+.peritonealDialysisTabView .inputbox .inputboxflex.autoWidth md-select,
+.peritonealDialysisTabView .inputbox .inputboxflex.autoWidth md-checkbox {
+  width: auto;
+  display: inline-block;
+  vertical-align: top;
+}
+.peritonealDialysisTabView .inputbox .inputboxflex md-select {
+  margin: 0;
+}
+.peritonealDialysisTabView .inputbox .inputboxflex md-select:not([disabled]) {
+  border: 0;
+}
+.peritonealDialysisTabView label {
+  color: #000000;
+}
+.peritonealDialysisTabView md-dialog md-dialog-content {
+  height: 100%;
+}
+.peritonealDialysisTabView .itemList {
+  padding-bottom: 5px;
+  padding-top: 3px;
+}
+.peritonealDialysisTabView .headerBox {
+  background: #0e99dc;
+  color: #fff;
+  position: absolute;
+  border-bottom: 1px dotted rgba(255, 255, 255, 0.4);
+  z-index: 10;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+.peritonealDialysisTabView .headerBox::after {
+  content: ' ';
+  width: 100%;
+  height: 0;
+  display: table;
+  clear: both;
+}
+.peritonealDialysisTabView .headTit {
+  font-size: 23px;
+  color: #fff;
+  line-height: 33px;
+  display: flex;
+  justify-content: flex-start;
+  justify-items: center;
+  white-space: nowrap;
+  padding-left: 25px;
+  flex-wrap: wrap;
+}
+.peritonealDialysisTabView .headTxt {
+  font-size: 18px;
+}
+.peritonealDialysisTabView .width100 {
+  width: 100%;
+}
+.peritonealDialysisTabView .radioWidth {
+  min-width: 100px;
+}
+.peritonealDialysisTabView .radioGroup {
+  display: inline-flex;
+}
+.peritonealDialysisTabView .radioGroup md-radio-button {
+  margin-right: 15px;
+}
+.peritonealDialysisTabView .radioGroup md-radio-button .md-label {
+  white-space: unset;
+}
+.peritonealDialysisTabView .radioGroupInline {
+  display: inline-flex;
+}
+.peritonealDialysisTabView .radioGroupInline md-radio-button {
+  margin-right: 15px;
+}
+.peritonealDialysisTabView .headerBox label {
+  color: #fff;
+  width: 100%;
+}
+.peritonealDialysisTabView .dialogBox .headerBox {
+  position: relative;
+}
+.peritonealDialysisTabView .dialogBox .headTit {
+  padding-left: 20px;
+}
+.peritonealDialysisTabView .dialogBoxData {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  padding: 20px;
+}
+.peritonealDialysisTabView .headIcon {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  height: inherit;
+  justify-items: center;
+  display: flex;
+  justify-content: center;
+}
+.peritonealDialysisTabView .headerBox img {
+  width: 28px;
+  margin-right: 5px;
+  height: 28px;
+}
+.peritonealDialysisTabView .headerBox .headIcon label {
+  padding: 0;
+  justify-items: center;
+  justify-content: center;
+  display: flex;
+}
+.peritonealDialysisTabView .flleft {
+  float: left;
+}
+.peritonealDialysisTabView .flright {
+  float: right;
+}
+.peritonealDialysisTabView .flclear::after {
+  content: ' ';
+  width: 100%;
+  height: 0;
+  display: table;
+  clear: both;
+}
+.peritonealDialysisTabView .mgnBtm5 {
+  margin-bottom: 5px;
+}
+.peritonealDialysisTabView .mgnLeft {
+  margin-left: 5px;
+}
+.peritonealDialysisTabView .mgnLeftReturn {
+  margin-left: 15px;
+}
+.peritonealDialysisTabView .mgnRight {
+  margin-right: 5px;
+}
+.peritonealDialysisTabView .lheightTxt {
+  line-height: 50px;
+  height: 50px;
+  font-size: 30px;
+  text-align: center;
+}
+.peritonealDialysisTabView .lheightBtn {
+  min-height: 40px;
+}
+.peritonealDialysisTabView .pdg0 {
+  padding: 0;
+}
+.peritonealDialysisTabView .pdgTop10 {
+  padding-top: 10px;
+}
+.peritonealDialysisTabView .pdgBtm10 {
+  padding-bottom: 10px;
+}
+.peritonealDialysisTabView .pdgTop5 {
+  padding-top: 5px;
+}
+.peritonealDialysisTabView .pdgBtm5 {
+  padding-bottom: 5px;
+}
+.peritonealDialysisTabView .txtCenter {
+  justify-items: center;
+  display: flex;
+  justify-content: center;
+  height: inherit;
+}
+.peritonealDialysisTabView .return {
+  position: absolute;
+  height: inherit;
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  width: 36px;
+  z-index: 5;
+  line-height: 55px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.peritonealDialysisTabView .return .material-icons {
+  line-height: 55px;
+}
+.peritonealDialysisTabView .name_fixed .txt .material-icons {
+  margin-top: 3px;
+}
+.peritonealDialysisTabView .spanWhite {
+  font-size: 15px;
+  color: black;
+  background-color: white;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: none;
+  padding: 2px 4px;
+}
+.peritonealDialysisTabView .titItem {
+  /* border-right:1px dotted rgba(14, 153, 220,0.7); */
+  margin-right: 5px;
+}
+.peritonealDialysisTabView .txtSS {
+  width: 50px !important;
+}
+.peritonealDialysisTabView .txtInline {
+  display: inline-block;
+  width: unset;
+}
+.peritonealDialysisTabView .return img {
+  width: 36px;
+}
+.peritonealDialysisTabView .err {
+  color: #cf0000;
+}
+.peritonealDialysisTabView .head_fixed {
+  height: 55px;
+  background: #0e99dc;
+  font-size: 23px;
+  line-height: 55px;
+  color: #fff;
+  text-align: center;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.peritonealDialysisTabView .pgAdmin .head_fixed {
+  background: #009ec7;
+  border-radius: 0;
+}
+.peritonealDialysisTabView .head_fixed h1 {
+  margin-bottom: 10px;
+  font-size: 1em;
+  margin-top: 0px;
+}
+.peritonealDialysisTabView .dialogBoxContent {
+  position: relative;
+  background-color: #ffffff;
+  color: #000;
+  flex: none;
+  border-radius: 4px;
+  z-index: 300;
+  box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 13px 19px 2px rgba(0, 0, 0, 0.14), 0px 5px 24px 4px rgba(0, 0, 0, 0.12);
+  min-width: 300px;
+  width: 90%;
+}
+.peritonealDialysisTabView .infectionTbUpdate {
+  position: absolute;
+  background-color: #ffffff;
+  color: #000;
+  flex: none;
+  border-radius: 4px;
+  z-index: 300;
+  box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 13px 19px 2px rgba(0, 0, 0, 0.14), 0px 5px 24px 4px rgba(0, 0, 0, 0.12);
+  min-width: 300px;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+}
+.peritonealDialysisTabView .looklikebutton.ul3 li label {
+  padding: 0;
+  margin: 0;
+  padding-left: 3px;
+}
+.peritonealDialysisTabView .tb {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+.peritonealDialysisTabView .bluebar {
+  background: #BBDEFB;
+  padding: 10px;
+  position: relative;
+}
+.peritonealDialysisTabView .bookdate {
+  width: 130px;
+  height: 28px;
+  font-size: 12px;
+}
+.peritonealDialysisTabView .total {
+  padding: 5px;
+  background: #fff;
+  border-bottom: #e7e7e7 solid 1px;
+  line-height: 30px;
+}
+.peritonealDialysisTabView .total span::before {
+  content: " - ";
+}
+.peritonealDialysisTabView .tbTitNm::before {
+  content: '\00bb';
+  font-size: 20px;
+  line-height: 30px;
+  padding-right: 2px;
+}
+.peritonealDialysisTabView .freezeDiv {
+  overflow: auto;
+  width: 100%;
+  /* 固定高度 */
+}
+.peritonealDialysisTabView .freezeDivShorter {
+  overflow: auto;
+  width: 100%;
+  height: 150px;
+  /* 固定高度 */
+}
+.peritonealDialysisTabView .freezeDivShorter.autoHieght {
+  height: auto;
+}
+.peritonealDialysisTabView .freezeTb {
+  table-layout: fixed;
+  width: 200px;
+  /* 固定寬度 */
+}
+.peritonealDialysisTabView .freezeTb td,
+.peritonealDialysisTabView .freezeTb th {
+  border: 1px solid gray;
+  width: 100px;
+  text-align: center;
+  line-height: 20px;
+}
+.peritonealDialysisTabView .freezeTb td {
+  padding: 5px 0px;
+}
+.peritonealDialysisTabView .freezeTb thead tr th {
+  position: sticky;
+  top: 0;
+  /* 列首永遠固定於上 */
+}
+.peritonealDialysisTabView .freezeTb tbody tr:hover td {
+  background: #e5f5f8;
+}
+.peritonealDialysisTabView .rowHover:hover {
+  background: #ffdfdd;
+  color: #009ec7;
+}
+.peritonealDialysisTabView .freezeTb th {
+  background-color: #7e90a0;
+  color: #fff;
+  border: 1px solid gray;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.peritonealDialysisTabView .freezeTb td:first-child,
+.peritonealDialysisTabView .freezeTb th:first-child {
+  position: sticky;
+  left: 0;
+  /* 首行永遠固定於左 */
+  z-index: 1;
+  background-color: #fdfdfd;
+  text-align: center;
+}
+.peritonealDialysisTabView .freezeTb td:first-child,
+.peritonealDialysisTabView .freezeTb th:first-child {
+  position: sticky;
+  left: 0;
+  /* 首行永遠固定於左 */
+  z-index: 1;
+  background-color: #fdfdfd;
+  text-align: center;
+}
+.peritonealDialysisTabView .freezeTb tr:nth-child(even) td {
+  background-color: #f3f3f3;
+}
+.peritonealDialysisTabView .freezeTb td:last-child,
+.peritonealDialysisTabView .freezeTb th:last-child {
+  text-align: center;
+}
+.peritonealDialysisTabView .freezeTb th:first-child {
+  z-index: 2;
+  background-color: #7e90a0;
+}
+.peritonealDialysisTabView .freezeTb td seal span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2px 0px;
+}
+.peritonealDialysisTabView .tbTrackShort .freezeTb {
+  width: 100%;
+  min-width: 1200px;
+}
+.peritonealDialysisTabView .tbTrackShort .freezeTb td:nth-child(1),
+.peritonealDialysisTabView .tbTrackShort .freezeTb th:nth-child(1) {
+  width: 15%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbTrackShort .freezeTb td:nth-child(2),
+.peritonealDialysisTabView .tbTrackShort .freezeTb th:nth-child(2) {
+  width: 15%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbTrackShort .freezeTb td:nth-child(3),
+.peritonealDialysisTabView .tbTrackShort .freezeTb th:nth-child(3) {
+  width: 20%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbTrackShort .freezeTb td:nth-child(4),
+.peritonealDialysisTabView .tbTrackShort .freezeTb th:nth-child(4) {
+  width: 20%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbTrackShort .freezeTb td:nth-child(5),
+.peritonealDialysisTabView .tbTrackShort .freezeTb th:nth-child(5) {
+  width: 20%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbTrackShort .freezeTb td:nth-child(6),
+.peritonealDialysisTabView .tbTrackShort .freezeTb th:nth-child(6) {
+  width: 10%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbTrackLong .freezeTb {
+  width: 100%;
+  min-width: 1200px;
+}
+.peritonealDialysisTabView .tbTrackLong .freezeTb td:nth-child(1),
+.peritonealDialysisTabView .tbTrackLong .freezeTb th:nth-child(1) {
+  width: 10%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbTrackLong .freezeTb td:nth-child(2),
+.peritonealDialysisTabView .tbTrackLong .freezeTb th:nth-child(2) {
+  width: 10%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbTrackLong .freezeTb td:nth-child(3),
+.peritonealDialysisTabView .tbTrackLong .freezeTb th:nth-child(3) {
+  width: 10%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbTrackLong .freezeTb td:nth-child(4),
+.peritonealDialysisTabView .tbTrackLong .freezeTb th:nth-child(4) {
+  width: 15%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbTrackLong .freezeTb td:nth-child(5),
+.peritonealDialysisTabView .tbTrackLong .freezeTb th:nth-child(5) {
+  width: 15%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbTrackLong .freezeTb td:nth-child(6),
+.peritonealDialysisTabView .tbTrackLong .freezeTb th:nth-child(6) {
+  width: 15%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbTrackLong .freezeTb td:nth-child(7),
+.peritonealDialysisTabView .tbTrackLong .freezeTb th:nth-child(7) {
+  width: 10%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbTrackLong .freezeTb td:nth-child(8),
+.peritonealDialysisTabView .tbTrackLong .freezeTb th:nth-child(8) {
+  width: 15%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbTrackLong .freezeTb td:nth-child(9),
+.peritonealDialysisTabView .tbTrackLong .freezeTb th:nth-child(9) {
+  width: 10%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbTelVisit .freezeTb {
+  width: 100%;
+}
+.peritonealDialysisTabView .tbTelVisit .freezeTb td:nth-child(1),
+.peritonealDialysisTabView .tbTelVisit .freezeTb th:nth-child(1) {
+  width: 120px;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbTelVisit .freezeTb td,
+.peritonealDialysisTabView .tbTelVisit .freezeTb th {
+  width: 10%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbVisit .freezeTb {
+  min-width: 1200px;
+}
+.peritonealDialysisTabView .tbVisit .freezeTb td,
+.peritonealDialysisTabView .tbVisit .freezeTb th {
+  width: 260px;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbVisit .freezeTb td {
+  text-align: left;
+  vertical-align: top;
+}
+.peritonealDialysisTabView .tbVisit .freezeTb td:nth-child(1),
+.peritonealDialysisTabView .tbVisit .freezeTb th:nth-child(1) {
+  width: 120px;
+}
+.peritonealDialysisTabView .tbHighRisk .freezeTb {
+  width: 100%;
+  min-width: 1200px;
+}
+.peritonealDialysisTabView .tbHighRisk .freezeTb td:nth-child(1),
+.peritonealDialysisTabView .tbHighRisk .freezeTb th:nth-child(1) {
+  width: 10%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbHighRisk .freezeTb td:nth-child(2),
+.peritonealDialysisTabView .tbHighRisk .freezeTb th:nth-child(2) {
+  width: 8%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbHighRisk .freezeTb td:nth-child(3),
+.peritonealDialysisTabView .tbHighRisk .freezeTb th:nth-child(3) {
+  width: 9%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbHighRisk .freezeTb td:nth-child(4),
+.peritonealDialysisTabView .tbHighRisk .freezeTb th:nth-child(4) {
+  width: 10%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbHighRisk .freezeTb td:nth-child(5),
+.peritonealDialysisTabView .tbHighRisk .freezeTb th:nth-child(5) {
+  width: 8%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbHighRisk .freezeTb td:nth-child(6),
+.peritonealDialysisTabView .tbHighRisk .freezeTb th:nth-child(6) {
+  width: 10%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbHighRisk .freezeTb td:nth-child(7),
+.peritonealDialysisTabView .tbHighRisk .freezeTb th:nth-child(7) {
+  width: 8%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbHighRisk .freezeTb td:nth-child(8),
+.peritonealDialysisTabView .tbHighRisk .freezeTb th:nth-child(8) {
+  width: 7%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbHighRisk .freezeTb td:nth-child(9),
+.peritonealDialysisTabView .tbHighRisk .freezeTb th:nth-child(9) {
+  width: 9%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbHighRisk .freezeTb td:nth-child(10),
+.peritonealDialysisTabView .tbHighRisk .freezeTb th:nth-child(10) {
+  width: 9%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbHighRisk .freezeTb td:nth-child(11),
+.peritonealDialysisTabView .tbHighRisk .freezeTb th:nth-child(11) {
+  width: 7%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbHighRisk .freezeTb td:nth-child(12),
+.peritonealDialysisTabView .tbHighRisk .freezeTb th:nth-child(12) {
+  width: 5%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbHighRisk .freezeTb td:nth-child(13),
+.peritonealDialysisTabView .tbHighRisk .freezeTb th:nth-child(13) {
+  width: 5%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbInfectionReport .freezeTb {
+  width: 100%;
+  min-width: 1200px;
+}
+.peritonealDialysisTabView .tbInfectionReport .freezeTb td:nth-child(1),
+.peritonealDialysisTabView .tbInfectionReport .freezeTb th:nth-child(1) {
+  width: 6%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbInfectionReport .freezeTb td:nth-child(2),
+.peritonealDialysisTabView .tbInfectionReport .freezeTb th:nth-child(2) {
+  width: 14%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbInfectionReport .freezeTb td:nth-child(3),
+.peritonealDialysisTabView .tbInfectionReport .freezeTb th:nth-child(3) {
+  width: 25%;
+}
+.peritonealDialysisTabView .tbInfectionReport .freezeTb td:nth-child(4),
+.peritonealDialysisTabView .tbInfectionReport .freezeTb th:nth-child(4) {
+  width: 10%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbInfectionReport .freezeTb td:nth-child(5),
+.peritonealDialysisTabView .tbInfectionReport .freezeTb th:nth-child(5) {
+  width: 25%;
+}
+.peritonealDialysisTabView .tbInfectionReport .freezeTb td:nth-child(6),
+.peritonealDialysisTabView .tbInfectionReport .freezeTb th:nth-child(6) {
+  width: 10%;
+}
+.peritonealDialysisTabView .tbInfectionReport .freezeTb td:nth-child(7),
+.peritonealDialysisTabView .tbInfectionReport .freezeTb th:nth-child(7) {
+  width: 10%;
+}
+.peritonealDialysisTabView .tbcatheter .freezeTb {
+  width: 100%;
+  min-width: 1200px;
+}
+.peritonealDialysisTabView .tbcatheter .freezeTb td:nth-child(1),
+.peritonealDialysisTabView .tbcatheter .freezeTb th:nth-child(1) {
+  width: 6%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbcatheter .freezeTb td:nth-child(2),
+.peritonealDialysisTabView .tbcatheter .freezeTb th:nth-child(2) {
+  width: 14%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbcatheter .freezeTb td:nth-child(3),
+.peritonealDialysisTabView .tbcatheter .freezeTb th:nth-child(3) {
+  width: 25%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbcatheter .freezeTb td:nth-child(4),
+.peritonealDialysisTabView .tbcatheter .freezeTb th:nth-child(4) {
+  width: 20%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbcatheter .freezeTb td:nth-child(5),
+.peritonealDialysisTabView .tbcatheter .freezeTb th:nth-child(5) {
+  width: 25%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbcatheter .freezeTb td:nth-child(6),
+.peritonealDialysisTabView .tbcatheter .freezeTb th:nth-child(6) {
+  width: 10%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbcapd .freezeTb {
+  width: 100%;
+  min-width: 1200px;
+}
+.peritonealDialysisTabView .tbcapd .freezeTb td:nth-child(1),
+.peritonealDialysisTabView .tbcapd .freezeTb th:nth-child(1) {
+  width: 10%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbcapd .freezeTb td:nth-child(2),
+.peritonealDialysisTabView .tbcapd .freezeTb th:nth-child(2) {
+  width: 15%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbcapd .freezeTb td:nth-child(3),
+.peritonealDialysisTabView .tbcapd .freezeTb th:nth-child(3) {
+  width: 15%;
+}
+.peritonealDialysisTabView .tbcapd .freezeTb td:nth-child(4),
+.peritonealDialysisTabView .tbcapd .freezeTb th:nth-child(4) {
+  width: 10%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbcapd .freezeTb td:nth-child(5),
+.peritonealDialysisTabView .tbcapd .freezeTb th:nth-child(5) {
+  width: 15%;
+}
+.peritonealDialysisTabView .tbcapd .freezeTb td:nth-child(6),
+.peritonealDialysisTabView .tbcapd .freezeTb th:nth-child(6) {
+  width: 10%;
+}
+.peritonealDialysisTabView .tbcapd .freezeTb td:nth-child(7),
+.peritonealDialysisTabView .tbcapd .freezeTb th:nth-child(7) {
+  width: 15%;
+}
+.peritonealDialysisTabView .tbcapd .freezeTb td:nth-child(8),
+.peritonealDialysisTabView .tbcapd .freezeTb th:nth-child(8) {
+  width: 10%;
+}
+.peritonealDialysisTabView .tbpet .freezeTb {
+  width: 100%;
+}
+.peritonealDialysisTabView .tbpet .freezeTb td:nth-child(1),
+.peritonealDialysisTabView .tbpet .freezeTb th:nth-child(1) {
+  width: 10%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbpet .freezeTb td:nth-child(2),
+.peritonealDialysisTabView .tbpet .freezeTb th:nth-child(2) {
+  width: 10%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbpet .freezeTb td:nth-child(3),
+.peritonealDialysisTabView .tbpet .freezeTb th:nth-child(3) {
+  width: 10%;
+}
+.peritonealDialysisTabView .tbpet .freezeTb td:nth-child(4),
+.peritonealDialysisTabView .tbpet .freezeTb th:nth-child(4) {
+  width: 10%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbpet .freezeTb td:nth-child(5),
+.peritonealDialysisTabView .tbpet .freezeTb th:nth-child(5) {
+  width: 10%;
+}
+.peritonealDialysisTabView .tbpet .freezeTb td:nth-child(6),
+.peritonealDialysisTabView .tbpet .freezeTb th:nth-child(6) {
+  width: 10%;
+}
+.peritonealDialysisTabView .tbpet .freezeTb td:nth-child(7),
+.peritonealDialysisTabView .tbpet .freezeTb th:nth-child(7) {
+  width: 10%;
+}
+.peritonealDialysisTabView .tbpet .freezeTb td:nth-child(8),
+.peritonealDialysisTabView .tbpet .freezeTb th:nth-child(8) {
+  width: 10%;
+}
+.peritonealDialysisTabView .tbpet .freezeTb td:nth-child(9),
+.peritonealDialysisTabView .tbpet .freezeTb th:nth-child(9) {
+  width: 10%;
+}
+.peritonealDialysisTabView .tbpet .freezeTb td:nth-child(10),
+.peritonealDialysisTabView .tbpet .freezeTb th:nth-child(10) {
+  width: 10%;
+}
+.peritonealDialysisTabView .tbcapdrcr .freezeTb {
+  width: 100%;
+  min-width: 1200px;
+}
+.peritonealDialysisTabView .tbcapdrcr .freezeTb td:nth-child(1),
+.peritonealDialysisTabView .tbcapdrcr .freezeTb th:nth-child(1) {
+  width: 5%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbcapdrcr .freezeTb td:nth-child(2),
+.peritonealDialysisTabView .tbcapdrcr .freezeTb th:nth-child(2) {
+  width: 10%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbcapdrcr .freezeTb td:nth-child(3),
+.peritonealDialysisTabView .tbcapdrcr .freezeTb th:nth-child(3) {
+  width: 10%;
+}
+.peritonealDialysisTabView .tbcapdrcr .freezeTb td:nth-child(4),
+.peritonealDialysisTabView .tbcapdrcr .freezeTb th:nth-child(4) {
+  width: 10%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbcapdrcr .freezeTb td:nth-child(5),
+.peritonealDialysisTabView .tbcapdrcr .freezeTb th:nth-child(5) {
+  width: 10%;
+}
+.peritonealDialysisTabView .tbcapdrcr .freezeTb td:nth-child(6),
+.peritonealDialysisTabView .tbcapdrcr .freezeTb th:nth-child(6) {
+  width: 10%;
+}
+.peritonealDialysisTabView .tbcapdrcr .freezeTb td:nth-child(7),
+.peritonealDialysisTabView .tbcapdrcr .freezeTb th:nth-child(7) {
+  width: 10%;
+}
+.peritonealDialysisTabView .tbcapdrcr .freezeTb td:nth-child(8),
+.peritonealDialysisTabView .tbcapdrcr .freezeTb th:nth-child(8) {
+  width: 10%;
+}
+.peritonealDialysisTabView .tbcapdrcr .freezeTb td:nth-child(9),
+.peritonealDialysisTabView .tbcapdrcr .freezeTb th:nth-child(9) {
+  width: 10%;
+}
+.peritonealDialysisTabView .tbcapdrcr .freezeTb td:nth-child(10),
+.peritonealDialysisTabView .tbcapdrcr .freezeTb th:nth-child(10) {
+  width: 10%;
+}
+.peritonealDialysisTabView .tbcapdrcr .freezeTb td:nth-child(11),
+.peritonealDialysisTabView .tbcapdrcr .freezeTb th:nth-child(11) {
+  width: 5%;
+}
+.peritonealDialysisTabView .tbApdSetting .freezeTb {
+  min-width: 1200px;
+  width: 100%;
+}
+.peritonealDialysisTabView .tbApdSetting .freezeTb td:nth-child(1),
+.peritonealDialysisTabView .tbApdSetting .freezeTb th:nth-child(1) {
+  width: 8%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbApdSetting .freezeTb td:nth-child(2),
+.peritonealDialysisTabView .tbApdSetting .freezeTb th:nth-child(2) {
+  width: 7%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbApdSetting .freezeTb td:nth-child(3),
+.peritonealDialysisTabView .tbApdSetting .freezeTb th:nth-child(3) {
+  width: 4%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbApdSetting .freezeTb td:nth-child(4),
+.peritonealDialysisTabView .tbApdSetting .freezeTb th:nth-child(4) {
+  width: 5%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbApdSetting .freezeTb td:nth-child(5),
+.peritonealDialysisTabView .tbApdSetting .freezeTb th:nth-child(5) {
+  width: 5%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbApdSetting .freezeTb td:nth-child(6),
+.peritonealDialysisTabView .tbApdSetting .freezeTb th:nth-child(6) {
+  width: 5%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbApdSetting .freezeTb td:nth-child(7),
+.peritonealDialysisTabView .tbApdSetting .freezeTb th:nth-child(7) {
+  width: 5%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbApdSetting .freezeTb td:nth-child(8),
+.peritonealDialysisTabView .tbApdSetting .freezeTb th:nth-child(8) {
+  width: 5%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbApdSetting .freezeTb td:nth-child(9),
+.peritonealDialysisTabView .tbApdSetting .freezeTb th:nth-child(9) {
+  width: 5%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbApdSetting .freezeTb td:nth-child(10),
+.peritonealDialysisTabView .tbApdSetting .freezeTb th:nth-child(10) {
+  width: 5%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbApdSetting .freezeTb td:nth-child(11),
+.peritonealDialysisTabView .tbApdSetting .freezeTb th:nth-child(11) {
+  width: 5%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbApdSetting .freezeTb td:nth-child(12),
+.peritonealDialysisTabView .tbApdSetting .freezeTb th:nth-child(12) {
+  width: 5%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbApdSetting .freezeTb td:nth-child(13),
+.peritonealDialysisTabView .tbApdSetting .freezeTb th:nth-child(13) {
+  width: 4%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbApdSetting .freezeTb td:nth-child(14),
+.peritonealDialysisTabView .tbApdSetting .freezeTb th:nth-child(14) {
+  width: 5%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbApdSetting .freezeTb td:nth-child(15),
+.peritonealDialysisTabView .tbApdSetting .freezeTb th:nth-child(15) {
+  width: 5%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbApdSetting .freezeTb td:nth-child(16),
+.peritonealDialysisTabView .tbApdSetting .freezeTb th:nth-child(16) {
+  width: 4%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbApdSetting .freezeTb td:nth-child(17),
+.peritonealDialysisTabView .tbApdSetting .freezeTb th:nth-child(17) {
+  width: 4%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbApdSetting .freezeTb td:nth-child(18),
+.peritonealDialysisTabView .tbApdSetting .freezeTb th:nth-child(18) {
+  width: 7%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbApdSetting .freezeTb td:nth-child(19),
+.peritonealDialysisTabView .tbApdSetting .freezeTb th:nth-child(19) {
+  width: 7%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbSelfCare .freezeTb {
+  min-width: 1200px;
+}
+.peritonealDialysisTabView .tbSelfCare .freezeTb th {
+  text-align: center;
+}
+.peritonealDialysisTabView .tbSelfCare .freezeTb td {
+  text-align: left;
+  vertical-align: top;
+}
+.peritonealDialysisTabView .tbSelfCare .freezeTb td:nth-child(1),
+.peritonealDialysisTabView .tbSelfCare .freezeTb th:nth-child(1) {
+  width: 160px;
+}
+.peritonealDialysisTabView .tbSelfCare .freezeTb td:nth-child(2),
+.peritonealDialysisTabView .tbSelfCare .freezeTb th:nth-child(2) {
+  width: 360px;
+}
+.peritonealDialysisTabView .tbSelfCare .freezeTb td:nth-child(3),
+.peritonealDialysisTabView .tbSelfCare .freezeTb th:nth-child(3) {
+  width: 300px;
+}
+.peritonealDialysisTabView .tbSelfCare .freezeTb td:nth-child(4),
+.peritonealDialysisTabView .tbSelfCare .freezeTb th:nth-child(4) {
+  width: 490px;
+}
+.peritonealDialysisTabView .tbSelfCare .freezeTb td:nth-child(5),
+.peritonealDialysisTabView .tbSelfCare .freezeTb th:nth-child(5) {
+  width: 490px;
+}
+.peritonealDialysisTabView .tbSelfCare .freezeTb td:nth-child(6),
+.peritonealDialysisTabView .tbSelfCare .freezeTb th:nth-child(6) {
+  width: 600px;
+}
+.peritonealDialysisTabView .tbSelfCare .freezeTb td:nth-child(7),
+.peritonealDialysisTabView .tbSelfCare .freezeTb th:nth-child(7) {
+  width: 300px;
+}
+.peritonealDialysisTabView .tbSelfCare .freezeTb td:nth-child(8),
+.peritonealDialysisTabView .tbSelfCare .freezeTb th:nth-child(8) {
+  width: 390px;
+}
+.peritonealDialysisTabView .tbSelfCare .freezeTb td:nth-child(9),
+.peritonealDialysisTabView .tbSelfCare .freezeTb th:nth-child(9) {
+  width: 160px;
+}
+.peritonealDialysisTabView .freezeDiv.tbFI {
+  height: auto;
+}
+.peritonealDialysisTabView .tbFI .freezeTb {
+  width: 100%;
+}
+.peritonealDialysisTabView .tbFI .freezeTb td {
+  width: 10%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbFI .freezeTb td:nth-child(1),
+.peritonealDialysisTabView .tbFI .freezeTb th:nth-child(1) {
+  width: 4%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbFI .freezeTb td:nth-child(2),
+.peritonealDialysisTabView .tbFI .freezeTb th:nth-child(2) {
+  width: 9%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbFI .freezeTb td:nth-child(3),
+.peritonealDialysisTabView .tbFI .freezeTb th:nth-child(3) {
+  width: 9%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbFI .freezeTb td:nth-child(4),
+.peritonealDialysisTabView .tbFI .freezeTb th:nth-child(4) {
+  width: 10%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbFI .freezeTb td:nth-child(5),
+.peritonealDialysisTabView .tbFI .freezeTb th:nth-child(5) {
+  width: 10%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbFI .freezeTb td:nth-child(6),
+.peritonealDialysisTabView .tbFI .freezeTb th:nth-child(6) {
+  width: 9%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbFI .freezeTb td:nth-child(7),
+.peritonealDialysisTabView .tbFI .freezeTb th:nth-child(7) {
+  width: 7%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbFI .freezeTb td:nth-child(8),
+.peritonealDialysisTabView .tbFI .freezeTb th:nth-child(8) {
+  width: 5%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbFI .freezeTb td:nth-child(9),
+.peritonealDialysisTabView .tbFI .freezeTb th:nth-child(9) {
+  width: 9%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbFI .freezeTb td:nth-child(10),
+.peritonealDialysisTabView .tbFI .freezeTb th:nth-child(10) {
+  width: 6%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbFI .freezeTb td:nth-child(11),
+.peritonealDialysisTabView .tbFI .freezeTb th:nth-child(11) {
+  width: 9%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbFI .freezeTb td:nth-child(12),
+.peritonealDialysisTabView .tbFI .freezeTb th:nth-child(12) {
+  width: 6%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbFI .freezeTb td:nth-child(13),
+.peritonealDialysisTabView .tbFI .freezeTb th:nth-child(13) {
+  width: 4%;
+  text-align: center;
+}
+.peritonealDialysisTabView .tbFI .freezeTb th {
+  min-height: 50px;
+}
+.peritonealDialysisTabView .tbFI .freezeTb th .tbFI2 th {
+  border: 1px solid #eee;
+  text-align: left;
+  padding-left: 2px;
+  height: 30px;
+}
+.peritonealDialysisTabView .freezeTb th.pdg0,
+.peritonealDialysisTabView .freezeTb td.pdg0 {
+  padding: 0;
+}
+.peritonealDialysisTabView .freezeTb th .tbFI2 th {
+  padding: 0;
+}
+.peritonealDialysisTabView .ulFi {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.peritonealDialysisTabView .ulFi li {
+  border: 1px solid #181818;
+  padding: 4px;
+  text-align: center;
+  min-height: 20px;
+  line-height: 20px;
+  display: block;
+}
+.peritonealDialysisTabView .ulFi2 {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.peritonealDialysisTabView .ulFi2:hover {
+  background: #e5f5f8;
+}
+.peritonealDialysisTabView .ulFi2 li {
+  border: 1px solid #181818;
+  padding: 4px;
+  text-align: left;
+  min-height: 20px;
+  line-height: 20px;
+  display: block;
+}
+.peritonealDialysisTabView .txtYellow {
+  color: #ffed84;
+}
+.peritonealDialysisTabView .txtGreen {
+  color: green;
+}
+.peritonealDialysisTabView .txtBlue {
+  color: dodgerblue;
+}
+.peritonealDialysisTabView .txtBlueDef {
+  color: #0e99dc;
+}
+.peritonealDialysisTabView .tb2 {
+  border-spacing: 0px;
+}
+.peritonealDialysisTabView .tb2 th {
+  background-color: lightgray;
+  font-weight: normal;
+  text-align: center;
+}
+.peritonealDialysisTabView .tb2 th,
+.peritonealDialysisTabView .tb2 td {
+  padding: 0;
+  margin: 0;
+}
+.peritonealDialysisTabView .tb2 tr td {
+  border-bottom: 1px solid #ddd;
+  padding: 1px 2px;
+}
+.peritonealDialysisTabView .tb2 th:nth-child(1) {
+  width: 20%;
+}
+.peritonealDialysisTabView .tb2 th:nth-child(2) {
+  width: 50%;
+}
+.peritonealDialysisTabView .tb2 th:nth-child(3) {
+  width: 15%;
+}
+.peritonealDialysisTabView .tb2 th:nth-child(4) {
+  width: 15%;
+}
+.peritonealDialysisTabView .tb2 td img {
+  width: 24px;
+  height: 24px;
+}
+.peritonealDialysisTabView .dataList::after {
+  content: ' ';
+  width: 100%;
+  height: 0;
+  display: table;
+  clear: both;
+}
+.peritonealDialysisTabView .dataList .card {
+  float: left;
+  width: 50%;
+  border-bottom: 1px solid #ccc;
+}
+.peritonealDialysisTabView .mdCard {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  cursor: pointer;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2);
+}
+.peritonealDialysisTabView .mdCardImg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  z-index: 1;
+}
+.peritonealDialysisTabView .mdCardNm {
+  padding: 0px;
+  margin: 0;
+  font-size: 18px;
+  display: inline;
+  color: #0e99dc;
+}
+.peritonealDialysisTabView .listItem {
+  display: block;
+}
+.peritonealDialysisTabView .listItem label {
+  padding: 3px 13px;
+  background: url(../images/svg/arrowR.svg) center center no-repeat;
+  width: 100%;
+  display: inline-block;
+  border-radius: 20px;
+  background-size: 10px;
+  border: 1px solid #b2b2b2;
+  background-position-x: 93%;
+}
+.peritonealDialysisTabView .listItem label:hover {
+  border: 1px solid #10d4ee;
+  background: #c4f8ff url(../images/svg/arrowR.svg) center center no-repeat;
+  background-size: 10px;
+  background-position-x: 93%;
+  cursor: pointer;
+}
+.peritonealDialysisTabView .btnBox {
+  flex: none;
+  display: block;
+  padding: 5px;
+}
+.peritonealDialysisTabView .ul1 {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  border-radius: 4px;
+}
+.peritonealDialysisTabView .ul1 li {
+  background: #eee;
+}
+.peritonealDialysisTabView .ul2 {
+  padding: 0;
+  margin: 0;
+  margin-left: 40px;
+  list-style-type: upper-roman;
+  padding-bottom: 5px;
+}
+.peritonealDialysisTabView .ul2 li {
+  list-style-type: upper-roman;
+}
+.peritonealDialysisTabView .formCapdrcr .inputbox .inputBoxTit {
+  min-width: 140px;
+}
+@media only screen and (max-width: 1280px) {
+  .tbApdSetting .freezeTb td,
+  .tbApdSetting .freezeTb th {
+    width: 100px;
+    text-align: center;
+  }
+}
+@media only screen and (max-width: 1024px) {
+  .tbcatheter .freezeTb td:nth-child(1),
+  .tbcatheter .freezeTb th:nth-child(1) {
+    width: 90px;
+  }
+  .tbcatheter .freezeTb td:nth-child(2),
+  .tbcatheter .freezeTb th:nth-child(2) {
+    width: 100px;
+  }
+  .tbcatheter .freezeTb td:nth-child(3),
+  .tbcatheter .freezeTb th:nth-child(3) {
+    width: 200px;
+  }
+  .tbcatheter .freezeTb td:nth-child(4),
+  .tbcatheter .freezeTb th:nth-child(4) {
+    width: 200px;
+  }
+  .tbcatheter .freezeTb td:nth-child(5),
+  .tbcatheter .freezeTb th:nth-child(5) {
+    width: 200px;
+  }
+  .tbcatheter .freezeTb td:nth-child(6),
+  .tbcatheter .freezeTb th:nth-child(6) {
+    width: 100px;
+  }
+  .tbcapdrcr .freezeTb td:nth-child(1),
+  .tbcapdrcr .freezeTb th:nth-child(1) {
+    width: 50px !important;
+  }
+  .tbcapdrcr .freezeTb td,
+  .tbcapdrcr .freezeTb th {
+    width: 120px !important;
+  }
+  .tbcapdrcr .freezeTb td:last-child,
+  .tbcapdrcr .freezeTb th:last-child {
+    width: 100px !important;
+  }
+  .tbInfectionReport .freezeTb td:nth-child(1),
+  .tbInfectionReport .freezeTb th:nth-child(1) {
+    width: 40px;
+  }
+  .tbInfectionReport .freezeTb td:nth-child(2),
+  .tbInfectionReport .freezeTb th:nth-child(2) {
+    width: 100px;
+  }
+  .tbInfectionReport .freezeTb td:nth-child(3),
+  .tbInfectionReport .freezeTb th:nth-child(3) {
+    width: 200px;
+  }
+  .tbInfectionReport .freezeTb td:nth-child(4),
+  .tbInfectionReport .freezeTb th:nth-child(4) {
+    width: 80px;
+  }
+  .tbInfectionReport .freezeTb td:nth-child(5),
+  .tbInfectionReport .freezeTb th:nth-child(5) {
+    width: 200px;
+  }
+  .tbInfectionReport .freezeTb td:nth-child(6),
+  .tbInfectionReport .freezeTb th:nth-child(6) {
+    width: 80px;
+  }
+  .tbInfectionReport .freezeTb td:nth-child(7),
+  .tbInfectionReport .freezeTb th:nth-child(7) {
+    width: 100px;
+  }
+  .tbcapd .freezeTb td:nth-child(1),
+  .tbcapd .freezeTb th:nth-child(1) {
+    width: 90px !important;
+  }
+  .tbcapd .freezeTb td,
+  .tbcapd .freezeTb th {
+    width: 100px !important;
+  }
+  .tbcapd .freezeTb td:last-child,
+  .tbcapd .freezeTb th:last-child {
+    width: 100px !important;
+  }
+  .tbpet .freezeTb td:nth-child(1),
+  .tbpet .freezeTb th:nth-child(1) {
+    width: 100px !important;
+  }
+  .tbpet .freezeTb td,
+  .tbpet .freezeTb th {
+    width: 100px !important;
+  }
+  .tbpet .freezeTb td:last-child,
+  .tbpet .freezeTb th:last-child {
+    width: 100px !important;
+  }
+  /* 腹膜透析醫療追蹤-長期醫囑 tbTrackLong  */
+  .tbTrackLong .freezeTb td:nth-child(1),
+  .tbTrackLong .freezeTb th:nth-child(1) {
+    width: 120px !important;
+  }
+  .tbTrackLong .freezeTb td,
+  .tbTrackLong .freezeTb th {
+    width: 120px !important;
+  }
+  .tbTrackLong .freezeTb td:last-child,
+  .tbTrackLong .freezeTb th:last-child {
+    width: 100px !important;
+  }
+  /* 腹膜透析醫療追蹤-長期醫囑 tbTrackLong  */
+  /* 腹膜透析醫療追蹤-臨時醫囑 tbTrackShort  */
+  .tbTrackShort .freezeTb td:nth-child(1),
+  .tbTrackShort .freezeTb th:nth-child(1) {
+    width: 100px !important;
+  }
+  .tbTrackShort .freezeTb td,
+  .tbTrackShort .freezeTb th {
+    width: 100px !important;
+  }
+  .tbTrackShort .freezeTb td:last-child,
+  .tbTrackShort .freezeTb th:last-child {
+    width: 100px !important;
+  }
+  /* 腹膜透析醫療追蹤-臨時醫囑 tbTrackShort  */
+  /*透析病人跌倒高危險群*/
+  .tbHighRisk .freezeTb td:nth-child(1),
+  .tbHighRisk .freezeTb th:nth-child(1) {
+    width: 120px !important;
+  }
+  .tbHighRisk .freezeTb td,
+  .tbHighRisk .freezeTb th {
+    width: 180px !important;
+  }
+  .tbHighRisk .freezeTb td:last-child,
+  .tbHighRisk .freezeTb th:last-child {
+    width: 100px !important;
+  }
+  /*透析病人跌倒高危險群*/
+  /*腹膜透析居家訪視*/
+  /*腹膜透析居家訪視*/
+  /*腹膜透析電話訪談*/
+  /*腹膜透析電話訪談*/
+  /*腹膜透析植管*/
+  .tbFI .freezeTb td:nth-child(1),
+  .tbFI .freezeTb th:nth-child(1) {
+    width: 100px !important;
+  }
+  .tbFI .freezeTb td,
+  .tbFI .freezeTb th {
+    width: 100px !important;
+  }
+  .tbFI .freezeTb td:last-child,
+  .tbFI .freezeTb th:last-child {
+    width: 100px !important;
+  }
+  /*腹膜透析植管*/
+}
+@media only screen and (max-width: 768px) {
+  .numTitBanner .numTit {
+    font-size: 14px;
+  }
+  .numberBox .numberBoxRow .number {
+    font-size: 14px;
+  }
+  .patient .patientItem .numberhead {
+    font-size: 14px;
+  }
+  .dataList .card {
+    width: 100%;
+  }
+  md-dialog .md-dialog-content {
+    padding: 10px;
+  }
+  .peritonealDialysisTabView .radioGroup {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .peritonealDialysisTabView .radioGroup md-radio-button {
+    flex: none;
+    width: unset;
+  }
+  .peritonealDialysisTabView .inputbox .inputboxflex.autoWidth md-checkbox {
+    width: 100%;
+  }
+  .peritonealDialysisTabView .inputbox .inputBoxTit {
+    font-weight: bold;
+    margin: 5px 0px;
+    font-size: 1.17em;
+  }
+  .peritonealDialysisTabView .inputbox .inputboxflex {
+    padding: 0px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .name_fixed .txt .material-icons {
+    margin-top: 1px;
+  }
+  .name_fixed .txt {
+    font-size: 16px;
+  }
+  .name_fixed .nameh2 h2 {
+    font-size: 18px;
+  }
+  .dialogBoxContent {
+    min-width: 290px;
+  }
+  .titItem {
+    border-right: 0px;
+  }
+  .headerBox img {
+    width: 30px;
+  }
+  .inputbox .inputboxflex {
+    width: 95%;
+  }
+  .ulInline.width50 li {
+    width: 100%;
+  }
+  .ulInline {
+    top: 0px;
+  }
+  .card md-card-title {
+    padding: 5px 10px 0px 0px;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .peritonealDialysisTabView .inputbox .inputBoxTit {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+@media screen and (min-width: 1920px) {
+  .card.flex-gt-lg-33 {
+    max-width: 33%;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .toggleSideNav {
+    display: initial;
+  }
+}
+@media only screen and (max-width: 1140px) {
+  #card-container {
+    padding: 0 40px 10px 40px;
+  }
+  .head {
+    padding: 5px 55px 5px 40px !important;
+  }
+  .remarks {
+    padding: 0 40px 0px 40px;
+  }
+}
+@media only screen and (max-width: 960px) {
+  .head {
+    padding: 5px 15px 5px 25px !important;
+  }
+  #card-container {
+    padding: 0 20px 10px 20px;
+  }
+  .remarks {
+    padding: 0 25px 0px 25px;
+  }
+}
+@media only screen and (max-width: 700px) {
+  .head .tag {
+    display: none;
+  }
+  .phone_none {
+    display: none;
+  }
+}
+@media (max-width: 600px) and (min-width: 0) {
+  #summary-content-container {
+    position: absolute;
+    height: calc(100% - 43px);
+    top: initial;
+  }
+  #summary-content-container #summary-content {
+    top: 0;
+    height: 100%;
+    width: 100%;
+  }
+}
+@media (max-width: 1919px) and (min-width: 960px) {
+  .card.flex-gt-sm-50 {
+    max-width: 49.5%;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .inputbox {
+    flex-wrap: wrap;
+  }
+  .diaHighRisk .inputbox .inputBoxTit {
+    flex: none;
+  }
+  .formApd .inputbox .inputBoxTit {
+    max-width: 100%;
+  }
+  .dialogBoxData {
+    padding: 10px;
+  }
+}
+@media print {
+  md-backdrop {
+    display: none;
+  }
+  body {
+    background: #fff;
+  }
+  #printContainer {
+    display: block !important;
+  }
+  .summary .layout-wrap {
+    flex-wrap: nowrap;
+  }
+  .summary .border .flex-25 {
+    flex: 1;
+  }
+  .summary .border.flex-50 {
+    width: 50%;
+  }
+  .summary .border.flex-66 {
+    flex: 2;
+  }
+  .summary .border.flex-33 {
+    flex: 1;
+  }
+}

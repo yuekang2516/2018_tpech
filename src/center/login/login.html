@@ -1,0 +1,35 @@
+<div class="login-container" layout-gt-sm="row" layout-fill layout="column">
+    <div class="title" flex-gt-sm="60" flex="30" layout="column">
+        <div>{{vm.currentHospital.HospitalName}}</div>
+        <div>透析系統</div>
+        <div>CENTER</div>
+    </div>
+    <div flex-gt-sm="40" flex>
+        <div class="login-card" layout="column">
+            <form name="loginForm" ng-submit="vm.submit()" novalidate>
+                <div class="header">
+                    <h3 ng-click="vm.scanBarCode()">請輸入帳號及密碼</h3>
+                    <h3 ng-show="vm.isMobileDevice">或刷卡登入</h3>
+                </div>
+                <md-input-container class="md-block">
+                    <label>帳號</label>
+                    <input name="account" ng-model="vm.formData.account" type="text" required="" />
+                    <div ng-messages="loginForm.account.$error" role="alert" multiple="">
+                        <div class="my-message" ng-message="required">請輸入帳號</div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>密碼</label>
+                    <input name="password" ng-model="vm.formData.password" type="password" required="" />
+                    <div ng-messages="loginForm.password.$error" role="alert" multiple="">
+                        <div class="my-message" ng-message="required">請輸入密碼</div>
+                    </div>
+                </md-input-container>
+                <md-button class="md-primary md-raised" type="submit" ng-disabled="!loginForm.$valid || vm.loading">
+                    登入
+                    <img ng-if="vm.loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                </md-button>
+            </form>
+        </div>
+    </div>
+</div>

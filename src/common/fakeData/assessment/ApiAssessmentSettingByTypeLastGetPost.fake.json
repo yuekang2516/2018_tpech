@@ -1,0 +1,55 @@
+{
+  "DateTimestamp": "2019-03-22T18:47:43.0847115+08:00",
+  "Type": "post",
+  "Items": [
+    {
+      "Item": "紀錄透析機紀錄",
+      "Options": [
+        "脫水量",
+        "靜脈壓:評估人工腎臟或迴路管clot情形"
+      ],
+      "IncludeOther": false
+    },
+    {
+      "Item": "病人狀況",
+      "Options": [
+        "生命徵象",
+        "痙攣",
+        "頭痛",
+        "噁心、嘔吐",
+        "其他不適症狀",
+        "透析後體重"
+      ],
+      "IncludeOther": false
+    },
+    {
+      "Item": "血管通路",
+      "Options": [
+        "動靜脈瘻管穿刺傷口止血情形",
+        "評估血管功能(thrill、Bruit)",
+        "導管出口情形"
+      ],
+      "IncludeOther": false
+    }
+  ],
+  "HospitalId": "56fcc5dd4ead7870942f61c3",
+  "Revision": 47,
+  "HistoryId": null,
+  "Status": "Normal",
+  "CreatedUserId": null,
+  "CreatedUserName": null,
+  "CreatedTime": "2018-09-04T03:43:56.378Z",
+  "ModifiedUserId": "570600fdd53d3c61d6794f95",
+  "ModifiedUserName": "Admin",
+  "ModifiedTime": "2019-03-22T10:46:56.847Z",
+  "Id": "5c94bd209b5d1a1f6cd7f8d4",
+  "CreatedOn": "2018-09-04T03:43:56Z",
+  "ModifiedOn": "0001-01-01T00:00:00Z",
+  "ObjectId": {
+    "Timestamp": 1553251616,
+    "Machine": 10181914,
+    "Pid": 8044,
+    "Increment": 14153940,
+    "CreationTime": "2019-03-22T10:46:56Z"
+  }
+}

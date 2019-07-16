@@ -1,0 +1,66 @@
+<div flex layout="column" layout-fill class="cont-machine-data-container">
+    <summary-toolbar toolbar-title="'dialysisTabView.machineContinuous' | translate" cancel="$ctrl.goback()"></summary-toolbar>
+
+    <div class="list-header" layout="row" layout-align="start center">
+        <!-- <h6>共 {{machineData.serviceData.length}} 筆</h6> -->
+        <div ng-if="$ctrl.minValidDate != $ctrl.maxValidDate" class="date-select" layout="row" layout-align="center center">
+            <md-button ng-disabled="$ctrl.cantPreviousDate" class="md-icon-button" ng-click="$ctrl.changeDate(-1)">
+                <i class="material-icons">navigate_before</i>
+            </md-button>
+            <input required type="date" min="{{$ctrl.minValidDate}}" max="{{$ctrl.maxValidDate}}" ng-model="$ctrl.currentDate" ng-change="$ctrl.changeDate(0)" />
+            <md-button ng-disabled="$ctrl.cantNextDate" class="md-icon-button" ng-click="$ctrl.changeDate(1)">
+                <i class="material-icons">navigate_next</i>
+            </md-button>
+        </div>
+        <label ng-if="$ctrl.minValidDate == $ctrl.maxValidDate" class="date">{{$ctrl.currentDate | moment:'YYYY/MM/DD'}}</label>
+        <span flex></span>
+
+        <!-- <div ng-if="$ctrl.patient && $ctrl.canContinuous">
+            <div class="no-outline" ng-if="$ctrl.pi.isPiBind" ng-click="$ctrl.raspberryPiSettingDialog($event)">
+                <img ng-if="!$ctrl.pi.isSetContinuous" ng-src="static/img/svg/connect.svg" alt="已連結" />
+                <img ng-if="$ctrl.pi.isSetContinuous" ng-src="static/img/svg/transmission.svg" alt="傳輸中" />
+            </div>
+            <div class="no-outline" ng-if="!$ctrl.pi.isPiBind" ng-click="$ctrl.raspberryPiSettingDialog($event)">
+                <img ng-src="static/img/svg/disconnect.svg" alt="未連結" />
+            </div>
+        </div> -->
+        <!--component shows last refresh time and the refresh button  -->
+        <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+    </div>
+    <div class="barchart barchartscroll" ng-show="!$ctrl.loading && !$ctrl.isError">
+        <div class="bar24" style="background: linear-gradient(to top, rgba(4,143,253,1) {{ $ctrl.getBarHeight(value) }}%, rgba(81,237,239,1) {{ $ctrl.getBarHeight(value) }}%,rgba(81,237,239,1) 100%);" ng-repeat="(key,value) in $ctrl.barData track by key" ng-click="$ctrl.getList(key);">
+            <div class="nob">{{value}}</div>
+            <div class="txt">{{key}}</div>
+            <div ng-show="$last" class="txt1">{{ $ctrl.getLastHourNumber(key) }}</div>
+        </div>
+    </div>
+    <loading ng-show="$ctrl.loading">loading...</loading>
+    <p class="count" style="border: none; padding-bottom: 5px; margin: 0" ng-show="!$ctrl.loading && !$ctrl.isError">
+        <span translate="continuousMachineData.totalRecord" translate-values='{count: $ctrl.totalCount}'></span><span ng-show="$ctrl.specificHour">({{$ctrl.specificHour}}，{{$ctrl.specificHourCount}}筆資料)</span>
+    </p>
+    <nodata-page nodata-title="{{'machineData.machineData.noData' | translate}}" flex ng-show="!$ctrl.loading && $ctrl.totalCount === 0 && !$ctrl.isError"></nodata-page>
+    <server-error-page flex ng-show="!$ctrl.loading && $ctrl.isError" refresh="$ctrl.refresh()"></server-error-page>
+    <!-- <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+        <h3 translate>{{'machineData.machineData.serverError'}}</h3>
+    </div> -->
+    <div ng-show="!$ctrl.loading && !$ctrl.isError && $ctrl.totalCount > 0" id="table-container" flex layout="column">
+        <loading ng-show="$ctrl.loadingTable">loading...</loading>
+        <div ng-show="!$ctrl.loadingTable" id="cont-machine-data-table" ng-class="{away:$ctrl.loading}"></div>
+    </div>
+    <audio id="piConnectedSound">
+        <source src="static/sounds/piConnected.mp3">
+    </audio>
+    <audio id="piDisconnectedSound">
+        <source src="static/sounds/piDisconnected.mp3">
+    </audio>
+</div>
+<div class="fullscreenMask" ng-show="$ctrl.showReading" layout="column" layout-align="center center">
+    <div layout="column" layout-align="center center" style="background-color: rgba(33, 33, 33, 0.8); color: white; padding: 20px; border-radius: 4px;">
+        <!-- {{'raspberryPi.connecting'}} -->
+        <span>{{$ctrl.bleStatusTitle}}</span>
+        <span layout="row" layout-align="center center">
+            <span class="content">{{$ctrl.bleStatusContent}}</span>
+            <md-progress-circular md-diameter="20px" md-mode="indeterminate"></md-progress-circular>
+        </span>
+    </div>
+</div>

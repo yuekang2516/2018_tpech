@@ -1,0 +1,281 @@
+chutung-report {
+
+    html,
+    body,
+    div,
+    span,
+    applet,
+    object,
+    iframe,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    blockquote,
+    pre,
+    a,
+    abbr,
+    acronym,
+    address,
+    big,
+    cite,
+    code,
+    del,
+    dfn,
+    em,
+    font,
+    img,
+    ins,
+    kbd,
+    q,
+    s,
+    samp,
+    small,
+    strike,
+    strong,
+    tt,
+    var,
+    b,
+    u,
+    i,
+    center,
+    dl,
+    dt,
+    dd,
+    ol,
+    ul,
+    li,
+    form,
+    label,
+    legend,
+    table,
+    caption,
+    tbody,
+    tfoot,
+    thead,
+    tr,
+    th,
+    td {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        outline: 0;
+        font-size: 10pt;
+        font-family: "DFKai-sb", "BiauKai", "Times New Roman";
+    }
+
+    .center {
+        text-align: center
+    }
+
+    padding: 10px;
+
+    table {
+        border-collapse: collapse;
+        border: #000 solid 1px;
+        margin: 0 auto;
+    }
+
+    table tr td {
+        padding: 2px;
+        word-break: break-all;
+        line-height: 19px;
+    }
+
+    .table {
+        width: 19.5cm;
+        border-collapse: collapse;
+        border-spacing: 0;
+        margin: 0 auto;
+        &.patient {
+            td {
+                border: 0;
+            }
+        }
+    }
+    .lefttopbox {
+        position: absolute;
+        top: 5px;
+        left: 10px;
+        border: #000 solid 1px;
+        padding: 4px;
+    }
+    .lefttopbox span{line-height: 23px}
+    .table tr td {
+        border: #000 solid 1px;
+        padding: 2px;
+        word-break: break-all;
+        line-height: 19px;
+    }
+
+    .table_in {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: none;
+        line-height: 19px;
+    }
+
+    .table_in tr td {
+        padding: 2px;
+        line-height: 19px;
+        border: none;
+        white-space: nowrap;
+    }
+
+    .table_in tr td span {
+        padding-right: 4px
+    }
+
+    .table_in_border {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+    }
+
+    .table_in_border tr td {
+        padding: 2px;
+        line-height: 19px;
+        border: #000 solid 1px;
+        border-right: 0;
+        border-bottom: 0;
+        white-space: nowrap;
+    }
+    .table_in_record {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            border: none;
+            line-height: 19px;
+    }
+    .table_in_record tr td {
+        padding: 2px;
+        line-height: 19px;
+        border: none;
+    }
+
+    .table_9 {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+        margin: 0 auto;
+    }
+
+    .table_9 tr td {
+        border: #000 solid 1px;
+        padding:2px;/**/
+        line-height: 19px;
+        vertical-align: top;
+        text-align: center;
+        border-bottom: 0;
+        white-space: nowrap;
+    }
+    .table_nersingrecord {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+        margin: 0 auto;
+    }
+    .table_nersingrecord tr td {
+        border: #000 solid 1px;
+        padding:2px;/**/
+        line-height: 28px;
+        vertical-align: top;
+        text-align: center;
+        border-bottom: 0;
+        white-space: nowrap;
+        height: 28px;
+    }
+    .signin{width:52px; height: 20px; overflow:hidden; }
+    .fixedheight{ height: 240px; overflow: hidden;}
+
+    .table_bottom_in{ border-collapse: collapse; border-spacing: 0; width: auto}
+    .table_bottom_in tr td{border-collapse: collapse;  padding:10px 5px;  line-height: 13px; white-space: nowrap; border:#000 solid 2px;  }
+
+    .marginleft15{ margin-left: 15px; margin-top: 10px}
+    .marginright15{ margin-right: 20px}
+
+    .note {
+        width: 9%
+    }
+
+    h1 {
+        font-size: 21pt!important;
+        font-weight: bolder;
+        line-height: normal;
+    }
+
+    h2 {
+        font-size: 18pt!important;
+        font-weight: bolder;
+        line-height: normal;
+        letter-spacing: 4px;
+    }
+
+    h3 {
+        font-size: 12pt!important;
+        line-height: normal;
+        font-weight: normal;
+        font-family: "Times New Roman"!important;
+    }
+
+    @media print {
+        background-color: #fff;
+        padding: 0!important;
+        padding-left: 1.3cm !important;
+        font-family: "DFKai-sb", "BiauKai", "Times New Roman";
+        h1 {
+            font-size: 23pt!important;
+        }
+        h2 {
+            font-size: 19pt!important; letter-spacing: -0.3px
+        }
+        h3 {
+            font-size: 14.5pt!important; letter-spacing: -0.1px
+        }
+        h1,h2
+        {font-family: "DFKai-sb", "BiauKai" !important;}
+        table{width: 20.5cm}
+        table tr td{font-size: 11pt!important; line-height: 20px!important}
+        table tr td div{font-size: 11pt!important; line-height: 20px!important}
+        .table{width: 20.5cm} 
+        .table tr td{font-size: 11pt!important; line-height: 21px!important}
+        .table_in tr td{font-size: 11pt!important; line-height: 18px!important}
+        .table_in tr td span{font-size: 11pt!important; line-height: 18px!important}
+        .table_in_record tr td{font-size: 11pt!important; line-height: 21px!important}
+        .table_9 tr td{font-size: 11pt!important; line-height: 20px; }
+        .table_nersingrecord tr td {
+            line-height: 25px!important;
+            height: 25px!important;
+        }
+        .marginleft15{ margin-left: 0px; font-size: 11pt!important; line-height: 21px!important}
+        .marginleft15 span{ font-size: 11pt!important; line-height: 21px!important}
+        .marginright15{width: 20.5cm; margin-right: -10px!important; line-height: 21px!important}
+        .lefttopbox{left: 0px; }
+        .lefttopbox span{font-size: 11pt!important; line-height: 24px}
+        .signin{width:55px; letter-spacing: -1px}
+        .fixedheight{ height: 225px; }
+    }
+
+    .pagebreak {
+        page-break-after: always;
+    }
+
+    // 下方頁次
+    .page-number {
+        float: right;
+        margin-top: 6px;
+    }
+}
+
+@media print {
+    md-tooltip {
+        display: none !important;
+    }
+    md-content {
+        background-color: #fff !important;
+    }
+}

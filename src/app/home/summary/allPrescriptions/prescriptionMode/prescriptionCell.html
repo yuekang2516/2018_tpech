@@ -1,0 +1,17 @@
+
+<div class="ui-grid-cell-contents" ng-class="{delete: row.entity.Status == 'Deleted'}" ng-if="row.entity.Id" ng-click="grid.appScope.edit(row.entity.Id)" layout="column" layout-align="center center">
+    <span ng-if="col.field === 'CreatedTime'">{{COL_FIELD | moment:'YYYY/MM/DD'}}</span>
+    <span ng-if="col.field === 'CreatedTime'">{{COL_FIELD | moment:'(dd) HH:mm'}}</span>
+    <div ng-if="col.field == 'CreatedTime'" class="{{row.entity.Type}}">{{row.entity.Type == 'LongTerm'? 'allPrescriptions.prescriptionTabPage.longTerm' : 'allPrescriptions.prescriptionTabPage.temporary'
+        | translate}}</div>
+
+    <span class="content" ng-style="row.entity.setColor[col.field] === true ? {'color' : 'red'} : {}" ng-if="col.field !== 'Status' && col.field !== 'CreatedTime' && col.field !== 'Duration' && col.field !== 'Needle' && col.field !== 'DialysisMode'">{{ COL_FIELD }}</span>
+    <span class="content" ng-style="row.entity.setColor[col.field] === true ? {'color' : 'red'} : {}" ng-if="col.field === 'Duration'">{{ row.entity.Duration.Hours }} : {{ row.entity.Duration.Minutes }}</span>
+    <span class="content" ng-style="row.entity.setColor[col.field] === true ? {'color' : 'red'} : {}" ng-if="col.field === 'Needle'">{{ row.entity.Needle.ArteryLength }}/{{ row.entity.Needle.VeinLength }}</span>
+    <span class="content" ng-style="row.entity.setColor[col.field] === true ? {'color' : 'red'} : {}" ng-if="col.field === 'DialysisMode'">{{ row.entity.DialysisMode.Name }}</span>
+
+    <div ng-if="col.field == 'Status' && row.entity.Status !== 'Deleted'" layout="column" layout-align="start center">
+        <button ng-click="$event.stopPropagation(); grid.appScope.copy(row.entity)" class="buttonblue" style="margin-bottom:3px">{{ 'allPrescriptions.prescriptionTabPage.copy' | translate }}</button>
+        <button ng-if="grid.appScope.checkCanAccess(row.entity.CreatedUserId)" ng-click="$event.stopPropagation(); grid.appScope.del(row.entity)" class="buttonblue">{{ 'allPrescriptions.prescriptionTabPage.delete' | translate }}</button>
+    </div>
+</div>

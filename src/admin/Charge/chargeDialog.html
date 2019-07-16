@@ -1,0 +1,127 @@
+<style scoped>
+    .padding-bottom {
+        padding-bottom: 20px;
+    }
+
+    .width {
+        width: 600px;
+    }
+</style>
+<md-dialog aria-label="{{'charge.dialopageTitle' | translate: '{chargename: dvm.title}'}}">
+    <div ng-cloak class="width">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 translate="charge.dialopageTitle" translate-values='{chargename: dvm.title}'></h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="dvm.cancel()">
+                    <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <loading ng-show="dvm.loading"></loading>
+        <md-dialog-content ng-show="!dvm.loading">
+            <div class="md-dialog-content" flex>
+                <div flex ng-show="dvm.isError" layout="column" layout-fill layout-align="center center">
+                    <h3 translate="customMessage.serverError"></h3>
+                </div>
+                <form name="editForm">
+                    <md-grid-list md-cols="2" md-row-height="160px">
+                        <md-grid-tile md-colspan="2">
+                            <div class="image-container">
+                                <img ng-show="dvm.loadingPicture" height="16px" width="16px" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                                <img ng-if="!dvm.formData.Photo" ng-src="static/img/Unknown.png" />
+                                <img ngf-thumbnail="dvm.formData.Photo" />
+                                <input type="file" ngf-change="dvm.handleChangeBase64()" ngf-select ng-model="dvm.formData.Photo" name="Photo" accept="image/*" ngf-fix-orientation="true" ngf-resize="{width: 160, height: 160, centerCrop: true}" />
+                            </div>
+                        </md-grid-tile>
+                    </md-grid-list>
+                    <md-grid-list md-cols="2" md-row-height="64px">
+                        <md-grid-tile md-colspan="2">
+                            <md-input-container class="md-block" flex>
+                                <div style="margin-top:-0.9em" flex>
+                                <label translate="charge.ownWard"></label>
+                                <md-select ng-model="dvm.formData.WardId">
+                                    <md-option ng-repeat="w in dvm.wards" value="{{ w.Id }}">{{ w.Name }}</md-option>
+                                </md-select>
+                                </div>
+                            </md-input-container>
+                        </md-grid-tile>
+                        <md-grid-tile>
+                            <md-input-container class="md-block" flex>
+                                <label>BarCode</label>
+                                <input type="text" name="BarCode" ng-model="dvm.formData.BarCode" />
+                            </md-input-container>
+                        </md-grid-tile>
+                        <md-grid-tile>
+                            <md-input-container class="md-block" flex>
+                                <label translate="charge.pcCode"></label>
+                                <input type="text" name="Code" ng-model="dvm.formData.Code" />
+                            </md-input-container>
+                        </md-grid-tile>
+                        <md-grid-tile md-colspan="2">
+                            <md-input-container class="md-block" flex>
+                                <label translate="charge.chargeName"></label>
+                                <input type="text" name="Name" ng-model="dvm.formData.Name" required />
+                                <div ng-messages="editForm.Name.$error">
+                                    <div ng-message="required"><span translate="customMessage.dataRequired"></span></div>
+                                </div>
+                            </md-input-container>
+                        </md-grid-tile>
+                        <md-grid-tile>
+                            <md-input-container class="md-block" flex>
+                                <label translate="charge.price"></label>
+                                <input ng-model="dvm.formData.Price" type="number" name="Price" min="0" required>
+                                <div ng-messages="editForm.Price.$error">
+                                    <div ng-message="required"><span translate="customMessage.dataRequired"></span></div>
+                                </div>
+                            </md-input-container>
+                        </md-grid-tile>
+                        <md-grid-tile>
+                            <md-input-container class="md-block" flex>
+                                <label translate="charge.unit"></label>
+                                <input ng-model="dvm.formData.Unit" type="text" name="Unit" required/>
+                                <div ng-messages="editForm.Unit.$error">
+                                    <div ng-message="required"><span translate="customMessage.dataRequired"></span></div>
+                                </div>
+                            </md-input-container>
+                        </md-grid-tile>
+                        <md-grid-tile>
+                            <md-input-container class="md-block" flex>
+                                <label translate="charge.safeStocks"></label>
+                                <input ng-model="dvm.formData.SafetyStock" type="number" name="SafetyStock" min="0" required>
+                                <div ng-messages="editForm.SafetyStock.$error">
+                                    <div ng-message="required"><span translate="customMessage.dataRequired"></span></div>
+                                </div>
+                            </md-input-container>
+                        </md-grid-tile>
+                        <md-grid-tile>
+                            <md-input-container class="md-block" flex>
+                                <label translate="charge.orderBy"></label>
+                                <input ng-model="dvm.formData.Sort" type="number" name="Sort" min="0" required>
+                                <div ng-messages="editForm.Sort.$error">
+                                    <div ng-message="required"><span translate="customMessage.dataRequired"></span></div>
+                                </div>
+                            </md-input-container>
+                        </md-grid-tile>
+                    </md-grid-list>
+                    <div layout="column" flex>
+                        <label translate="charge.noticeMail"></label>
+                        <md-chips ng-model="dvm.formData.NotifyEmails" name="notifychip" readonly="false" md-enable-chip-edit="false" md-removable="true" md-on-add="dvm.addNotifyEmail($index)" md-add-on-blur="true">
+                        </md-chips>
+                        <!--<textarea md-select-on-focus ng-model="dvm.NotifyEmail" md-detect-hidden="true"></textarea>-->
+                    </div>
+                    <div layout="column" flex>
+                        <label translate="charge.firmMail"></label>
+                        <md-chips ng-model="dvm.formData.CompanyEmail" name="companychip" readonly="false" md-enable-chip-edit="false" md-removable="true" md-on-add="dvm.addCompanyEmail($index)" md-add-on-blur="true">
+                        </md-chips>
+                        <!--<textarea md-select-on-focus ng-model="dvm.CompanyEmail" md-detect-hidden="true"></textarea>-->
+                    </div>
+                    <md-button class="md-raised md-warn" ng-click="dvm.delete($event)" ng-if="dvm.editMode" ng-disabled="dvm.isSaving"><span translate>{{'charge.deletebutton'}}</span></md-button>
+                    <md-button type="submit" class="md-raised md-primary" ng-click="dvm.save()" ng-disabled="editForm.$invalid || dvm.isSaving"><span translate>{{'charge.savebutton'}}</span></md-button>
+                    <!--<md-button class="md-raised md-warn" ng-click="dvm.sendMail()" ng-if="dvm.editMode">發送郵件</md-button>-->
+               </form>
+            </div>
+        </md-dialog-content>
+    </div>
+</md-dialog>

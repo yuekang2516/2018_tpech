@@ -1,0 +1,198 @@
+<div layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="$ctrl.back()">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <div layout="row" translate>
+                {{'bed.fixedBed'}}
+            </div>
+            <span flex></span>
+        </div>
+    </md-toolbar>
+    <div class="table-head" layout="row">
+        <div class="scroll" layout="row" layout-align="start center">
+            <div class="ward" layout="row" layout-align="start center" style="margin: 0">
+                <label translate>{{'bed.ward'}} </label>
+                <label class="title" ng-if="$ctrl.keys.length == 1" readonly>{{::$ctrl.wards[$ctrl.ward]}}</label>
+                <md-select ng-model="$ctrl.ward" ng-if="$ctrl.keys.length > 1" ng-change="$ctrl.changeWard($ctrl.ward)">
+                    <md-option ng-repeat="k in $ctrl.keys" ng-value="k">{{::$ctrl.wards[k]}}</md-option>
+                </md-select>
+                <label class="memo">
+                    {{$ctrl.wardMemo}}
+                </label>
+            </div>
+        </div>
+    </div>
+    <md-content layout="column" flex>
+        <div layout="row" flex>
+            <md-content class="patients" layout="column">
+                <div style="padding: 3px; border-bottom: #e6e5e5 solid 1px; border-right: #e6e5e5 solid 1px;">
+                    <input id="search" class="search" type="text" ng-model="$ctrl.search" ng-change="$ctrl.searchPatient($ctrl.search, 'patientList')" ng-model-options="{debounce:600}" placeholder="{{ 'bed.nameAndMedicalId' | translate }}" />
+                </div>
+                <md-content flex>
+                    <loading ng-show="$ctrl.loadingPatients">{{'bed.loadingPatients' | translate}}</loading>
+                    <md-virtual-repeat-container ng-show="!$ctrl.loadingPatients" id="vertical-container">
+                        <md-list-item class="md-2-line" ng-class="{active: p.isSelected}" md-virtual-repeat="p in $ctrl.patients" ng-click="$ctrl.selectPatient(p)">
+                            <div class="md-list-item-text">
+                                <h3>{{p.MedicalId}} - </h3>
+                                <h3>{{p.Name}}</h3>
+                            </div>
+                        </md-list-item>
+                    </md-virtual-repeat-container>
+                </md-content>
+                <!-- <md-button class="md-raised md-primary right-button" ng-disabled="!$ctrl.isLoadingPatientsFinished || !$ctrl.isLoadingBedsFinished"
+                        ng-click="$ctrl.arrange($event)">
+                        {{'bed.arrangeBed' | translate}}
+                    </md-button> -->
+            </md-content>
+
+            <div layout="column" flex>
+                <md-tabs md-selected="$ctrl.selectedIndex" md-border-bottom md-dynamic-height="true" md-disable-animation>
+                    <md-tab ng-repeat="tab in $ctrl.tabs" label="{{tab.title}}" ng-click="$ctrl.loadFixedBeds($ctrl.selectedIndex)">
+                    </md-tab>
+                    <md-tab ng-if="$ctrl.tabs.length === 1 && !$ctrl.loadingBed" style="padding: 0; margin: 0;">
+                        <div ng-click="$ctrl.addNewWeek()" class="addicon">
+                            <i class="material-icons">add</i>
+                            <span translate="bed.add"></span>
+                        </div>
+                    </md-tab>
+                </md-tabs>
+                <md-content flex>
+                    <loading ng-if="$ctrl.loadingBed"></loading>
+                    <server-error-page flex ng-show="$ctrl.loadingBedsErr || $ctrl.loadingPatientsErr" hide-refresh="true"></server-error-page>
+                    <div id="arrange-fixed-container" ng-if="!$ctrl.loadingBed" style="overflow: hidden;">
+                        <table id="arrange-fixed">
+                            <thead>
+                                <tr>
+                                    <th translate="bed.bedNo"></th>
+                                    <th ng-style="$index == 5 || $index == 6 ? {'color': 'red'} : {}" ng-repeat="day in $ctrl.days">{{::day}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="bed in $ctrl.beds track by $index">
+                                    <td>
+                                        {{ bed.No }}
+                                        <div ng-if="bed.Group" class="bedGroup">
+                                            {{ bed.Group }}
+                                        </div>
+                                        <span ng-if="bed.isNotInSetting" class="icon-button-badge" style="line-height:1em; font-weight:bold">
+                                            !
+                                            <md-tooltip md-direction="right">{{'bed.bedNoNotInSetting' | translate}}</md-tooltip>
+                                        </span>
+                                    </td>
+                                    <td valign="top" ng-repeat="day in $ctrl.daysInWeek" ng-init="daysIndex = $index">
+                                        <form name="fixedBedCellForm" ng-repeat="(key, value) in day.AssignBed[bed.No] track by $index" ng-if="key !== 'night' && key !== 'temp'" class="border" ng-class="{'assigned': value.PatientId, 'selected': $ctrl.highlightPatient.Id === value.PatientId, 'disableHover': bed.isNotInSetting && !value.PatientId}" ng-click="$ctrl.changeEditMode(value, bed.isNotInSetting)" novalidate>
+                                            <div class="bedCell" layout="row" layout-align="center center">
+                                                <i ng-if="day.AssignBed[bed.No][key]['PatientName']" ng-click="$ctrl.deletePatient($event, day.AssignBed[bed.No][key], day, key);$event.stopPropagation()" class="material-icons">
+                                                    delete
+                                                </i>
+                                                <span class="tableTitle" ng-if="value.PatientId !== ''" translate>{{'bed.'+ key + 'ShiftAbbr'}}</span>
+                                                <span class="tableTitle" ng-if="!value.PatientId" translate>{{'bed.'+ key + 'Shift'}}</span>
+                                                <span>{{ day.AssignBed[bed.No][key]['PatientName'] }}</span>
+                                            </div>
+                                            <div ng-style="{'max-width': {{$ctrl.cellMaxWidth}}}" ng-if="value.editing" layout="column">
+                                                <md-autocomplete required ng-click="$event.stopPropagation();" md-no-cache="true" md-require-match md-input-name="autocompleteField" md-no-cache="true" md-selected-item="value.edit.patient" md-search-text="value.searchPatientText" md-selected-item-change="$ctrl.addTempSelectedPatients(value, value.edit.patient)" ng-blur="$ctrl.selectedFirstMeetPatient(value)" md-items="item in $ctrl.searchPatient(value, 'bedPatient')" md-item-text="item.MedicalId +'-'+ item.Name" md-min-length="0" placeholder="{{ 'arrange.searchPatient' | translate }}">
+                                                    <md-item-template>
+                                                        <span md-highlight-text="$ctrl.searchPatientText" md-highlight-flags="^i">{{item.MedicalId + '-' + item.Name}}</span>
+                                                        <md-tooltip>
+                                                            {{item.MedicalId + '-' + item.Name}}
+                                                        </md-tooltip>
+                                                    </md-item-template>
+                                                </md-autocomplete>
+                                                <div class="warning" ng-messages="fixedBedCellForm.autocompleteField.$error" ng-if="fixedBedCellForm.autocompleteField.$touched">
+                                                    <div ng-message="md-require-match" translate>{{ 'arrange.noMatchPatient' }}</div>
+                                                </div>
+
+                                                <div layout="column" ng-if="value.edit.patient.HintMessage && value.edit.patient.HintMessage === 'arranged'" class="hint-message">
+                                                    <div>同天同班別不可重複排床。</div>
+                                                    
+                                                    <div>病人姓名：{{value.edit.patient.Name}}</div>
+                                                    
+                                                    <div>目前床位：{{value.edit.patient.HintBed}}</div>
+                                                </div>
+
+                                                <!-- <md-select style="margin:4px 0 0 0" ng-click="$event.stopPropagation(); $ctrl.changePatient(value)" ng-change="$ctrl.addTempSelectedPatients(value, {{value.edit.patient}})" ng-model="value.edit.patient" placeholder="{{ 'bed.choosePatient' | translate }}" class="md-no-underline" ng-model-options="{trackBy: '$value.Id'}" md-on-close="$ctrl.clearSearch(value)" required>
+                                                    <md-select-header>
+                                                        <input style="background: url(../../static/img/ic_search.png) no-repeat scroll 2.5px 2.5px;padding-left: 25px;border-radius: 5px;font-size: 13px;" ng-model="value.searchBedPatient" type="search" ng-change="$ctrl.searchPatient(value, 'bedPatient')" placeholder="{{ 'bed.nameAndMedicalId' | translate }}" ng-keydown="$event.stopPropagation()" ng-model-options="{debounce:600}">
+                                                    </md-select-header>
+                                                    <md-option ng-repeat="patient in value.bedPatients" ng-value="patient">
+                                                        {{patient.Name}} - {{patient.MedicalId}}
+                                                    </md-option>
+                                                </md-select> -->
+                                                <div layout="row">
+                                                    <md-radio-group flex style="margin:4px 0" ng-model="value.edit.mode" layout="row" layout-wrap ng-click="$event.stopPropagation()">
+                                                        <md-radio-button value="HD" class="md-primary" style="margin-right: 8px">
+                                                            <span class="span_1">HD</span>
+                                                        </md-radio-button>
+                                                        <md-radio-button value="HDF">
+                                                            <span class="span_1">HDF</span>
+                                                        </md-radio-button>
+                                                        <md-radio-button value="SLEDD-f">
+                                                            <span class="span_1">SLEDD-f</span>
+                                                        </md-radio-button>
+                                                    </md-radio-group>
+                                                    <md-button ng-if="value.edit.status === 'new' && !value.loadingBedCell" ng-disabled="fixedBedCellForm.$invalid || value.loadingBedCell || (value.edit.patient.HintMessage && value.edit.patient.HintMessage === 'arranged')" ng-click="$ctrl.assignFixedBed($event, value, day.Weekday)" ng-click="$ctrl.assignFixedBed($event, value, day.Weekday)" class="md-icon-button">
+                                                        <div class="div_1">
+                                                            <i class="material-icons done">
+                                                                done
+                                                            </i>
+                                                        </div>
+                                                    </md-button>
+                                                    <md-button ng-if="value.edit.status === 'edit' && !value.loadingBedCell && !bed.isNotInSetting" ng-disabled="fixedBedCellForm.$invalid || value.loadingBedCell || (value.edit.patient.HintMessage && value.edit.patient.HintMessage === 'arranged')" ng-click="$ctrl.assignFixedBed($event, value, day.Weekday)" class="md-icon-button">
+                                                        <div class="div_1">
+                                                            <i class="material-icons edit">
+                                                                edit
+                                                            </i>
+                                                        </div>
+                                                    </md-button>
+                                                    <md-progress-circular ng-if="value.loadingBedCell" style="top: 12px" class="md-hue-2" md-diameter="20px"></md-progress-circular>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </md-content>
+
+            </div>
+        </div>
+    </md-content>
+</div>
+
+<script type="text/ng-template" id="deleteDialog.html">
+        <md-dialog aria-label="刪除確認">
+            <form ng-cloak>
+                <md-toolbar>
+                    <div class="md-toolbar-tools">
+                        <!-- <h2 translate>{{'assessment.assessments.deleteRecord'}}</h2> -->
+                        <h2 translate>{{'bed.confirmDeleteFixedBedTitle'}}</h2>
+                        <span flex></span>
+                        <md-button class="md-icon-button" ng-click="vm.cancel()">
+                            <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                        </md-button>
+                    </div>
+                </md-toolbar>
+    
+                <md-dialog-content>
+                    <div class="md-dialog-content" translate>
+                        <!-- {{'assessment.assessments.confirmDelete'}} -->
+                        {{'bed.confirmDeleteFixedBedContent'}}
+                    </div>
+                </md-dialog-content>
+    
+                <md-dialog-actions layout="row">
+                    <md-button ng-click="vm.cancel()">
+                        <!-- {{'assessment.assessments.cancel' | translate}} -->
+                        {{'bed.component.cancel' | translate}}
+                    </md-button>
+                    <md-button ng-click="vm.ok()">
+                        <!-- {{'assessment.assessments.delete' | translate}} -->
+                        {{'bed.component.delete' | translate}}
+                    </md-button>
+                </md-dialog-actions>
+            </form>
+        </md-dialog>
+    </script>

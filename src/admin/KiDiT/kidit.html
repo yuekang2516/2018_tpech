@@ -1,0 +1,350 @@
+<style scoped>
+    kidit {
+        height: 100%;
+    }
+
+    .padding {
+        padding: 10px;
+    }
+</style>
+
+<div flex layout="column" layout-fill>
+    <!--<div id="kidit"></div>-->
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.openLeftMenu()" hide-gt-sm>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <h3 translate="kidit.pageTitle"></h3>
+        </div>
+    </md-toolbar>
+    <md-content flex layout-fill>
+        <h4 class="padding"><span style="color:red" translate="kidit.desc"></span></h4>
+        <div layout-sm="column" layout="row">
+            <div flex-sm flex-gt-sm="50" layout="column">
+                <!--透析紀錄統計表-->
+                <md-card>
+                    <md-toolbar>
+                        <div class="md-toolbar-tools">
+                            <h3 translate="kidit.function1"></h3>
+                        </div>
+                    </md-toolbar>
+                    <div class="padding">
+                        <div>
+                            <md-input-container>
+                                <label translate="kidit.startDate"></label>
+                                <input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.dialysisStartDate" />
+                            </md-input-container>
+                            <md-input-container>
+                                <label translate="kidit.endDate"></label>
+                                <input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.dialysisEndDate" />
+                            </md-input-container>
+                        </div>
+                        <md-card-actions layout="row">
+                            <md-button class="md-raised md-primary" ng-click="vm.exportDialysisCSV()"><span translate>{{'kidit.outputFormat'}}</span></md-button>
+                        </md-card-actions>
+                        <p><span translate="kidit.outputDesc"></span></p>
+                        <p><span translate="kidit.desc1"></span></p>
+                    </div>
+                </md-card>
+                <!--處方匯出-->
+                <md-card>
+                    <md-toolbar>
+                        <div class="md-toolbar-tools">
+                            <h3 translate="kidit.function2"></h3>
+                        </div>
+                    </md-toolbar>
+                    <div class="padding">
+                        <div>
+                            <md-input-container>
+                                <label translate="kidit.startDate"></label>
+                                <input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.prescriptionStartDate" />
+                            </md-input-container>
+                            <md-input-container>
+                                <label translate="kidit.endDate"></label>
+                                <input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.prescriptionEndDate" />
+                            </md-input-container>
+                        </div>
+                        <div>
+                            <md-checkbox ng-model="vm.prescriptionDate" aria-label="{{'kidit.desc2' | translate}}">
+                                <span translate="kidit.desc2"></span>
+                            </md-checkbox>
+                            <div ng-show="vm.prescriptionDate">
+                                <md-datepicker ng-model="vm.prescriptionSetDate" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
+                            </div>
+                        </div>
+                        <md-card-actions layout="row">
+                            <md-button class="md-raised md-primary" ng-click="vm.exportPrescriptionCSV()"><span translate>{{'kidit.outputFormat'}}</span></md-button>
+                        </md-card-actions>
+                        <p><span translate="kidit.outputDesc"></span></p>
+                        <p><span translate="kidit.desc3"></span></p>
+                        <p><span translate="kidit.desc4"></span></p>
+                        <p><span translate="kidit.desc5"></span></p>
+                    </div>
+                </md-card>
+                <!--病人匯出-->
+                <md-card>
+                    <md-toolbar>
+                        <div class="md-toolbar-tools">
+                            <h3 translate="kidit.function3"></h3>
+                        </div>
+                    </md-toolbar>
+                    <div class="padding">
+                        <md-card-actions layout="row">
+                            <md-button class="md-raised md-primary" ng-click="vm.exportPatientCSV()"><span translate>{{'kidit.outputFormat'}}</span></md-button>
+                        </md-card-actions>
+                        <p><span translate="kidit.outputDesc"></span></p>
+                        <p><span translate="kidit.desc6"></span></p>
+                    </div>
+                </md-card>
+                <!--造管匯出-->
+                <md-card>
+                    <md-toolbar>
+                        <div class="md-toolbar-tools">
+                            <h3 translate="kidit.function7"></h3>
+                        </div>
+                    </md-toolbar>
+                    <div class="padding">
+                        <md-input-container>
+                            <label translate="kidit.startDate"></label>
+                            <input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.vesselStartDate" />
+                        </md-input-container>
+                        <md-input-container>
+                            <label translate="kidit.endDate"></label>
+                            <input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.vesselEndDate" />
+                        </md-input-container>
+                    </div>
+                    <md-card-actions layout="row">
+                        <md-button class="md-raised md-primary" ng-click="vm.exportVesselCSV()"><span translate>{{'kidit.outputFormat'}}</span></md-button>
+                    </md-card-actions>
+                    <p><span translate="kidit.outputDesc"></span></p>
+                    <p><span translate="kidit.desc18"></span></p>
+                </md-card>
+                <!--腹膜透析處方匯出-->
+                <md-card>
+                    <md-toolbar>
+                        <div class="md-toolbar-tools">
+                            <h3 translate="kidit.function8"></h3>
+                        </div>
+                    </md-toolbar>
+                    <div class="padding">
+                        <div>
+                            <md-input-container>
+                                <label translate="kidit.startDate"></label>
+                                <input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.PDTreatRecordStartDate" />
+                            </md-input-container>
+                            <md-input-container>
+                                <label translate="kidit.endDate"></label>
+                                <input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.PDTreatRecordEndDate" />
+                            </md-input-container>
+                        </div>
+                        <md-card-actions layout="row">
+                            <md-button class="md-raised md-primary" ng-click="vm.exportPDTreatRecordCSV($event)"><span translate>{{'kidit.outputFormat'}}</span></md-button>
+                        </md-card-actions>
+                        <div id="excelDiv">
+                        </div>
+                    </div>
+                </md-card>
+                <!--檢驗檢查匯出-->
+                <md-card>
+                    <md-toolbar>
+                        <div class="md-toolbar-tools">
+                            <h3 translate="kidit.function9"></h3>
+                        </div>
+                    </md-toolbar>
+                    <div class="padding">
+                        <md-input-container>
+                            <label translate="kidit.startDate"></label>
+                            <input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.labexamStartDate" />
+                        </md-input-container>
+                        <md-input-container>
+                            <label translate="kidit.endDate"></label>
+                            <input type="date" min="1900-01-01" max="2999-12-31" ng-model="vm.labexamEndDate" />
+                        </md-input-container>
+                    </div>
+                    <md-card-actions layout="row">
+                        <md-button class="md-raised md-primary" ng-click="vm.exportLabexamCSV()"><span translate>{{'kidit.outputFormat'}}</span></md-button>
+                    </md-card-actions>
+                    <p><span translate="kidit.outputDesc"></span></p>
+                    <p><span translate="kidit.desc19"></span></p>
+                </md-card>
+            </div>
+            <div flex-sm flex-gt-sm="50" layout="column">
+                <!--資料匯入功能改寫需要import angular-file-upload-shim-->
+                <!--病人匯入-->
+                <md-card>
+                    <md-toolbar>
+                        <div class="md-toolbar-tools">
+                            <h3 translate="kidit.function4"></h3>
+                        </div>
+                    </md-toolbar>
+                    <div class="padding">
+                        <md-input-container>
+                            <label translate="kidit.select"></label>
+                            <md-select ng-model="vm.Ward" ng-model-options="{trackBy: '$value.Id'}">
+                                <md-option ng-repeat="w in vm.Wards" ng-value="{{w}}">{{w.Name}}</md-option>
+                            </md-select>
+                        </md-input-container>
+
+                        <input type="file" id="csvFile" accept=".csv" ngf-select ng-model="vm.myfile" />
+
+                        <md-card-actions layout="row">
+                            <md-button class="md-raised md-primary" ng-click="vm.sendFile()" ng-disabled="vm.myfile === undefined || vm.myfile.length === 0 || vm.Ward === undefined || vm.Ward.length === 0">
+                                <span translate>{{'kidit.importFormat'}}</span>
+                            </md-button>
+                        </md-card-actions>
+
+                        <div layout="row" layout-sm="column" layout-align="space-around" id="loading" ng-show="vm.loading">
+                            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                        </div>
+                        <pre ng-show="vm.Message.length > 0">{{vm.Message}}</pre>
+
+                        <p><span translate="kidit.inputDesc"></span></p>
+                        <p><span translate="kidit.desc7"></span></p>
+                        <p><span translate="kidit.desc8"></span></p>
+                        <p><span translate="kidit.desc9"></span></p>
+                        <p><span translate="kidit.desc10"></span></p>
+                        <p><span translate="kidit.desc11"></span></p>
+                        <p><span translate="kidit.desc12"></span></p>
+                    </div>
+                </md-card>
+                <!--處方匯入-->
+                <md-card>
+                    <md-toolbar>
+                        <div class="md-toolbar-tools">
+                            <h3 translate="kidit.function5"></h3>
+                        </div>
+                    </md-toolbar>
+                    <md-content>
+                    <div class="padding">
+                        <input type="file" onchange="angular.element(this).scope().vm.importf(this)" accept=".txt, .csv, .xls, .xlsx" ngf-select ng-model="vm.Photo1" name="Photo1" ngf-fix-orientation="true" />
+                        <md-checkbox ng-model="vm.havetitle" aria-label="{{'kidit.desc20' | translate}}">
+                            <span translate="kidit.desc20"></span>
+                        </md-checkbox>
+                    <!--<input type="file" ngf-change="vm.handleChangeBase64()" ngf-select ng-model="vm.Photo" name="Photo" accept=".txt, .csv, .xls, .xlsx" ngf-fix-orientation="true" />-->
+                        <div layout="row" layout-sm="column" layout-align="space-around" id="loading" ng-show="vm.loading">
+                            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                        </div>
+                        <!--<pre ng-show="vm.Message.length > 0">{{vm.Message}}</pre>-->
+                            
+                        <!--<input type="file" id="csvFile" accept=".csv" ngf-select ng-model="vm.myfile1" />
+                        <md-card-actions layout="row">
+                            <md-button class="md-raised md-primary" ng-click="vm.sendFile1()" ng-disabled="vm.myfile1 === undefined || vm.myfile1.length === 0">
+                                <span translate>{{'kidit.importFormat'}}</span>
+                            </md-button>
+                        </md-card-actions>-->
+
+                        <div layout="row" layout-sm="column" layout-align="space-around" id="loading" ng-show="vm.loading">
+                            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                        </div>
+                        <!--<pre ng-show="vm.Message1.length > 0">{{vm.Message1}}</pre>-->
+
+                        <p><span translate="kidit.inputDesc"></span></p>
+                        <p><span translate="kidit.desc13"></span></p>
+                        <p><span translate="kidit.desc14"></span></p>
+                        <p><span translate="kidit.desc15"></span></p>
+                        <p><span translate="kidit.desc16"></span></p>
+                    </div>
+                    </md-content>
+                    <div layout="row" ng-show="vm.PrescriptionResult.length > 0">
+                        <md-button class="md-raised md-primary" ng-click="vm.sendFile1()">
+                            <span translate>{{'kidit.importFormat'}}</span>
+                        </md-button>
+                    </div>
+                    <md-content flex>
+                        <div ng-show="vm.PrescriptionResult.length > 0" flex=95>
+                            <md-list>
+                                <md-list-item>
+                                    <div layout="row" layout-fill>
+                                        <!--<span flex=20 translate="kidit.patientCode"></span>-->
+                                        <span flex=30 translate="kidit.IdentId"></span>
+                                        <span flex=20 translate="kidit.Frequency"></span>
+                                        <span flex=35 translate="kidit.ModeName"></span>
+                                        <span flex=15 translate="kidit.result"></span>
+                                    </div>
+                                </md-list-item>
+                                <md-list-item ng-repeat="rec in vm.PrescriptionResult">
+                                    <div layout="row" layout-fill>
+                                        <!--<span flex=20>{{rec.PatientId}}</span>-->
+                                        <span flex=30>{{rec.IdentifierId}}</span>
+                                        <span flex=20>{{rec.Frequency}}</span>
+                                        <span flex=35>{{rec.DialysisMode.Name}}</span>
+                                        <span flex=15 style="color:blue;">{{rec.Result}}</span>
+                                    </div>
+                                </md-list-item>
+                            </md-list>
+                        </div>
+                    </md-content>
+                </md-card>
+                <!--造管匯入-->
+                <md-card>
+                    <md-toolbar>
+                        <div class="md-toolbar-tools">
+                            <h3 translate="kidit.function6"></h3>
+                        </div>
+                    </md-toolbar>
+                    <md-content>
+                    <div class="padding">
+                        <input type="file" onchange="angular.element(this).scope().vm.importf1(this)" accept=".txt, .csv, .xls, .xlsx" ngf-select ng-model="vm.Photo2" name="Photo2" ngf-fix-orientation="true" />
+                        <md-checkbox ng-model="vm.havetitle1" aria-label="{{'kidit.desc20' | translate}}">
+                            <span translate="kidit.desc20"></span>
+                        </md-checkbox>
+                    <!--<input type="file" ngf-change="vm.handleChangeBase64()" ngf-select ng-model="vm.Photo" name="Photo" accept=".txt, .csv, .xls, .xlsx" ngf-fix-orientation="true" />-->
+                        <div layout="row" layout-sm="column" layout-align="space-around" id="loading" ng-show="vm.loading">
+                            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                        </div>
+                        <!--<pre ng-show="vm.Message.length > 0">{{vm.Message}}</pre>-->
+                            
+                        <!--<input type="file" id="csvFile" accept=".csv" ngf-select ng-model="vm.myfile1" />
+                        <md-card-actions layout="row">
+                            <md-button class="md-raised md-primary" ng-click="vm.sendFile1()" ng-disabled="vm.myfile1 === undefined || vm.myfile1.length === 0">
+                                <span translate>{{'kidit.importFormat'}}</span>
+                            </md-button>
+                        </md-card-actions>-->
+
+                        <div layout="row" layout-sm="column" layout-align="space-around" id="loading" ng-show="vm.loading">
+                            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                        </div>
+                        <!--<pre ng-show="vm.Message1.length > 0">{{vm.Message1}}</pre>-->
+
+                        <p><span translate="kidit.inputDesc"></span></p>
+                        <p><span translate="kidit.desc13"></span></p>
+                        <p><span translate="kidit.desc14"></span></p>
+                        <p><span translate="kidit.desc17"></span></p>
+                        <p><span translate="kidit.desc16"></span></p>
+                    </div>
+                    </md-content>
+                    <div layout="row" ng-show="vm.VesselResult.length > 0">
+                        <md-button class="md-raised md-primary" ng-click="vm.sendFile2()">
+                            <span translate>{{'kidit.importFormat'}}</span>
+                        </md-button>
+                    </div>
+                    <md-content flex>
+                        <div ng-show="vm.VesselResult.length > 0" flex=95>
+                            <md-list>
+                                <md-list-item>
+                                    <div layout="row" layout-fill>
+                                        <!--<span flex=20 translate="kidit.patientCode"></span>-->
+                                        <span flex=30 translate="kidit.IdentId"></span>
+                                        <span flex=20 translate="kidit.SeasonVesselDate"></span>
+                                        <span flex=35 translate="kidit.CatheterType"></span>
+                                        <span flex=15 translate="kidit.result"></span>
+                                    </div>
+                                </md-list-item>
+                                <md-list-item ng-repeat="rec in vm.VesselResult">
+                                    <div layout="row" layout-fill>
+                                        <!--<span flex=20>{{rec.PatientId}}</span>-->
+                                        <span flex=30>{{rec.IdentifierId}}</span>
+                                        <span flex=20>{{rec.SeasonVesselDate}}</span>
+                                        <span flex=35>{{rec.CatheterType}}</span>
+                                        <span flex=15 style="color:blue;">{{rec.Result}}</span>
+                                    </div>
+                                </md-list-item>
+                            </md-list>
+                        </div>
+                    </md-content>
+                </md-card>
+            </div>
+        </div>
+    </md-content>
+</div>

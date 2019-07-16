@@ -1,0 +1,89 @@
+<div flex layout="column" style="position: relative" layout-fill>
+  <summary-toolbar toolbar-title="'dialysisTabView.EPO' | translate" cancel="vm.goback()"></summary-toolbar>
+  <div class="list-header" layout="row" layout-align="center center">
+    <md-button class="md-raised" hide-xs aria-label="上個月" ng-click="vm.changeDate('prev')">
+      {{'epoRecord.epoRecord.prevMonth' | translate}}
+    </md-button>
+    <md-button hide-gt-xs class="md-icon-button" aria-label="上個月" ng-click="vm.changeDate('prev')">
+      <i class="material-icons">chevron_left</i>
+    </md-button>
+    <div style="white-space:nowrap;">
+      {{vm.previousMonthDate}} ~ {{vm.showDate}}
+    </div>
+    <md-button class="md-raised" hide-xs aria-label="下個月" ng-click="vm.changeDate('next')">
+      {{'epoRecord.epoRecord.nextMonth' | translate}}
+    </md-button>
+    <md-button hide-gt-xs class="md-icon-button" aria-label="下個月" ng-click="vm.changeDate('next')">
+      <i class="material-icons">chevron_right</i>
+    </md-button>
+  </div>
+  <div class="list-header" layout="row" layout-align="center center" ng-show="!vm.loading && vm.serviceData.length > 0">
+    <md-switch ng-model="vm.showDeleted" aria-label="Switch 1">
+      <!-- 顯示已刪除 ({{vm.deletedItemsLength}}筆) -->
+      <span translate="epoRecord.epoRecord.showDeleted"
+        translate-values='{deletedItemsLength: vm.deletedItemsLength}'></span>
+    </md-switch>
+    <span flex></span>
+    <!-- <h6>共 {{vm.serviceData.length}} 筆</h6> -->
+    <h6 translate="epoRecord.epoRecord.totalRecord" translate-values='{length: vm.serviceData.length}'></h6>
+    <span flex></span>
+    <last-refresh-time accesstime='vm.lastAccessTime' refresh='vm.refresh()'></last-refresh-time>
+  </div>
+  <md-content flex layout="column">
+    <loading ng-show="vm.loading">Loading...</loading>
+    <div ng-hide="vm.loading">
+      <md-list>
+        <md-list-item class="md-2-line" ng-repeat="item in vm.serviceData | orderBy: 'CreatedTime'"
+          ng-click="vm.goto(item.IsExecute, item.Id)" ng-hide="item.Status === 'Deleted' && !vm.showDeleted"
+          ng-class="{deleted: item.Status == 'Deleted'}">
+          <div class="md-list-item-text" layout="column">
+            <div layout="row">
+              <span style="font-weight:bold;font-size:16px;">{{::item.CreatedTime| moment: 'MM-DD (dd) HH:mm'}}</span>
+              <span flex></span>
+            </div>
+            <div layout="row">
+              <span>{{::item.EPOName}}</span>
+              <span flex></span>
+              <span>{{ ::item.ActualQuantity ? item.ActualQuantity : '-' }} {{ ::item.QuantityUnit }} </span>
+              <span ng-if="item.ActualDose">({{ ::item.ActualDose}} {{ ::item.DoseUnit}})</span>
+              <span>/ {{ ::item.Quantity }} {{ ::item.QuantityUnit }}</span>
+              <span ng-if="item.Dose">({{ ::item.Dose}} {{ ::item.DoseUnit}})</span>
+              <span flex></span>
+              <span>{{::item.Route}}
+            </div>
+            <div layout="row">
+              <span ng-if="item.ProcessTime">
+                {{ :: item.ProcessTime | moment: 'MM-DD (dd) HH:mm'}}
+                {{ ::item.IsExecute ? 'epoRecord.epoRecord.execute' : 'epoRecord.epoRecord.dontExecute' | translate}}
+              </span>
+              <seal created="none" modified="none" label="{{item.ProcessUserName}}"></seal>
+              <md-button ng-if="!item.ProcessTime && item.Status !== 'Deleted'" class="md-raised md-primary"
+                ng-click="vm.goto(true, item.Id)">{{'epoRecord.epoRecord.execute' | translate}}</md-button>
+              <md-button ng-if="!item.ProcessTime && item.Status !== 'Deleted'" class="md-raised md-warn"
+                ng-click="vm.goto(false, item.Id)">{{'epoRecord.epoRecord.dontExecute' | translate}}</md-button>
+              <span flex></span>
+              <seal model="item" modified="hideIfSame" fixed="true"></seal>
+            </div>
+            <div>{{::item.Memo}}</div>
+          </div>
+          <div>
+            <md-icon class="md-secondary" ng-click="vm.delete(item.Id)" ng-show="item.Status != 'Deleted'"
+              md-svg-icon="static/img/svg/ic_delete_black_24px.svg"></md-icon>
+          </div>
+          <md-divider ng-if="!$last"></md-divider>
+        </md-list-item>
+      </md-list>
+    </div>
+    <div flex ng-show="vm.serviceData.length === 0" layout="column" layout-fill layout-align="center center">
+      <!-- <h3>{{vm.showDate}}目前沒有資料</h3> -->
+      <h3 translate="epoRecord.epoRecord.noData" translate-values='{showDate: vm.showDate}'></h3>
+      <h4 translate>{{'epoRecord.epoRecord.clickBottomRight'}}</h4>
+    </div>
+    <div flex ng-show="!vm.loading && vm.isError" layout="column" layout-fill layout-align="center center">
+      <h3 translate>{{'epoRecord.epoRecord.serverError'}}</h3>
+    </div>
+  </md-content>
+  <md-button class="md-fab md-fab-bottom-right" ng-click="vm.goto(null, 'create')">
+    <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+  </md-button>
+</div>

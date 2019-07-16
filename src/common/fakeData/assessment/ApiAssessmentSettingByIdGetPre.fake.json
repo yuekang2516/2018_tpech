@@ -1,0 +1,97 @@
+{
+    "DateTimestamp": "2019-03-20T09:35:29.4105538+08:00",
+    "Type": "pre",
+    "Items": [
+      {
+        "Item": "意識",
+        "Options": [
+          "清醒",
+          "嗜睡",
+          "混亂",
+          "譫妄",
+          "木僵",
+          "半昏迷",
+          "昏迷"
+        ],
+        "IncludeOther": true
+      },
+      {
+        "Item": "呼吸",
+        "Options": [
+          "正常",
+          "快",
+          "慢",
+          "深",
+          "淺"
+        ],
+        "IncludeOther": true
+      },
+      {
+        "Item": "皮膚顏色",
+        "Options": [
+          "正常",
+          "蒼白",
+          "潮紅",
+          "發紺",
+          "黃疸"
+        ],
+        "IncludeOther": false
+      },
+      {
+        "Item": "水腫",
+        "Options": [
+          "無",
+          "有"
+        ],
+        "IncludeOther": false
+      },
+      {
+        "Item": "外傷",
+        "Options": [
+          "無",
+          "有"
+        ],
+        "IncludeOther": true
+      },
+      {
+        "Item": "活動力",
+        "Options": [
+          "正常",
+          "軟弱",
+          "臥床",
+          "肢體障礙"
+        ],
+        "IncludeOther": true
+      },
+      {
+        "Item": "身體狀況",
+        "Options": [
+          "頭痛",
+          "頭暈",
+          "胸悶",
+          "呼吸喘"
+        ],
+        "IncludeOther": false
+      }
+    ],
+    "HospitalId": "56fcc5dd4ead7870942f61c3",
+    "Revision": 262,
+    "HistoryId": null,
+    "Status": "Normal",
+    "CreatedUserId": null,
+    "CreatedUserName": null,
+    "CreatedTime": "2017-09-20T01:43:47.645Z",
+    "ModifiedUserId": "59478096d8d3321118c6678a",
+    "ModifiedUserName": "Yuting",
+    "ModifiedTime": "2019-03-14T08:03:25.556Z",
+    "Id": "5c8a0acda033ed3e30fd7a6a",
+    "CreatedOn": "2017-10-03T12:39:07Z",
+    "ModifiedOn": "2018-01-19T02:03:04.492Z",
+    "ObjectId": {
+      "Timestamp": 1552550605,
+      "Machine": 10499053,
+      "Pid": 15920,
+      "Increment": 16611946,
+      "CreationTime": "2019-03-14T08:03:25Z"
+    }
+  }

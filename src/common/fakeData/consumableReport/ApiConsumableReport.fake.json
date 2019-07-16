@@ -1,0 +1,68 @@
+[
+    {
+        "Date": "2019/01/02",
+        "Type": "AK",
+        "Item": "F800",
+        "Total": "2"
+    },
+    {
+        "Date": "2019/01/10",
+        "Type": "AK",
+        "Item": "F150",
+        "Total": "10"
+    },
+    {
+        "Date": "2019/02/13",
+        "Type": "AK",
+        "Item": "F150",
+        "Total": "13"
+    },
+    {
+        "Date": "2019/01/19",
+        "Type": "AK",
+        "Item": "F150",
+        "Total": "3"
+    },
+    {
+        "Date": "2019/01/10",
+        "Type": "Dialysate",
+        "Item": "藥水A",
+        "Total": "3"
+    },
+    {
+        "Date": "2019/01/21",
+        "Type": "Dialysate",
+        "Item": "藥水B",
+        "Total": "10"
+    },
+    {
+        "Date": "2019/02/13",
+        "Type": "Dialysate",
+        "Item": "藥水C",
+        "Total": "1"
+    },
+    {
+        "Date": "2019/02/17",
+        "Type": "Dialysate",
+        "Item": "藥水D",
+        "Total": "7"
+    },
+    {
+        "Date": "2019/03/19",
+        "Type": "Route",
+        "Item": "管路1",
+        "Total": "20"
+    },
+    {
+        "Date": "2019/01/21",
+        "Type": "Route",
+        "Item": "管路2",
+        "Total": "13"
+    },
+    {
+        "Date": "2019/01/10",
+        "Type": "Route",
+        "Item": "管路3",
+        "Total": "8"
+    }
+]

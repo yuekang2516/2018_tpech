@@ -1,0 +1,93 @@
+[
+    {
+        "PAT_NO": "50703949",
+        "ODR_CODE": "08002",
+        "LAB_CODE": "802",
+        "LAB_NAME": "WBC",
+        "RESULT": "7.18",
+        "UNIT": "10^3/uL",
+        "HIGH_LIMIT": "9.06",
+        "LOW_LIMIT": "3.54",
+        "RES_SW": "N",
+        "REP_TYPE_CODE": "08",
+        "REP_TYPE_NAME": "CBC",
+        "REPORT_DATE": "1060605",
+        "REPORT_TIME": "0948",
+        "HDEPT_NAME": "家庭醫學科"
+    },
+   {
+        "PAT_NO": "50703949",
+        "ODR_CODE": "06003",
+        "LAB_CODE": "6008",
+        "LAB_NAME": "Protein",
+        "RESULT": "Negative",
+        "UNIT": null,
+        "HIGH_LIMIT": null,
+        "LOW_LIMIT": null,
+        "RES_SW": null,
+        "REP_TYPE_CODE": "06",
+        "REP_TYPE_NAME": "URINE",
+        "REPORT_DATE": "1060622",
+        "REPORT_TIME": "1517",
+        "HDEPT_NAME": "家庭醫學科"
+    },
+    {
+        "PAT_NO": "50703949",
+        "ODR_CODE": "06003",
+        "LAB_CODE": "6008",
+        "LAB_NAME": "Protein",
+        "RESULT": "Negative",
+        "UNIT": null,
+        "HIGH_LIMIT": null,
+        "LOW_LIMIT": null,
+        "RES_SW": null,
+        "REP_TYPE_CODE": "06",
+        "REP_TYPE_NAME": "URINE",
+        "REPORT_DATE": "1060611",
+        "REPORT_TIME": "2230",
+        "HDEPT_NAME": "家庭醫學科"
+    },
+    {
+        "PAT_NO": "50703949",
+        "ODR_CODE": "06003",
+        "LAB_CODE": "6008",
+        "LAB_NAME": "Protein",
+        "RESULT": "123",
+        "UNIT": "cc/hr",
+        "HIGH_LIMIT": null,
+        "LOW_LIMIT": null,
+        "RES_SW": null,
+        "REP_TYPE_CODE": "06",
+        "REP_TYPE_NAME": "Al",
+        "REPORT_DATE": "1060922",
+        "REPORT_TIME": "2230",
+        "HDEPT_NAME": "家庭醫學科"
+    },
+    { "REP_TYPE_NAME": "A",  "REPORT_DATE": "1080321", "REPORT_TIME": "1230", "RESULT": "4000", "UNIT": "ml/hr" },
+    { "REP_TYPE_NAME": "B", "REPORT_DATE": "1080412", "REPORT_TIME": "2200", "RESULT": "3000", "UNIT": "ml/hr" },
+    { "REP_TYPE_NAME": "C", "REPORT_DATE": "1080414", "REPORT_TIME": "1039", "RESULT": "2000", "UNIT": "ml/hr" },
+    { "REP_TYPE_NAME": "D", "REPORT_DATE": "1080416", "REPORT_TIME": "0810", "RESULT": "1000", "UNIT": "ml/hr" },
+    { "REP_TYPE_NAME": "E", "REPORT_DATE": "1080410", "REPORT_TIME": "1102", "RESULT": "4000", "UNIT": "ml/hr" },
+
+    { "REP_TYPE_NAME": "A", "REPORT_DATE": "1080115", "REPORT_TIME": "1000", "RESULT": "4000", "UNIT": "ml/hr" },
+    { "REP_TYPE_NAME": "B11", "REPORT_DATE": "1080412", "REPORT_TIME": "2200", "RESULT": "3000", "UNIT": "ml/hr" },
+    { "REP_TYPE_NAME": "C11", "REPORT_DATE": "1080414", "REPORT_TIME": "1039", "RESULT": "2000", "UNIT": "ml/hr" },
+    { "REP_TYPE_NAME": "D11", "REPORT_DATE": "1080416", "REPORT_TIME": "0810", "RESULT": "1000", "UNIT": "ml/hr" },
+    { "REP_TYPE_NAME": "E11", "REPORT_DATE": "1080410", "REPORT_TIME": "1102", "RESULT": "4000", "UNIT": "ml/hr" },
+
+    { "REP_TYPE_NAME": "A", "REPORT_DATE": "1080920", "REPORT_TIME": "2243", "RESULT": "4000", "UNIT": "ml/hr" },
+    { "REP_TYPE_NAME": "B22", "REPORT_DATE": "1080412", "REPORT_TIME": "2200", "RESULT": "3000", "UNIT": "ml/hr" },
+    { "REP_TYPE_NAME": "C22", "REPORT_DATE": "1080414", "REPORT_TIME": "1039", "RESULT": "2000", "UNIT": "ml/hr" },
+    { "REP_TYPE_NAME": "D22", "REPORT_DATE": "1080416", "REPORT_TIME": "0810", "RESULT": "1000", "UNIT": "ml/hr" },
+    { "REP_TYPE_NAME": "E22", "REPORT_DATE": "1080410", "REPORT_TIME": "1102", "RESULT": "4000", "UNIT": "ml/hr" },
+
+    { "REP_TYPE_NAME": "A", "REPORT_DATE": "1080321", "REPORT_TIME": "1920", "RESULT": "4000", "UNIT": "ml/hr" },
+    { "REP_TYPE_NAME": "B33", "REPORT_DATE": "1080412", "REPORT_TIME": "2200", "RESULT": "3000", "UNIT": "ml/hr" },
+    { "REP_TYPE_NAME": "C33", "REPORT_DATE": "1080414", "REPORT_TIME": "1039", "RESULT": "2000", "UNIT": "ml/hr" },
+    { "REP_TYPE_NAME": "D33", "REPORT_DATE": "1080416", "REPORT_TIME": "0810", "RESULT": "1000", "UNIT": "ml/hr" },
+    { "REP_TYPE_NAME": "E33", "REPORT_DATE": "1080410", "REPORT_TIME": "1102", "RESULT": "4000", "UNIT": "ml/hr" }
+]
+
+
+
+    

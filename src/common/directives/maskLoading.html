@@ -1,0 +1,24 @@
+<style scoped>
+        
+    .fullscreenMask {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 50;
+    }
+
+    .maskTitleDiv {
+        margin-top:10px;
+    }
+    
+</style>
+
+<div class='fullscreenMask' layout="column" layout-align="center center">
+    <div layout="column" layout-align="center center" style="background-color: rgba(33, 33, 33, 0.8); color: white; padding: 20px; border-radius: 4px;">
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        <div class="maskTitleDiv" ng-show="$ctrl.isShowTitle">{{$ctrl.titleText}}</div>
+    </div>
+</div>

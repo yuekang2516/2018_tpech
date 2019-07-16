@@ -1,0 +1,117 @@
+<md-card id="anchorPressure" class="feature-area">
+    <md-card-content class="yuekang-input-container">
+        <div layout="row" layout-align="start center">
+            <h3 class="margin-left--5 " translate>{{'overview.signs'}}</h3>
+            <!-- <div class="margin-left-10" ng-if="$ctrl.showbpModule">
+                <md-button class="md-primary" ng-click="$ctrl.showBloodPressureChart()"><span translate>{{'overview.bloodChart'}}</span></md-button>
+            </div> -->
+        </div>
+        <h4 class="vital-title-pre" translate>{{'overview.preDialysis'}}</h4>
+        <div layout="row" layout-align="center center" ng-repeat="item in $ctrl.data.PreVitalSign track by $index">
+            <div layout="column" class="vital-block">
+                <div layout="row" flex>
+                    <div layout="row" class="vital-input-div" flex>
+                        <label translate>{{'overview.vitalSignDate'}}</label>
+                        <input type="date" ng-model="item.RecordTime" />
+                    </div>
+                </div>
+                <div layout="row" flex>
+                    <div layout="row" class="vital-input-div" flex>
+                        <label translate>{{'overview.vitalSignTime'}}</label>
+                        <input type="time" ng-model="item.RecordTime" />
+                    </div>
+                </div>
+                <div layout="row" flex>
+                    <div layout="row" class="vital-input-div" flex>
+                        <label translate>{{'overview.BPS'}}</label>
+                        <input type="tel" ng-model="item.BPS" ng-pattern="/^\d+$/" ng-keypress="$event.which === 46" />
+                    </div>
+                    <div layout="row" class="vital-input-div" flex>
+                        <label translate>{{'overview.BPD'}}</label>
+                        <input type="tel" ng-model="item.BPD" ng-pattern="/^\d+$/" ng-keypress="$event.which === 46" />
+                    </div>
+                    <div layout="row" class="vital-input-div" flex>
+                        <md-select ng-model="item.BloodPressurePosture" placeholder="{{'overview.posture' | translate}}">
+                            <md-option value="" translate>{{'overview.choosePosture'}}</md-option>
+                            <md-option value="臥" translate>{{'overview.lie'}}</md-option>
+                            <md-option value="坐" translate>{{'overview.sit'}}</md-option>
+                            <md-option value="立" translate>{{'overview.stand'}}</md-option>
+                        </md-select>
+                    </div>
+                </div>
+                <div layout="row" flex>
+                    <div layout="row" class="vital-input-div" flex>
+                        <label translate>{{'overview.Temperature'}}</label>
+                        <input type="tel" ng-model="item.Temperature">
+                    </div>
+                    <div layout="row" class="vital-input-div" flex>
+                        <label translate>{{'overview.Pulse'}}</label>
+                        <input type="tel" ng-model="item.Pulse">
+                    </div>
+                    <div layout="row" class="vital-input-div" flex>
+                        <label translate>{{'overview.Respiration'}}</label>
+                        <input type="tel" ng-model="item.Respiration">
+                    </div>
+                </div>
+            </div>
+            <i class="material-icons delete-btn" ng-click="$ctrl.deletePreVitalSign($index)" ng-if="$ctrl.data.PreVitalSign.length !== 1">clear</i>
+        </div>
+        <div layout="row" layout-align="end center">
+            <md-button class="md-primary" ng-click="$ctrl.addPreVitalSign()" ng-hide="$ctrl.data.PreVitalSign.length === 3">{{'overview.addOneData' | translate}}</md-button>
+        </div>
+        <h4 class="vital-title-post" translate>{{'overview.postDialysis'}}</h4>
+        <div layout="row" layout-align="center center" ng-repeat="item in $ctrl.data.PostVitalSign track by $index">
+            <div layout="column" class="vital-block">
+                <div layout="row" flex>
+                    <div layout="row" class="vital-input-div" flex>
+                        <label translate>{{'overview.vitalSignDate'}}</label>
+                        <input type="date" ng-model="item.RecordTime" />
+                    </div>
+                </div>
+                <div layout="row" flex>
+                    <div layout="row" class="vital-input-div" flex>
+                        <label translate>{{'overview.vitalSignTime'}}</label>
+                        <input type="time" ng-model="item.RecordTime" />
+                    </div>
+                </div>
+                <div layout="row">
+                    <div layout="row" class="vital-input-div" flex>
+                        <label translate>{{'overview.BPS'}}</label>
+                        <input type="tel" ng-model="item.BPS" ng-pattern="/^\d+$/" ng-keypress="$event.which === 46" />
+                    </div>
+                    <div layout="row" class="vital-input-div" flex>
+                        <label translate>{{'overview.BPD'}}</label>
+                        <input type="tel" ng-model="item.BPD" ng-pattern="/^\d+$/" ng-keypress="$event.which === 46" />
+                    </div>
+                    <div layout="row" class="vital-input-div" flex>
+                        <md-select ng-model="item.BloodPressurePosture" placeholder="{{'overview.posture' | translate}}">
+                            <md-option value="" translate>{{'overview.choosePosture'}}</md-option>
+                            <md-option value="臥" translate>{{'overview.lie'}}</md-option>
+                            <md-option value="坐" translate>{{'overview.sit'}}</md-option>
+                            <md-option value="立" translate>{{'overview.stand'}}</md-option>
+                        </md-select>
+                    </div>
+                </div>
+
+                <div layout="row">
+                    <div layout="row" class="vital-input-div" flex>
+                        <label translate>{{'overview.Temperature'}}</label>
+                        <input type="tel" ng-model="item.Temperature">
+                    </div>
+                    <div layout="row" class="vital-input-div" flex>
+                        <label translate>{{'overview.Pulse'}}</label>
+                        <input type="tel" ng-model="item.Pulse">
+                    </div>
+                    <div layout="row" class="vital-input-div" flex>
+                        <label translate>{{'overview.Respiration'}}</label>
+                        <input type="tel" ng-model="item.Respiration">
+                    </div>
+                </div>
+            </div>
+            <i class="material-icons delete-btn" ng-click="$ctrl.deletePostVitalSign($index)" ng-if="$ctrl.data.PostVitalSign.length !== 1">clear</i>
+        </div>
+        <div layout="row" layout-align="end center">
+            <md-button class="md-primary" ng-click="$ctrl.addPostVitalSign()" ng-hide="$ctrl.data.PostVitalSign.length === 3">{{'overview.addOneData' | translate}}</md-button>
+        </div>
+    </md-card-content>
+</md-card>

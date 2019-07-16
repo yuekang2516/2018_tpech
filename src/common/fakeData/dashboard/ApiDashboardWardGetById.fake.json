@@ -1,0 +1,87 @@
+{
+    "DateTimestamp": "2019-04-17T16:56:20.431203+08:00",
+    "Name": "測試病房001",
+    "BedNos": ["A01", "A02", "A04", "A05", "A03", "A06", "A07", "A08", "A09", "A10", "A11", "A12", "A13", "A14", "A15", "A16", "A17", "A18", "A19", "A20", "A21", "A22", "A23", "A26", "A27", "A28", "A29", "A30", "A31", "A32", "A33", "A34", "A35", "A36", "A37", "39", "13", "123", "3HDU-34", "B01", "B02"],
+    "BedGroups": [{
+        "Name": "一般",
+        "BedNos": ["A01", "A02", "A04", "A05", "A03"]
+    }, {
+        "Name": "B肝",
+        "BedNos": ["A06", "A07", "A08", "A09", "A10"]
+    }, {
+        "Name": "C肝",
+        "BedNos": ["A11", "A12", "A13", "A14", "A15"]
+    }, {
+        "Name": "B+C肝",
+        "BedNos": ["A16", "A17", "A18", "A19", "A20"]
+    }, {
+        "Name": "HIV",
+        "BedNos": ["A21", "A22", "A23"]
+    }, {
+        "Name": "感染",
+        "BedNos": ["A26", "A27", "A28", "A29", "A30"]
+    }, {
+        "Name": "其他",
+        "BedNos": ["A31", "A32", "A33", "A34", "A35"]
+    }, {
+        "Name": "一般",
+        "BedNos": ["A36", "A37", "39", "13"]
+    }],
+    "AbnormalItems": [{
+        "Id": "555ae55358c70e09d4a68204",
+        "Code": "001",
+        "Name": "異常項目11",
+        "ParentId": null
+    }, {
+        "Id": "5658054800977d13ecd0ba0b",
+        "Code": "002",
+        "Name": "異常項目12",
+        "ParentId": null
+    }, {
+        "Id": "565bac80a6e10b2410e35e86",
+        "Code": "11-1",
+        "Name": "abc",
+        "ParentId": "555ae55358c70e09d4a68204"
+    }, {
+        "Id": "565bacd6a6e10b2410e35ef7",
+        "Code": "12-1",
+        "Name": "EFG",
+        "ParentId": "5658054800977d13ecd0ba0b"
+    }, {
+        "Id": "565bbdeea6e10b24105c2eb4",
+        "Code": "10-1",
+        "Name": "333",
+        "ParentId": "555ae55358c70e09d4a68204"
+    }, {
+        "Id": "5c186b8db4ef1728804df20f",
+        "Code": "004",
+        "Name": "異常項目14",
+        "ParentId": null
+    }, {
+        "Id": "5c186c02b4ef1728804df392",
+        "Code": "001",
+        "Name": "123",
+        "ParentId": "5c186b8db4ef1728804df20f"
+    }],
+    "Memo": "測試病房 VIP135646",
+    "HospitalId": "56fcc5dd4ead7870942f61c3",
+    "Revision": 1,
+    "HistoryId": null,
+    "Status": "Normal",
+    "CreatedUserId": null,
+    "CreatedUserName": "Ken",
+    "CreatedTime": "2015-03-31T00:18:28.168Z",
+    "ModifiedUserId": "570600fdd53d3c61d6794f95",
+    "ModifiedUserName": "Admin",
+    "ModifiedTime": "2019-03-29T01:28:32.4Z",
+    "Id": "56fcc9eb4ead7870942f61c4",
+    "CreatedOn": "2016-03-31T06:55:39Z",
+    "ModifiedOn": "0001-01-01T00:00:00Z",
+    "ObjectId": {
+        "Timestamp": 1459407339,
+        "Machine": 5156216,
+        "Pid": 28820,
+        "Increment": 3105220,
+        "CreationTime": "2016-03-31T06:55:39Z"
+    }
+}

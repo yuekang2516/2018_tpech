@@ -1,0 +1,75 @@
+<div flex layout-fill layout="column">
+        <summary-toolbar ng-if="!$ctrl.doctorNoteId" toolbar-title="'doctorNote.doctorNoteCreate'|translate" cancel="$ctrl.goback()"></summary-toolbar>
+        <summary-toolbar ng-if="$ctrl.doctorNoteId && $ctrl.userForm.Status !== 'Deleted'" toolbar-title="'doctorNote.doctorNoteEdit'|translate" cancel="$ctrl.goback()"></summary-toolbar>
+        <summary-toolbar ng-if="$ctrl.userForm.Status === 'Deleted'" toolbar-title="'doctorNote.doctorNoteView'|translate" cancel="$ctrl.goback()"></summary-toolbar>
+        <!-- <div hide-xs hide-sm ng-show="!$ctrl.loading">
+            <div style="float: left; padding-left: 10px" ng-show="!$ctrl.loading">
+                <h3 ng-if="$ctrl.doctorNoteId && $ctrl.userForm.Status !== 'Deleted'" translate>{{'doctorNote.doctorNoteEdit'}}</h3>
+                <h3 ng-if="!$ctrl.doctorNoteId" translate>{{'doctorNote.doctorNoteCreate'}}</h3>
+                <h3 ng-if="$ctrl.userForm.Status === 'Deleted'" translate>{{'doctorNote.doctorNoteView'}}</h3>
+            </div>
+            <md-button style="float:right; margin-top: 8px" class="md-secondary md-icon-button" ng-click="$ctrl.goback()"
+                aria-label="call">
+                <i class="material-icons">cancel</i>
+            </md-button>
+        </div> -->
+    <span ng-if="!$ctrl.canAccess" class="readonly-text" title="{{ 'customMessage.readonlyTitle' | translate }}" translate>{{ 'customMessage.readonly' }}</span>
+    <md-content flex layout-fill style="padding:10px 10px 0 10px">
+        <loading ng-show="$ctrl.loading"></loading>
+        <div class="inner">
+            <div class="readonly-inner" ng-if="!$ctrl.canAccess"></div>
+            <form ng-show="!$ctrl.loading && !$ctrl.isError" layout="column" name="form">
+                <div layout="row">
+                    <div layout="column" flex style="margin-right: 5px">
+                        <label translate>{{'nursingRecord.nursingRecord.date'}}</label>
+                        <input type="date" ng-model="$ctrl.userForm.RecordTime" ng-disabled="true" />
+                    </div>
+                    <div layout="column" flex>
+                        <label translate>{{'nursingRecord.nursingRecord.time'}}</label>
+                        <input type="time" ng-model="$ctrl.userForm.RecordTime" on-change="$ctrl.dateChanged(time)" required/>
+                    </div>
+                </div>
+                <md-input-container>
+                    <label translate>{{'doctorNote.diseaseSummary'}}</label>
+                    <textarea id="Content" name="Content"
+                              ng-model="$ctrl.userForm.Content"
+                              ng-disabled="$ctrl.userForm.Status === 'Deleted'"
+                              ng-model-options="{ allowInvalid: true }"
+                              rows="5"
+                              md-maxlength="5000"
+                              md-detect-hidden="true"
+                              required></textarea>
+                    <div ng-messages="form.Content.$error" ng-if="!showHints">
+                        <div ng-message="md-maxlength" translate>{{'doctorNote.diseaseSummaryMax'}}</div>
+                    </div>
+                </md-input-container>
+                <div layout="row">
+                    <md-button ng-click="$ctrl.isOpenRight()" class="md-primary" flex>{{'doctorNote.insertPhrase' |
+                        translate}}
+                    </md-button>
+                </div>
+                <div layout="row" layout-wrap>
+                    <div flex="50" flex-xs="100" ng-show="$ctrl.userForm.CreatedUserName">
+                        <!-- <span>建立: {{ $ctrl.regForm.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                        <span translate="doctorNote.createdTime" translate-values='{CreatedTime: $ctrl.userForm.CreatedTime}'></span>
+                        <seal model="$ctrl.userForm" modified="none"></seal>
+                    </div>
+                    <div flex="50" flex-xs="100" ng-show="$ctrl.userForm.ModifiedTime != null">
+                        <!-- <span>修改: {{ $ctrl.regForm.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                        <span translate="doctorNote.editedTime" translate-values='{ModifiedTime: $ctrl.userForm.ModifiedTime}'></span>
+                        <seal model="$ctrl.userForm" created="none"></seal>
+                    </div>
+                </div>
+                <div layout="row"  layout-margin layout-align="start center">
+                    <md-button ng-click="$ctrl.submit($event)" ng-if="$ctrl.canAccess" class="md-raised md-primary" ng-disabled="form.$invalid" >
+                        {{'doctorNote.save' | translate}}
+                    </md-button>
+                    <md-progress-circular md-diameter="20px" md-mode="indeterminate" ng-show="$ctrl.isSaving"></md-progress-circular>
+                </div>
+            </form>
+            <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+                <h3 translate>{{'allDoctorNote.serverError'}}</h3>
+            </div>
+        </md-content>
+        <phrase id="phrase" callback="$ctrl.phraseInsertCallback(word)"></phrase>
+    </div>

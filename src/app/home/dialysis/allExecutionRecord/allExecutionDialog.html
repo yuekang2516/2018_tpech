@@ -1,0 +1,52 @@
+<md-dialog style="width: 100%!important; height: 100%!important;">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>
+                    <span style="margin-left: 2px; margin-right:5px;">{{::dialog.Name}}</span>
+                </span>
+            </h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="dialog.cancel()">
+                <i class="material-icons">close</i>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <patient-name hide-gt-sm name="dialog.patient.Name" medical-id="dialog.patient.MedicalId"></patient-name>
+    <md-dialog-content layout="column" flex>
+        <div ng-if="dialog.Records.length !== 0">
+            <md-list style="margin-bottom: 0rem!important;">
+                <md-list-item ng-show="record.Status !== 'Deleted'" class="md-3-line"  ng-repeat="record in dialog.Records | orderBy : '-ProcessTime'" ng-click="dialog.gotoRecordDetail(record.Id, record.OrderMode)">
+                    <div class="md-list-item-text" >
+                        <div layout="column">
+                            <div layout="row" layout-align="space-between center" class="line-height-40">
+                                <span style="font-size:18px;">{{ ::record.ProcessTime | moment: 'YYYY-MM-DD HH:mm' }}</span>
+                                <!-- <span ng-class="{true: text-green, false: text-red}[record.Mode === 'Performed']" translate="allExecutionRecord.allExecutionDialog.executeUser" translate-values='{userName: record.UserName}'></span>  -->
+                                <span >
+                                    <b ng-if="record.OrderMode === 'Performed'" style="color:green;" translate>{{'allExecutionRecord.allExecutionDialog.execute'}}</b>
+                                    <b ng-if="record.OrderMode !== 'Performed'" style="color:red" translate>{{'allExecutionRecord.allExecutionDialog.dontExecute'}}</b>
+                                    <span> / {{::record.UserName}}</span>
+                                </span>                            
+                                <md-icon class="md-secondary" ng-click="dialog.deleteRecord(record)" ng-show="dialog.checkCanAccess(record.UserId,record.Status, record.ModifiedUserId)" md-svg-icon="static/img/svg/ic_delete_black_24px.svg"></md-icon>
+                            </div>
+                            <div class="line-height-40">
+                                <span translate>{{'allExecutionRecord.allExecutionDialog.executeMemo'}}</span> :
+                                <b ng-if="record.Memo !== null">{{::record.Memo}}</b>
+                                <b ng-if="record.Memo === null" translate>{{'allExecutionRecord.allExecutionDialog.noMemo'}}</b>
+                            </div>
+
+                        </div>
+                    </div>
+                    <md-divider></md-divider>
+                </md-list-item>
+            </md-list>
+        </div>
+
+        <div flex layout="column" layout-align="center center" ng-if="dialog.Records.length === 0 || dialog.isNoData" style="width:100%; min-height:100%;">
+            <h2 translate>{{'allExecutionRecord.allExecutionDialog.noData'}}</h2>
+        </div>
+    </md-dialog-content>
+</md-dialog>
+
+
+

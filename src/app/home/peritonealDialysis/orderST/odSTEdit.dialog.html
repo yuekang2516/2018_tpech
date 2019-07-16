@@ -1,0 +1,85 @@
+<md-dialog class="peritonealDialysisTabView">
+    <form name="editForm" novalidate ng-cloak>
+        <summary-toolbar ng-if="$ctrl.odSTDataObj.isCreate" ng-click="$ctrl.cancel()" toolbar-title="'orderST.dialog.createTitle' | translate"></summary-toolbar>
+        <summary-toolbar ng-if="!$ctrl.odSTDataObj.isCreate" ng-click="$ctrl.cancel()" toolbar-title="'orderST.dialog.editTitle' | translate"></summary-toolbar>
+        <!-- <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 ng-if="$ctrl.odSTDataObj.isCreate" translate="orderST.dialog.createTitle"></h2>
+                <h2 ng-if="!$ctrl.odSTDataObj.isCreate" translate="orderST.dialog.editTitle"></h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+                    <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar> -->
+        <md-dialog-content>
+            <div class="dialogBoxData">
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem lightblue">
+                        <label>*日期</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.odSTDataObj.Record_Date" type="date"
+                        name="RecordDate" required>
+                        <div ng-messages="editForm.RecordDate.$error" ng-show="editForm.RecordDate.$dirty">
+                            <div ng-message="required" class="clrRequired">必填選項</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem lightblue">
+                        <label>*時間</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.odSTDataObj.Record_Date" type="time"
+                        name="RecordTime" required>
+                        <div ng-messages="editForm.RecordTime.$error" ng-show="editForm.RecordTime.$dirty">
+                            <div ng-message="required" class="clrRequired">必填選項</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>50%</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input type="text" ng-model="$ctrl.odSTDataObj.Percent50" maxlength="100" />
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>Glucose（Amp）</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input type="text" ng-model="$ctrl.odSTDataObj.Gluose_Amp" maxlength="100" />
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>開立醫師</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input type="text" ng-model="$ctrl.odSTDataObj.Opening_Doctor" maxlength="100" />
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>其他備註</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input type="text" ng-model="$ctrl.odSTDataObj.Other_Remarks" maxlength="200" />
+                    </div>
+                </div>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <md-button class="md-raised" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.cancel()">
+                {{'orderST.dialog.cancel' | translate}}
+            </md-button>
+            <md-button class="md-raised md-primary" ng-click="$ctrl.ok()">
+                {{$ctrl.odSTDataObj.isCreate ? 'orderST.dialog.create' : 'orderST.dialog.edit' | translate}}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

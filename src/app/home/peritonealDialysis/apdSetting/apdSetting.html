@@ -1,0 +1,145 @@
+<style>
+    apd-setting {
+        height: 100%;
+    }
+    @media print{
+        .md-dialog-container {
+            display: table;
+        }
+        @page{
+            size: A4 portrait;
+            margin: 0.5cm;
+            orphans:4;
+            widows:2;
+        }
+    }
+</style>
+<md-content layout="column" layout-fill>
+        <loading ng-show="$ctrl.loading && $ctrl.apdList.length == 0"></loading>
+        <div class="list-header" ng-show="!$ctrl.loading && $ctrl.apdList.length > 0" layout="row" layout-align="center center">
+            <md-switch ng-model="$ctrl.showDeleted" aria-label="Switch data">
+                <span translate="highRiskFaller.Records.showDeleted" translate-values='{deletedItemsLength: $ctrl.deletedItemsLength}'></span>
+            </md-switch>
+            <span flex></span>
+            <h6 translate="highRiskFaller.Records.totalRecord" translate-values='{totalCnt: $ctrl.totalCnt}'></h6>
+            <span flex></span>
+            <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+        </div>
+        <div class="freezeDiv tbApdSetting" ng-show="!$ctrl.loading && $ctrl.apdList.length > 0">
+            <table class="freezeTb tb">
+                <thead>
+                    <tr>
+                        <th>設定日期</th>
+                        <th>治療方式</th>
+                        <th>總治<br/>療量</th>
+                        <th>治療<br/>時間</th>
+                        <th>注入量</th>
+                        <th>最末袋<br/>注入量</th>
+                        <th>最末袋<br/>葡萄糖濃度</th>
+                        <th>病人<br/>體重</th>
+                        <th>0週期引流<br/>警訊</th>
+                        <th>週期數</th>
+                        <th>留置時間</th>
+                        <th>設定透析液<br/>溫度</th>
+                        <th>最末手控引流</th>
+                        <th>總脫水目標</th>
+                        <th>警訊</th>
+                        <th>週期最小<br/>引流量(%)</th>
+                        <th>備註<br/>事項</th>
+                        <th>簽章</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody><!--ng-if="$ctrl.showDeleted == true ? apdL.StatusData == 'ViewData' || apdL.Status == 'tempDeleted' || apdL.StatusData == 'Normal' || apdL.Status == 'Deleted' : apdL.StatusData == 'ViewData' || apdL.StatusData == 'Normal'"-->
+                    <!-- ng-repeat="item in $ctrl.hRFList | orderBy:['-RecordTime', '-CreatedTime']"-->
+                    <tr ng-repeat="apdL in $ctrl.apdList" ng-class="apdL.Status == 'Deleted' || apdL.Status == 'tempDeleted' ? 'tempDelText' : ''" 
+                        ng-show="(apdL.Status !== 'Deleted' && apdL.Status !== 'tempDeleted') || $ctrl.showDeleted  ">
+                    <td ng-click="$ctrl.openEditDialog(apdL,false)">
+                        {{apdL.CreatedTime  | moment:'YYYY/MM/DD'}}
+                        <!-- {{apdL.CreatedTime  | moment:'YYYY/MM/DD (dd)'}}<br />
+                        {{apdL.CreatedTime  | moment:'HH:mm'}} -->
+                    </td>
+                        <td ng-click="$ctrl.openEditDialog(apdL,false)">{{apdL.Treatment_Method}}</td>
+                        <td ng-click="$ctrl.openEditDialog(apdL,false)">
+                            <label ng-if="apdL.Total_Therapeutic_Dose !== '其他' && apdL.Total_Therapeutic_Dose !== '0'">{{apdL.Total_Therapeutic_Dose}}</label>
+                            <label ng-if="apdL.Total_Therapeutic_Dose == '其他'">{{apdL.TotalTherapeuticDoseOther}}</label>
+                        </td>
+                        <td ng-click="$ctrl.openEditDialog(apdL,false)">
+                            <div>
+                                <label ng-if="apdL.Treatment_Time_Hh !== '其他' && apdL.Treatment_Time_Hh !== '0'">{{apdL.Treatment_Time_Hh}}小時</label>
+                                <label ng-if="apdL.Treatment_Time_Hh == '其他'">{{apdL.TreatmentTimeHhOther}}小時</label>
+                            </div>
+                            <div>
+                                <label ng-if="apdL.Treatment_Time_Mm !== '其他' && apdL.Treatment_Time_Mm !== '0'">{{apdL.Treatment_Time_Mm}}分鐘</label>
+                                <label ng-if="apdL.Treatment_Time_Mm == '其他'">{{apdL.TreatmentTimeMmOther}}分鐘</label>
+                            </div>
+                        </td>
+                        <td ng-click="$ctrl.openEditDialog(apdL,false)">
+                            <label ng-if="apdL.Injection_Volume !== '其他' && apdL.Injection_Volume !== '0'">{{apdL.Injection_Volume}}</label>
+                            <label ng-if="apdL.Injection_Volume == '其他'">{{apdL.InjectionVolumeOther}}</label>
+                        </td>
+                        <td ng-click="$ctrl.openEditDialog(apdL,false)">
+                            <label ng-if="apdL.Last_Injection_Volume !== '其他' && apdL.Last_Injection_Volume !== '0'">{{apdL.Last_Injection_Volume}}</label>
+                            <label ng-if="apdL.Last_Injection_Volume == '其他'">{{apdL.LastInjectionVolumeOther}}</label>
+                        </td>
+                        <td ng-click="$ctrl.openEditDialog(apdL,false)">{{apdL.Last_Glucose_Concentration}}</td>
+                        <td ng-click="$ctrl.openEditDialog(apdL,false)">
+                            <label ng-if="apdL.Patient_Weight !== '其他' && apdL.Patient_Weight !== '0'">{{apdL.Patient_Weight}}</label>
+                            <label ng-if="apdL.Patient_Weight == '其他'">{{apdL.PatientWeightOther}}</label>
+                        </td>
+                        <td ng-click="$ctrl.openEditDialog(apdL,false)">
+                            <label ng-if="apdL.Zero_Cycle_Drainage_Warning !== '其他' && apdL.Zero_Cycle_Drainage_Warning !== '0'">{{apdL.Zero_Cycle_Drainage_Warning}}</label>
+                            <label ng-if="apdL.Zero_Cycle_Drainage_Warning == '其他'">{{apdL.ZeroCycleDrainageWarningOther}}</label>
+                        </td>
+                        <td ng-click="$ctrl.openEditDialog(apdL,false)">
+                            <label ng-if="apdL.Cycle_Number !== '其他' && apdL.Cycle_Number !== '0'">{{apdL.Cycle_Number}}</label>
+                            <label ng-if="apdL.Cycle_Number == '其他'">{{apdL.CycleNumberOther}}</label>
+                        </td>
+                        <td ng-click="$ctrl.openEditDialog(apdL,false)">
+                            <div>
+                                <label ng-if="apdL.Retention_Time_Hh !== '其他' && apdL.Retention_Time_Hh !== '0'">{{apdL.Retention_Time_Hh}}小時</label>
+                                <label ng-if="apdL.Retention_Time_Hh == '其他'">{{apdL.RetentionTimeHhOther}}小時</label>
+                            </div> 
+                            <div>
+                                <label ng-if="apdL.Retention_Time_Mm !== '其他' && apdL.Retention_Time_Mm !== '0'">{{apdL.Retention_Time_Mm}}分鐘</label>
+                                <label ng-if="apdL.Retention_Time_Mm == '其他'">{{apdL.RetentionTimeMmOther}}分鐘</label>
+                            </div>
+                        </td>
+                        <td ng-click="$ctrl.openEditDialog(apdL,false)">
+                            <label ng-if="apdL.Dialysate_Temperature_Setting !== '其他' && apdL.Dialysate_Temperature_Setting !== '0'">{{apdL.Dialysate_Temperature_Setting}}</label>
+                            <label ng-if="apdL.Dialysate_Temperature_Setting == '其他'">{{apdL.DialysateTemperatureSettingOther}}</label>
+                        </td>
+                        <td ng-click="$ctrl.openEditDialog(apdL,false)">{{apdL.Isfinal_Manual_Drainage}}</td>
+                        <td ng-click="$ctrl.openEditDialog(apdL,false)">
+                            <label ng-if="apdL.Final_Manual_Drainage !== '其他' && apdL.Final_Manual_Drainage !== '0'">{{apdL.Final_Manual_Drainage}}</label>
+                            <label ng-if="apdL.Final_Manual_Drainage == '其他'">{{apdL.FinalManualDrainageOther}}</label>
+                        </td>
+                        <td ng-click="$ctrl.openEditDialog(apdL,false)">{{apdL.Islast_Manual_Drainage_Warn}}</td>
+                        <td ng-click="$ctrl.openEditDialog(apdL,false)">
+                            <label ng-if="apdL.Minimum_Periodic_Drainage !== '其他' && apdL.Minimum_Periodic_Drainage !== '0'">{{apdL.Minimum_Periodic_Drainage}}</label>
+                            <label ng-if="apdL.Minimum_Periodic_Drainage == '其他'">{{apdL.MinimumPeriodicDrainageOther}}</label>
+                        </td>
+                        <td ng-click="$ctrl.openEditDialog(apdL,false)" class="ellipsis">
+                            <a title="{{apdL.Notes}}">{{apdL.Notes}}</a>
+                        </td>
+                        <td>
+                            <seal model="apdL" created='none' my-style="{display:'inline-block'}"></seal>
+                            <seal ng-show="apdL.CreatedUserName != apdL.ModifiedUserName" model="apdL" modified='none' my-style="{display:'inline-block'}"></seal>
+                        </td>
+                        <td>
+                            <i ng-show="apdL.Status !== 'tempDeleted' && apdL.Status !== 'Deleted'" class="material-icons" ng-click="$ctrl.openEditDialog(apdL,true)"><md-tooltip>複製</md-tooltip>content_copy</i>
+                            <i ng-show="apdL.Status !== 'tempDeleted' && apdL.Status !== 'Deleted'" class="material-icons" ng-click="$ctrl.printPaper($event, apdL)"><md-tooltip>列印</md-tooltip>print</i>
+                            <i ng-show="apdL.Status !== 'tempDeleted' && apdL.Status !== 'Deleted'" class="material-icons" ng-click="$ctrl.deleteOne($event, apdL)"><md-tooltip>刪除</md-tooltip>delete</i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div><!-- && $ctrl.apdList.length - $ctrl.deletedItemsLength === 0-->
+        <md-content ng-show="!$ctrl.loading && $ctrl.apdList.length == 0" flex layout="column" layout-align="center center">
+            <h1 translate>{{'apdSetting.component.noData'}}</h1>
+            <h4></h4>
+        </md-content>
+        <md-button class="no-print md-fab md-fab-bottom-right" style="position: fixed;" ng-click="$ctrl.openCreateDialog()">
+            <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+        </md-button>
+</md-content>  

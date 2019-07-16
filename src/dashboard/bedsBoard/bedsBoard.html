@@ -1,0 +1,19 @@
+<style scoped>
+    #bed-cards {
+        flex-wrap: wrap
+    }
+</style>
+
+<md-content layout-fill style="width:initial" class="beds-board-content">
+    <div class="bar scroll-smaller" layout="row" layout-align="start">
+        <div class="date">
+            <div class="date_in">{{vm.data.currentDate | moment: 'MM/DD (ddd)'}}</div>
+        </div>
+        <div class="today" ng-class="{disable: vm.data.loadingBeds}" ng-click="vm.changeDate(0)" ng-disabled="vm.data.loadingBeds"></div>
+        <div class="backward" ng-class="{disable: vm.data.loadingBeds}" ng-click="vm.changeDate(-1)" ng-disabled="vm.data.loadingBeds"></div>
+        <div class="forward" ng-class="{disable: vm.data.loadingBeds}" ng-click="vm.changeDate(1)" ng-disabled="vm.data.loadingBeds"></div>
+    </div>
+    <loading ng-show="vm.data.loadingBeds"></loading>
+    <label class="red" ng-show="vm.serverErr" translate>{{'bedsBoard.serverError'}}</label>
+    <beds-content data="vm.data" readonly=true></beds-content>
+</md-content>

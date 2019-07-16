@@ -1,0 +1,56 @@
+.loadMsg {
+  text-align: center;
+  display: block;
+}
+.peDetail-dialog {
+  min-width: 500px;
+}
+.peDetail-dialog .widthlable {
+  width: 40%;
+  line-height: 26px;
+  float: left;
+}
+.peDetail-dialog .widthlable.system {
+  width: initial;
+}
+.peDetail-dialog .widthinput {
+  width: 60%;
+  float: left;
+}
+.peDetail-dialog .floatbuttomleft {
+  float: left;
+  width: 30%;
+}
+.peDetail-dialog .floatbuttomright {
+  float: right;
+  width: 70%;
+  text-align: right;
+}
+.peDetail-dialog .buttom0 {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  background: #fff;
+}
+.peDetail-dialog .errMsg {
+  color: #d92018;
+}
+@media only screen and (max-width: 600px) {
+  .peDetail-dialog .widthlable,
+  .peDetail-dialog .widthinput {
+    width: 100%;
+    float: none;
+  }
+}
+.peDetail-dialog .md-dialog-content input {
+  margin-bottom: 6px;
+  padding-left: 4px;
+  float: right;
+  width: 100% !important;
+}
+.peDetail-dialog .md-dialog-content h3 {
+  display: inline;
+}
+.peDetail-dialog md-checkbox {
+  white-space: nowrap!important;
+}

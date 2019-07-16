@@ -1,0 +1,142 @@
+
+<md-dialog class="peritonealDialysisTabView pgRdEdit">
+    <form name="editForm" novalidate ng-cloak>
+        <summary-toolbar ng-if="$ctrl.rdDataObj.isCreate" ng-click="$ctrl.cancel()" toolbar-title="'reportDialysis.dialog.createTitle' | translate"></summary-toolbar>
+        <summary-toolbar ng-if="!$ctrl.rdDataObj.isCreate" ng-click="$ctrl.cancel()" toolbar-title="'reportDialysis.dialog.editTitle' | translate"></summary-toolbar>
+        <!-- <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 ng-if="$ctrl.rdDataObj.isCreate" translate="reportDialysis.dialog.createTitle"></h2>
+                <h2 ng-if="!$ctrl.rdDataObj.isCreate" translate="reportDialysis.dialog.editTitle"></h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+                    <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar> -->
+        <md-dialog-content>
+                <form flex class="out-form" ng-if="!$ctrl.loading && !$ctrl.isError" layout="column" name="referralSheetForm">
+                        <md-whiteframe class="md-whiteframe-10dp" layout-align="center center" style="width: 21.4cm; ">
+                            <div class="peritonealDialysisTabView pgRdEdit" flex>
+                                <div class="dataList">
+                                    <div class="inputbox">
+                                        <div class="lightblue" style="min-width:10em;text-align:right;margin-right:4px;height:30px;">
+                                            <label>*日期</label>
+                                        </div>
+                                        <div class="inputboxflex">
+                                            <input ng-model="$ctrl.rdDataObj.Record_Date" type="date"
+                                            name="RecordDate" required>
+                                            <div ng-messages="editForm.RecordDate.$error" ng-show="editForm.RecordDate.$dirty">
+                                                <div ng-message="required" class="clrRequired">必填選項</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dialogBoxData">
+                                        <h2>聯合醫院腎臟內科透析模式告知書</h2>
+                                        <p>
+                                            {{$ctrl.xxxx
+                                            }}
+                                            病人 {{$ctrl.currentPatient.Name}}
+                                            因尿毒症需接受長期透析治療。立同意書人已看過錄影帶介紹及相關衛教資料，並經貴醫院主治醫師
+                                            <md-select ng-model="$ctrl.rdDataObj.Doctor" class="no-print">
+                                                <md-option ng-repeat="state in $ctrl.doctors" ng-value="state.Name">
+                                                    {{state.Name}}
+                                                </md-option>
+                                            </md-select>
+                                            <label class="print-only">{{$ctrl.BookObject.Doctor}}</label>
+                                            、護理師
+                                            <md-select ng-model="$ctrl.rdDataObj.Nurse" class="no-print">
+                                                <md-option ng-repeat="state in $ctrl.nurses" ng-value="state.Name">
+                                                    {{state.Name}}
+                                                </md-option>
+                                            </md-select>
+                                            <label class="print-only">{{$ctrl.BookObject.Nurse}}</label>
+                                            詳盡說明，立同意書人以充分了解腎移植、血液透析及腹膜透析之方式及優劣。
+                                            立同意書選擇接受
+                                            <ul>
+                                                <li ng-repeat="NB in $ctrl.Notification_Book"><md-checkbox ng-checked="NB.Check" ng-click="$ctrl.checkTheBox('Notification_Book', $index)">{{NB.Text}}</md-checkbox></li>                                                
+                                                <li><md-checkbox ng-model="$ctrl.Else">其他</md-checkbox>
+                                                    <input type="text" ng-if="$ctrl.Else" class="txtName" ng-model="$ctrl.rdDataObj.Notification_Book_Name">
+                                                </li>
+                                            </ul>
+                                        </p>
+                                        <p style="padding-left:40px;">
+                                            此致
+                                        </p>
+                                        <h4>臺北市立聯合醫院腎臟內科</h4>
+                                        <p>
+                                        <div class="inputbox">
+                                            <div class="inputBoxTit titItem">
+                                                <label>立同意書人&nbsp;&nbsp;&nbsp;&nbsp;姓名：</label>
+                                            </div>
+                                            <div class="inputboxflex itemList">
+                                                <input type="text" class="input no-print" ng-model="$ctrl.rdDataObj.Book_Consent_Name"> 
+                                                <label class="print-only">{{$ctrl.currentPatient.Name}}</label>
+                                            </div>
+                                            <div class="inputBoxTit titItem" style="min-width: auto;">
+                                                <label>簽章：</label>
+                                            </div>
+                                            <div class="inputboxflex itemList">
+                                                <!-- <div class="signName"></div> -->
+                                            </div>
+                                        </div>
+                                        <div class="inputbox">
+                                            <div class="inputBoxTit titItem">
+                                                <label>身份證字號：</label>
+                                            </div>
+                                            <div class="inputboxflex itemList">
+                                                <input type="text" class="input no-print"  ng-model="$ctrl.rdDataObj.Book_Consent_Id">
+                                            </div>
+                                        </div>
+                                        <div class="inputbox">
+                                            <div class="inputBoxTit titItem">
+                                                <label>住址：</label>
+                                            </div>
+                                            <div class="inputboxflex itemList">
+                                                <input type="text" class="input no-print" ng-model="$ctrl.rdDataObj.Book_Consent_Address">
+                                            </div>
+                                        </div>
+                                        <div class="inputbox">
+                                            <div class="inputBoxTit titItem">
+                                                <label></label>
+                                            </div>
+                                            <div class="inputboxflex itemList">
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="inputbox">
+                                            <div class="inputBoxTit titItem">
+                                                <label>電話：</label>
+                                            </div>
+                                            <div class="inputboxflex itemList">
+                                                <input type="text" class="input no-print" ng-model="$ctrl.rdDataObj.Book_Consent_Phone">
+                                            </div>
+                                        </div>
+                                        <div class="inputbox">
+                                            <div class="inputBoxTit titItem">
+                                                <label>與病人關係：</label>
+                                            </div>
+                                            <div class="inputboxflex itemList">
+                                                <input type="text" class="input" ng-model="$ctrl.rdDataObj.Book_Consent_Relation">
+                                            </div>
+                                        </div>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </md-whiteframe>
+                    </form>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <!-- <md-button class="md-raised btnBlue" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.printPaper()">
+                {{'reportDialysis.dialog.print' | translate}}
+            </md-button> -->
+            <md-button class="md-raised" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.cancel()">
+                {{'reportDialysis.dialog.cancel' | translate}}
+            </md-button>
+            <md-button class="md-raised md-primary" ng-click="$ctrl.ok()">
+                {{$ctrl.rdDataObj.isCreate ? 'reportDialysis.dialog.create' : 'reportDialysis.dialog.edit' | translate}}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

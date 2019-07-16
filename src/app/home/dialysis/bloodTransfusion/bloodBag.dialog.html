@@ -1,0 +1,114 @@
+<md-dialog id="bloodBagDialog" flex="percentage">
+    <form name="bloodBag">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 translate>{{'bloodTransfusion.bloodTransfusion.bloodBagInfo'}}</h2>
+                <span flex></span>
+                <md-button ng-if="!vm.isBrowser" class="md-icon-button" ng-click="vm.openCamera()">
+                    <md-icon md-svg-src="static/img/svg/ic_camera_alt_black_36px.svg"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content" layout="column">
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label translate>{{'bloodTransfusion.bloodTransfusion.bloodProduct'}}</label>
+                    <md-select name="sPlasmaComponents" ng-model="vm.bloodBags.PlasmaComponentsCode" required>
+                        <md-option ng-repeat="(key, value) in vm.PlasmaComponents" ng-value="key">
+                            {{value}}
+                        </md-option>
+                    </md-select>
+                    <div ng-messages="bloodBag.sPlasmaComponents.$error" role="alert">
+                        <div ng-message="required" translate>{{'bloodTransfusion.bloodTransfusion.chooseBloodProduct'}}</div>
+                    </div>
+                </md-input-container>
+                <md-input-container>
+                    <label style="position: inherit;bottom: 10px;" translate>{{'bloodTransfusion.bloodTransfusion.bloodType'}}</label>
+                    <md-radio-group ng-model="vm.bloodBags.BloodType" layout="row">
+                        <md-radio-button value="A" flex>A</md-radio-button>
+                        <md-radio-button value="B" flex>B</md-radio-button>
+                        <md-radio-button value="O" flex>O</md-radio-button>
+                        <md-radio-button value="AB" flex>AB</md-radio-button>
+                    </md-radio-group>
+                    <input style="height: 0px;border: 0px!important;padding: 0;" type="text" name="BloodType" ng-model="vm.bloodBags.BloodType" required>
+                    <div ng-messages="bloodBag.BloodType.$error" role="alert">
+                        <div ng-message="required" translate>{{'bloodTransfusion.bloodTransfusion.bloodTypeRequired'}}</div>
+                    </div>
+                </md-input-container>
+                <md-input-container>
+                    <label style="position: inherit;bottom: 10px;">RH</label>
+                    <md-radio-group ng-model="vm.bloodBags.RH" layout="row">
+                        <md-radio-button value="+" flex>RH+</md-radio-button>
+                        <md-radio-button value="-" flex>RH-</md-radio-button>
+                    </md-radio-group>
+                    <input style="height: 0px;border: 0px!important;padding: 0;" type="text" name="RH" ng-model="vm.bloodBags.RH" required>
+                    <div ng-messages="bloodBag.RH.$error" role="alert">
+                        <div ng-message="required" translate>{{'bloodTransfusion.bloodTransfusion.RHRequired'}}</div>
+                    </div>
+                </md-input-container>
+                <div layout="row">
+                    <div flex style="padding-right:8px">
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label translate>{{'bloodTransfusion.bloodTransfusion.quantity'}}</label>
+                            <input type="number" name="Quantity" ng-model="vm.bloodBags.Quantity" min="0">
+                        </md-input-container>
+                    </div>
+                    <div flex>
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label translate>{{'bloodTransfusion.bloodTransfusion.Volume'}}</label>
+                            <input type="number" name="Volume" ng-model="vm.bloodBags.Volume" min="0">
+                        </md-input-container>
+                    </div>
+                </div>
+                <div layout="column">
+                    <label>不重複條碼<sup>*</sup></label>
+                    <div layout="row" layout-align="start center" ng-repeat="item in vm.bloodBags.Barcode">
+                        <span style="width:25px">{{$index + 1}}. </span>
+                        <span>{{item}}</span>
+                        <i class="material-icons" ng-click="vm.clearBarcode($index)">clear</i>
+                    </div>
+                    <ng-form name="barcodeForm" noValidate>
+                        <div layout="row" layout-align="start center">
+                            <span style="width:25px">{{vm.bloodBags.Barcode.length + 1}}. </span>
+                            <input flex name="Barcode" type="text" placeholder="請輸入不重複條碼並按下確認" ng-keypress="vm.barcodeOnKeypress($event)" ng-model="vm.currentBarcode" ng-required="vm.bloodBags.Barcode.length < 1">
+                            <md-button class="md-raised md-primary" ng-click="vm.checkBarcodeValid()" ng-disabled="barcodeForm.$invalid || !vm.currentBarcode">確認</md-button>
+                        </div>
+                        <div layout="row" layout-align="start center" class="invalidMsg" ng-show="vm.barcodeInvalidMsg">
+                            <span style="width:25px">&nbsp;</span>
+                            <span>{{vm.barcodeInvalidMsg}}</span>
+                        </div>
+                    </ng-form>
+                </div>
+                <!-- <md-input-container class="md-block">
+                    <label translate>{{'bloodTransfusion.bloodTransfusion.barCodeLabel'}}</label>
+                    <textarea name="Barcode" ng-model="vm.bloodBags.Barcode" ng-keypress="vm.barcodeOnKeypress($event)" placeholder="{{'bloodTransfusion.bloodTransfusion.barCodePlaceholder' | translate}}" rows="5" md-maxlength="5000" md-detect-hidden="true" required></textarea>
+                    <div ng-messages="bloodBag.Barcode.$error" role="alert">
+                        <div ng-message="required" translate>{{'bloodTransfusion.bloodTransfusion.BarcodeRequired'}}</div>
+                        <div ng-message="md-maxlength" translate>{{'bloodTransfusion.bloodTransfusion.BarcodeMAx'}}</div>
+                    </div>
+                </md-input-container> -->
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label translate>{{'bloodTransfusion.bloodTransfusion.validDate'}}</label>
+                    <!--<md-datepicker ng-model="vm.bloodBags.ExpirationDate" 
+                   md-placeholder="Enter date"
+                   md-hide-icons="calendar"
+                   ></md-datepicker>-->
+                    <input name="ExpirationDate" type="date" ng-model="vm.bloodBags.ExpirationDate" />
+                    <!--<mydatetimepicker type="text"
+         name="ExpirationDate" 
+         ng-model="vm.bloodBags.ExpirationDate"
+         options="vm.expirationDateOption" 
+         ></mydatetimepicker>-->
+                </md-input-container>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button ng-click="vm.cancel()">
+                {{'bloodTransfusion.bloodTransfusion.cancel' | translate}}
+            </md-button>
+            <md-button ng-click="vm.ok($event)" ng-disabled="bloodBag.$invalid || vm.bloodBags.Barcode.length < 1">
+                {{'bloodTransfusion.bloodTransfusion.ok' | translate}}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

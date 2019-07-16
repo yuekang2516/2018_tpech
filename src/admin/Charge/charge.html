@@ -1,0 +1,70 @@
+<style scoped>
+    charge {
+        height: 100%;
+    }
+
+    .lower {
+        background-color: #F44336;
+        color: white;
+    }
+</style>
+<div flex layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.openLeftMenu()" hide-gt-sm>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <h3 translate="charge.pageTitle"></h3>
+        </div>
+    </md-toolbar>
+    <div class="list-header" ng-show="!vm.loading && !vm.isError">
+        <label translate="charge.select"></label>
+        <md-input-container>
+            <md-select ng-model="vm.ward">
+                <md-option ng-repeat="w in vm.wards" value="{{w.Id}}" ng-click="vm.changeCharge(w.Id)">{{w.Name}}</md-option>
+            </md-select>
+        </md-input-container>
+        <span flex></span>
+        <span translate="charge.totalRecord" translate-values='{total: results.length}'></span>
+    </div>
+    <md-content layout-fill flex>
+        <loading ng-show="vm.loading"></loading>
+        <div flex ng-show="vm.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate="customMessage.serverError"></h3>
+        </div>
+        <div ng-show="!vm.loading && !vm.isError">
+            <div ng-show="vm.charges && results.length == 0" layout="column" layout-fill layout-align="center center" flex>
+                <i class="fa fa-file-o"></i>
+                <h3 translate="customMessage.noData"></h3>
+                <h4 translate="charge.addNew"></h4>
+            </div>
+            <md-list ng-show="vm.charges && results.length > 0">
+                <md-list-item>
+                    <div layout="row" layout-fill>
+                        <div flex=5></div>
+                        <div flex=30><span translate="charge.name"></span></div>
+                        <div flex=20><span translate="charge.pcCode"></span></div>
+                        <div flex=15><span translate="charge.price"></span></div>
+                        <div flex=15><span translate="charge.nowStock"></span></div>
+                        <div flex=15><span translate="charge.safeStock"></span></div>
+                    </div>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-list-item>
+                <md-list-item ng-repeat="c in vm.charges | filter:vm.ward as results" ng-class="{lower: c.Stock < c.SafetyStock}" ng-click="vm.gotoCharge(c.Id)">
+                    <div layout="row" layout-fill>
+                        <div flex=5 class="avatar"><img ng-src="{{c.Photo || 'static/img/Unknown.png'}}" class="md-avatar" /></div>
+                        <div flex=30>{{c.Name}}</div>
+                        <div flex=20>{{c.Code}}</div>
+                        <div flex=15><i class="material-icons">attach_money</i>{{ c.Price }}</div>
+                        <div flex=15>{{c.Stock}}</div>
+                        <div flex=15>{{c.SafetyStock}}</div>
+                    </div>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-list-item>
+            </md-list>
+        </div>
+    </md-content>
+    <md-button class="md-fab" ng-click="vm.chargeCreate($event)" aria-label="Add Charge" style="position:fixed;right:24px;bottom:24px">
+        <md-icon md-font-icon="mdi mdi-plus" style="font-size: 24px;height: 33px">+</md-icon>
+    </md-button>
+</div>

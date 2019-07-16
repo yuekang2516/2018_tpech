@@ -1,0 +1,26 @@
+<md-dialog aria-label="詳細資料">
+    <form ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 translate="log.detail"></h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="dvm.cancel()">
+                    <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div class="md-dialog-content" layout="row" flex>
+                <fieldset class="field_set">
+                    <label translate="log.orldata"></label>
+                    <pre style="white-space: pre-wrap;word-wrap: break-word;">{{dvm.before}}</pre>
+                </fieldset>
+                <fieldset class="field_set">
+                    <label translate="log.updatedata"></label>
+                    <pre style="white-space: pre-wrap;word-wrap: break-word;">{{dvm.after}}</pre>
+                </fieldset>
+            </div>
+        </md-dialog-content>
+    </form>
+</md-dialog>

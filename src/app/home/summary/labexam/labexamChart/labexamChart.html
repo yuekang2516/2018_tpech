@@ -1,0 +1,24 @@
+<loading ng-show="$ctrl.loading"></loading>
+<md-list ng-show="!$ctrl.loading && $ctrl.serviceData.length > 0">
+    <md-content layout="column" flex>
+        <div layout="row" layout-align="center center">
+            <baidu-echarts ng-config="$ctrl.eChartsConfig" ng-option="$ctrl.eChartsOption"></baidu-echarts>
+        </div>
+        <div layout="row" layout-wrap layout-padding class="chexkBoxGroup">
+            <span flex-xs="33" flex ng-repeat="item in $ctrl.arrayLegend">
+                <md-checkbox ng-checked="$ctrl.exists(item)" ng-click="$ctrl.toggle(item, $ctrl.selected)" ng-disabled="$ctrl.disabled(item)">
+                    {{ ::item }}
+                </md-checkbox>
+            </span>
+        </div>
+    </md-content>
+</md-list>
+
+<nodata-page flex ng-show="!$ctrl.loading && $ctrl.serviceData.length === 0" nodata-title="{{'labexam.labexam.noData' | translate}}"></nodata-page>
+<server-error-page flex ng-show="!$ctrl.loading && $ctrl.isError" refresh="$ctrl.refresh()"></server-error-page>
+<!-- <div ng-show="!$ctrl.loading && $ctrl.serviceData.length === 0" layout="row" layout-align="center center" flex>
+    <h4 translate>{{'labexam.labexam.noData'}}</h4>
+</div>
+<div ng-show="!$ctrl.loading && $ctrl.isError" layout="row" layout-align="center center" flex>
+    <h4 translate>{{'labexam.labexam.serverError'}}</h4>
+</div> -->

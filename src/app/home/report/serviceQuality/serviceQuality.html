@@ -1,0 +1,59 @@
+<div layout-fill layout="column" flex style="background:#f3f3f3">
+    <h2 ng-hide="sq.loading" translate="reports.serviceQuality.title" translate-values='{selectedYear: sq.selectedYear}'
+        style="margin-top: 25px ; margin-bottom: 0; padding-left: 15px;">
+        <!-- {{ sq.selectedYear }} 年度服務品質指標年度統計表 -->
+    </h2>
+    <loading ng-show="sq.loading "></loading>
+    <md-content flex layout-padding layout="column" ng-show="!sq.loading" style="background:#f3f3f3;">
+        <div>
+            <!-- {{'reports.serviceQuality.ward' | translate}}
+            <md-input-container>
+                <md-select ng-model="sq.selectedWards" ng-change="sq.getserviceQuality()">
+                    <md-option ng-repeat="i in sq.keys" ng-value="i">{{::sq.wards[i]}}</md-option>
+                </md-select>
+            </md-input-container> -->
+            {{'reports.serviceQuality.year' | translate}}
+            <md-input-container style="margin:0px">
+                <md-select ng-model="sq.selectedYear">
+                    <md-option ng-repeat="j in sq.optionYear" ng-value="j">{{::j}}</md-option>
+                </md-select>
+            </md-input-container>
+            <md-card-actions>
+                <md-button class="md-raised md-primary" ng-click="sq.getserviceQuality()">查詢</md-button>
+            </md-card-actions>
+            <md-card-actions class="excel-button">
+                <md-button class="md-raised md-primary" ng-click="sq.exportExcel()" ng-disabled="!sq.searchContent">
+                    {{'reports.serviceQuality.exportExcel' | translate}}</md-button>
+            </md-card-actions>
+        </div>
+        <loading ng-show="sq.searching"></loading>
+        <div ng-show="sq.searchContent && !sq.isError">
+            <table id="myTable">
+                <tbody>
+                    <tr>
+                        <!-- <td class="serviceQuality" colspan="33">{{sq.selectedYear}}年</td> -->
+                        <td class="serviceQuality" colspan="33" translate="reports.serviceQuality.yearHeading"
+                            translate-values='{selectedYear: sq.contentYear}'></td>
+                    </tr>
+                    <tr>
+                        <td translate>{{'reports.serviceQuality.itemAndMonth'}}</td>
+                        <!-- <td class="content" ng-repeat="month in [] | range:12:1 ">{{::month}}月</td> -->
+                        <td class="content" ng-repeat="month in [] | range:12:1 "
+                            translate="reports.serviceQuality.months" translate-values='{month: month}'></td>
+                        <td translate>{{'reports.serviceQuality.total'}}</td>
+                    </tr>
+                    <tr ng-repeat="(key,records) in sq.Content">
+                        <td class="content"
+                            ng-class="{notSupport: item.indexOf('Kt/V') > -1 || item.indexOf('住院') > -1}"
+                            ng-repeat="item in records track by $index">{{::item}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div ng-if="!sq.searching && sq.isError" layout-fill flex layout="column" layout-align="center center" style="background:#f3f3f3">
+            <h3>
+                伺服器錯誤，請重新整理
+            </h3>
+        </div>
+    </md-content>
+</div>

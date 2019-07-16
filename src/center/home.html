@@ -1,0 +1,67 @@
+<style scoped="scoped">
+    home {
+        height: 100%;
+    }
+    .selectIndex {
+        background-color: #cccccc;
+    }
+    
+    .statusButton {
+        min-width: 40px
+    }
+    
+    .beStatus {
+        background-color: green;
+    }
+    
+    .inStatus {
+        background-color: red;
+    }
+    
+    .afStatus {
+        background-color: yellow;
+    }
+    
+    md-list-item.active {
+        background-color: lightgray !important;
+    }
+</style>
+
+<div layout="row" layout-fill style="text-transform: none;">
+    <md-sidenav ng-hide="super.hideSidenav" layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+        <header class="nav-header">
+            <h1>{{home.currentHospital.HospitalName}}</h1>
+            <h2>CENTER</h2>
+            <div layout="row" layout-align="center center">
+                <md-button layout="row">
+                    <img ng-src="static/img/avatar.png" class="md-avatar" />
+                    <h3>{{home.currentUser.Name}} 您好</h3>
+                </md-button>
+            </div>
+        </header>
+        <md-content layout="column" flex class="menu">
+            <md-list>
+                <md-list-item ui-sref="hospital" ui-sref-active="active">
+                    醫院管理
+                </md-list-item>
+                <md-list-item ui-sref="centeruser" ui-sref-active="active">
+                    使用者管理
+                </md-list-item>
+                <md-list-item ui-sref="contract" ui-sref-active="active">
+                    合約管理
+                </md-list-item>
+                <md-list-item ui-sref="payment" ui-sref-active="active">
+                    帳務管理
+                </md-list-item>
+                </md-list>
+            <span flex></span>
+            <md-list>
+                <md-divider></md-divider>
+                <md-list-item ng-click="home.logout()">
+                    <i class="material-icons">exit_to_app</i> 登出
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </md-sidenav>
+    <ui-view layout="column" flex></ui-view>
+</div>

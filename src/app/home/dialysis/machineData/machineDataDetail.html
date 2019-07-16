@@ -1,0 +1,333 @@
+<div flex layout="column" layout-fill>
+    <summary-toolbar ng-if="detail.machineDataId === 'create'" toolbar-title="'machineData.machineDataDetail.createMachineData' | translate" cancel="detail.gotoList()"></summary-toolbar>
+    <summary-toolbar ng-if="detail.machineDataId !== 'create'" toolbar-title="'machineData.machineDataDetail.editMachineData' | translate" cancel="detail.gotoList()"></summary-toolbar>
+
+    <!-- <div hide-xs hide-sm ng-show="!detail.loading">
+        <h3 style="float: left; padding-left: 10px" translate="machineData.machineDataDetail.createOrEditMachineData" translate-values='{machineDataId: detail.machineDataId}'></h3>
+        <md-button style="float:right; margin-top: 8px" class="md-secondary md-icon-button" ng-click="detail.gotoList()" aria-label="call">
+            <i class="material-icons">cancel</i>
+        </md-button>
+    </div> -->
+    <span ng-if="!detail.canAccess" class="readonly-text" title="{{ 'customMessage.readonlyTitle' | translate }}" translate>{{ 'customMessage.readonly' }}</span>
+    <md-content flex layout-fill class="padding-6">
+        <loading ng-show="detail.loading"></loading>
+        <div class="inner">
+            <div class="readonly-inner" ng-if="!detail.canAccess"></div>
+            <div class="machine-data-container" ng-hide="detail.loading || detail.isError">
+                <div layout="row" ng-show="detail.machineDataId ==='create' && detail.isDitto">
+                    <md-button ng-click="detail.ditto()" class="md-raised md-primary">Ditto</md-button>
+                </div>
+                <!-- <div layout="row">
+                <md-button ng-click="detail.autotest()" class="md-raised md-primary">測試</md-button>
+            </div> -->
+                <!--Changed to HTML date&time input  -->
+                <div layout="row">
+                    <label translate>{{'machineData.machineDataDetail.date'}}</label>
+                    <input type="date" min="1900-01-01" max="2999-12-31" ng-model="detail.date" />
+                </div>
+                <div layout="row">
+                    <label translate>{{'machineData.machineDataDetail.time'}}</label>
+                    <input type="time" ng-model="detail.date" step="1" />
+                </div>
+                <div layout="row" ng-if="detail.machineDataId !== 'create'">
+                    <label translate>{{'machineData.machineDataDetail.dataSource'}}</label>
+                    <input type="text" ng-model="detail.dataSource" readonly />
+                </div>
+                <div layout="row">
+                    <label class="from-machine" translate>{{'machineData.machineDataDetail.cardNo'}}</label>
+                    <input flex-xs="90" ng-model="detail.macAddr" readonly>
+                    <input flex-xs="10" ng-model="detail.serviceData.DialysisSystem">
+                </div>
+                <div layout="row">
+                    <label class="from-machine" translate>{{'machineData.machineDataDetail.remainingTime'}}</label>
+                    <!--<input type="text" ng-model="detail.serviceData.UFTime" options="detail.timepickerOption" datetimepicker>-->
+                    <md-select ng-model="detail.uftimehour" ng-blur="detail.checkWithPrescription('UFTime')">
+                        <md-option ng-value="" translate>{{'machineData.machineDataDetail.hour'}}</md-option>
+                        <md-option ng-repeat="hour in detail.uftimehours" ng-value="hour">{{::hour}}</md-option>
+                    </md-select>{{'machineData.machineDataDetail.hour' | translate}}
+                    <md-select ng-model="detail.uftimeminute" ng-blur="detail.checkWithPrescription('UFTime')">
+                        <md-option ng-value="" translate>{{'machineData.machineDataDetail.min'}}</md-option>
+                        <md-option ng-repeat="minute in detail.minutes" ng-value="minute">{{::minute}}</md-option>
+                    </md-select>{{'machineData.machineDataDetail.min' | translate}}
+                </div>
+                <label class="errorMsg" ng-if="detail.errMsg.UFTime"><span translate>{{'machineData.machineDataDetail.UFTimeErr'}}</span>
+                    {{detail.prescription.Duration.Hours}}:{{detail.prescription.Duration.Minutes}}</label>
+
+                <div layout="row">
+                    <label translate>{{'machineData.machineDataDetail.bloodPressure'}}</label>
+                    <input type="tel" ng-class="{errorMsg: detail.serviceData.IsBloodPressureAlarm}" ng-model="detail.serviceData.BPS" placeholder="{{'machineData.machineDataDetail.systolicPressure' | translate}}">
+                    <span> / </span>
+                    <input type="tel" ng-class="{errorMsg: detail.serviceData.IsBloodPressureAlarm}" ng-model="detail.serviceData.BPD" placeholder="{{'machineData.machineDataDetail.diastolicPressure' | translate}}">
+                </div>
+                <div layout="row">
+                    <label translate>{{'machineData.machineDataDetail.PulseBreath'}}</label>
+                    <input type="tel" ng-class="{errorMsg: detail.serviceData.IsPulseAlarm}" ng-model="detail.serviceData.Pulse" placeholder="{{'machineData.machineDataDetail.Pulse' | translate}}">
+                    <span> / </span>
+                    <input type="tel" ng-model="detail.serviceData.Breath" placeholder="{{'machineData.machineDataDetail.Breath' | translate}}">
+                </div>
+                <div layout="row">
+                    <label translate>{{'machineData.machineDataDetail.Temperature'}}</label>
+                    <input type="tel" ng-model="detail.serviceData.Temperature" placeholder="{{'machineData.machineDataDetail.Temperature' | translate}}">
+                </div>
+                <div layout="row">
+                    <label>O<sub>2</sub>(L)</label>
+                    <input type="tel" ng-model="detail.serviceData.Oxygen" placeholder>
+                </div>
+                <div layout="row">
+                    <label class="from-machine" translate>{{'machineData.machineDataDetail.BloodFlowRateLabel'}}</label>
+                    <input ng-model="detail.serviceData.BloodFlowRate" ng-blur="detail.checkWithPrescription('BloodFlowRate')" placeholder="{{'machineData.machineDataDetail.BloodFlowRate' | translate}}">
+                </div>
+                <label class="errorMsg" ng-if="detail.errMsg.BloodFlowRate"><span translate>{{'machineData.machineDataDetail.BloodFlowRateErr'}}</span>
+                    ({{detail.prescription.BF}} cc/分)</label>
+                <div layout="row" ng-show="detail.isCRRT">
+                    <label class="from-machine" translate>{{'machineData.machineDataDetail.ArterialPressure'}}</label>
+                    <input ng-model="detail.serviceData.ArterialPressure" placeholder="{{'machineData.machineDataDetail.ArterialPressure' | translate}}">
+                </div>
+                <div layout="row" ng-show="detail.isCRRT">
+                    <label class="from-machine" translate>{{'machineData.machineDataDetail.FilterPressure'}}</label>
+                    <input ng-model="detail.serviceData.FilterPressure" placeholder="{{'machineData.machineDataDetail.FilterPressure' | translate}}">
+                </div>
+                <div layout="row" ng-show="detail.isCRRT">
+                    <label class="from-machine" translate>{{'machineData.machineDataDetail.EffluentPressure'}}</label>
+                    <input ng-model="detail.serviceData.EffluentPressure" placeholder="{{'machineData.machineDataDetail.EffluentPressure' | translate}}">
+                </div>
+                <div layout="row">
+                    <label class="from-machine" translate>{{'machineData.machineDataDetail.VenousPressureLabel'}}</label>
+                    <input ng-class="{errorMsg: detail.serviceData.IsVenousPressureAlarm}"  ng-model="detail.serviceData.VenousPressure" placeholder="{{'machineData.machineDataDetail.VenousPressure' | translate}}">
+                </div>
+                <div layout="row">
+                    <label class="from-machine" translate>{{'machineData.machineDataDetail.TMPLabel'}}</label>
+                    <input ng-class="{errorMsg: detail.serviceData.IsTMPAlarm}" ng-model="detail.serviceData.TMP" placeholder="{{'machineData.machineDataDetail.TMP' | translate}}">
+                </div>
+                <div layout="row" ng-show="detail.isCRRT">
+                    <label class="from-machine" translate>{{'machineData.machineDataDetail.PressureDrop'}}</label>
+                    <input ng-model="detail.serviceData.PressureDrop" placeholder="{{'machineData.machineDataDetail.PressureDrop' | translate}}">
+                </div>
+                <div layout="row">
+                    <label class="from-machine" translate>{{'machineData.machineDataDetail.UFRateLabel'}}</label>
+                    <input ng-model="detail.serviceData.UFRate" ng-change="detail.ufrateChange()" placeholder="{{'machineData.machineDataDetail.UFRate' | translate}}">
+                    <span> / </span>
+                    <input ng-model="detail.serviceData.TotalUF" placeholder="{{'machineData.machineDataDetail.TotalUF' | translate}}">
+                </div>
+                <div layout="row">
+                    <label class="from-machine" translate>{{'machineData.machineDataDetail.HeparinOriginal'}}</label>
+                    <input ng-model="detail.serviceData.HeparinOriginal" placeholder="{{'machineData.machineDataDetail.HeparinOriginal' | translate}}">
+                </div>
+                <div layout="row">
+                    <label class="from-machine" translate>{{'machineData.machineDataDetail.HeparinDeliveryRate'}}</label>
+                    <input ng-model="detail.serviceData.HeparinDeliveryRate" placeholder="{{'machineData.machineDataDetail.HeparinDeliveryRate' | translate}}">
+                </div>
+                <div layout="row">
+                    <label class="from-machine" translate>{{'machineData.machineDataDetail.HeparinAccumulatedVolume'}}</label>
+                    <input ng-model="detail.serviceData.HeparinAccumulatedVolume" placeholder="{{'machineData.machineDataDetail.HeparinAccumulatedVolume' | translate}}">
+                </div>
+                <div layout="row">
+                    <label class="from-machine" translate>{{'machineData.machineDataDetail.DialysisateFlowRateLabel'}}</label>
+                    <input ng-model="detail.serviceData.DialysisateFlowRate" ng-blur="detail.checkWithPrescription('DialysisateFlowRate')" placeholder="{{'machineData.machineDataDetail.DialysisateFlowRate' | translate}}">
+                </div>
+                <label class="errorMsg" ng-if="detail.errMsg.DialysisateFlowRate"><span translate>{{'machineData.machineDataDetail.DialysateFlowRateErr'}}</span>
+                    ({{detail.prescription.DialysateFlowRate}} ml/min)</label>
+
+                <div layout="row">
+                    <label class="from-machine">{{'machineData.machineDataDetail.DialysateA' | translate}}(Ca<sup>+</sup>／K<sup>+</sup>,
+                        mEq／L)</label>
+                    <input ng-class="{errorMsg: detail.serviceData.IsConcentrationAlarm}" ng-model="detail.serviceData.DialysateA" placeholder="{{'machineData.machineDataDetail.DialysateA' | translate}}">
+                </div>
+
+                <div layout="row">
+                    <label class="from-machine" translate>{{'machineData.machineDataDetail.DialysateTemperatureSet'}}</label>
+                    <input ng-model="detail.serviceData.DialysateTemperatureSet" ng-blur="detail.prescription && detail.checkWithPrescription('DialysateTemperature')" placeholder="{{'machineData.machineDataDetail.DialysateTemperatureSet' | translate}}">
+                </div>
+                <label class="errorMsg" ng-if="detail.errMsg.DialysateTemperature"><span translate>{{'machineData.machineDataDetail.DialysateTemperatureErr'}}</span>
+                    ({{detail.prescription.DialysateTemperature}} °C)</label>
+                <div layout="row">
+                    <label class="from-machine" translate>{{'machineData.machineDataDetail.DialysateTemperature'}}</label>
+                    <input ng-class="{errorMsg: detail.serviceData.IsDialysateTemperatureAlarm}" ng-model="detail.serviceData.DialysateTemperature" placeholder="{{'machineData.machineDataDetail.DialysateTemperature' | translate}}">
+                </div>
+
+                <div layout="row">
+                    <label class="from-machine" translate>{{'machineData.machineDataDetail.DialysateConductivity'}}</label>
+                    <input ng-class="{errorMsg: detail.serviceData.IsConductivityAlarm}" ng-model="detail.serviceData.DialysateConductivity" placeholder="{{'machineData.machineDataDetail.DialysateConductivity' | translate}}">
+                </div>
+                <div layout="row">
+                    <label translate>{{'machineData.machineDataDetail.NormalSalineLabel'}}</label>
+                    <input ng-model="detail.serviceData.NormalSaline" placeholder="{{'machineData.machineDataDetail.NormalSaline' | translate}}">
+                </div>
+                <div layout="row">
+                    <label translate>{{'machineData.machineDataDetail.AKClot'}}</label>
+                    <md-select ng-model="detail.serviceData.AKClot">
+                        <md-option translate>{{'machineData.machineDataDetail.choose'}}</md-option>
+                        <md-option value="+">+</md-option>
+                        <md-option value="-">-</md-option>
+                    </md-select>
+                </div>
+                <div layout="row" ng-show="detail.isCRRT">
+                    <label translate>{{'machineData.machineDataDetail.ACT'}}</label>
+                    <input ng-model="detail.serviceData.ACT" placeholder="{{'machineData.machineDataDetail.ACT' | translate}}">
+                </div>
+                <div layout="row" ng-show="detail.isCRRT">
+                    <label translate>{{'machineData.machineDataDetail.HeaterTemperature'}}</label>
+                    <input ng-model="detail.serviceData.HeaterTemperature" placeholder="{{'machineData.machineDataDetail.HeaterTemperature' | translate}}">
+                </div>
+                <div layout="row">
+                    <label translate>{{'machineData.machineDataDetail.FiftyPercentGW'}}</label>
+                    <input ng-model="detail.serviceData.FiftyPercentGW" placeholder="{{'machineData.machineDataDetail.FiftyPercentGW' | translate}}">
+                </div>
+                <!-- <div layout="row">
+                    <label translate>{{'machineData.machineDataDetail.NeedleStatusLabel'}}</label>
+                    <md-select ng-model="detail.serviceData.NeedleStatus" placeholder="">
+                        <md-option translate>{{'machineData.machineDataDetail.choose'}}</md-option>
+                        <md-option value="N">N</md-option>
+                        <md-option value="Y">Y</md-option>
+                    </md-select>
+                </div> -->
+                <!-- <div layout="row">
+                    <label>HCO<sub>3</sub></label>
+                    <input type="tel" ng-model="detail.serviceData.HCO3" placeholder="HCO3">
+                </div> -->
+                <div layout="row">
+                    <label translate>{{'machineData.machineDataDetail.UFProfile'}}</label>
+                    <input type="tel" ng-model="detail.serviceData.UFProfile" placeholder="{{'machineData.machineDataDetail.UFProfile' | translate}}">
+                </div>
+                <div layout="row">
+                    <label class="from-machine">{{'machineData.machineDataDetail.TargetSodium' | translate}} Na<sup>+</sup>(mmole)</label>
+                    <input ng-model="detail.serviceData.TargetSodium" placeholder="{{'machineData.machineDataDetail.TargetSodium' | translate}}">
+                </div>
+                <div layout="row">
+                    <label>{{'machineData.machineDataDetail.NaProfile' | translate}}</label>
+                    <input type="tel" ng-model="detail.serviceData.NaProfile" placeholder="{{'machineData.machineDataDetail.NaProfile' | translate}}">
+                </div>
+                <div layout="row">
+                    <label class="from-machine" translate>{{'machineData.machineDataDetail.HDFType'}}</label>
+                    <input ng-model="detail.serviceData.HDFType" ng-change="detail.checkMode(detail.serviceData.HDFType)" placeholder="{{'machineData.machineDataDetail.HDFType' | translate}}">
+                </div>
+                <div layout="row" ng-show="detail.showVolume">
+                    <label class="from-machine" translate>{{'machineData.machineDataDetail.Volume'}}</label>
+                    <input ng-model="detail.serviceData.Volume" placeholder="{{'machineData.machineDataDetail.Volume' | translate}}">
+                </div>
+                <div layout="row" ng-show="detail.showVolume">
+                    <label class="from-machine" translate>{{'machineData.machineDataDetail.SubVolume'}}</label>
+                    <input ng-model="detail.serviceData.SubVolume" placeholder="{{'machineData.machineDataDetail.SubVolume' | translate}}">
+                </div>
+                <!-- <div layout="row">
+                    <label class="from-machine" translate>{{'machineData.machineDataDetail.TotalBloodFlowVolume'}}</label>
+                    <input ng-model="detail.serviceData.TotalBloodFlowVolume" placeholder="{{'machineData.machineDataDetail.TotalBloodFlowVolume' | translate}}">
+                </div> -->
+                <!-- <div layout="row">
+                    <label class="from-machine" translate>{{'machineData.machineDataDetail.BloodLeak'}}</label>
+                    <input type="tel" ng-model="detail.serviceData.BloodLeak" placeholder="{{'machineData.machineDataDetail.BloodLeak' | translate}}">
+                </div> -->
+                <div layout="row">
+                    <label class="from-machine" translate>{{'machineData.machineDataDetail.TargetUF'}}</label>
+                    <input ng-model="detail.serviceData.TargetUF" ng-blur="detail.dehydrationSetting && detail.checkTargetUF()" placeholder="{{'machineData.machineDataDetail.TargetUF' | translate}}">
+                </div>
+                <label class="errorMsg" ng-if="detail.errMsg.TargetUF"><span translate>{{'machineData.machineDataDetail.targetUFDiffToDehydrationSetting'}}</span>
+                    ({{detail.dehydrationSetting}}kg)</label>
+
+                <div layout="row">
+                    <label>穿刺部位滲血/固定妥當</label>
+                    <input ng-model="detail.serviceData.PuncherBloodLeak" ng-blur="detail.dehydrationSetting && detail.checkTargetUF()" placeholder="穿刺部位滲血/固定妥當">
+                </div>
+
+                <div layout="row">
+                    <label>保護性約束/血循評估</label>
+                    <input ng-model="detail.serviceData.ProtectiveConstraint" ng-blur="detail.dehydrationSetting && detail.checkTargetUF()" placeholder="保護性約束/血循評估">
+                </div>
+
+                <div layout="row">
+                    <div layout="column">
+                        <label translate>{{'machineData.machineDataDetail.Memo'}}</label>
+                        <div class="phrase-div">
+                            <span class="phrase-span" ng-click="detail.isOpenRight()" translate>{{'machineData.machineDataDetail.insertPhrase'}}</span>
+                        </div>
+                    </div>
+                    <textarea id="Content" name="Content" ng-model="detail.serviceData.Memo" rows="5" maxlength="5000" placeholder="{{'machineData.machineDataDetail.Memo' | translate}}" md-detect-hidden="true"></textarea>
+                    <!-- <p>{{detail.serviceData.Memo}}</p> -->
+                </div>
+                <div ng-if="detail.ModuleFunctions === null || detail.ModuleFunctions.Assessment === '1'">
+                    <md-card class="margin-5">
+                        <div layout="row" style="padding: 0px 5px 0px 20px;">
+                            <h3 flex translate>{{'machineData.machineDataDetail.mesoAssessment'}}</h3>
+                            <md-button ng-show="detail.showMesoAssessment" class="arrow-down" ng-click="detail.openMesoAssessment()">
+                                <md-icon class="material-icons font-size-24">keyboard_arrow_down</md-icon>
+                            </md-button>
+                            <md-button ng-show="!detail.showMesoAssessment" class="arrow-down" ng-click="detail.openMesoAssessment()">
+                                <md-icon class="material-icons font-size-24">keyboard_arrow_up</md-icon>
+                            </md-button>
+                        </div>
+                        <md-card-content ng-show="!detail.loading && detail.showMesoAssessment && ((detail.questions && detail.questions.length === 0) || !detail.questions)" class="assessment-content">
+                            <div style="color: red;" translate>{{'machineData.machineDataDetail.mesoAssessmentAlert'}}</div>
+                            <!-- 目前沒有評估項目，請至後台設定洗中評估 -->
+                        </md-card-content>
+                        <md-card-content ng-show="!detail.loading && detail.showMesoAssessment && detail.questions && detail.questions.length > 0" class="assessment-content">
+                            <div>
+                                <div class="wf-container">
+                                    <div ng-repeat="item in detail.questions track by $index">
+                                        <div class="wf-box">
+                                            <md-card>
+                                                <md-card-title>
+                                                    <md-card-title-text>
+                                                        <h3>{{item.Item}}</h3>
+                                                    </md-card-title-text>
+                                                </md-card-title>
+                                                <md-card-content class="assessment-content">
+                                                    <!-- loop through options in each question -->
+                                                    <div ng-repeat="(k, v) in item.Options track by $index">
+                                                        <!-- populate check boxes for choices -->
+                                                        <md-checkbox ng-checked="detail.exists(item.Item, v)" ng-click="detail.toggle(item.Item, v)">{{v}}</md-checkbox>
+                                                    </div>
+                                                    <!-- Check box for "others" if IncludeOther == true -->
+                                                    <md-checkbox ng-if="item.IncludeOther" ng-model="detail.checkedOther[item.Item]" ng-checked="detail.exists(item.Item, 'Other')" ng-click="detail.toggle(item.Item, 'Other')">其他</md-checkbox>
+                                                    <input ng-if="detail.checkedOther[item.Item]" ng-model="detail.assessmentItems[item.Item]['OtherInput']" ng-change="detail.itemChange()">
+                                                </md-card-content>
+                                            </md-card>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </md-card-content>
+                    </md-card>
+                </div>
+
+                <div layout="row" layout-wrap class="margin-5">
+                    <div flex="50" flex-xs="100" ng-show="detail.serviceData.CreatedUserName">
+                        <!-- <span>建立: {{ detail.serviceData.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                        <span translate="machineData.machineDataDetail.createdTime" translate-values='{CreatedTime: detail.serviceData.CreatedTime}'></span>
+                        <seal model="detail.serviceData" modified="none"></seal>
+                    </div>
+                    <div flex="50" flex-xs="100" ng-show="detail.serviceData.ModifiedTime != null">
+                        <!-- <span>修改: {{ detail.serviceData.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                        <span translate="machineData.machineDataDetail.editedTime" translate-values='{ModifiedTime: detail.serviceData.ModifiedTime}'></span>
+                        <seal model="detail.serviceData" created="none"></seal>
+                    </div>
+                </div>
+                <div layout="row" layout-margin layout-align="end center">
+                    <md-button ng-click="detail.submit()" ng-if="detail.canAccess" class="md-raised md-primary" ng-disabled="detail.isSubmit">{{'machineData.machineDataDetail.save'
+                    | translate}}</md-button>
+                    <md-progress-circular md-diameter="20px" md-mode="indeterminate" ng-show="detail.isSaving"></md-progress-circular>
+                </div>
+            </div>
+        </div>
+        <div flex ng-show="!detail.loading && detail.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate>{{'machineData.machineDataDetail.serverError'}}</h3>
+        </div>
+    </md-content>
+    <div class='fullscreenMask' ng-show="detail.showReading" layout="column" layout-align="center center">
+        <div layout="column" layout-align="center center" style="background-color: rgba(33, 33, 33, 0.8); color: white; padding: 20px; border-radius: 4px;">
+            {{detail.bleStatus}}
+            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>
+    </div>
+    <md-button ng-if="detail.iosNFCSupport" class="md-fab md-fab-bottom-right" style="position: fixed;" ng-click="detail.iosNfcScan()">
+        <md-icon>
+            <i class="material-icons">nfc</i>
+        </md-icon>
+    </md-button>
+    <audio id="piConnectedSound">
+        <source src="static/sounds/piConnected.mp3">
+    </audio>
+    <audio id="piDisconnectedSound">
+        <source src="static/sounds/piDisconnected.mp3">
+    </audio>
+    <phrase id="phrase" callback="detail.phraseInsertCallback(word)"></phrase>
+</div>

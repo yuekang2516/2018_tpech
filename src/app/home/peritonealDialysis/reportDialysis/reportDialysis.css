@@ -1,0 +1,59 @@
+.peritonealDialysisTabView.pgRdEdit {
+  font-family: "微軟正黑體";
+  line-height: 30px;
+}
+.peritonealDialysisTabView.pgRdEdit input {
+  padding: 7px;
+  width: 220px;
+}
+.peritonealDialysisTabView.pgRdEdit .txtName {
+  width: 100px;
+}
+.peritonealDialysisTabView.pgRdEdit input,
+.peritonealDialysisTabView.pgRdEdit textarea,
+.peritonealDialysisTabView.pgRdEdit select,
+.peritonealDialysisTabView.pgRdEdit md-select {
+  width: auto;
+  display: inline-block;
+  vertical-align: top;
+}
+.peritonealDialysisTabView.pgRdEdit md-select {
+  width: 100px;
+  margin: 0;
+}
+.peritonealDialysisTabView.pgRdEdit md-select .md-select-value {
+  border-bottom-color: rgba(0, 0, 0, 0);
+}
+.peritonealDialysisTabView.pgRdEdit .dataList {
+  padding: 20px 40px;
+}
+.peritonealDialysisTabView.pgRdEdit h2 {
+  text-align: center;
+  font-size: 1.2em;
+}
+.peritonealDialysisTabView.pgRdEdit ul {
+  margin: 20px auto;
+  display: block;
+  width: 220px;
+}
+.peritonealDialysisTabView.pgRdEdit ul li {
+  list-style: none;
+  padding: 0;
+}
+.peritonealDialysisTabView.pgRdEdit h4 {
+  text-align: right;
+}
+.peritonealDialysisTabView.pgRdEdit .signDate {
+  text-align: center;
+}
+.peritonealDialysisTabView.pgRdEdit .inputbox .inputBoxTit {
+  text-align: right;
+  margin: unset;
+}
+.peritonealDialysisTabView.pgRdEdit .signName {
+  min-width: 100%;
+  display: inline-block;
+  height: 30px;
+  border: 1px solid #ddd;
+  vertical-align: top;
+}

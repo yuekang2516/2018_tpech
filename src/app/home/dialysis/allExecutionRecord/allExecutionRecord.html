@@ -1,0 +1,122 @@
+<div flex layout="column" style="position: relative" layout-fill>
+    <summary-toolbar toolbar-title="'dialysisTabView.executionRecord' | translate" cancel="$ctrl.goback()" ng-hide="$ctrl.stateName.substr(0, 2) === 'pd'"></summary-toolbar>
+    <loading ng-show="$ctrl.loading"></loading>
+    <mask-loading ng-show="$ctrl.showMask" is-show-title="false" title-text=""></mask-loading>
+    <div ng-show="!$ctrl.loading && $ctrl.serviceData.length > 0"  class="list-header" layout="row" layout-align="center center">
+        <span flex></span>
+        <!-- <h6>共 {{$ctrl.serviceData.length}} 筆</h6> -->
+        <h6 translate="allExecutionRecord.allExecutionRecord.totalRecord" translate-values='{length: $ctrl.serviceData.length}'></h6>
+        <span flex></span>
+        <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+        <!-- <h6>{{$ctrl.lastRefreshTitle}}</h6>
+        <md-button class="md-icon-button" ng-click="$ctrl.refresh()">
+            <i class="material-icons">refresh</i>
+        </md-button> -->
+    </div>
+    <md-content ng-show="!$ctrl.loading && $ctrl.serviceData.length > 0"  flex layout="column">
+        <md-list >
+            <md-list-item class="md-2-line" ng-repeat="item in $ctrl.serviceData | orderBy:'-CreatedTime'" ng-click="$ctrl.gotoAllExecutionDialog(item, item.Id, 'update')">
+                <div class="md-list-item-text" layout="column" style="padding:10px">
+
+                    <div layout="row" layout-align="start center">
+
+                        <div layout="column" flex>
+
+                            <div layout="column" layout-align="start start">
+                                <div layout="row">
+                                    <div style="display:inline; margin:0; padding:0;">
+                                        <md-button ng-show="item.Remind" class="bell" ng-click="$ctrl.clickRemindBell($event, 'off', item.Id, $ctrl.serviceData)">
+                                            <md-icon class="material-icons font-size-28">notifications_none</md-icon>
+                                        </md-button>
+                                        <md-button ng-show="!item.Remind" class="bell" ng-click="$ctrl.clickRemindBell($event, 'on', item.Id, $ctrl.serviceData)">
+                                            <md-icon class="material-icons font-size-28">notifications_off</md-icon>
+                                        </md-button>
+                                    </div>
+                                    <b class="font-size-18 left-margin-10" ng-show="item.Days !== null">{{::item.StartDate | date: 'MM/dd'}} ~ {{::item.EndDate | date: 'MM/dd'}}</b>
+                                    <b class="font-size-18 left-margin-10" ng-show="item.Days === null" translate="">{{'allExecutionRecord.allExecutionRecord.infinity'}}</b>
+                                    <div ng-if="!$ctrl.isFold" class="left-margin-10 display-inline" layout="row" layout-align="start center" >
+                                        <span ng-if="item.NeedToDo === 0" translate="">{{'allExecutionRecord.allExecutionRecord.todayNoExecute'}}</span>
+                                        <span ng-if="item.TimeArea === 'day' && item.NeedToDo !== 0" class="text-red" translate="allExecutionRecord.allExecutionRecord.todayExecute" translate-values='{times: item.NeedToDo}'></span>
+                                        <span ng-if="item.TimeArea !== 'day' && item.NeedToDo !== 0 " class="text-red"  translate="allExecutionRecord.allExecutionRecord.executeArea" translate-values='{startDate: item.AreaStartDate,  endDate: item.AreaEndtDate, times: item.NeedToDo}'>{</span>
+                                    </div>
+                                </div>
+
+                                <!-- <div ng-if="$ctrl.isEnglish" layout="row" layout-align="start center" style="display:inline" >
+                                    <span ng-if="item.NeedToDo === 0" translate="">{{'allExecutionRecord.allExecutionRecord.todayNoExecute'}}</span>
+                                    <span ng-if="item.TimeArea === 'day' && item.NeedToDo !== 0" class="text-red" translate="allExecutionRecord.allExecutionRecord.todayExecute" translate-values='{times: item.NeedToDo}'></span>
+                                    <span ng-if="item.TimeArea !== 'day' && item.NeedToDo !== 0 " class="text-red"  translate="allExecutionRecord.allExecutionRecord.executeArea" translate-values='{startDate: item.AreaStartDate,  endDate: item.AreaEndtDate, times: item.NeedToDo}'>{</span>
+                                </div> -->
+                            
+                                <div class="paddingtopbottom">
+                                    <div layout="row" layout-align="start center">
+                                        <!-- 高危險用藥-->
+                                        <i ng-if="item.IsDangerMed" class="material-icons dangerous-drug-icon">warning</i>
+                                        <b class="inline-block line-height-20 ">{{::item.Name }}</b>
+                                    </div>
+                                    <div class="inline-block line-height-20 ">
+                                        <span >
+                                            {{::item.OrderMode === 'Performed' ? item.ActualQuantity : '-' }} / {{ ::item.Quantity }} {{::item.QuantityUnit}} {{::item.Route}}
+                                        </span>
+                                        <span >
+                                            {{::item.Frequency }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div ng-if="$ctrl.isFold" layout="row" layout-align="start center" class="display-inline" >
+                                    <span ng-if="item.NeedToDo === 0" translate="">{{'allExecutionRecord.allExecutionRecord.todayNoExecute'}}</span>
+                                    <span ng-if="item.TimeArea === 'day' && item.NeedToDo !== 0" class="text-red" translate="allExecutionRecord.allExecutionRecord.todayExecute" translate-values='{times: item.NeedToDo}'></span>
+                                    <span ng-if="item.TimeArea !== 'day' && item.NeedToDo !== 0 " class="text-red"  translate="allExecutionRecord.allExecutionRecord.executeArea" translate-values='{startDate: item.AreaStartDate,  endDate: item.AreaEndtDate, times: item.NeedToDo}'>{</span>
+                                </div>
+
+                            </div>
+
+                            <div ng-class="{true: 'align-right-position-fold', false: 'align-right-position'}[$ctrl.isFold]">
+                                <md-button  class="md-raised md-primary three-btn" ng-click="$ctrl.submit('Performed', item.Id, 'new', item.NeedToDo)" ng-disabled="item.NeedToDo === 0">{{'allExecutionRecord.allExecutionRecord.execute' | translate}}</md-button>
+
+                                <md-button  class="md-raised md-warn three-btn" ng-click="$ctrl.submit('Neglect', item.Id, 'new', item.NeedToDo)" ng-disabled="item.NeedToDo === 0">{{'allExecutionRecord.allExecutionRecord.dontExecute' | translate}}</md-button>
+                                
+                                <!-- <md-button class="md-raised md-primary total-record-btn three-btn" ng-click="$ctrl.gotoAllExecutionDialog(item, item.Id, 'update')" style="background-color: rgb(72, 134, 231);">
+                                        <span class="text-white" translate>{{'allExecutionRecord.allExecutionRecord.allRecord'}}</span>
+                                </md-button> -->
+                            </div>
+                            <div ng-class="{true: 'align-right-bottom-position-fold', false: 'align-right-bottom-position'}[$ctrl.isFold]">
+                                <seal model="item" modified="none" fixedTop="true" ></seal>
+                            </div>
+
+                            <!-- <div ng-class="{true: 'align-right-position-fold', false: 'align-right-position'}[$ctrl.isFold]">
+                                    <md-icon class="md-secondary" ng-click="$ctrl.deleteRecord(item)" md-svg-icon="static/img/svg/ic_delete_black_24px.svg"></md-icon>
+                            </div> -->
+                            
+                            
+                            <div layout-align="start center" ng-if="item.Records && item.Records.length !== 0 && item.Records.Status !== 'Deleted'">
+                                <md-button ng-if="i.IsDialysisDayProcess" ng-class="{true: 'md-raised md-primary date-performed-btn', false: 'md-raised md-primary date-neglect-btn'}[i.OrderMode === 'Performed']" ng-repeat="i in item.Records track by i.Id" ng-click="$ctrl.submit(i.OrderMode, i.Id, 'update', 'null')">
+                                    <div>
+                                        <span class="text-white">{{::i.ProcessTime | date: 'MM/dd HH:mm'}}</span>
+                                        <span class="text-white align-date-seal"> 
+                                            <seal model="i" created="none" modified="always" ></seal> 
+                                        </span>
+                                    </div>
+                                </md-button>
+                            </div>
+                            
+                        </div>
+                            
+                    </div>
+                        
+                </div>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+        </md-list>
+    </md-content>
+
+    <!-- <div flex ng-show="!$ctrl.loading && $ctrl.serviceData.length === 0 && !$ctrl.isError" layout="column" layout-fill layout-align="center center">
+        <h1 translate>{{'allExecutionRecord.allExecutionRecord.noData'}}</h1>
+        <h4 translate>{{'allExecutionRecord.allExecutionRecord.createPrescription'}}</h4>
+    </div> -->
+    <nodata-page flex ng-show="!$ctrl.loading && $ctrl.serviceData.length === 0 && !$ctrl.isError" nodata-title="{{'allExecutionRecord.allExecutionRecord.noData' | translate}}" content="{{'allExecutionRecord.allExecutionRecord.createPrescription' | translate}}"></nodata-page>
+    <server-error-page flex ng-show="!$ctrl.loading && $ctrl.isError" refresh="$ctrl.refresh()"></server-error-page>
+    <!-- <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+        <h3 translate>{{'allExecutionRecord.allExecutionRecord.serverError'}}</h3>
+    </div> -->
+</div>

@@ -1,0 +1,72 @@
+<style>
+
+.seal-out-div {
+    height: 45px;
+    margin-top: 5px;
+}
+.sign-title {
+    margin-right: 15px!important;
+}
+
+.seal-div {
+        cursor: pointer;
+}
+
+.nfcSign-btn {
+    cursor: pointer;
+    border-radius: 14px;
+    font-size: 28px;
+    background: #4CAF50;
+    color: white;
+    padding: 1px;
+    margin-left: 15px;
+}
+
+.nfcSign-btn:hover {
+   /* background: rgb(95, 95, 95); */
+    background: rgb(23, 151, 23);
+}
+
+</style>
+
+
+
+<div layout="row" layout-align="start center" class="seal-out-div" ng-if="!$ctrl.isBrowser">
+    <div class="sign-title" >{{$ctrl.titleNameNfc}}</div>
+    <div ng-if="!$ctrl.showNfcBtn" layout="row" layout-align="end center">
+        <seal created="none" modified="none" name="{{$ctrl.signNurse.Name}}" is-two-lines="true" ng-click="$ctrl.chooseNfcQrcode($ctrl.iosNFCSupport)" class="seal-div"></seal>
+        <i ng-if="$ctrl.signNurse === ''" class="material-icons nfcSign-btn" ng-click="$ctrl.nfcSign($ctrl.iosNFCSupport)">person</i>
+    </div>
+    <div ng-if="$ctrl.showNfcBtn" layout="row" layout-align="start center">
+            <span class="nfcSign-btn-text">NFC</span>
+        <i class="material-icons nfcSign-btn" ng-click="$ctrl.nfcSign($ctrl.iosNFCSupport)">person</i>
+    </div>
+
+    <div ng-if="$ctrl.showNfcBtn" layout="row" layout-align="start center" style="margin-left: 20px;">
+            <span class="qrcodeSign-btn-text">QRcode</span>
+        <i class="material-icons qrcodeSign-btn" ng-click="$ctrl.scanBarCode()">graphic_eq</i>
+        <!-- <img ng-src="static/img/qrcode.png" /> -->
+    </div>
+
+</div>
+
+<div layout="row" layout-align="start center" class="seal-out-div" ng-if="$ctrl.isBrowser">
+    <div class="sign-title" >{{$ctrl.titleName}}</div>
+    <div ng-if="!$ctrl.showSelect" layout="row" layout-align="end center" class="seal-div">
+            <!-- {{$ctrl.signNurse.Name}} -->
+        <seal created="none" modified="none" name="{{$ctrl.signNurse.Name}}" is-two-lines="true" ng-click="$ctrl.reSelectStaff()"></seal>
+    </div>
+
+    <md-input-container  class="md-block" ng-if="$ctrl.showSelect">
+        <label>護理師簽章</label>
+        <md-select id="sign-select" ng-model="$ctrl.signNurse" ng-model-options="{trackBy: '$value.Id'}" md-on-close="$ctrl.clearSearch($ctrl.signNurse)" ng-change="$ctrl.selectSignStaff($ctrl.signNurse)">
+            <md-select-header>
+                <input style="background: url(../../static/img/ic_search.png) no-repeat scroll 2.5px 2.5px;padding-left: 25px;border-radius: 5px;font-size: 13px;" ng-model="$ctrl.searchStr" type="search" ng-keydown="$event.stopPropagation()" ng-change="$ctrl.searchStaff($ctrl.searchStr)" placeholder="簽章姓名">
+            </md-select-header>
+            <md-option ng-repeat="nurse in $ctrl.allSignStaff track by nurse.Id" ng-value="nurse">
+                <span ng-if="nurse.Name !== 'NoSign'">{{::nurse.Name}}</span>
+                <span ng-if="nurse.Name === 'NoSign'" >不簽章</span>
+            </md-option>
+        </md-select>
+    </md-input-container>
+</div>

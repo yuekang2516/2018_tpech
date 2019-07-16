@@ -1,0 +1,17 @@
+<div class="list-container" layout="column">
+    <loading ng-show="$ctrl.loading"></loading>
+    <div class="list-header" layout="row" layout-align="center end" ng-show="!$ctrl.loading">
+        <h6 translate="labexam.labexam.totalRecord" translate-values='{length: $ctrl.data.length ? $ctrl.data.length - 2:0}'></h6>
+        <span flex></span>
+        <div layout="row">
+            <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+        </div>
+    </div>
+    <ro-card-list flex ng-show="!$ctrl.loading && !$ctrl.isError && $ctrl.data.length > 0" data="$ctrl.data" is-pending="true"></ro-card-list>
+    <div flex ng-show="!$ctrl.loading && !$ctrl.isError && $ctrl.data.length == 0" layout="column" layout-fill layout-align="center center">
+        <h1 translate>{{'roprocess.noData'}}</h1>
+    </div>
+    <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+        <h3 translate>{{'roprocess.serverError'}}</h3>
+    </div>
+</div>

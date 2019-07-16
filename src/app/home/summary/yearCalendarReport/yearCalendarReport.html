@@ -1,0 +1,80 @@
+<md-content layout-fill layout="column">
+    <summary-toolbar toolbar-title="'yearCalendarReport.yearPlan' | translate" cancel="$ctrl.back()"></summary-toolbar>
+
+    <!-- <md-toolbar hide-gt-sm>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="$ctrl.back()">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <div layout="row">
+                {{'yearCalendarReport.yearPlan' | translate}}
+            </div>
+            <span flex></span>
+        </div>
+    </md-toolbar> -->
+
+    <loading ng-show="$ctrl.loading"></loading>
+    <md-content flex layout-padding ng-show="!$ctrl.loading && !$ctrl.isError" style="background:#f3f3f3; ">
+        <div>
+            <!-- {{'reports.yearCalendar.ward' | translate}}
+                <md-input-container>
+                    <md-select ng-model="$ctrl.selectedWards" ng-change="$ctrl.yearCalendar()">
+                        <md-option ng-repeat="i in $ctrl.keys" ng-value="i">{{::$ctrl.wards[i]}}</md-option>
+                    </md-select>
+                </md-input-container> -->
+            {{'yearCalendarReport.year' | translate}}
+            <md-input-container style="margin:0px">
+                <md-select ng-model="$ctrl.selectedYear" ng-change="$ctrl.changeYear()">
+                    <md-option ng-repeat="j in $ctrl.optionYear" ng-value="j">{{::j}}</md-option>
+                </md-select>
+            </md-input-container>
+            <md-card-actions style="position: absolute; right: 8px; top: 1px">
+                <md-button class="md-raised md-primary" ng-click="$ctrl.exportExcel()">{{'yearCalendarReport.exportExcel' | translate}}</md-button>
+            </md-card-actions>
+        </div>
+        <div>
+            <table id="myTable">
+                <tbody>
+                    <tr>
+                        <!-- <td class="yearCalendar" colspan="33">{{$ctrl.selectedYear}}年</td> -->
+                        <td class="yearCalendar" colspan="12" translate="yearCalendarReport.yearHeading" translate-values='{selectedYear: $ctrl.selectedYear}'></td>
+                    </tr>
+                    <tr>
+                        <!-- <td translate>{{'reports.yearCalendar.itemAndMonth'}}</td> -->
+                        <td class="month-content" ng-repeat="month in [] | range:12:1 " translate="yearCalendarReport.months" translate-values='{month: month}'></td>
+                        <!-- <td translate>{{'reports.yearCalendar.total'}}</td> -->
+                    </tr>
+                    <tr ng-if="$ctrl.noData">
+                        <td colspan="12" align="center">{{'yearCalendarReport.noData' | translate}}</td>
+                    </tr>
+                    <tr ng-if="!$ctrl.noData" ng-repeat="count in [] | range: ($ctrl.maxLength - 1) : 0">
+                        <td class="content" ng-repeat="monthKey in [] | range:12:1">
+                            <div class="text-center" ng-if="!$ctrl.grouped[monthKey]">-</div>
+                            <span ng-if="$ctrl.grouped[monthKey]">
+                                <div class="text-center" ng-if="!$ctrl.grouped[monthKey][count].Title && !$ctrl.grouped[monthKey][count].Content && !$ctrl.grouped[monthKey][count].ProcessTime && !$ctrl.grouped[monthKey][count].UserName">
+                                    -
+                                </div>
+                                <span ng-if="$ctrl.grouped[monthKey][count].Title || $ctrl.grouped[monthKey][count].Content || $ctrl.grouped[monthKey][count].ProcessTime || $ctrl.grouped[monthKey][count].UserName">
+                                    <span style="font-weight: bold;">{{ $ctrl.grouped[monthKey][count].ProcessTime ? ($ctrl.grouped[monthKey][count].ProcessTime | moment: 'YYYY/MM/DD HH:mm') : ('yearCalendarReport.pending' | translate)}} </span>
+                                    <br>
+                                    {{ $ctrl.grouped[monthKey][count].Title ? $ctrl.grouped[monthKey][count].Title : '-'}} /
+                                    {{ $ctrl.grouped[monthKey][count].Content ? $ctrl.grouped[monthKey][count].Content : '-'}} /
+                                    {{ $ctrl.grouped[monthKey][count].UserName ? $ctrl.grouped[monthKey][count].UserName : '-'}}
+                                </span>
+                            </span>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </md-content>
+    <md-content ng-if="!$ctrl.loading && $ctrl.isError" flex layout-padding layout="column" layout-align="center center">
+        <h3>
+            {{'yearCalendarReport.yearPlan' | translate}}
+        </h3>
+        <div>
+            <b>{{'yearCalendarReport.serverError' | translate}}</b>
+        </div>
+    </md-content>
+</md-content>

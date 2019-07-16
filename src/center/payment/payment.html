@@ -1,0 +1,58 @@
+<style scoped>
+    payment {
+        height: 100%;
+    }
+
+    div.deleted {
+        background-color: rgba(10, 10, 10, 0.2);
+        position: absolute;
+        height: 100%;
+        width: 100%;
+    }
+</style>
+<md-content layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.openLeftMenu()" hide-gt-sm>
+                <i class="material-icons">menu</i>
+            </md-button>
+            <h3>
+                <span>帳務管理</span>
+            </h3>
+        </div>
+    </md-toolbar>
+    <div class="list-header" ng-show="!vm.loading">
+        共 {{vm.payments.length}} 筆
+        <span flex></span>
+        <md-button class="md-raised md-warn" ng-click="vm.creatPayment()">出帳功能</md-button>
+    </div>
+    <md-content layout-fill flex>
+        <loading ng-show="vm.loading"></loading>
+        <div ng-show="!vm.loading">
+            <div ng-show="vm.payments && vm.payments.length == 0" layout="column" layout-fill layout-align="center center" flex>
+                <i class="fa fa-file-o"></i>
+                <h3>沒有資料</h3>
+                <h4>您可以按右下角新增按鈕來新增帳務資料</h4>
+            </div>
+            <div flex ng-show="vm.isError" layout="column" layout-fill layout-align="center center">
+                <h3>伺服器資料讀取失敗</h3>
+            </div>
+            <md-list>
+                <md-list-item ng-repeat="u in vm.payments | orderBy:'-StartDate'" ng-click="vm.gotoPaymentDetail(u.Id)">
+                    <div layout="row" layout-fill>
+                        <span flex=15>{{u.HospitalName}}</span>
+                        <span flex=20>{{u.Name}}</span>
+                        <span flex=10>{{u.PricingMethod}}</span>
+                        <span flex=15>{{u.TotalAmount}}</span>
+                        <span flex=25>{{u.StartDate | date:'yyyy/MM/dd'}}~{{u.EndDate | date:'yyyy/MM/dd'}}</span>
+                        <span flex=15>{{u.State}}</span>
+                    </div>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-list-item>
+            </md-list>
+            <md-button class="md-fab" ng-click="vm.gotoCreate()" aria-label="Add Payment" style="position:fixed;right:24px;bottom:24px">
+                <md-icon md-font-icon="mdi mdi-plus" style="font-size: 24px;height: 33px">+</md-icon>
+            </md-button>
+        </div>
+    </md-content>
+</md-content>

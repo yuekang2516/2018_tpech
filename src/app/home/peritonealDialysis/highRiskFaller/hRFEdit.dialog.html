@@ -1,0 +1,268 @@
+<style>
+@media print{
+        * {
+            -webkit-print-color-adjust: exact !important;
+        }
+        .peritonealDialysisTabView{
+            display: inline-table; /* Not really needed in all cases */
+        }
+        md-dialog{
+            box-shadow: none;
+            width:100%;
+        }
+        div,input,table,select,md-select{
+            page-break-inside :avoid;
+            page-break-after: avoid;
+        }
+    }
+    .patient_name{
+        position: absolute;
+        left: 210px;
+        top: 13px;
+    }
+</style>
+<md-dialog class="peritonealDialysisTabView" style="width:100%">
+    <form name="editForm" novalidate ng-cloak>
+            <md-toolbar hide-gt-xs>
+                <div class="md-toolbar-tools">
+                    <md-button class="circular md-button ng-scope md-ink-ripple" aria-label="Settings"
+                        ng-click="$ctrl.cancel()">
+                        <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+                    </md-button>
+                    <h3>
+                        <span ng-if="$ctrl.hRFDataObj.isCreate || $ctrl.hRFDataObj.isCopy == true">{{'highRiskFaller.dialog.createTitle' | translate}}</span>
+                        <span
+                            ng-if="!$ctrl.hRFDataObj.isCreate && !$ctrl.hRFDataObj.isCopy && $ctrl.hRFDataObj.Status != 'Deleted'">{{'highRiskFaller.dialog.editTitle' | translate}}</span>
+                        <span
+                            ng-show="$ctrl.hRFDataObj.Status == 'Deleted'">{{'highRiskFaller.dialog.readTitle' | translate}}</span>
+                    </h3>
+                    <div
+                        class="{{'patient_name ' + (($ctrl.currentPatient.Gender|gender) == '男' ? 'male ' : '') + (($ctrl.currentPatient.Gender|gender) == '女' ? 'female' : '') }}">
+                        {{ $ctrl.currentPatient.MedicalId + ' - ' + $ctrl.currentPatient.Name }}
+                    </div>
+                    <span flex></span>
+                    <span style="font-size:16px;" ng-show="$ctrl.hRFDataObj.Status == 'Deleted'" class="readonly-text"
+                        title="{{ 'customMessage.readonlyTitle' | translate }}"
+                        translate>{{ 'customMessage.readonly' }}</span>
+                </div>
+            </md-toolbar>
+        <summary-toolbar ng-if="$ctrl.hRFDataObj.isCreate && !$ctrl.hRFDataObj.isCopy" ng-click="$ctrl.cancel()" toolbar-title="'highRiskFaller.dialog.createTitle' | translate"></summary-toolbar>
+        <summary-toolbar ng-if="!$ctrl.hRFDataObj.isCreate && !$ctrl.hRFDataObj.isCopy" ng-click="$ctrl.cancel()" toolbar-title="'highRiskFaller.dialog.editTitle' | translate"></summary-toolbar>
+        <summary-toolbar ng-if="$ctrl.hRFDataObj.isCopy && !$ctrl.hRFDataObj.isCreate" ng-click="$ctrl.cancel()"
+            toolbar-title="'highRiskFaller.dialog.copyTitle' | translate"></summary-toolbar>
+        <div show-gt-xs
+            class="{{'patient_name ' + (($ctrl.currentPatient.Gender|gender) == '男' ? 'male ' : '') + (($ctrl.currentPatient.Gender|gender) == '女' ? 'female' : '') }}">
+            {{ $ctrl.currentPatient.MedicalId + ' - ' + $ctrl.currentPatient.Name }}
+        </div>
+        <span ng-show="$ctrl.hRFDataObj.Status == 'Deleted'" class="readonly-text" title="{{ 'customMessage.readonlyTitle' | translate }}" translate>{{ 'customMessage.readonly' }}</span>
+        <!-- <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 ng-if="$ctrl.hRFDataObj.isCreate" translate="highRiskFaller.dialog.createTitle"></h2>
+                <h2 ng-if="!$ctrl.hRFDataObj.isCreate" translate="highRiskFaller.dialog.editTitle"></h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+                    <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar> -->
+        <md-dialog-content >
+            <div class="dialogBoxData" style="padding-top:0px;padding-bottom: 0px;">
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem lightblue">
+                        <label>*日期</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.date" type="date" min="1900-01-01" max="2999-12-31" 
+                        name="RecordDate" required ng-disabled="$ctrl.RecordDate_disabled">
+                        <div ng-messages="editForm.RecordDate.$error" ng-show="editForm.RecordDate.$dirty">
+                            <div ng-message="required" class="clrRequired">必填選項</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem lightblue">
+                        <label>*時間</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <input ng-model="$ctrl.time" type="time"
+                        name="RecordTime" required pattern="[0-9]{2}:[0-9]{2}">
+                        <div ng-messages="editForm.RecordTime.$error" ng-show="editForm.RecordTime.$dirty">
+                            <div ng-message="required" class="clrRequired">必填選項</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="inputbox" layout="column">
+                    <div class="inputBoxTitText titItem">
+                        <label>1. 年齡大於65歲</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-radio-group ng-mode ng-model="$ctrl.hRFDataObj.Age_Over_65" layout="row">
+                            <md-radio-button ng-repeat="Age65 in $ctrl.View.Age_Over_65" 
+                                value="{{Age65.Value}}"
+                                ng-click="$ctrl.setTotal(Age65,'Age_Over_65')"
+                            >{{ Age65.Text}}</md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+                <div class="inputbox" layout="column">
+                    <div class="inputBoxTitText titItem">
+                        <label>2. 上次透析後至今天是否有發生跌倒</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        <md-radio-group ng-model="$ctrl.hRFDataObj.Have_Fallen_Before" layout="row">
+                            <md-radio-button ng-repeat="HfB in $ctrl.View.Have_Fallen_Before"
+                                value="{{HfB.Value}}"
+                                ng-click="$ctrl.setTotal(HfB,'Have_Fallen_Before')"
+                            >{{ HfB.Text}}</md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+                <div class="inputbox" layout="column">
+                    <div class="inputBoxTitText titItem">
+                        <label>3. 步態不穩、使用輔助助行器、軟弱需他人扶持</label>
+                    </div>
+                    <div class="inputboxflex itemList">                     
+                        <md-radio-group ng-model="$ctrl.hRFDataObj.Can_Not_Walk_Myself" layout="row">
+                            <md-radio-button ng-repeat="CNWM in $ctrl.View.Can_Not_Walk_Myself" 
+                                value="{{CNWM.Value}}"
+                                ng-click="$ctrl.setTotal(CNWM,'Can_Not_Walk_Myself')"
+                            >{{ CNWM.Text}}</md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+                <div class="inputbox" layout="column">
+                    <div class="inputBoxTitText titItem">
+                        <label>4. 肢體功能障礙</label>
+                    </div>
+                    <div class="inputboxflex itemList">                   
+                        <md-radio-group ng-model="$ctrl.hRFDataObj.Limb_Dysfunction" layout="row">
+                            <md-radio-button ng-repeat="LimbD in $ctrl.View.Limb_Dysfunction"
+                                value="{{LimbD.Value}}"
+                                ng-click="$ctrl.setTotal(LimbD,'Limb_Dysfunction')"
+                            >{{ LimbD.Text}}</md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>                
+                <div class="inputbox" layout="column">
+                    <div class="inputBoxTitText titItem">
+                        <label>5. 意識不清或認知障礙</label>
+                    </div>
+                    <div class="inputboxflex itemList">                   
+                        <md-radio-group ng-model="$ctrl.hRFDataObj.Unconsciousness_Or_Mci"  layout="row">
+                            <md-radio-button ng-repeat="UCorMci in $ctrl.View.Unconsciousness_Or_Mci" 
+                                value="{{UCorMci.Value}}"
+                                ng-click="$ctrl.setTotal(UCorMci,'Unconsciousness_Or_Mci')"
+                            >{{ UCorMci.Text}}</md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+                <div class="inputbox" layout="column">
+                    <div class="inputBoxTitText titItem">
+                        <label>6. 頭暈、暈眩</label>
+                    </div>
+                    <div class="inputboxflex itemList">                   
+                        <md-radio-group ng-model="$ctrl.hRFDataObj.Malnutrition_Or_Dizziness" layout="row">
+                            <md-radio-button ng-repeat="MorD in $ctrl.View.Malnutrition_Or_Dizziness"
+                                value="{{MorD.Value}}"
+                                ng-click="$ctrl.setTotal(MorD,'Malnutrition_Or_Dizziness')"
+                             >{{ MorD.Text}}</md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+                <div class="inputbox" layout="column">
+                    <div class="inputBoxTitText titItem" layout="row" layout-sm="row" layout-xs="column">
+                        <label>7. 貧血（Hb&lt;8.5mg/dl）</label>
+                        <span ng-style="{{$ctrl.lab_HB_Style}}" ng-if="$ctrl.lab_HB_CheckTime != ''">檢查日期：{{$ctrl.lab_HB_CheckTime}} , {{$ctrl.lab_HB_item }}</span>
+                        <span style="color: gray;" ng-if="$ctrl.lab_HB_Value == '' && ($ctrl.hRFDataObj.isCreate || $ctrl.hRFDataObj.isCopy)">無Hb檢查紀錄</span>
+                    </div>
+                    <div class="inputboxflex itemList">                   
+                        <md-radio-group ng-model="$ctrl.hRFDataObj.Percent25_Anemia_Hct" layout="row">
+                            <md-radio-button ng-repeat="P25AH in $ctrl.View.Percent25_Anemia_Hct" 
+                                value="{{P25AH.Value}}"
+                                ng-click="$ctrl.setTotal(P25AH,'Percent25_Anemia_Hct')"
+                            >{{ P25AH.Text}}</md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+                <div class="inputbox" layout="column">
+                    <div class="inputBoxTitText titItem">
+                        <label>8. 血壓不穩（收縮壓&gt;180mmHg或&lt;90mmHg）或姿位性低血壓</label>
+                    </div>
+                    <div class="inputboxflex itemList">                   
+                        <md-radio-group ng-model="$ctrl.hRFDataObj.Blood_Pressure_Instability" layout="row">
+                            <md-radio-button ng-repeat="BloodPI in $ctrl.View.Blood_Pressure_Instability"
+                                 value="{{BloodPI.Value}}"
+                                 ng-click="$ctrl.setTotal(BloodPI,'Blood_Pressure_Instability')"
+                            >{{ BloodPI.Text}}</md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+                <div class="inputbox" layout="column">
+                    <div class="inputBoxTitText titItem">
+                        <label>9. 視力模糊或失明</label>
+                    </div>
+                    <div class="inputboxflex itemList">                   
+                        <md-radio-group ng-model="$ctrl.hRFDataObj.Blurred_Vision_Or_Blindness" layout="row">
+                            <md-radio-button ng-repeat="BlurVorB in $ctrl.View.Blurred_Vision_Or_Blindness" 
+                                value="{{BlurVorB.Value}}"
+                                ng-click="$ctrl.setTotal(BlurVorB,'Blurred_Vision_Or_Blindness')"
+                            >{{ BlurVorB.Text}}</md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+                <div class="inputbox" layout="column">
+                    <div class="inputBoxTitText titItem">
+                        <label>
+                            10. 服用影響意識活動之藥物<br/>
+                            -利尿劑、止痛劑、輕瀉劑、鎮靜安眠藥、心血管用藥、抗精神病藥物、降血糖藥（Insulin）
+                        </label>
+                    </div>
+                    <div class="inputboxflex itemList">                   
+                        <md-radio-group
+                            ng-model="$ctrl.hRFDataObj.Take_Drugs_Affect_Conscious"  layout="row">
+                            <md-radio-button ng-repeat="TakeDAC in $ctrl.View.Take_Drugs_Affect_Conscious" 
+                                value="{{TakeDAC.Value}}"
+                                ng-click="$ctrl.setTotal(TakeDAC,'Take_Drugs_Affect_Conscious')"
+                            >{{ TakeDAC.Text}}</md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+                <div class="inputbox">
+                    <div class="inputBoxTit titItem">
+                        <label>合計</label>
+                    </div>
+                    <div class="inputboxflex itemList">
+                        {{$ctrl.hRFDataObj.Total}}
+                    </div>
+                </div>
+                <div row-warp layout="row" layout-sm="row" layout-xs="column">
+                    <div flex="50" flex-xs="100"  ng-show="$ctrl.hRFDataObj.CreatedUserName">
+                        <!-- <span>建立: {{ $ctrl.regForm.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                        <span translate="highRiskFaller.createdTime"
+                                translate-values='{CreatedTime: $ctrl.hRFDataObj.CreatedTime}'></span>
+                        <seal model="$ctrl.hRFDataObj" modified="none"></seal>
+                    </div>
+                    <div flex="50" flex-xs="100"  ng-show="$ctrl.hRFDataObj.ModifiedTime != null">
+                        <!-- <span>修改: {{ $ctrl.regForm.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+                        <span translate="highRiskFaller.editedTime"
+                                translate-values='{ModifiedTime: $ctrl.hRFDataObj.ModifiedTime}'></span>
+                        <seal model="$ctrl.hRFDataObj" created="none"></seal>
+                    </div>
+                </div>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row" ng-hide="$ctrl.hRFDataObj.Status == 'Deleted'" class="no-print">
+            <div layout="row" layout-align="end center">
+                <md-button class="md-raised" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.cancel()">
+                    {{'highRiskFaller.dialog.cancel' | translate}}
+                </md-button>
+                <md-button class="md-raised md-primary" ng-click="$ctrl.ok()" ng-if="!$ctrl.hRFDataObj.isCopy">
+                    {{$ctrl.hRFDataObj.isCreate ? 'highRiskFaller.dialog.create' : 'highRiskFaller.dialog.edit' | translate}}
+                </md-button>
+                <md-button class="md-raised md-primary" ng-click="$ctrl.ok()" ng-if="$ctrl.hRFDataObj.isCopy">
+                    {{'highRiskFaller.dialog.create' | translate}}
+                </md-button>
+            </div>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

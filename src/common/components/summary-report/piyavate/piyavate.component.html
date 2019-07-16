@@ -1,0 +1,692 @@
+<div layout="row" class="summary" layout-padding layout-wrap layout-fill style="padding-bottom: 32px; width: 23cm" ng-cloak>
+    <loading ng-show="$ctrl.loading"></loading>
+    <server-error-page flex ng-if="!$ctrl.loading && $ctrl.isError" refresh="$ctrl.refresh()"></server-error-page>
+    <md-whiteframe ng-show="!$ctrl.loading && !$ctrl.isError" ng-class="md-whiteframe-10dp" layout-align="start center" flex>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table border" style="margin-bottom: -2px;">
+            <tr>
+                <td width="40%">
+                    <!-- <img src="https://www.bumrungrad.com//images/framework-2016/share/img/logo.svg" alt=""> -->
+                    <img height="55" width="198" ng-src="{{$ctrl.currentHospital.Logo ? $ctrl.currentHospital.Logo : 'static/img/Unknown.png' }}" alt="">
+                    <h1>Hemodialysis：Record</h1>
+                </td>
+                <td width="60%" style="padding: 0">
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_in">
+                        <tr>
+                            <td colspan="2">Name: <span>{{$ctrl.patient.Name}}</span></td>
+                        </tr>
+                        <tr>
+                            <td>HN: <span>{{$ctrl.patient.MedicalId}}</span></td>
+                            <td>Date: <span>{{$ctrl.data.DialysisHeader.CreatedTime | moment: 'DD MMM YYYY HH:mm'}}</span><br></td>
+                        </tr>
+                        <tr>
+                            <td>Birth Date: <span>{{$ctrl.patient.Birthday | moment: 'DD MMM YYYY'}}</span></td>
+                            <td>Age: <span>{{$ctrl.patient.Birthday | age}} y</span><br></td>
+                        </tr>
+                        <tr>
+                            <td>Room: <span>{{$ctrl.data.DialysisHeader.BedNo}}</span></td>
+                            <td>Sex: <span>{{$ctrl.patient.Gender === 'M' ? 'Male' : 'Female'}}</span><br></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                Physician: <span>{{$ctrl.data.DialysisHeader.Prescription.ModifiedUserName ? $ctrl.data.DialysisHeader.Prescription.ModifiedUserName : $ctrl.data.DialysisHeader.Prescription.CreatedUserName}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                Allergies: <span>{{$ctrl.patient.AllergicHistory}}</span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table border" style="margin-bottom: -2px">
+            <tr>
+                <td>
+                    <svg id="barcode2"></svg>
+                </td>
+                <td class="center">
+                    <span>{{$ctrl.patient.MedicalId}}</span>
+                </td>
+                <td>
+                    <svg id="barcode3"></svg>
+                </td>
+            </tr>
+        </table>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table border" style="margin-bottom: -2px">
+            <tr>
+                <th>Topic</th>
+                <th>Assessment</th>
+                <th>Reassessment</th>
+                <th>Volume assessment</th>
+                <td colspan="2" class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.data.DialysisHeader.Numbers.HD">HD No: 
+                        {{$ctrl.data.DialysisHeader.Numbers.HD}} -->
+                    <img ng-src="{{$ctrl.data.DialysisHeader.Prescription.Mode['Name'] === 'HD' ? 'static/img/tick.png' : 'static/img/blank.png'}}">HD No: {{$ctrl.data.DialysisHeader.Numbers.HD}}
+                    <!-- <input type="checkbox" ng-checked="$ctrl.data.DialysisHeader.Numbers.HDF">OHDF No: 
+                        {{$ctrl.data.DialysisHeader.Numbers.HDF}} -->
+                    <img ng-src="{{$ctrl.data.DialysisHeader.Prescription.Mode['Name'] === 'HDF' ? 'static/img/tick.png' : 'static/img/blank.png'}}">OHDF No: {{$ctrl.data.DialysisHeader.Numbers.HDF}}
+                    substitute volume:
+                    <span ng-if="$ctrl.data.DialysisHeader.Prescription.SupplementVolume">{{$ctrl.data.DialysisHeader.Prescription.SupplementVolume}} litre</span>
+                </td>
+            </tr>
+            <tr>
+                <td>Pain</td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.pain[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.pain[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.assessment['Pain'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.assessment['Pain'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.rePain[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.rePain[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.reassessment['Pain'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.reassessment['Pain'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <td rowspan="7">
+                    <ul>
+                        <li>Dry weight: <span>{{$ctrl.data.DialysisHeader.Prescription.StandardWeight}}</span>kg</li>
+                        <li>Previous BW: <span>{{$ctrl.data.DialysisHeader.LastWeightBehindDialysis}}</span>kg</li>
+                        <li>Pre HD BW: <span>{{$ctrl.data.DialysisHeader.PredialysisWeight}}</span>kg</li>
+                        <li>Weight gain: <span>{{$ctrl.WeightGain}}</span>kg</li>
+                        <li>Meal/drink: <span>{{($ctrl.data.DialysisHeader.FoodWeight) + ($ctrl.data.DialysisHeader.Flush) | number:2}}</span>kg</li>
+                        <li>Post HD BW: <span>{{$ctrl.data.DialysisHeader.WeightAfterDialysis}}</span>kg</li>
+                        <li>Weight loss: <span>{{::$ctrl.Weightloss}}</span>kg</li>
+                    </ul>
+
+                </td>
+                <td rowspan="2">
+                    Machine Test: <span>{{$ctrl.data.AssessmentRecords.length > 0 ? ($ctrl.data.AssessmentRecords[0].Items['Machine Test'] ? $ctrl.data.AssessmentRecords[0].Items['Machine Test'][0] : '') : ''}}</span><br>
+                    Dialyzer: <span>{{$ctrl.data.DialysisHeader.Prescription.ArtificialKidney}}</span> area: <span>{{$ctrl.data.DialysisHeader.Prescription.DialyzerSurfaceArea}}</span>m²
+                </td>
+                <th>Dialysate</th>
+            </tr>
+            <tr>
+                <td>Chest discomfort</td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.chestDiscomfort[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.chestDiscomfort[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.assessment['Chest discomfort'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.assessment['Chest discomfort'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.rechestDiscomfort[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.rechestDiscomfort[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.reassessment['Chest discomfort'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.reassessment['Chest discomfort'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <!-- <td></td> -->
+                <!-- <td></td> -->
+                <td rowspan="9">
+                    Na: <span>{{$ctrl.data.DialysisHeader.Prescription.Na}}</span>
+                    <span ng-if="$ctrl.data.DialysisHeader.Prescription.Na">mEq/L</span>
+                    <br>
+                    Ca²/k: <span>{{$ctrl.data.DialysisHeader.Prescription.Dialysate}}</span>
+                    <span ng-if="$ctrl.data.DialysisHeader.Prescription.Dialysate">mEq/L</span>
+                    <br>
+                    HCO3: <span>{{$ctrl.data.DialysisHeader.Prescription.HCO3}}</span>
+                    <span ng-if="$ctrl.data.DialysisHeader.Prescription.HCO3">mEq/L</span>
+                    <br><br>
+                    Dialysate flow rate: <span>{{$ctrl.data.DialysisHeader.Prescription.DialysateFlowRate}}</span>
+                    <span ng-if="$ctrl.data.DialysisHeader.Prescription.DialysateFlowRate">ml/min</span>
+                    <br>
+                    Dialysate temperature: <span>{{$ctrl.data.DialysisHeader.Prescription.DialysateTemperature}} &#8451;</span>
+                    <span ng-if="$ctrl.data.DialysisHeader.Prescription.DialysateTemperaturee">°C</span>
+                    <br>
+                    <br><br>
+                    RN's Signature1: <span ng-if="$ctrl.data.DialysisData.length > 0">{{$ctrl.data.DialysisData[0].ModifiedUserName ? $ctrl.data.DialysisData[0].ModifiedUserName : $ctrl.data.DialysisData[0].CreatedUserName}}</span>
+                    <br>
+                    RN's Signature2: <span ng-if="$ctrl.data.DialysisHeader.CheckStaff">{{$ctrl.data.DialysisHeader.CheckStaff[$ctrl.checkStaff]}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>Dyspnea</td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.dyspnea[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.dyspnea[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.assessment['Dyspnea'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.assessment['Dyspnea'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.reDyspnea[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.reDyspnea[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.reassessment['Dyspnea'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.reassessment['Dyspnea'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <!-- <td></td> -->
+                <th>anticoagulant</th>
+                <!-- <td></td> -->
+            </tr>
+            <tr>
+                <td>Fever</td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.Fever[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.Fever[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.assessment['Fever'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.assessment['Fever'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.reFever[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.reFever[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.reassessment['Fever'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.reassessment['Fever'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <!-- <td></td> -->
+                <td rowspan="11" class="assessmentCheckImg">
+                    <span ng-if="$ctrl.data.DialysisHeader.Prescription.Anticoagulants" ng-repeat="(name, value) in $ctrl.data.DialysisHeader.Prescription.Anticoagulants">
+                        <!-- <input type="checkbox" ng-checked="true">{{name}}<br/> -->
+                        <img ng-src="static/img/tick.png">{{name}} <br>
+                        Loading: <span> {{value[0]}} </span> unit <br />
+                        Maintenance: <span>{{value[1]}} </span> unit
+                    </span>
+                    <br />
+                    <!-- <input type="checkbox">No heparin Flush NSS -->
+                    <img ng-src="{{$ctrl.data.DialysisHeader.Prescription.AnticoagulantFreeCause ? 'static/img/tick.png' : 'static/img/blank.png'}}">No heparin: Flush NSS
+                    <span>{{$ctrl.data.DialysisHeader.Prescription.AnticoagulantFreeCause}}</span>ml
+                    <br>
+                    Time: <span>{{$ctrl.data.DialysisHeader.DialysisDataFirstTime | moment: 'HH:mm'}}</span>
+                    <br>
+                    RN's Signature1: <span ng-if="$ctrl.data.DialysisData.length > 0">{{$ctrl.data.DialysisData[0].ModifiedUserName ? $ctrl.data.DialysisData[0].ModifiedUserName : $ctrl.data.DialysisData[0].CreatedUserName}}</span>
+                    <br>
+                    RN's Signature2: <span ng-if="$ctrl.data.DialysisHeader.CheckStaff">{{$ctrl.data.DialysisHeader.CheckStaff[$ctrl.checkStaff]}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>Headache</td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.Headache[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.Headache[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.assessment['Headache'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.assessment['Headache'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.reHeadache[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.reHeadache[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.reassessment['Headache'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.reassessment['Headache'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+            </tr>
+            <tr>
+                <td>Nausea/vomit</td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.Nausea[0].includes('Y')" ng-disabled="true">Y 
+                        <input type="checkbox" ng-checked="$ctrl.Nausea[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.assessment['Nausea/vomit'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.assessment['Nausea/vomit'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.reNausea[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.reNausea[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.reassessment['Nausea/vomit'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.reassessment['Nausea/vomit'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+            </tr>
+            <tr>
+                <td>Sleep disturbance</td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.Sleep[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.Sleep[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.assessment['Sleep disturbance'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.assessment['Sleep disturbance'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.reSleep[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.reSleep[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.reassessment['Sleep disturbance'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.reassessment['Sleep disturbance'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+            </tr>
+            <tr>
+                <td>Bleeding</td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.Bleeding[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.Bleeding[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.assessment['Bleeding'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.assessment['Bleeding'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.reBleeding[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.reBleeding[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.reassessment['Bleeding'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.reassessment['Bleeding'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <th>Vascular access</th>
+            </tr>
+            <tr>
+                <td>Itching</td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.Intching[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.Intching[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.assessment['Itching'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.assessment['Itching'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.reIntching[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.reIntching[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.reassessment['Itching'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.reassessment['Itching'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <td rowspan="2" class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.data.DialysisHeader.Prescription.Route.includes('LT')">Lt -->
+                    <!-- <img ng-src="{{$ctrl.data.DialysisHeader.Prescription.Route.includes('LT') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Lt -->
+                    <!-- <input type="checkbox" ng-checked="$ctrl.data.DialysisHeader.Prescription.Route.includes('RT')">Rt -->
+                    <!-- <img ng-src="{{$ctrl.data.DialysisHeader.Prescription.Route.includes('RT') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Rt -->
+                    <!-- <input type="checkbox" ng-checked="$ctrl.data.DialysisHeader.Prescription.Route.includes('AVF')">AVF -->
+                    <!-- <img ng-src="{{$ctrl.data.DialysisHeader.Prescription.Route.includes('AVF') ? 'static/img/tick.png' : 'static/img/blank.png'}}">AVF
+                        <br> -->
+                    <!-- <input type="checkbox" ng-checked="$ctrl.data.DialysisHeader.Prescription.Route.includes('AVG')">AVG -->
+                    <!-- <img ng-src="{{$ctrl.data.DialysisHeader.Prescription.Route.includes('AVG') ? 'static/img/tick.png' : 'static/img/blank.png'}}">AVG -->
+                    <!-- <input type="checkbox" ng-checked="$ctrl.data.DialysisHeader.Prescription.Route.includes('DLC')">DLC -->
+                    <!-- <img ng-src="{{$ctrl.data.DialysisHeader.Prescription.Route.includes('DLC') ? 'static/img/tick.png' : 'static/img/blank.png'}}">DLC -->
+                    <ul>
+                        <li>
+                            <p>{{$ctrl.data.DialysisHeader.Prescription.Route}}</p>
+                        </li>
+                    </ul>
+                    <br>
+                    Size A=<span>{{$ctrl.data.DialysisHeader.Prescription.Needle.ArteryLength}}</span>, V=<span>{{$ctrl.data.DialysisHeader.Prescription.Needle.VeinLength}}</span>
+                    <br>
+                    Fill vol. A=<span>{{$ctrl.catheterVolume ? $ctrl.catheterVolume.ArteryCatheter : ''}}</span>ml,
+                    V=<span>{{$ctrl.catheterVolume ? $ctrl.catheterVolume.VeinCatheter : ''}}</span>ml
+                </td>
+            </tr>
+            <tr>
+                <td>Engorged neck vein</td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.Engorged[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.Engorged[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.assessment['Engorged neck vein'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.assessment['Engorged neck vein'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.reEngorged[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.reEngorged[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.reassessment['Engorged neck vein'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.reassessment['Engorged neck vein'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+            </tr>
+            <tr>
+                <td>Pale</td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.Pale[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.Pale[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.assessment['Pale'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.assessment['Pale'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.rePale[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.rePale[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.reassessment['Pale'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.reassessment['Pale'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <td class="assessmentCheckImg">Inflammation
+                    <!-- <input type="checkbox">Y 
+                        <input type="checkbox">N -->
+                    <img ng-src="{{$ctrl.inflammation.includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.inflammation.includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <th>Time dialysis</th>
+            </tr>
+            <tr>
+                <td>Edema</td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.Edema[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.Edema[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.assessment['Edema'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.assessment['Edema'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.reEdema[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.reEdema[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.reassessment['Edema'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.reassessment['Edema'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <td rowspan="3" class="assessmentCheckImg">
+                    Thrill
+                    <!-- <input type="checkbox">Y
+                        <input type="checkbox">N -->
+                    <img ng-src="{{$ctrl.thrill.includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.thrill.includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                    <br>
+                    Bruit
+                    <!-- <input type="checkbox">Y
+                        <input type="checkbox">N -->
+                    <!-- <img ng-src="{{$ctrl.bruit[0].includes('Y') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                        <img ng-src="{{$ctrl.bruit[0].includes('N') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                        <br> -->
+                    <br>
+
+                    <img ng-src="{{$ctrl.bruit.includes('Continue') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Continue
+                    <!-- <img ng-src="{{$ctrl.continue[0].includes('N') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N -->
+                    <br>
+
+                    <img ng-src="{{$ctrl.bruit.includes('Systolic') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Systolic
+                    <!-- <img ng-src="{{$ctrl.systolic[0].includes('N') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N -->
+                    <!-- <input type="radio">continue <input type="radio">systolic -->
+                </td>
+                <!-- <td></td> -->
+                <td rowspan="3">
+                    Duration: <span> {{$ctrl.data.DialysisHeader.Prescription.Duration.Hours}} </span>hour(s)
+                    <br>
+                    Time start: <span> {{$ctrl.data.DialysisHeader.DialysisDataFirstTime | date: 'HH:mm'}} </span>
+                    <br>
+                    Time off: <span> {{$ctrl.data.DialysisHeader.DialysisDataLastTime | date: 'HH:mm'}} </span>
+                </td>
+            </tr>
+            <tr>
+                <td>poor oral intake</td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.Poor[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.Poor[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.assessment['Poor oral intake'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.assessment['Poor oral intake'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.rePoor[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.rePoor[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.reassessment['Poor oral intake'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.reassessment['Poor oral intake'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <!--     <td></td> -->
+                <!-- <td></td> -->
+                <!-- <td></td> -->
+            </tr>
+            <tr>
+                <td>Psychosocial problem</td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.Psychosocial[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.Psychosocial[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.assessment['Psychosocial problem'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.assessment['Psychosocial problem'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.rePsychosocial[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.rePsychosocial[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.reassessment['Psychosocial problem'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.reassessment['Psychosocial problem'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <!--     <td></td> -->
+                <!-- <td></td> -->
+                <!-- <td></td> -->
+            </tr>
+            <tr>
+                <td>Other</td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.Other[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.Other[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.assessment['Other'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.assessment['Other'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <td class="assessmentCheckImg">
+                    <!-- <input type="checkbox" ng-checked="$ctrl.reOther[0].includes('Y')" ng-disabled="true">Y
+                        <input type="checkbox" ng-checked="$ctrl.reOther[0].includes('N')" ng-disabled="true">N -->
+                    <img ng-src="{{$ctrl.reassessment['Other'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">Y
+                    <img ng-src="{{$ctrl.reassessment['Other'].includes('No') ? 'static/img/tick.png' : 'static/img/blank.png'}}">N
+                </td>
+                <td colspan="3" class="assessmentCheckImg">
+                    <img ng-src="{{$ctrl.assessment['High risk of fall due location'].includes('Yes') ? 'static/img/tick.png' : 'static/img/blank.png'}}">High risk of fall due location: Perform high risk intervention:<br> Transfer with safety technique.
+                </td>
+            </tr>
+        </table>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table border" style="margin-bottom: -2px;">
+            <tr>
+                <th>Time</th>
+                <th>Pulse<br>/min</th>
+                <th>R<br>/min</th>
+                <th>BP<br>/mmHg</th>
+                <th>BFR<br>ml/min</th>
+                <th>VP<br>mmHg</th>
+                <th>TMP<br>mmHg</th>
+                <th>Conductivity<br>mS/cm</th>
+                <th>UFR<br>ml/hr</th>
+                <th>Total<br>ml</th>
+                <th>Nurse's Note</th>
+            </tr>
+            <!-- 第一筆透析資料抓overview -->
+            <tr ng-if="$ctrl.data.DialysisHeader.PreVitalSign[0].Pulse || $ctrl.data.DialysisHeader.PreVitalSign[0].Respiration">
+                <td>{{$ctrl.data.DialysisHeader.CreatedTime | date: 'HH:mm'}}</td>
+                <td>{{$ctrl.data.DialysisHeader.PreVitalSign[0].Pulse}}</td>
+                <td>{{$ctrl.data.DialysisHeader.PreVitalSign[0].Respiration}}</td>
+                <td>{{$ctrl.data.DialysisHeader.PreVitalSign[0].BPS}}/{{$ctrl.data.DialysisHeader.PreVitalSign[0].BPD}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>T {{$ctrl.data.DialysisHeader.PreVitalSign.length > 0 ? $ctrl.data.DialysisHeader.PreVitalSign[$ctrl.data.DialysisHeader.PreVitalSign.length - 1].Temperature + '&#8451;' : ''}} Pre hemodialysis</td>
+            </tr>
+            <tr ng-repeat="data in $ctrl.data.DialysisData track by $index">
+                <td>{{data.DialysisTime | date: 'HH:mm'}}</td>
+                <td>{{data.Pulse}}</td>
+                <td>{{data.Breath}}</td>
+                <td>{{data.BPS}}/{{data.BPD}}</td>
+                <td>{{data.BloodFlowRate}}</td>
+                <td>{{data.VenousPressure}}</td>
+                <td>{{data.TMP}}</td>
+                <td>{{data.DialysateConductivity}}</td>
+                <td>{{data.UFRate * 1000}}</td>
+                <td>{{data.TotalUF * 1000}}</td>
+                <td style="border-right: 0;">{{data.Memo}}</td>
+            </tr>
+            <tr ng-repeat="i in $ctrl.columnTd">
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td style="border-right: 0">&nbsp;</td>
+            </tr>
+            <tr>
+                <th>INTRA HD<br>FLUID GIVEN</th>
+                <th colspan="2">NSS<br><span></span>ml</th>
+                <th>50% Glucose<br><span>{{$ctrl.data.DialysisData[$ctrl.data.DialysisData.length - 1].FiftyPercentGW}}</span>ml</th>
+                <th colspan="2">Extra-fluid<br><span></span>ml</th>
+                <th colspan="3">Total fluid replacement<br><span></span>ml</th>
+                <th>Total UF<br><span></span>ml</th>
+                <th>Net fluid balance<br><span></span>ml</th>
+            </tr>
+        </table>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table border" style="margin-bottom: -2px">
+            <tr>
+                <th>Complication</th>
+                <th>Nursing Intervention</th>
+                <th>Health Education</th>
+                <th>Medication during hemodialysis</th>
+            </tr>
+            <tr>
+                <td rowspan="2" style="padding: 0">
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_in_line" style="margin: -1px -1px -1px -1px;">
+                        <tr>
+                            <td style="border-right: 0">
+                                No complication <img ng-src="{{$ctrl.postAssessment['Complication'].includes('No complication') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                                Hypotension<img ng-src="{{$ctrl.postAssessment['Complication'].includes('Hypotension') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                                Muscle cramp<img ng-src="{{$ctrl.postAssessment['Complication'].includes('Muscle cramp') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                                Headache<img ng-src="{{$ctrl.postAssessment['Complication'].includes('Headache') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                                Nausea/Vomit<img ng-src="{{$ctrl.postAssessment['Complication'].includes('Nausea/vomit') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                                Fever<img ng-src="{{$ctrl.postAssessment['Complication'].includes('Fever') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                                Hypertension<img ng-src="{{$ctrl.postAssessment['Complication'].includes('Hypertension') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                                Chest pain<img ng-src="{{$ctrl.postAssessment['Complication'].includes('Chest pain') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                                Arrhythmia<img ng-src="{{$ctrl.postAssessment['Complication'].includes('Arrhythmia') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                                Vascular access problem<img ng-src="{{$ctrl.postAssessment['Complication'].includes('Vascular access problem') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                                Other<img ng-src="{{$ctrl.postAssessment['Complication'].includes('Others') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="border-right: 0">
+                                Technical complications
+                            </th>
+                        </tr>
+                        <tr>
+                            <td style="border-right: 0; border-bottom: 0">
+                                No complication<img ng-src="{{$ctrl.postAssessment['Technical complications'].includes('No complication') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                                Clotted dialyzer<img ng-src="{{$ctrl.postAssessment['Technical complications'].includes('Clotted dialyzer') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                                Clotted blood line<img ng-src="{{$ctrl.postAssessment['Technical complications'].includes('Clotted blood line') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                                Machine problem<img ng-src="{{$ctrl.postAssessment['Technical complications'].includes('Machine problem') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                                Blood leak<img ng-src="{{$ctrl.postAssessment['Technical complications'].includes('Blood leak') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td rowspan="2">
+                    Psychological support<img ng-src="{{$ctrl.postAssessment['Nursing Intervention'].includes('Psychological support') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                    Trenderlenburg position<img ng-src="{{$ctrl.postAssessment['Nursing Intervention'].includes('Trendelenburg position') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                    Monitor vital signs<img ng-src="{{$ctrl.postAssessment['Nursing Intervention'].includes('Monitor vital signs') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                    Pause ultrafiltration<img ng-src="{{$ctrl.postAssessment['Nursing Intervention'].includes('Pause ultrafiltration') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                    Decrease dialysate temperature<img ng-src="{{$ctrl.postAssessment['Nursing Intervention'].includes('Decrease dialysate temperature') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                    Oxygen therapy<img ng-src="{{$ctrl.postAssessment['Nursing Intervention'].includes('Oxygen therapy') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                    Hot compression<img ng-src="{{$ctrl.postAssessment['Nursing Intervention'].includes('Hot compression') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                    Strength exercise<img ng-src="{{$ctrl.postAssessment['Nursing Intervention'].includes('Strength exercise') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                    Cold compression<img ng-src="{{$ctrl.postAssessment['Nursing Intervention'].includes('Cold compression') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                    Aspirate precaution<img ng-src="{{$ctrl.postAssessment['Nursing Intervention'].includes('Aspirate precaution') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                    Monitor EKG<img ng-src="{{$ctrl.postAssessment['Nursing Intervention'].includes('Monitor EKG') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                    Decrease BFR<img ng-src="{{$ctrl.postAssessment['Nursing Intervention'].includes('Decrease BFR') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                    Monitor access flow<img ng-src="{{$ctrl.postAssessment['Nursing Intervention'].includes('Monitor access flow') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                    Change dialyzer<img ng-src="{{$ctrl.postAssessment['Nursing Intervention'].includes('Change dialyzer') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                    Change blood line<img ng-src="{{$ctrl.postAssessment['Nursing Intervention'].includes('Change blood line') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                    Notified physician<img ng-src="{{$ctrl.postAssessment['Nursing Intervention'].includes('Notified physician') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                    Other<img ng-src="{{$ctrl.postAssessment['Nursing Intervention'].includes('Others') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                </td>
+                <td>
+                    Nutrition<img ng-src="{{$ctrl.postAssessment['Health Education'].includes('Nutrition') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                    Vascular access<img ng-src="{{$ctrl.postAssessment['Health Education'].includes('Vascular access') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                    Exercise<img ng-src="{{$ctrl.postAssessment['Health Education'].includes('Exercise') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                    Personal hygine<img ng-src="{{$ctrl.postAssessment['Health Education'].includes('Personal hygiene') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                    Medication<img ng-src="{{$ctrl.postAssessment['Health Education'].includes('Medication') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                    Fluid control<img ng-src="{{$ctrl.postAssessment['Health Education'].includes('Fluid control') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                    KT preparation<img ng-src="{{$ctrl.postAssessment['Health Education'].includes('KT preparation') ? 'static/img/tick.png' : 'static/img/blank.png'}}" alt="" class="tick" style="float: right;"><br>
+                </td>
+                <td style="padding: 0">
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_in_line" style="margin: -1px -1px -1px -1px;">
+                        <tr>
+                            <th width="55%">Medication /dose/Route</th>
+                            <th>Time</th>
+                            <th style="border-right: 0">RN's Signature</th>
+                        </tr>
+                        <tr ng-repeat="data in $ctrl.data.OrderRecord track by $index">
+                            <td>
+                                {{data.Name}} / {{data.Quantity}} / {{data.Frequency}}
+                            </td>
+                            <td>{{data.ProcessTime | moment: 'MM-DD (dd) HH:mm'}}</td>
+                            <td>
+                                <div>{{!data.ModifiedUserName ? data.CreatedUserName : data.ModifiedUserName}}<span ng-if="data.CheckStaff">,</span></div>
+                                <div ng-repeat="(key, value) in data.CheckStaff">{{ value }}<span ng-if="!$last">,</span></div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="padding: 0">
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_in_line" style="margin: -1px -1px -1px -1px;">
+                        <tr>
+                            <th style="border-right: 0">Physician's Note</th>
+                        </tr>
+                        <tr>
+                            <td style="border-right: 0">
+                                <div ng-repeat="doctorNote in $ctrl.data.DoctorNotes">
+                                    {{doctorNote.Content}}
+                                    <seal ng-show="doctorNote" model="doctorNote" modified="hideIfSame"></seal>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </table>
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_in_line" style="margin: -1px -1px -1px -1px;">
+                        <tr>
+                            <td style="border-right: 0;">
+                                <strong>Recommendation</strong><br>
+                                <br><br><br><br>
+                                Next Appointment: <span>{{$ctrl.nextAppointment[0].AssignDate | moment: 'YYYY/MM/DD'}}</span> Time: <span>{{$ctrl.nextAppointment[0].Shift}}</span> Bed: <span>{{$ctrl.nextAppointment[0].Bed}}</span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table border">
+            <tr>
+                <th colspan="2">
+                    <strong>Nursing diagnosis</strong>
+                </th>
+            </tr>
+            <tr ng-repeat="rec in $ctrl.data.NursingRecord track by rec.Id">
+                <td width="6%" valign="top" style="border: none">{{rec.NursingTime | date: 'HH:mm'}}</td>
+                <td valign="top" style="border: none">{{rec.Content}}
+                    <seal model="rec" ng-hide="rec.ModifiedUserName" modified="none"></seal>
+                    <seal model="rec" ng-if="rec.ModifiedUserName" created="none"></seal>
+                </td>
+            </tr>
+        </table>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table border" style="margin-bottom: -2px">
+            <tr>
+                <td width="35%">
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_in">
+                        <tr>
+                            <td><strong>Remark</strong></td>
+                            <td>Y=Yes<br>N=No</td>
+                            <td>A=Ariel<br>V=Venous</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                AVG = Arienovenous graft <br>
+                                VP = Venous Pressure
+                            </td>
+                            <td>
+                                N = Nikkio <br>
+                                F = Fresenus
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td width="65%">
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_in">
+                        <tr>
+                            <td>Physician's Signature:
+                                <br>
+                                <span>{{$ctrl.data.DialysisHeader.Prescription.ModifiedUserName ? $ctrl.data.DialysisHeader.Prescription.ModifiedUserName : $ctrl.data.DialysisHeader.Prescription.CreatedUserName}}</span>
+                            </td>
+                            <td>MD Code:
+                                <br>
+                                <span>{{$ctrl.doctorEmployeeId}}</span>
+                            </td>
+                            <td>Date:
+                                <br>
+                                <span>{{$ctrl.data.DialysisHeader.Prescription.ModifiedTime ? $ctrl.data.DialysisHeader.Prescription.ModifiedTime : $ctrl.data.DialysisHeader.Prescription.CreatedTime | moment: 'YYYY/MM/DD' }}</span>
+                            </td>
+                            <td>Time:
+                                <br>
+                                <span>{{$ctrl.data.DialysisHeader.Prescription.ModifiedTime ? $ctrl.data.DialysisHeader.Prescription.ModifiedTime : $ctrl.data.DialysisHeader.Prescription.CreatedTime | moment: 'HH:mm' }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>RN's Signature:
+                                <br>
+                                <span>{{$ctrl.data.DialysisHeader.OnUserName}}</span>
+                            </td>
+                            <td>Employee ID:
+                                <br>
+                                <span>{{$ctrl.nurseEmployeeId}}</span>
+                            </td>
+                            <td>Date:
+                                <br>
+                                <span>{{$ctrl.data.DialysisHeader.ModifiedTime ? $ctrl.data.DialysisHeader.ModifiedTime : $ctrl.data.DialysisHeader.CreatedTime | moment: 'YYYY/MM/DD' }}</span>
+                            </td>
+                            <td>Time:
+                                <br>
+                                <span>{{$ctrl.data.DialysisHeader.ModifiedTime ? $ctrl.data.DialysisHeader.ModifiedTime : $ctrl.data.DialysisHeader.CreatedTime | moment: 'HH:mm' }}</span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+    </md-whiteframe>
+</div>

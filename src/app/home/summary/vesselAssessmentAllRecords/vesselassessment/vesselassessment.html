@@ -1,0 +1,277 @@
+<style scoped>
+  .tubingposition {
+    background-color: #fff;
+    padding: 15px 0;
+    /* border: 1px solid #ccc; */
+    border-radius: 3px;
+  }
+
+  .tubingposition-div {
+    margin: 0 auto;
+    height: 400px;
+    width: 280px;
+    background-color: white;
+    text-align: center;
+    position: relative;
+  }
+
+  .tubingposition-div .tubingposition-image {
+    display: table;
+    background-color: white;
+    height: 100%;
+    width: 100%;
+  }
+  .tubing_typearea .tubing-type{
+    width: 49.5%;
+    float: left;
+    margin-right: 1%;
+    margin-bottom: 3px;
+    box-sizing: border-box;
+    line-height: 14px!important;
+    height: inherit;
+    display: -webkit-flex;
+  display:         flex;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  }
+  .tubing_typearea .tubing-type:nth-child(2n+2){ margin-right: 0!important}
+  .tubingposition-image div{font-size: 15px}
+
+  .right-upperArm{ left: -30px}
+  .right-FV{ left: -50px;}
+  .left-FV{ right: -30px;}
+
+  @media only screen and (max-width: 490px) {
+  .tubing_typearea .tubing-type{ width: 100%; margin-right: 0}
+  .tubingposition-image div{font-size: 13px!important}
+
+    .right-upperArm{ left: -20px}
+    .right-FV{ left: -30px;}
+    .left-FV{ right: -20px;}
+
+  }
+</style>
+<!-- <md-content layout="column"> -->
+<div layout="column" layout-fill>
+
+  <summary-toolbar ng-if="!$ctrl.vesselassessmentId" toolbar-title="'vesselAssessment.vesselAssessment.createVesselAssessment'|translate" cancel="$ctrl.goback()"></summary-toolbar>
+  <summary-toolbar ng-if="$ctrl.vesselassessmentId && $ctrl.data.Status !== 'Deleted'" toolbar-title="'vesselAssessment.vesselAssessment.editVesselAssessment'|translate" cancel="$ctrl.goback()"></summary-toolbar>
+  <summary-toolbar ng-if="$ctrl.data.Status === 'Deleted'" toolbar-title="'vesselAssessment.vesselAssessment.showDeleted'|translate" cancel="$ctrl.goback()"></summary-toolbar>
+  <!-- <div hide-xs hide-sm ng-show="!$ctrl.loading">
+    <h3 style="float: left; padding-left: 10px">
+      <span ng-show="!$ctrl.vesselassessmentId" translate="vesselAssessment.vesselAssessment.createVesselAssessment"></span>
+      <span ng-show="$ctrl.vesselassessmentId && $ctrl.data.Status !== 'Deleted'" translate="vesselAssessment.vesselAssessment.editVesselAssessment"></span>
+      <span ng-show="$ctrl.data.Status === 'Deleted'" translate="vesselAssessment.vesselAssessment.showDeleted"></span>
+    </h3>
+    <md-button style="float:right; margin-top: 8px" class="md-secondary md-icon-button" ng-click="$ctrl.goback()" aria-label="call">
+      <i class="material-icons">cancel</i>
+    </md-button>
+  </div> -->
+
+  <loading ng-show="$ctrl.loading"></loading>
+  <md-content layout-padding layout="column" ng-show="!$ctrl.loading">
+    <form name="data" class="yuekang-input-container" ng-show="!$ctrl.isError">
+      <div layout="row" layout-xs="column" style="margin-left: 0; margin-bottom: 4px; padding-left: 0">
+        <label translate style="margin: 0; line-height: 35px">{{'vesselAssessment.vesselAssessment.createdDate'}}</label>
+        <div layout="row" style="margin: 0; padding: 0">
+          <input flex type="date" max="$ctrl.today" ng-model="$ctrl.startDate" style="margin: 0 4px; padding: 0; height: 35px;">
+          <md-button flex="10" class="md-raised md-warn" style="height: 24px;" ng-click="$ctrl.startDateUnknown();">{{'vesselAssessment.vesselAssessment.unknown' | translate}}</md-button>
+        </div>
+      </div>
+      <label translate>{{'vesselAssessment.vesselAssessment.pipeType'}}</label>
+      <div class="tubing_typearea">
+        <div class="tubing-type" ng-class="{'is-performed': $ctrl.data.CatheterType === 'AVFistula'}" ng-click="$ctrl.clickTubingTypes('AVFistula');" tabindex="0" translate>
+          {{'vesselAssessment.vesselAssessment.AVFistula'}}
+        </div>
+        <div class="tubing-type" ng-class="{'is-performed': $ctrl.data.CatheterType === 'AVGraft'}" ng-click="$ctrl.clickTubingTypes('AVGraft');" tabindex="0" translate>
+          {{'vesselAssessment.vesselAssessment.AVGraft'}}
+        </div>
+        <div flex class="tubing-type" ng-class="{'is-performed': $ctrl.data.CatheterType === 'Permanent'}" ng-click="$ctrl.clickTubingTypes('Permanent');" tabindex="0" translate>
+          {{'vesselAssessment.vesselAssessment.Permanent'}}
+        </div>
+        <div flex class="tubing-type" ng-class="{'is-performed': $ctrl.data.CatheterType === 'DoubleLumen'}" ng-click="$ctrl.clickTubingTypes('DoubleLumen');" tabindex="0" translate>
+          {{'vesselAssessment.vesselAssessment.DoubleLumen'}}
+        </div>
+      </div>
+      <div style="clear: both;"></div>
+      <input type="text" name="CatheterType" ng-model="$ctrl.data.CatheterType" style="display: none" required>
+      <div ng-messages="data.CatheterType.$error" role="alert">
+        <div ng-message="required" translate>{{'vesselAssessment.vesselAssessment.CatheterTypeRequired'}}</div>
+      </div>
+      <div class="tubingposition" layout="column" layout-margin>
+        <label translate>{{'vesselAssessment.vesselAssessment.tubingposition'}}</label>
+        <div class="tubingposition-div">
+          <div class="tubingposition-image">
+            <img ng-src="static/img/vein/{{$ctrl.filename}}" />
+            <!-- words -->
+            <div style="position: absolute; top: 158px; left: 63px;  opacity: 0; z-index: 100;" ng-click="$ctrl.clickTubingPosition('right','forearm');" ng-hide="$ctrl.data.CatheterType === 'Permanent'">右前臂</div>
+            <div style="position: absolute; top: 158px; right: 70px;  opacity: 0; z-index: 100;" ng-click="$ctrl.clickTubingPosition('left','forearm');" ng-hide="$ctrl.data.CatheterType === 'Permanent'">左前臂</div>
+            <div style="position: absolute; top: 75px; left: 73px;  opacity: 0; z-index: 100;" ng-click="$ctrl.clickTubingPosition('right','upperArm');" ng-hide="$ctrl.data.CatheterType === 'Permanent'">右上臂</div>
+            <div style="position: absolute; top: 75px; right: 80px;  opacity: 0; z-index: 100;" ng-click="$ctrl.clickTubingPosition('left','upperArm');" ng-hide="$ctrl.data.CatheterType === 'Permanent'">左上臂</div>
+            <div style="position: absolute; top: 225px; left: 96px;  opacity: 0; z-index: 100;" ng-click="$ctrl.clickTubingPosition('right','thigh');" ng-hide="$ctrl.data.CatheterType === 'Permanent'">右大腿</div>
+            <div style="position: absolute; top: 225px; right: 103px;  opacity: 0; z-index: 100;" ng-click="$ctrl.clickTubingPosition('left','thigh');" ng-hide="$ctrl.data.CatheterType === 'Permanent'">左大腿</div>
+            <div style="position: absolute; top: 295px; left: 96px;  opacity: 0; z-index: 100;" ng-click="$ctrl.clickTubingPosition('right','calf');" ng-hide="$ctrl.data.CatheterType === 'Permanent'">右小腿</div>
+            <div style="position: absolute; top: 295px; right: 103px;  opacity: 0; z-index: 100;" ng-click="$ctrl.clickTubingPosition('left','calf');" ng-hide="$ctrl.data.CatheterType === 'Permanent'">左小腿</div>
+            <div style="position: absolute; top: 10px; left: 110px;  opacity: 0; z-index: 100;" ng-click="$ctrl.clickTubingPosition('right','IJV');">右內頸靜脈</div>
+            <div style="position: absolute; top: 10px; right: 117px;  opacity: 0; z-index: 100;" ng-click="$ctrl.clickTubingPosition('left','IJV');">左內頸靜脈</div>
+            <div style="position: absolute; top: 70px; left: 105px;  opacity: 0; z-index: 100;" ng-click="$ctrl.clickTubingPosition('right','SV');">右鎖骨下靜脈</div>
+            <div style="position: absolute; top: 70px; right: 112px;  opacity: 0; z-index: 100;" ng-click="$ctrl.clickTubingPosition('left','SV');">左鎖骨下靜脈</div>
+            <div style="position: absolute; top: 170px; left: 105px;  opacity: 0; z-index: 100;" ng-click="$ctrl.clickTubingPosition('right','FV');">右股靜脈</div>
+            <div style="position: absolute; top: 170px; right: 112px;  opacity: 0; z-index: 100;" ng-click="$ctrl.clickTubingPosition('left','FV');">左股靜脈</div>
+            <!-- picture -->
+            <div style="position: absolute; top: 155px; left: -20px; padding:3px; outline: 0; cursor: pointer; " ng-class="{'is-performed': $ctrl.data.CatheterPosition.Side === 'right' && $ctrl.data.CatheterPosition.Position === 'forearm'}" ng-click="$ctrl.clickTubingPosition('right','forearm');" ng-hide="$ctrl.data.CatheterType === 'Permanent'" translate>{{'vesselAssessment.vesselAssessment.rightForearm'}}</div>
+            <div style="position: absolute; top: 155px; right: -20px; padding: 3px; outline: 0; cursor: pointer;  " ng-class="{'is-performed': $ctrl.data.CatheterPosition.Side === 'left' && $ctrl.data.CatheterPosition.Position === 'forearm'}" ng-click="$ctrl.clickTubingPosition('left','forearm');" ng-hide="$ctrl.data.CatheterType === 'Permanent'" translate>{{'vesselAssessment.vesselAssessment.leftForearm'}}</div>
+            <div style="position: absolute; top: 100px; padding: 3px; outline: 0; cursor: pointer; " class="right-upperArm" ng-class="{'is-performed': $ctrl.data.CatheterPosition.Side === 'right' && $ctrl.data.CatheterPosition.Position === 'upperArm'}" ng-click="$ctrl.clickTubingPosition('right','upperArm');" ng-hide="$ctrl.data.CatheterType === 'Permanent'" translate>{{'vesselAssessment.vesselAssessment.rightUpperArm'}}</div>
+            <div style="position: absolute; top: 100px; right: -30px;   padding: 3px; outline: 0; cursor: pointer; " ng-class="{'is-performed': $ctrl.data.CatheterPosition.Side === 'left' && $ctrl.data.CatheterPosition.Position === 'upperArm'}" ng-click="$ctrl.clickTubingPosition('left','upperArm');" ng-hide="$ctrl.data.CatheterType === 'Permanent'" translate>{{'vesselAssessment.vesselAssessment.leftUpperArm'}}</div>
+            <div style="position: absolute; top: 230px; left: 0px;  padding: 3px; outline: 0; cursor: pointer; " ng-class="{'is-performed': $ctrl.data.CatheterPosition.Side === 'right' && $ctrl.data.CatheterPosition.Position === 'thigh'}" ng-click="$ctrl.clickTubingPosition('right','thigh');" ng-hide="$ctrl.data.CatheterType === 'Permanent'" translate>{{'vesselAssessment.vesselAssessment.rightThigh'}}</div>
+            <div style="position: absolute; top: 230px; right: 0px  ; padding: 3px; outline: 0; cursor: pointer; " ng-class="{'is-performed': $ctrl.data.CatheterPosition.Side === 'left' && $ctrl.data.CatheterPosition.Position === 'thigh'}" ng-click="$ctrl.clickTubingPosition('left','thigh');" ng-hide="$ctrl.data.CatheterType === 'Permanent'" translate>{{'vesselAssessment.vesselAssessment.leftThigh'}}</div>
+            <div style="position: absolute; top: 310px; left: 0px; padding: 3px; outline: 0; cursor: pointer; " ng-class="{'is-performed': $ctrl.data.CatheterPosition.Side === 'right' && $ctrl.data.CatheterPosition.Position === 'calf'}" ng-click="$ctrl.clickTubingPosition('right','calf');" ng-hide="$ctrl.data.CatheterType === 'Permanent'" translate>{{'vesselAssessment.vesselAssessment.rightCalf'}}</div>
+            <div style="position: absolute; top: 310px; right: 0px; padding: 3px; outline: 0; cursor: pointer;" ng-class="{'is-performed': $ctrl.data.CatheterPosition.Side === 'left' && $ctrl.data.CatheterPosition.Position === 'calf'}" ng-click="$ctrl.clickTubingPosition('left','calf');" ng-hide="$ctrl.data.CatheterType === 'Permanent'" translate>{{'vesselAssessment.vesselAssessment.leftCalf'}}</div>
+            <div style="position: absolute; top: 15px; left: 20px;  padding: 3px; outline: 0; cursor: pointer;" ng-class="{'is-performed': $ctrl.data.CatheterPosition.Side === 'right' && $ctrl.data.CatheterPosition.Position === 'IJV'}" ng-click="$ctrl.clickTubingPosition('right','IJV');" translate>{{'vesselAssessment.vesselAssessment.rightIJV'}}</div>
+            <div style="position: absolute; top: 15px; right: 20px;  padding: 3px; outline: 0; cursor: pointer;" ng-class="{'is-performed': $ctrl.data.CatheterPosition.Side === 'left' && $ctrl.data.CatheterPosition.Position === 'IJV'}" ng-click="$ctrl.clickTubingPosition('left','IJV');" translate>{{'vesselAssessment.vesselAssessment.leftIJV'}}</div>
+            <div style="position: absolute; top: 50px; left: 0px;  padding: 3px; outline: 0; cursor: pointer;" ng-class="{'is-performed': $ctrl.data.CatheterPosition.Side === 'right' && $ctrl.data.CatheterPosition.Position === 'SV'}" ng-click="$ctrl.clickTubingPosition('right','SV');" translate>{{'vesselAssessment.vesselAssessment.rightSV'}}</div>
+            <div style="position: absolute; top: 50px; right: 0px;  padding: 3px; outline: 0; cursor: pointer;" ng-class="{'is-performed': $ctrl.data.CatheterPosition.Side === 'left' && $ctrl.data.CatheterPosition.Position === 'SV'}" ng-click="$ctrl.clickTubingPosition('left','SV');" translate>{{'vesselAssessment.vesselAssessment.leftSV'}}</div>
+            <div style="position: absolute; top: 190px;  padding: 3px; outline: 0; cursor: pointer;" class="right-FV" ng-class="{'is-performed': $ctrl.data.CatheterPosition.Side === 'right' && $ctrl.data.CatheterPosition.Position === 'FV'}" ng-click="$ctrl.clickTubingPosition('right','FV');" translate>{{'vesselAssessment.vesselAssessment.rightFV'}}</div>
+            <div style="position: absolute; top: 190px; right: -40px;  padding: 3px; outline: 0; cursor: pointer;" class="left-FV" ng-class="{'is-performed': $ctrl.data.CatheterPosition.Side === 'left' && $ctrl.data.CatheterPosition.Position === 'FV'}" ng-click="$ctrl.clickTubingPosition('left','FV');" translate>{{'vesselAssessment.vesselAssessment.leftFV'}}</div>
+          </div>
+        </div>
+        <input type="text" name="Side" ng-model="$ctrl.data.CatheterPosition.Side" style="display: none" required>
+        <div ng-messages="data.Side.$error" role="alert">
+          <div ng-message="required" translate>{{'vesselAssessment.vesselAssessment.CatheterPositionRequired'}}</div>
+        </div>
+      </div>
+      <div layout="row">
+        <label translate>{{'vesselAssessment.vesselAssessment.CatheterHospital'}}</label>
+        <md-select ng-model="$ctrl.data.CatheterHospital" required>
+          <md-option value="none" translate>{{'vesselAssessment.vesselAssessment.enterCatheterHospital'}}</md-option>
+          <md-option ng-repeat="state in $ctrl.CatheterHospitals['DialysisSetting'].CatheterHospitals" ng-value="state">
+            {{state}}
+          </md-option>
+        </md-select>
+      </div>
+      <div layout="row" ng-show="$ctrl.data.CatheterHospital === 'none'">
+        <label translate>{{'vesselAssessment.vesselAssessment.enterCatheterHospital'}}</label>
+        <input name="UserKeyIn" ng-model="$ctrl.useHospitalKeyIn" ng-required="$ctrl.data.CatheterHospital === 'none'" type="text">
+        <div ng-messages="data.UserKeyIn.$error" role="alert">
+          <div ng-message="required" translate>{{'vesselAssessment.vesselAssessment.enterCatheterHospitalRequired'}}</div>
+        </div>
+      </div>
+      <div layout="row">
+        <label translate>{{'vesselAssessment.vesselAssessment.Memo'}}</label>
+        <textarea ng-model="$ctrl.data.Memo" md-detect-hidden="true" rows="5" md-select-on-focus></textarea>
+      </div>
+      <div layout="row">
+        <label translate>{{'vesselAssessment.vesselAssessment.endDate'}}</label>
+        <input type="date" min="$ctrl.startDate" ng-model="$ctrl.endDate">
+      </div>
+      <div layout="row">
+        <label translate>{{'vesselAssessment.vesselAssessment.EndReason'}}</label>
+        <input ng-model="$ctrl.data.EndReason" ng-disabled="!$ctrl.endDate" type="text">
+      </div>
+      <div layout="row" ng-if="$ctrl.device">
+        <label translate>{{'vesselAssessment.vesselAssessment.camera'}}</label>
+        <!--<md-button ng-if="!$ctrl.device"-->
+        <!--ng-click="$ctrl.uploadImage()">-->
+        <!--<md-icon class="material-icons">camera_alt</md-icon>-->
+        <!--</md-button>-->
+        <md-button ngf-select="$ctrl.uploadImage()" ng-model="$ctrl.data.Photo" name="photo" accept="image/*" ngf-fix-orientation="true" ngf-multiple="true" ngf-resize="{centerCrop: true}}">
+          <md-icon class="material-icons">camera_alt</md-icon>
+        </md-button>
+      </div>
+      <div layout-gt-sm="column" layout-margin>
+        <img ng-show="$ctrl.loadingPicture" height="16px" width="16px" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+        <div id="divData" style="position:relative; display:flex; flex-wrap:wrap" ng-if="$ctrl.imagesData.length > 0">
+          <div ng-repeat="imageDate in $ctrl.imagesData track by $index" style="position: relative; padding-bottom: 15px; flex: 5%">
+            <img id="img" ng-src="{{$ctrl.Url}}/Upload/GetImage/{{imageDate.Image}}_small" hm-tap="$ctrl.openImage(imageDate.Image);" hm-press="$ctrl.deleteImage($event, $index)" style="width: 200px; height: 200px; border-style: solid; border-width: 1px;" />
+            <div ng-class="photo_{{imageDate.Id}}">{{imageDate.UploadDate}}</div>
+          </div>
+        </div>
+      </div>
+      <div layout="row" layout-wrap>
+        <div flex="50" flex-xs="100" ng-show="$ctrl.data.CreatedUserName">
+          <!-- <span>建立: {{ $ctrl.data.CreatedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+          <span translate="vesselAssessment.vesselAssessment.createdTime" translate-values='{CreatedTime: $ctrl.data.CreatedTime}'></span>
+          <seal model="$ctrl.data" modified="none"></seal>
+        </div>
+        <div flex="50" flex-xs="100" ng-show="$ctrl.data.ModifiedTime != null">
+          <!-- <span>修改: {{ $ctrl.data.ModifiedTime | moment: 'YYYY/MM/DD(dd) HH:mm'}} </span> -->
+          <span translate="vesselAssessment.vesselAssessment.editedTime" translate-values='{ModifiedTime: $ctrl.data.ModifiedTime}'></span>
+          <seal model="$ctrl.data" created="none"></seal>
+        </div>
+      </div>
+    </form>
+
+
+
+
+
+    <!--<div layout="column" ng-show="$ctrl.data.CreatedUserName" layout-margin>
+    <p ng-bind="$ctrl.data.CreatedUserName + ' 於 ' + ($ctrl.data.CreatedTime | moment: 'YYYY-MM-DD (dd) HH:mm') + ' 建立'"></p>
+  </div>
+  <div layout="column" ng-show="$ctrl.data.ModifiedUserName" layout-margin>
+    <p ng-bind="$ctrl.data.ModifiedUserName + ' 於 ' + ($ctrl.data.ModifiedTime | moment: 'YYYY-MM-DD (dd) HH:mm') + ' 修改'"></p>
+  </div>-->
+    <div layout="row" layout-margin layout-align="start center">
+      <md-button ng-show="$ctrl.data.Status !== 'Deleted' && !$ctrl.isError" ng-click="$ctrl.submit($event)" class="md-raised md-primary" ng-disabled="data.$invalid">{{'vesselAssessment.vesselAssessment.save' | translate}}</md-button>
+      <md-progress-circular md-diameter="20px" md-mode="indeterminate" ng-show="$ctrl.isSaving"></md-progress-circular>
+    </div>
+    <div ng-class="{deleted: $ctrl.data.Status == 'Deleted'}"></div>
+    <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+      <h3 translate>{{'vesselAssessment.vesselAssessments.serverError'}}</h3>
+    </div>
+  </md-content>
+  <!-- </md-content> -->
+</div>
+
+
+<md-fab-speed-dial md-open="$ctrl.isFabOpen" md-direction="up" ng-if="!$ctrl.device" class="md-fab md-fab-bottom-right md-scale">
+  <md-fab-trigger>
+    <md-button aria-label="menu" class="md-fab md-warn">
+      <md-icon md-svg-src="static/img/svg/list_alt-24px.svg"></md-icon>
+    </md-button>
+  </md-fab-trigger>
+
+  <md-fab-actions>
+    <md-button aria-label="Document" class="md-fab md-raised md-mini">
+      <md-icon class="material-icons" ng-click="$ctrl.openDocument()">
+        collections
+      </md-icon>
+    </md-button>
+    <md-button aria-label="Camera" class="md-fab md-raised md-mini">
+      <md-icon class="material-icons" ng-click="$ctrl.uploadImage()">
+        camera_alt
+      </md-icon>
+    </md-button>
+  </md-fab-actions>
+</md-fab-speed-dial>
+
+<script type="text/ng-template" id="dialog.html">
+  <md-dialog aria-label="刪除確認">
+    <form ng-cloak>
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+          <h2 translate>{{'vesselAssessment.vesselAssessment.confirmDelete'}}</h2>
+          <span flex></span>
+          <md-button class="md-icon-button" ng-click="vm.cancel()">
+            <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
+      <md-dialog-content>
+        <div class="md-dialog-content" translate>
+          {{'vesselAssessment.vesselAssessment.deletePic'}}
+        </div>
+      </md-dialog-content>
+      <md-dialog-actions layout="row">
+        <md-button ng-click="vm.cancel()">
+          {{'vesselAssessment.vesselAssessment.cancel' | translate}}
+        </md-button>
+        <md-button ng-click="vm.ok()">
+          {{'vesselAssessment.vesselAssessment.delete' | translate}}
+        </md-button>
+      </md-dialog-actions>
+    </form>
+  </md-dialog>
+</script>

@@ -1,0 +1,484 @@
+<div layout="row" class="summary" layout-padding layout-wrap layout-fill style="padding-bottom: 32px;" ng-cloak>
+    <loading ng-show="$ctrl.loading"></loading>
+    <server-error-page flex ng-if="!$ctrl.loading && $ctrl.isError" refresh="$ctrl.refresh()"></server-error-page>
+    <md-whiteframe ng-show="!$ctrl.loading && !$ctrl.isError" class="md-whiteframe-10dp" layout-align="start center" flex>
+            <table border="0" cellpadding="0" cellspacing="0" style="border: none;">
+                <tr>
+                    <td style="width:100%; text-align: center; position: relative;">
+                        <h2 translate>{{$ctrl.dialysisRecordTable || 'summary.content.dialysisRecordTable'}}</h2>
+                        <div translate="summary.content.dateAndNumberOfTreatment" translate-values='{CreatedTime: $ctrl.data.DialysisHeader.CreatedTime, Number: $ctrl.data.DialysisHeader.Numbers.all}'
+                            style="position: absolute; right: 0"></div>
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <table border="0" cellpadding="0" cellspacing="0" style="margin-bottom: -2px;">
+                <tr>
+                    <td style="padding: 10px 2px">
+                        <span translate>{{'summary.content.BedNo'}}</span>{{$ctrl.data.DialysisHeader.BedNo}}</td>
+                    <td style="padding: 10px 2px">
+                        <span translate>{{'summary.content.name'}}</span>{{$ctrl.patient.Name}}</td>
+                    <td style="padding: 10px 2px">
+                        <span translate>{{'summary.content.MedicalId'}}</span> {{$ctrl.patient.MedicalId}}</td>
+                    <td style="padding: 10px 2px">
+                        <span translate>{{'summary.content.age'}}</span>{{$ctrl.patient.Birthday | age}}</td>
+                </tr>
+            </table>
+            <table class="table" border="0" cellpadding="0" cellspacing="0" style="margin-top: -1px; margin-bottom: -2px;"
+                >
+                <tr>
+                    <td width="50%" style="padding:0; border-right: #000 solid 2px">
+                        <table width="100%" class="table_in_border" border="0" cellpadding="0" cellspacing="0" style="border: none; margin-top: -1px; margin-left: -1px">
+                            <tr>
+                                <td width="17%" translate>{{'summary.content.dialysisTime'}}</td>
+                                <td>
+                                    <span translate>{{'summary.content.start'}}</span>{{$ctrl.data.DialysisHeader.DialysisDataFirstTime |
+                                    date: 'HH:mm'}}</td>
+                                <td>
+                                    <span translate>{{'summary.content.end'}}</span>{{$ctrl.data.DialysisHeader.DialysisDataLastTime | date:
+                                    'HH:mm'}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td translate>{{'summary.content.bloodPressure'}}</td>
+                                <td>
+                                    <span translate>{{'summary.content.startTitle'}}</span>{{$ctrl.data.DialysisHeader.PreVitalSign[0].BPS}}
+                                    / {{$ctrl.data.DialysisHeader.PreVitalSign[0].BPD}}</td>
+                                <td>
+                                    <span translate>{{'summary.content.endTitle'}}</span>{{$ctrl.data.DialysisHeader.PostVitalSign[0].BPS}}
+                                    / {{$ctrl.data.DialysisHeader.PostVitalSign[0].BPD}}</td>
+                            </tr>
+                            <tr>
+                                <td translate>{{'summary.content.Temperature'}}</td>
+                                <td>{{$ctrl.data.DialysisHeader.PreVitalSign[0].Temperature}}</td>
+                                <td>{{$ctrl.data.DialysisHeader.PostVitalSign[0].Temperature}}</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="3" translate>{{'summary.content.weight'}}</td>
+                                <td>
+                                    <span translate>{{'summary.content.start'}}</span>{{$ctrl.data.DialysisHeader.PredialysisWeight}} kg</td>
+                                <td>
+                                    <span translate>{{'summary.content.end'}}</span>{{$ctrl.data.DialysisHeader.WeightAfterDialysis}}
+                                    <span ng-if="!$ctrl.data.DialysisHeader.AbnormalWeight || $ctrl.data.DialysisHeader.WeightAfterDialysis">kg</span>
+                                    <span ng-if="$ctrl.data.DialysisHeader.AbnormalWeight">{{$ctrl.data.DialysisHeader.AbnormalWeightReason}}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span translate>{{'summary.content.StandardWeight'}}</span> {{$ctrl.data.DialysisHeader.Prescription.StandardWeight}}
+                                    kg
+                                </td>
+                                <td>
+                                    <span translate>{{'summary.content.Dehydration'}}</span>{{$ctrl.data.DialysisHeader.Dehydration}} kg</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span translate>{{'summary.content.DehydrationTarget'}}</span>
+                                    <span class="content" ng-if="$ctrl.data.DialysisHeader.PredialysisWeight < $ctrl.data.DialysisHeader.StandardWeight">0.0 kg</span>
+                                    <span class="content" ng-if="($ctrl.data.DialysisHeader.PredialysisWeight > $ctrl.data.DialysisHeader.StandardWeight) && $ctrl.data.DialysisHeader.DehydrationTarget">{{$ctrl.data.DialysisHeader.DehydrationTarget}} kg</span>
+                                </td>
+                                <td>
+                                    <span translate>{{'summary.content.deviation'}}</span> {{ $ctrl.deviation }} kg
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="50%" valign="top">
+                        <table width="100%" class="table_in" border="0" cellpadding="0" cellspacing="0" style="border: none; margin-bottom: -1px">
+                            <tr>
+                                <td>
+                                    <p>
+                                        <span translate>{{'summary.content.DialysisSystem'}}</span>{{$ctrl.data.DialysisHeader.DialysisSystem}}</p>
+                                    <p>
+                                        <span translate>{{'summary.content.machineType'}}</span>{{$ctrl.data.DialysisHeader.Prescription.ArtificialKidney}}</p>
+                                    <p>
+                                        <span translate>{{'summary.content.Dialysate'}}</span>{{$ctrl.data.DialysisHeader.Prescription.Dialysate}}</p>
+                                    <p>
+                                        <span translate>{{'summary.content.Anticoagulants'}}</span>
+                                        <span ng-repeat="(key, value) in $ctrl.data.DialysisHeader.Prescription.Anticoagulants">
+                                            {{key}} : {{value | AnticoagulantValue}}
+                                        </span>
+                                    </p>
+                                    <p>
+                                        <span translate>{{'summary.content.EndHollowFiber'}}</span>
+                                        {{$ctrl.data.DialysisHeader.EndHollowFiber}}
+                                    </p>
+                                    <p>Chamber：{{$ctrl.data.DialysisHeader.EndChamber}}</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50%" valign="top" style="border:#000 solid 2px">
+                        <table width="100%" class="table_in" border="0" cellpadding="0" cellspacing="0" style="border: none; margin-bottom: -1px">
+                            <tr>
+                                <td colspan="2">
+                                    <span translate>{{'summary.content.vascularAccess'}}</span>
+                                    <span>
+                                        {{$ctrl.data.DialysisHeader.VesselAssessments[0].Data.CatheterType | catheterType}}{{$ctrl.data.DialysisHeader.VesselAssessments[0].Data.CatheterPosition.Side
+                                        | catheterSide}}{{$ctrl.data.DialysisHeader.VesselAssessments[0].Data.CatheterPosition.Position
+                                        | catheterPosition}}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <span translate>{{'summary.content.StartDate'}}</span>
+                                    <span>{{$ctrl.data.DialysisHeader.VesselAssessments[0].Data.StartDate | date:'yyyy/MM/dd'}}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="50%">
+                                    <span translate>{{'summary.content.ArteryCatheter'}}</span>{{$ctrl.data.DialysisHeader.VesselAssessments[0].ArteryCatheter}}
+                                    {{$ctrl.catheter.unit}}
+                                </td>
+                                <td width="50%">
+                                    <span translate>{{'summary.content.VeinCatheter'}}</span>{{$ctrl.data.DialysisHeader.VesselAssessments[0].VeinCatheter}}
+                                    {{$ctrl.catheter.unit}}
+                                </td>
+                            </tr>
+                            <tr ng-if="$ctrl.catheter.unit === '(cc)' && $ctrl.data.DialysisHeader.VesselAssessments[0].CatheterLength">
+                                <td colspan="2">
+                                    <span translate>{{'summary.content.CatheterLength'}}</span>
+                                    <span>{{$ctrl.data.DialysisHeader.VesselAssessments[0].CatheterLength}}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <span translate>{{'summary.content.VACR'}}</span>
+                                    <span>{{$ctrl.data.DialysisHeader.VACR}}</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="50%" valign="top" style="border:#000 solid 2px">
+                        <table width="100%" class="table_in" border="0" cellpadding="0" cellspacing="0" style="border: 0">
+                            <tr>
+                                <td colspan="2">
+                                    <span translate>{{'summary.content.LabItems'}}</span>
+                                    <span ng-repeat="(key, value) in $ctrl.data.DialysisHeader.LabItems">
+                                        {{key}}{{$last ? '' : ', '}}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="50%">
+                                    <span translate>{{'summary.content.BeforeDialysisExsanguinate'}}</span>
+                                    {{ $ctrl.data.DialysisHeader.BeforeDialysisExsanguinate }}
+                                    <span ng-if="$ctrl.data.DialysisHeader.BeforeDialysisExsanguinateContent">， {{ $ctrl.data.DialysisHeader.BeforeDialysisExsanguinateContent }} </span>
+                                </td>
+                                <td width="50%">
+                                    <span translate>{{'summary.content.BeforeBloodTransfusionPerson'}}</span>
+                                    {{$ctrl.data.DialysisHeader.BeforeBloodTransfusionPerson}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="50%">
+                                    <span translate>{{'summary.content.AfterDialysisExsanguinate'}}</span>
+                                    {{$ctrl.data.DialysisHeader.AfterDialysisExsanguinate}}
+                                    <span ng-if="$ctrl.data.DialysisHeader.AfterDialysisExsanguinateContent">， {{ $ctrl.data.DialysisHeader.AfterDialysisExsanguinateContent }} </span>
+                                </td>
+                                <td width="50%">
+                                    <span translate>{{'summary.content.AfterBloodTransfusionPerson'}}</span>
+                                    {{ $ctrl.data.DialysisHeader.AfterBloodTransfusionPerson}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="50%">
+                                    <span translate>{{'summary.content.BloodTypes'}}</span>
+                                    {{$ctrl.patient.BloodTypes}}
+                                </td>
+                                <td width="50%">RH：{{$ctrl.patient.RH | rhMode}}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <span translate>{{'summary.content.BloodTransfusionTime'}}</span>
+                                    <span ng-if="$ctrl.data.BloodTransfusions.length>0">{{$ctrl.data.BloodTransfusions[0].StartTime | moment: 'YYYY-MM-DD HH:mm'}}</span>
+                                    <span ng-if="$ctrl.data.BloodTransfusions.length>0"> ~ {{$ctrl.data.BloodTransfusions[$ctrl.data.BloodTransfusions.length -1].EndTime| moment:
+                                        'YYYY-MM-DD(dd) HH:mm'}}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <span translate>{{'summary.content.TransfusionReaction'}}</span>
+                                    <span ng-if="$ctrl.data.BloodTransfusions.length>0">{{$ctrl.data.BloodTransfusions[$ctrl.data.BloodTransfusions.length -1].TransfusionReaction}}</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <table class="table_9" border="0" cellpadding="0" cellspacing="0" style="margin-top: -1px;">
+                <thead>
+                    <tr>
+                        <th translate>{{'summary.content.DialysisTime'}}</th>
+                        <th translate>B.P.</th>
+                        <th translate>{{'summary.content.Breath'}}</th>
+                        <th translate>{{'summary.content.BloodFlowRate'}}</th>
+                        <th translate>{{'summary.content.VenousPressure'}}</th>
+                        <th translate>{{'summary.content.TMP'}}</th>
+                        <th translate>{{'summary.content.UFRate'}}</th>
+                        <th translate>Heparin</th>
+                        <th translate>{{'summary.content.DialysisateFlowRate'}}</th>
+                        <th translate>{{'summary.content.DialysateTemperature'}}</th>
+                        <th class="note" translate>{{'summary.content.Memo'}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="data in $ctrl.data.DialysisData track by $index">
+                        <td class="time" width="10%">{{data.DialysisTime | date: 'HH:mm'}}</td>
+                        <td>{{data.BPS}}/{{data.BPD}}</td>
+                        <td>{{data.Pulse}}/{{data.Breath}}</td>
+                        <td>{{data.BloodFlowRate}}</td>
+                        <td>{{data.VenousPressure}}</td>
+                        <td>{{data.TMP}}</td>
+                        <td>{{data.UFRate}}/ {{data.TotalUF}}</td>
+                        <td>{{data.HeparinOriginal}}/ {{data.HeparinDeliveryRate}}</td>
+                        <td>{{data.DialysisateFlowRate}}</td>
+                        <td>{{data.DialysateTemperature}}</td>
+                        <td class="note">{{data.Memo}}</td>
+                    </tr>
+                    <tr ng-repeat="i in $ctrl.columnTd">
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table" border="0" cellpadding="0" cellspacing="0" style="margin-bottom: -2px; margin-top: -2px;"
+            >
+                <tr>
+                    <td style="width: 10%" translate>{{'summary.content.nameTable'}}</td>
+                    <td style="width: 10%" translate>{{'summary.content.dosageTable'}}</td>
+                    <td style="width: 10%" translate>{{'summary.content.methodTable'}}</td>
+                    <td style="width: 10%" translate>{{'summary.content.prescribedTimeTable'}}</td>
+                    <td style="width: 10%" translate>{{'summary.content.executionTimeTable'}}</td>
+                    <td style="width: 10%" translate>{{'summary.content.signature'}}</td>
+                </tr>
+                <tr ng-repeat="data in $ctrl.data.OrderRecord track by $index">
+                    <td>
+                        {{data.Name}}
+                    </td>
+                    <td>
+                        {{data.Quantity}}
+                    </td>
+                    <td>
+                        {{data.Frequency}}
+                    </td>
+                    <td>
+                        {{data.PrescribingTime | moment: 'MM-DD (dd) HH:mm'}}
+                    </td>
+                    <td>
+                        {{data.Mode === 'Performed' ? (data.ProcessTime | moment: 'MM-DD (dd) HH:mm') : data.Memo}}
+                    </td>
+                    <td>
+                        {{!data.ModifiedUserName ? data.CreatedUserName : data.ModifiedUserName}}
+                    </td>
+                </tr>
+                <tr ng-if="$ctrl.data.OrderRecord.length === 0" ng-repeat="i in (2 - $ctrl.data.OrderRecord.length) | TdRange">
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                </tr>
+            </table>
+            <table class="table" border="0" cellpadding="0" cellspacing="0" style="margin-bottom: -2px; margin-top: -2px;">
+                <thead>
+                    <tr>
+                        <td style="width: 20%">藥物種類</td>
+                        <td style="width: 20%">數量</td>
+                        <td style="width: 20%">途徑</td>
+                        <td style="width: 20%">執行時間</td>
+                        <td style="width: 20%">注射者</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="epo in $ctrl.data.EPOExecutions">
+                        <td>{{epo.EPOName}}</td>
+                        <td>{{epo.Quantity}}</td>
+                        <td>{{epo.Route}}</td>
+                        <td>{{epo.ProcessTime | moment: "YYYY-MM-DD (dd) HH:mm"}}</td>
+                        <td>{{epo.ProcessUserName}}</td>
+                    </tr>
+                    <tr ng-repeat="r in $ctrl.epoRows">
+                        <td class="nowrap">&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table" border="0" cellpadding="0" cellspacing="0" style="margin-bottom: -1px;">
+                <tr>
+                    <td width="65%" valign="top" style="padding: 0; border-right:#000 solid 2px ">
+                        <span style="line-height: 20px" translate>{{'summary.content.dialysisPrescription'}}</span>
+                        <table width="100%" class="table_in_border" border="0" cellpadding="0" cellspacing="0" style="margin-left: -1px; border: 0 ">
+                            <tr>
+                                <td>DW: {{$ctrl.data.DialysisHeader.Prescription.StandardWeight}} kg</td>
+                                <td>
+                                    <span translate>{{'summary.content.dt'}}</span>
+                                    <span ng-if="$ctrl.data.DialysisHeader.Prescription.Duration.Hours" translate="summary.content.dialysisTimeHour" translate-values='{Hours: $ctrl.data.DialysisHeader.Prescription.Duration.Hours}'></span>
+                                    <span ng-if="$ctrl.data.DialysisHeader.Prescription.Duration.Minutes" translate="summary.content.dialysisTimeMinute" translate-values='{Minutes: $ctrl.data.DialysisHeader.Prescription.Duration.Minutes}'>
+                                    </span>
+                                    <span ng-if="$ctrl.data.DialysisHeader.Prescription.Duration.Seconds" translate="summary.content.dialysisTimeSecond" translate-values='{Seconds: $ctrl.data.DialysisHeader.Prescription.Duration.Seconds}'>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span translate>{{'summary.content.DialysateConcentration'}}</span>{{$ctrl.data.DialysisHeader.Prescription.Dialysate}}
+                                    meq/l
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span translate>{{'summary.content.HCO3'}}</span>
+                                    <span>{{$ctrl.data.DialysisHeader.Prescription.HCO3}}/{{$ctrl.data.DialysisHeader.Prescription.Na}}meq/l
+                                    </span>
+                                </td>
+                                <td>
+                                    <span translate>{{'summary.content.dialysateTemperature'}}</span>
+                                    <span>{{$ctrl.data.DialysisHeader.Prescription.DialysateTemperature}} °C</span>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span translate>{{'summary.content.BF'}}</span>
+                                    <span>{{$ctrl.data.DialysisHeader.Prescription.BF}} cc/min</span>
+                                </td>
+                                <td>
+                                    <span translate>{{'summary.content.DialysateFlowRate'}}</span>
+                                    <span>{{$ctrl.data.DialysisHeader.Prescription.DialysateFlowRate}} cc/min</span>
+                                </td>
+                                <td>
+                                    <span translate>{{'summary.content.Route'}}</span>
+                                    <span>{{$ctrl.data.DialysisHeader.Prescription.Route}} </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span translate>{{'summary.content.ArteryLength'}}</span>
+                                    <span>{{$ctrl.data.DialysisHeader.Prescription.Needle.ArteryLength}} G</span>
+                                </td>
+                                <td>
+                                    <span translate>{{'summary.content.VeinLength'}}</span>
+                                    <span>{{$ctrl.data.DialysisHeader.Prescription.Needle.VeinLength}} G</span>
+                                </td>
+                                <td>
+                                    <span translate>{{'summary.content.ArtificialKidney'}}</span>
+                                    <span>{{$ctrl.data.DialysisHeader.Prescription.ArtificialKidney}}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span translate>{{'summary.content.Mode'}}</span>
+                                    <span>{{$ctrl.data.DialysisHeader.Prescription.Mode.Name}} </span>
+                                </td>
+                                <td>
+                                    <span translate>{{'summary.content.SupplementVolume'}}</span>
+                                    <span>{{$ctrl.data.DialysisHeader.Prescription.SupplementVolume}}</span>
+                                </td>
+                                <td>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <span translate>{{'summary.content.memo'}}</span>
+                                    <span>{{$ctrl.data.DialysisHeader.Prescription.Memo}}</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="35%" valign="top">
+                        <span class="title" translate>{{'summary.content.condition'}}</span>
+                        <br>
+                        <div class="content" ng-repeat="doctorNote in $ctrl.data.DoctorNotes">
+                            {{doctorNote.Content}}
+                            <seal ng-show="doctorNote" model="doctorNote" modified="hideIfSame"></seal>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <table class="table" border="0" cellpadding="0" cellspacing="0" style="margin-bottom: -1px; margin-top: -2px;">
+                <tr>
+                    <td colspan="3">
+                        <span translate>{{'summary.content.NursingRecord'}}</span>
+                        <table class="table_in" border="0" cellpadding="0" cellspacing="0" style="border: 0" ng-repeat="rec in $ctrl.data.NursingRecord track by rec.Id">
+                            <tr>
+                                <td width="6%" valign="top">{{rec.NursingTime | date: 'HH:mm'}}</td>
+                                <td valign="top">{{rec.Content}}
+                                    <seal model="rec" ng-hide="rec.ModifiedUserName" modified="none"></seal>
+                                    <seal model="rec" ng-if="rec.ModifiedUserName" created="none"></seal>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top" style="border-top:#000 solid 2px ">
+                        <p translate>{{'summary.content.PunctureNurse'}}</p>
+                        <span>{{$ctrl.data.DialysisHeader.OnUserName}}</span>
+                    </td>
+                    <td valign="top">
+                        <p translate>{{'summary.content.CareNurse'}}</p>
+                        <span ng-repeat="(key, value) in $ctrl.data.DialysisHeader.CareUsers">
+                            <span ng-if="!$last">{{value}}, </span>
+                            <span ng-if="$last">{{value}}</span>
+                        </span>
+                    </td>
+                    <td valign="top">
+                        <span translate>{{'summary.content.OffNurse'}}</span>
+                        <div>{{$ctrl.data.DialysisHeader.OffUserName}}</div>
+                    </td>
+                </tr>
+            </table>
+    </md-whiteframe>
+</div>
+
+<script type="text/ng-template" id="confirm.html">
+    <md-dialog aria-label="開表確認">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2 translate>{{'allDialysisRecords.createTable'}}</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="vm.cancel()">
+                        <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-dialog-actions layout="row">
+                <md-button ng-click="vm.cancel()">
+                    {{'allDialysisRecords.cancel' | translate}}
+                </md-button>
+                <md-button ng-click="vm.ok()">
+                    {{'allDialysisRecords.ok' | translate}}
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>

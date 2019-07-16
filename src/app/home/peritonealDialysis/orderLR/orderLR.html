@@ -1,0 +1,37 @@
+<div class="freezeDiv tbTrackLong">
+    <table class="freezeTb tb">
+        <thead>
+            <tr>
+                <th>日期</th>
+                <th>透析時間</th>
+                <th>透析液濃度</th>
+                <th>ESA用量</th>
+                <th>IV Atofen（amp）</th>
+                <th>Heparin 用量</th>
+                <th>Dialyzer</th>
+                <th>Dry BW（kg）</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="oLR in $ctrl.orderLRList">
+                <td ng-click="$ctrl.openEditDialog(oLR)">{{oLR.Record_Date  | moment:'YYYY-MM-DD'}}</td>
+                <td ng-click="$ctrl.openEditDialog(oLR)">{{oLR.Record_Date  | moment:'HH:mm:ss'}}</td>
+                <td ng-click="$ctrl.openEditDialog(oLR)"><a>{{oLR.Dialysate_Concentration}}</a></td>
+                <td ng-click="$ctrl.openEditDialog(oLR)"><a>{{oLR.Epo_Dosage}}</a></td>
+                <td ng-click="$ctrl.openEditDialog(oLR)"><a>{{oLR.Iv_Atofen_Amp}}</a></td>
+                <td ng-click="$ctrl.openEditDialog(oLR)"><a>{{oLR.Heparin_Dosage}}</a></td>
+                <td ng-click="$ctrl.openEditDialog(oLR)"><a>{{oLR.Dialyzer}}</a></td>
+                <td ng-click="$ctrl.openEditDialog(oLR)"><a>{{oLR.Dry_Bw_Kg}}</a></td>
+                <td>
+                    <button class="btnDef btnDel" type="button" ng-click="$ctrl.deleteOne($event, oLR)">
+                        <span>刪除</span>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<md-button class="md-fab md-fab-bottom-right" style="position: fixed;" ng-click="$ctrl.openCreateDialog()">
+    <md-icon md-svg-src="static/img/svg/ic_add_white_24px.svg"></md-icon>
+</md-button>

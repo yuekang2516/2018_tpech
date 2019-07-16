@@ -1,0 +1,53 @@
+.tbSelfCare ul{
+    margin:0;padding-left: 10;
+
+    li{line-height: 30px;}
+    label{color: rgb(117, 117, 117);}
+}
+.tbSelfCare{
+    .signinNm .fixed {
+        border: 1px solid red;
+        transform: rotate(-10deg);
+        padding: 3px;
+        width: 3em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        color: rgb(226, 0, 0);
+    }
+}
+.machine-data-container {
+    // max-width: 45em;
+    display: flex;
+    flex-direction: column;
+
+    > div {
+        margin: 0.2em 0;
+    }
+
+    label {
+        min-width: 10em;
+        padding: 0 0.2em;
+        text-align: right;
+        font-weight: normal;
+        white-space: nowrap;
+        line-height: 1.5rem;
+    }
+
+    label.from-machine {
+        background-color: lightblue;
+    }
+
+    input, md-select, textarea {
+        flex: 1;
+        min-width: 4em;
+        margin: 0 0.5em;
+    }
+
+    md-select {
+        border: 2px inset;
+    }
+
+}

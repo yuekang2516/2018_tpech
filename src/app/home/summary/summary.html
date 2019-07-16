@@ -1,0 +1,356 @@
+<div ng-class="{'no-print': $ctrl.showWholeScreen}" layout="column" layout-fill flex>
+    <!--歷次選單 start-->
+    <md-sidenav layout="column" class="md-sidenav-right md-whiteframe-z2 no-print" md-component-id="rightNav">
+        <md-content>
+            <md-list ng-if="$ctrl.loginRole === 'doctor'" class="for-doctor">
+                <md-subheader class="md-no-sticky">{{'summary.doctor' | translate}}</md-subheader>
+                <md-list-item ng-click="$ctrl.gotoState('allPrescriptions')">
+                    <i class="material-icons">assignment</i>
+                    <p translate>{{'summary.prescription'}}</p>
+                </md-list-item>
+                <md-divider></md-divider>
+            </md-list>
+            <md-list flex>
+                <md-list-item ng-click="$ctrl.gotoState('allDialysisRecords')">
+                    <i class="material-icons">assignment</i>
+                    <p translate>{{'summary.dialysisRecordHistory'}}</p>
+                </md-list-item>
+                <md-list-item ng-click="$ctrl.gotoState('vesselAssessmentAllRecords')">
+                    <i class="material-icons">assignment</i>
+                    <p translate>{{'summary.vascularAccess'}}</p>
+                </md-list-item>
+                <md-list-item ng-click="$ctrl.gotoState('allNursingRecords')">
+                    <i class="material-icons">assignment</i>
+                    <p translate>{{'summary.nursingRecord'}}</p>
+                </md-list-item>
+                <md-list-item ng-click="$ctrl.gotoState('allMedicationRecords')">
+                    <i class="material-icons">assignment</i>
+                    <p translate>{{'summary.medicationRecord'}}</p>
+                </md-list-item>
+                <md-list-item ng-click="$ctrl.gotoState('allReferralSheetList', {patientId: $ctrl.patientId})">
+                    <i class="material-icons">assignment</i>
+                    <p>歷次病歷摘要</p>
+                </md-list-item>
+                <md-list-item ng-click="$ctrl.gotoState('apo')">
+                    <i class="material-icons">assignment</i>
+                    <p translate>{{'summary.hemodialysisAbnormal'}}</p>
+                </md-list-item>
+                <md-list-item ng-click="$ctrl.gotoState('annualEpo')">
+                    <i class="material-icons">assignment</i>
+                    <p translate>{{'summary.EpoStatistic'}}</p>
+                </md-list-item>
+                <md-list-item ng-click="$ctrl.gotoState('labexam')">
+                    <i class="material-icons">assignment</i>
+                    <p translate>{{'summary.inspection'}}</p>
+                </md-list-item>
+                <md-list-item ng-click="$ctrl.gotoState('album')">
+                    <i class="material-icons">assignment</i>
+                    <p translate>{{'summary.album'}}</p>
+                </md-list-item>
+                <md-list-item ng-click="$ctrl.gotoState('allHighRiskFallerHD')">
+                    <i class="material-icons">assignment</i>
+                    <p>歷次跌倒評估</p>
+                </md-list-item>
+                <md-list-item ng-click="$ctrl.gotoState('allNursingGuide')">
+                    <i class="material-icons">assignment</i>
+                    <p>歷次護理指導</p>
+                </md-list-item>
+                <md-list-item ng-click="$ctrl.gotoState('allHealthProblem')">
+                    <i class="material-icons">assignment</i>
+                    <p>歷次健康問題</p>
+                </md-list-item>
+                <md-list-item ng-click="$ctrl.gotoState('admissionConsult')">
+                    <i class="material-icons">assignment</i>
+                    <p translate>住院歷程</p>
+                </md-list-item>
+                <md-list-item ng-click="$ctrl.gotoState('reportDialysisHD')">
+                    <i class="material-icons">assignment</i>
+                    <p translate>透析模式告知書</p>
+                </md-list-item>
+
+            </md-list>
+            <md-list ng-if="$ctrl.loginRole !== 'doctor'" class="for-doctor">
+                <md-divider></md-divider>
+                <md-subheader class="md-no-sticky">{{'summary.doctor' | translate}}</md-subheader>
+                <md-list-item ng-click="$ctrl.gotoState('allPrescriptions')">
+                    <i class="material-icons">assignment</i>
+                    <p translate>{{'summary.prescription'}}</p>
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </md-sidenav>
+    <!--歷次選單 end-->
+
+    <md-toolbar class="no-print">
+        <div class="md-toolbar-tools">
+            <md-button ng-if="$ctrl.smallScreen" class="circular" aria-label="Settings" ng-click="$ctrl.goback()">
+                <md-icon md-svg-icon="static/img/svg/ic_arrow_back_24px.svg"></md-icon>
+            </md-button>
+
+            <md-button ng-if="!$ctrl.smallScreen" hide-gt-md id="right-menu" class="md-icon-button" aria-label="More" ng-click="$ctrl.openLeftMenu()">
+                <md-icon md-svg-icon="static/img/svg/ic_menu_white_24px.svg"></md-icon>
+            </md-button>
+
+            <md-button ng-if="!$ctrl.smallScreen" id="right-menu" class="md-icon-button toggleSideNav first-child" aria-label="More" ng-click="$ctrl.toggleSideNav()">
+                <md-icon md-svg-icon="static/img/svg/ic_menu_white_24px.svg"></md-icon>
+            </md-button>
+
+            <h2>
+                <span ng-hide="$ctrl.totalCount == 0 || $ctrl.selectedIndex == -1">
+                    {{ $ctrl.summaryTitle || 'summary.dialysisOverview' | translate }}
+                </span>
+            </h2>
+            <span ng-if="$ctrl.toolbarDateTitle" class="toolbar-date">
+                ({{ $ctrl.toolbarDateTitle }})
+            </span>
+            <span class="patient-name" ng-if="$ctrl.currentPatient">-{{ $ctrl.currentPatient.Name }}</span>
+            <span ng-if="$ctrl.readonly" class="readonly-text" title="{{ 'customMessage.readonlyTitle' | translate }}" translate>{{ 'customMessage.readonly' }}</span>
+            <span flex></span>
+            <div class="toolbar-function-button" ng-if="!$ctrl.loading">
+                <md-button hide show-gt-xs class="md-icon-button" aria-label="More" ng-click="$ctrl.gotoState('album')">
+                    <i class="material-icons">photo_album</i>
+                    <md-tooltip ng-if="$ctrl.isBrowser" style="font-size: 12px; margin-top: -5px;" md-direction="bottom">
+                        <span translate>{{'summary.photoAlbum'}}</span>
+                    </md-tooltip>
+                </md-button>
+                <md-button hide show-gt-xs class="md-icon-button" aria-label="More" ng-click="$ctrl.gotoState('labexam')">
+                    <i class="material-icons">assessment</i>
+                    <md-tooltip ng-if="$ctrl.isBrowser" style="font-size: 12px; margin-top: -5px;" md-direction="bottom">
+                        <span translate>{{'summary.inspection'}}</span>
+                    </md-tooltip>
+                </md-button>
+                <md-button hide show-gt-xs class="md-icon-button" aria-label="More" ng-click="$ctrl.gotoState('monthlyDialysisRecords')">
+                    <i class="material-icons">date_range</i>
+                    <md-tooltip ng-if="$ctrl.isBrowser" style="font-size: 12px; margin-top: -5px;" md-direction="bottom">
+                        <span translate>{{'summary.dialysisCalendar'}}</span>
+                    </md-tooltip>
+                </md-button>
+                <!-- <md-button ng-if="!$ctrl.isBrowser" class="md-icon-button" aria-label="More" ng-click="$ctrl.share()">
+                    <i class="material-icons">share</i>
+                    <md-tooltip ng-if="$ctrl.isBrowser" style="font-size: 12px; margin-top: -5px;" md-direction="bottom">
+                        <span translate>{{'summary.share'}}</span>
+                    </md-tooltip>
+                </md-button> -->
+                <md-button ng-if="!$ctrl.errMsg" class="md-icon-button" aria-label="More" ng-click="$ctrl.gotoDialysisForm()">
+                    <i class="material-icons">assignment</i>
+                    <md-tooltip ng-if="$ctrl.isBrowser" style="font-size: 12px; margin-top: -5px;" md-direction="bottom">
+                        <span translate>{{'summary.dialysisForm'}}</span>
+                    </md-tooltip>
+                </md-button>
+                <md-button id="right-menu" class="md-icon-button" aria-label="More" ng-click="$ctrl.openMenu()">
+                    <md-icon md-svg-icon="static/img/svg/ic_menu_white_24px.svg"></md-icon>
+                </md-button>
+            </div>
+        </div>
+    </md-toolbar>
+
+    <loading ng-show="$ctrl.loading">loading...</loading>
+    <div class="summary-container" style="position:relative;" layout="column" flex ng-if="!$ctrl.loading">
+        <div layout="row" ng-show="!$ctrl.showContent" layout-align="center center" class="recordChoose">
+            <button ng-disabled="$ctrl.currentData.Count == $ctrl.currentData.Index" class="latestRecord" ng-click="$ctrl.changeDate($ctrl.currentData.Count)">最新</button>
+            <md-button class="md-icon-button" ng-disabled="!$ctrl.currentData || $ctrl.currentData.Index == 1 || $ctrl.loading" ng-click="$ctrl.changeDate($ctrl.currentData.Index - 1)">
+                <i class="material-icons">navigate_before</i>
+            </md-button>
+            <div style="cursor: pointer; position: relative;" ng-click="$ctrl.gotoState('monthlyDialysisRecords', { date:  $ctrl.currentData.DialysisHeader.StartTime, isSummary: 'true' })" layout="row" layout-align="center center">
+                <i class="material-icons">date_range</i>
+                <span>{{$ctrl.recordDateTitle}}</span>
+                <span ng-if="$ctrl.isToday" class="todayInfo" translate>{{ 'summary.component.today' }}</span>
+            </div>
+
+            <md-button class="md-icon-button" ng-disabled="!$ctrl.currentData || $ctrl.currentData.Count == $ctrl.currentData.Index || $ctrl.loading" ng-click="$ctrl.changeDate($ctrl.currentData.Index + 1)">
+                <i class="material-icons">navigate_next</i>
+            </md-button>
+
+            <div>
+                <md-button class="md-icon-button" ng-disabled="!$ctrl.canCreate" ng-click="$ctrl.createRecord()">
+                    <i class="material-icons">add</i>
+                </md-button>
+                <md-tooltip style="font-size: 12px; margin-top: -5px;" md-direction="bottom">
+                    <span translate>{{ $ctrl.canCreate ? '新增透析紀錄' : '尚未關表' }}</span>
+                </md-tooltip>
+            </div>
+
+            <md-button class="md-icon-button" ng-click="$ctrl.refresh();">
+                <i class="material-icons">refresh</i>
+            </md-button>
+        </div>
+
+        <!--病人簡單資訊 start-->
+        <div class="head" ng-if="!$ctrl.patientErr && !$ctrl.patientInfoLoading" ng-class="{morePatientInfo: $ctrl.showPatientInfo, 'no-print': $ctrl.patientInfoNoPrint}" ng-style="$ctrl.showContent ? {'padding': '8px 20px'}:{}">
+            <div layout="row" layout-align="start center">
+                <select class="{{'patient_name ' + (($ctrl.currentPatient.Gender|gender) == '男' ? 'male ' : '') + (($ctrl.currentPatient.Gender|gender) == '女' ? 'female' : '') }}" ng-if="$ctrl.patients.length > 1" ng-model="$ctrl.currentPatient" ng-options="(item.MedicalId + ' - ' + item.Name) for item in $ctrl.patients track by item.Id" ng-change="$ctrl.changePatient()">
+                </select>
+                <div ng-if="!$ctrl.patients || $ctrl.patients.length === 1" class="{{'patient_name ' + (($ctrl.currentPatient.Gender|gender) == '男' ? 'male ' : '') + (($ctrl.currentPatient.Gender|gender) == '女' ? 'female' : '') }}">
+                    {{ $ctrl.currentPatient.MedicalId + ' - ' + $ctrl.currentPatient.Name }}
+                </div>
+                <!-- <img ng-src="static/img/svg/list.svg"><span>{{ $ctrl.currentPatient.MedicalId }}</span> -->
+                <img ng-src="static/img/svg/idcard.svg" class="phone_none"><span>{{ $ctrl.currentPatient.IdentifierId }}</span>
+                <!-- <img class="extraInfo" ng-src="static/img/svg/person.svg"><span class="extraInfo">門診</span>
+                <img class="extraInfo" ng-src="static/img/svg/bed.svg"><span class="extraInfo">A001</span> -->
+            </div>
+            <div style="flex: 1">
+                <div style="overflow: hidden; height: 24px; padding-top: 2px">
+                    <patient-tag class="tag" tag="t" ng-repeat="t in $ctrl.currentPatient.Tags track by $index"></patient-tag>
+                </div>
+            </div>
+            <div layout="row" layout-align="start center" ng-class="{hide: $ctrl.showContent}">
+                <i class="material-icons headitem expand" ng-if="$ctrl.currentPatient.Memo" ng-class="{less: $ctrl.showPatientInfo}" ng-click="$ctrl.togglePatientInfo()">keyboard_arrow_up</i>
+                <i class="material-icons headitem" ng-click="$ctrl.gotoPatientDetail($ctrl.patientId)">more_horiz</i>
+            </div>
+        </div>
+        <div class="head no-print" ng-if="$ctrl.patientInfoLoading" style="margin: 0 auto">
+            <span style="margin-right: 8px">取得病人資料中...</span>
+            <md-progress-circular style="margin: 0" md-diameter="20px" md-mode="indeterminate"></md-progress-circular>
+        </div>
+        <div class="head err no-print" style="margin: 0 auto" ng-if="$ctrl.patientErr && !$ctrl.patientInfoLoading" layout="row" layout-align="start center">
+            取得病人資料失敗，請重新整理
+            <md-button class="md-icon-button" ng-click="$ctrl.refreshPatientInfo();">
+                <i class="material-icons">refresh</i>
+            </md-button>
+        </div>
+
+        <div ng-class="{'no-print': $ctrl.showContent}" class="remarks animate-show-hide" ng-show="$ctrl.showPatientInfo">
+            {{ $ctrl.currentPatient.Memo }}
+        </div>
+        <md-content ng-class="{'no-print': $ctrl.showContent}" id="card-container" ng-if="!$ctrl.loading && !$ctrl.noDialysisRecord && !$ctrl.serverErrorRecord" flex style="background-color:initial" layout="row" layout-align="space-between start" layout-wrap>
+            <div class="card" ng-repeat="item in $ctrl.allCardsArray" ng-if="item.ngIf" ng-class="{overview: item.uiSref === 'overview', higher: item.uiSref === 'continuousMachineData' || item.uiSref === 'allPrescriptions' || item.uiSref === 'labexam'}" layout="column" flex="{{item.flex}}" flex-gt-lg="{{item.flexGtLg}}" flex-gt-sm="{{item.flexGtSm}}">
+                <md-subheader>
+                    <h2 style="display:inline; font-size:20px; line-height:33px; position: relative; cursor: pointer;" ng-click="$ctrl.gotoState(item.uiSref, item.option)">
+                        {{ ::item.label }}
+                        <!-- 執行紀錄 count -->
+                        <span class="badge tabCount md-secondary" ng-if="item.uiSref === 'allExecutionRecord' && $ctrl.tabExecuteCount > 0">{{$ctrl.tabExecuteCount}}</span>
+                    </h2>
+
+                    <span style="font-size:16px;" ng-if="item.subTitle">{{ ::item.subTitle }}</span>
+                    <i class="material-icons" ng-if="item.add && item.uiSref !== 'assessment'" ng-click="item.uiSref !== 'allPrescriptions' ? item.add() : item.add($ctrl.selectedPrescriptionsIndex)">add</i>
+
+                    <!-- 評估可新增透析前及透析後，因此需另外處理 -->
+                    <md-menu ng-if="item.uiSref === 'assessment'">
+                        <i class="material-icons" ng-click="$ctrl.openAssessmentMenu($mdMenu, $event)">add</i>
+                        <md-menu-content>
+                            <md-menu-item>
+                                <md-button aria-label="pre" ng-click="item.add('pre')">
+                                    <span translate>{{'assessment.assessments.createPreAssessment'}}</span>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button aria-label="post" ng-click="item.add('post')">
+                                    <span translate>{{'assessment.assessments.createPostAssessment'}}</span>
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                    <i class="material-icons" ng-click="$ctrl.gotoState(item.uiSref, item.option)" style="font-size:28px; margin-bottom:4px; float: right">fullscreen</i>
+                </md-subheader>
+                <div class="card-content">
+                    <overview-card data="$ctrl.currentData" ng-if="item.uiSref == 'overview' && $ctrl.currentData && !$ctrl.overviewLoading"></overview-card>
+                    <loading ng-if="$ctrl.overviewLoading && item.uiSref == 'overview'"></loading>
+
+                    <shift-issues ng-if="item.uiSref == 'shiftIssues'"></shift-issues>
+                    <assessment ng-if="item.uiSref == 'assessment'"></assessment>
+                    <high-risk-faller ng-if="item.uiSref == 'highRiskFallerHD'"></high-risk-faller>
+                    <machine-data ng-if="item.uiSref == 'machineData'"></machine-data>
+
+                    <!-- 連續型避免同時存在同個 id 的 table 導致資料會顯示出不來，因此用 ng-if 來控制 -->
+                    <continuous-machine-data ng-if="item.uiSref == 'continuousMachineData' && $ctrl.currentState !== 'continuousMachineData'" is-card="true"></continuous-machine-data>
+
+                    <all-execution-record ng-if="item.uiSref == 'allExecutionRecord'"></all-execution-record>
+                    <nursing-record ng-if="item.uiSref == 'nursingRecord'"></nursing-record>
+                    <all-nursing-guide ng-if="item.uiSref == 'allNursingGuide'"></all-nursing-guide>
+
+                    <doctor-note ng-if="item.uiSref == 'doctorNote'"></doctor-note>
+                    <prescribing-record ng-if="item.uiSref == 'prescribingRecord'" check-valid="true"></prescribing-record>
+
+                    <!-- 處方的 tab 需另外做 -->
+                    <div ng-if="item.uiSref == 'allPrescriptions' && ($ctrl.currentState !== 'allPrescriptions' && $ctrl.currentState !== 'prescriptionTabPage' && $ctrl.currentState !== 'prescriptionDetail')" style="height: 100%">
+                        <md-tabs md-stretch-tabs="never" md-center-tabs="true" md-selected="$ctrl.selectedPrescriptionsIndex">
+                            <md-tab label="{{'allPrescriptions.allPrescriptions.HD' | translate}}"></md-tab>
+                            <md-tab label="{{'allPrescriptions.allPrescriptions.HDF' | translate}}"></md-tab>
+                            <md-tab label="{{'allPrescriptions.allPrescriptions.SLEDDF' | translate}}"></md-tab>
+                            <md-tab label="{{'allPrescriptions.allPrescriptions.interim' | translate}}"></md-tab>
+                        </md-tabs>
+                        <prescription-tab-page ng-if="$ctrl.selectedPrescriptionsIndex === 0" card-type="$ctrl.selectedPrescriptionsIndex"></prescription-tab-page>
+                        <prescription-tab-page ng-if="$ctrl.selectedPrescriptionsIndex === 1" card-type="$ctrl.selectedPrescriptionsIndex"></prescription-tab-page>
+                        <prescription-tab-page ng-if="$ctrl.selectedPrescriptionsIndex === 2" card-type="$ctrl.selectedPrescriptionsIndex"></prescription-tab-page>
+                        <prescription-tab-page ng-if="$ctrl.selectedPrescriptionsIndex === 3" card-type="$ctrl.selectedPrescriptionsIndex"></prescription-tab-page>
+                    </div>
+
+                    <!-- 檢驗檢查 tab 需另外做 -->
+                    <div ng-if="item.uiSref == 'labexam'" style="height: 100%">
+                        <md-tabs md-stretch-tabs="never" md-center-tabs="true" md-selected="$ctrl.selectedLabIndex">
+                            <md-tab label="{{'labexam.labexam.table' | translate}}"></md-tab>
+                            <md-tab label="{{'labexam.labexam.chart' | translate}}"></md-tab>
+                        </md-tabs>
+                        <labexam-table ng-if="$ctrl.selectedLabIndex === 0" is-card="true"></labexam-table>
+                        <labexam-chart ng-if="$ctrl.selectedLabIndex === 1" is-card="true"></labexam-chart>
+                    </div>
+                </div>
+            </div>
+        </md-content>
+        <!--無表單時會顯示的內容 start-->
+        <div flex ng-if="$ctrl.noDialysisRecord" layout="column" layout-align="center center" layout-padding>
+            <h1 translate>{{'summary.noDialysisRecord'}}</h1>
+            <h3>{{'summary.goto' | translate}}
+                <a ng-click="$ctrl.gotoState('allDialysisRecords')" style="color: -webkit-link; cursor: pointer; text-decoration: underline;">{{'summary.allDialysisRecords' | translate}}</a>{{'summary.createNewRecord' | translate}}
+            </h3>
+        </div>
+        <!--無表單時會顯示的內容 end-->
+        <server-error-page flex ng-show="!$ctrl.loading && $ctrl.serverErrorRecord" msg="{{$ctrl.errMsg}}" hide-refresh="$ctrl.errMsg" refresh="$ctrl.refresh()"></server-error-page>
+
+        <div ng-show="$ctrl.showContent" id="summary-content-container" ng-class="{fullheightPrint: $ctrl.patientInfoNoPrint}">
+            <div layout="column" id="summary-content">
+                <!-- <summary-toolbar title="$ctrl.summaryTitle" cancel="$ctrl.goback()"></summary-toolbar> -->
+                <ui-view style="background: rgb(250,250,250); z-index:3" flex></ui-view>
+            </div>
+        </div>
+    </div>
+
+    <div class="list_tab no-print" ng-if="!$ctrl.loading && !$ctrl.serverErrorRecord && !$ctrl.noDialysisRecord">
+        <div class="functionTab animate-show-hide" ng-show="$ctrl.hideFunctionTab && !$ctrl.showContent">
+            <div class="item" ng-repeat="item in $ctrl.allTabs track by $index" ng-click="$ctrl.gotoState(item.uiSref)" ng-if="item.ngIf">
+                <md-tooltip md-direction="left">
+                    {{::item.label}}
+                </md-tooltip>
+                <img class="material-icons" ng-src="{{item.icon}}">
+                <!-- 執行紀錄 count -->
+                <span class="badge tabCount md-secondary" ng-if="item.uiSref === 'allExecutionRecord' && $ctrl.tabExecuteCount > 0">{{$ctrl.tabExecuteCount}}</span>
+                <!-- epo count -->
+                <span class="badge tabCount md-secondary" ng-if="item.uiSref === 'epo' && $ctrl.tabEpoCount > 0">{{$ctrl.tabEpoCount}}</span>
+            </div>
+        </div>
+        <div class="item" ng-click="$ctrl.toggleFunctionTab()" style="border-top:#ccc solid 1px">
+            <img class="expand" ng-class="{less: $ctrl.hideFunctionTab}" ng-src="static/img/svg/doublearrow.svg">
+            <!-- 若 tab 為收起來的狀態需顯示所有通知的總和 -->
+            <span class="badge tabCount md-secondary" ng-if="!$ctrl.hideFunctionTab && (($ctrl.loginRole == 'doctor' && $ctrl.tabExecuteCount + $ctrl.tabEpoCount > 0) || ($ctrl.loginRole != 'doctor' && $ctrl.tabEpoCount > 0))">{{ $ctrl.loginRole == 'doctor' ? $ctrl.tabExecuteCount + $ctrl.tabEpoCount : $ctrl.tabEpoCount}}</span>
+        </div>
+    </div>
+
+    <!-- 瀏覽檔案 -->
+    <admin-file style="height: initial"></admin-file>
+</div>
+
+<div ng-show="$ctrl.showWholeScreen && !$ctrl.loading && !$ctrl.serverErrorRecord" id="wholeScreen" ui-view="wholeScreen" style="background: rgb(250,250,250)"></div>
+
+<script type="text/ng-template" id="confirm.html">
+    <md-dialog aria-label="開表確認">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2 translate>{{'allDialysisRecords.createTable'}}</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="vm.cancel()">
+                        <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-dialog-actions layout="row">
+                <md-button ng-click="vm.cancel()">
+                    {{'allDialysisRecords.cancel' | translate}}
+                </md-button>
+                <md-button ng-click="vm.ok()">
+                    {{'allDialysisRecords.ok' | translate}}
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>

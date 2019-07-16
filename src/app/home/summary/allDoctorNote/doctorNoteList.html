@@ -1,0 +1,78 @@
+<div layout="column" layout-fill ui-view flex>
+    <md-toolbar hide-gt-sm>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="$ctrl.back();">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <div layout="row">
+                {{!$ctrl.loading ? $ctrl.patient.Name + '(' + $ctrl.patient.MedicalId + ')' : null }}
+                {{'allDoctorNote.alldoctorNote' | translate}}
+            </div>
+            <span flex></span>
+        </div>
+    </md-toolbar>
+    <div class="list-header" ng-show="!$ctrl.loading" layout="row" layout-align="center center">
+        <h6 translate="allDoctorNote.totalRecord" translate-values='{totalCnt: $ctrl.totalCnt}'></h6>
+        <span flex></span>
+        <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
+    </div>
+    <md-content layout="column" flex>
+        <loading ng-show="$ctrl.loading"></loading>
+        <div infinite-scroll="$ctrl.loadMore()" infinite-scroll-disabled='$ctrl.loading' infinite-scroll-distance='2' infinite-scroll-parent>
+            <md-content>
+                <md-list>
+                    <md-list-item class="md-2-line"
+                                  ng-class="{deleted: item.Status == 'Deleted'}"
+                                  ng-repeat="item in $ctrl.serviceData"
+                                  ng-click="$ctrl.goto(item.DialysisId)"
+                                  ng-show="item.Status !== 'Deleted' || $ctrl.showDeleted">
+                        <div class="md-list-item-text" layout="column">
+                            <h3 ng-bind="item.DialysisTime | moment:'YYYY/MM/DD (dd) HH:mm'"></h3>
+                            <p style=" -webkit-line-clamp: 3; overflow: hidden; text-overflow: ellipsis;  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+                            width: 80%;" ng-bind="item.Content" />
+                            <seal model="item" modified="hideIfSame" fixed="true"></seal>
+                        </div>
+                        <md-divider ng-if="!$last"></md-divider>
+                    </md-list-item>
+                </md-list>
+            </md-content>
+        </div>
+        <div flex ng-show="!$ctrl.loading && !$ctrl.serviceData.length && !$ctrl.isError" layout="column" layout-fill layout-align="center center">
+            <h1 translate>{{'allDoctorNote.noData'}}</h1>
+        </div>
+        <div flex ng-show="!$ctrl.loading && $ctrl.isError" layout="column" layout-fill layout-align="center center">
+            <h3 translate>{{'allDoctorNote.serverError'}}</h3>
+        </div>
+    </md-content>
+</div>
+
+<script type="text/ng-template" id="dialog.html">
+    <md-dialog aria-label="刪除確認">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2 translate>{{'allDoctorNote.confirmDelete'}}</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="vm.cancel()">
+                        <md-icon md-svg-src="static/img/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content" translate>
+                    {{'allDoctorNote.deleteRecord'}}
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+                <md-button ng-click="vm.cancel()">
+                    {{'allDoctorNote.cancel' | translate}}
+                </md-button>
+                <md-button ng-click="vm.ok()">
+                    {{'allDoctorNote.delete' | translate}}
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>

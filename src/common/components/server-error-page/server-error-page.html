@@ -1,0 +1,6 @@
+<div layout="column" layout-fill layout-align="center center">
+    <h3>{{ $ctrl.msg || 'customMessage.serverError1' | translate}}</h3>
+    <md-button class="md-icon-button" ng-if="!$ctrl.hideRefresh" ng-click="$ctrl.refresh();">
+        <i class="material-icons">refresh</i>
+    </md-button>
+</div>

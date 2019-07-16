@@ -1,0 +1,149 @@
+<style scoped>
+    contract-detail {
+        height: 100%;
+    }
+    
+    .padding {
+        padding: 20px;
+    }
+    
+    .warning {
+        color: red;
+    }
+
+    div.deleted {
+        background-color: rgba(10, 10, 10, 0.2);
+        position: absolute;
+        width: 100%;
+    }
+</style>
+<md-content layout="column" layout-fill>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="vm.back()">
+                <i class="material-icons">keyboard_backspace</i>
+            </md-button>
+            <h4>
+                <span>合約管理 / </span>
+                <span ng-show="vm.type === 'create'">新增</span>
+                <span ng-bind="vm.contract.Name"></span> 資料
+            </h4>
+        </div>
+    </md-toolbar>
+    <loading ng-show="vm.loading"></loading>
+    <md-content layout-fill flex>
+        <div ng-show="!vm.loading">
+            <div flex ng-show="vm.isError" layout="column" layout-fill layout-align="center center">
+                <h3>伺服器資料讀取失敗</h3>
+            </div>
+            <form name="editForm" class="padding">
+                <div>
+                <md-grid-list md-cols="2" md-row-height="70px" flex>
+                    <md-grid-tile ng-if="!vm.editMode" md-colspan="2">
+                        <div style="margin-top:-1.2em" flex>
+                            <md-input-container class="md-block" flex>
+                            <label>醫院別</label>
+                            <md-select ng-model="vm.Hospital" required>
+                                <md-option ng-repeat="h in vm.hospitals" value="{{ h.Id + '-' + h.HospitalName }}">{{ h.HospitalName }}</md-option>
+                            </md-select>
+                            </md-input-container>
+                        </div>
+                    </md-grid-tile>
+                    <md-grid-tile ng-if="vm.editMode" md-colspan="2">
+                        <md-input-container class="md-block" flex>
+                            <label>醫院別</label>
+                            <input type="text" name="HospitalName" ng-model="vm.formData.HospitalName" ng-readonly="true" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label>合約名稱</label>
+                            <input type="text" name="Name" ng-model="vm.formData.Name" required />
+                            <div ng-messages="editForm.Name.$error">
+                                <div ng-message="required">必填選項</div>
+                            </div>
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label>合約編號</label>
+                            <input type="text" name="Number" ng-model="vm.formData.Number" required />
+                            <div ng-messages="editForm.Number.$error">
+                                <div ng-message="required">必填選項</div>
+                            </div>
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label>負責人</label>
+                            <input type="text" name="Person" ng-model="vm.formData.Person" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label>聯絡電話</label>
+                            <input type="text" name="Phone" ng-model="vm.formData.Phone" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label>帳單地址</label>
+                            <input type="text" name="Address" ng-model="vm.formData.Address" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label>合約狀態</label>
+                            <input type="text" name="State" ng-model="vm.formData.State" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label>授權起始日</label>
+                            <input type="date" min="1900-01-01" max="2999-12-31" name="StartDate" ng-model="vm.formData.StartDate" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label>授權結束日</label>
+                            <input type="date" min="1900-01-01" max="2999-12-31" name="EndDate" ng-model="vm.formData.EndDate" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <div style="margin-top:-1.2em" flex>
+                            <md-input-container class="md-block" flex>
+                                <label>計費方式</label>
+                                <md-select ng-model="vm.formData.BillingMethod">
+                                    <md-option ng-repeat="b in vm.Billing" value="{{ b.value }}">{{ b.name }}</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label>價格</label>
+                            <input type="text" name="Price" ng-model="vm.formData.Price" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label>統一編號</label>
+                            <input type="text" name="Invoice" ng-model="vm.formData.Invoice" />
+                        </md-input-container>
+                    </md-grid-tile>
+                    <md-grid-tile>
+                        <md-input-container class="md-block" flex>
+                            <label>公司抬頭</label>
+                            <input type="text" name="CompanyId" ng-model="vm.formData.CompanyId" />
+                        </md-input-container>
+                    </md-grid-tile>
+                </md-grid-list>
+                </div>
+                <div>
+                <md-button class="md-raised md-warn" ng-show="vm.editMode && vm.formData.Status === 'Normal'" ng-click="vm.delete($event)" ng-disabled="vm.isSaving">刪除</md-button>
+                <md-button type="submit" class="md-raised md-primary" ng-show="vm.formData.Status !== 'Deleted'" ng-click="vm.showSimpleToast()" ng-disabled="editForm.$invalid || vm.isSaving">儲存</md-button>
+                </div>
+            </form>
+        </div>
+    </md-content>
+</md-content>
