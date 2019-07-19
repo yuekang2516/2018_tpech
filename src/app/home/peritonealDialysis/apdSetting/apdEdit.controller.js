@@ -42,7 +42,7 @@ function apdEditController(
     // 病人體重 Options
     self.PatientWeight = ['40', '50', '60', '70', '80', '其他'];
     // 0週期引流警訊 Options
-    self.ZeroCycleDrainageWarning = ['1000', '1500', '2000', '2500', '其他'];
+    self.ZeroCycleDrainageWarning = ['0','1000', '1500', '2000', '2500', '其他'];
     // 週期數 Options
     self.CycleNumber = ['2', '3', '4', '5', '其他'];    
     // 設定透析液溫度 Options
@@ -477,7 +477,7 @@ function apdEditController(
     };
     self.initialUI = function () {    
         if (self.apdDataObj.isCreate == true) {
-            self.getLastList();      
+            //self.getLastList();      
         }else{
             if(self.apdDataObj.isCopy){
                 self.apdDataObj.Record_Date = new Date(moment(new Date()).format('YYYY-MM-DD HH:mm:ss'));

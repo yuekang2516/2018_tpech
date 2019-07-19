@@ -56,7 +56,11 @@ function compEditController(
     };
 
     // save
-    self.ok = function ok() {
+    self.ok = function ok(event) {
+        // 判斷有無event，避免其他隻 function 呼叫
+        if (event) {
+            event.currentTarget.disabled = true;
+        }
         let toDay = new Date(moment(new Date()).format('YYYY-MM-DD HH:mm:ss'));
         //patient 基本資料
         self.compDataObj.Patientid = self.currentPatient.Id;
@@ -118,10 +122,12 @@ function compEditController(
             complicationService.post(self.compDataObj).then((res) => {
                 console.log("compData createOne success", res);
                 showMessage($translate('visitHome.dialog.createSuccess'));
-                $rootScope.$emit("ComplicationRefreshEvent", "");
+                //$rootScope.$emit("ComplicationRefreshEvent", "");
+                event.currentTarget.disabled = false;
             }, (res) => {
                 console.log("compData createOne fail", res);
                 showMessage($translate('visitHome.dialog.createFail'));
+                event.currentTarget.disabled = false;
             });
         } else {
             self.compDataObj.ModifiedTime = toDay;
@@ -130,10 +136,12 @@ function compEditController(
             complicationService.put(self.compDataObj).then((res) => {
                 console.log("compData update success", res);
                 showMessage($translate('visitHome.dialog.editSuccess'));
-                $rootScope.$emit("ComplicationRefreshEvent", "");
+                //$rootScope.$emit("ComplicationRefreshEvent", "");
+                event.currentTarget.disabled = false;
             }, (res) => {
                 console.log("compData update fail", res);
                 showMessage($translate('visitHome.dialog.editFail'));
+                event.currentTarget.disabled = false;
             });
         }
 
@@ -369,11 +377,14 @@ function compEditController(
             let temptitle = "|抗生素                |      1      |抗生素                |      1      |";
             let temptitle2 = `|抗生素                 |      1      |抗生素                 |      1      |`;
             //篩選體液、微生物
-
+            let perData = [];
             if(res.data.length > 0 && self.mrClass != 'ALL'){
-                res.data = res.data.filter(e =>{
-                    e.REP_TYPE_CODE == String(self.mrClass);
-                })
+                for(let i=0,j=res.data.length ;i<j;i++){
+                    if(res.data[i].REP_TYPE_CODE == String(self.mrClass)){
+                        perData.push(res.data[i]);
+                    }
+                }
+                res.data = perData;
             }
 
             for(let resItem in res.data){

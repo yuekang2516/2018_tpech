@@ -762,7 +762,7 @@ function overviewCtrl($q, $state, $rootScope, $window, OverViewService, wardServ
 
                 // lab, 把資料組畫面
                 let keys = Object.keys(self.dialysisHeader.LabItems);
-                for (var i = 0; i < keys.length; i++) {
+                for (let i = 0; i < keys.length; i++) {
                     self.checkItems[self.labItemNames.indexOf(keys[i])] = true;
                     self.labItems[keys[i]] = self.dialysisHeader.LabItems[keys[i]];
                 }

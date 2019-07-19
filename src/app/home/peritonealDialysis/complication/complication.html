@@ -40,7 +40,7 @@
                         <md-list><!-- | orderBy:['-Record_Date', '-CreatedTime']-->
                             <md-list-item class="md-2-line" ng-class="{deleted: item.Status == 'Deleted'}" ng-repeat="item in $ctrl.compList" ng-click="$ctrl.openEditDialog(item)" ng-show="item.Status !== 'Deleted' || $ctrl.showDeleted">
                                 <div class="md-list-item-text" layout="column">
-                                    <h3 ng-bind="item.Record_Date | moment:'YYYY/MM/DD (dd) HH:mm'"></h3>                                    
+                                    <h3 ng-bind="item.Record_Date | moment:'YYYY/MM/DD (dd) HH:mm'"></h3>
                                     <seal model="item" modified="hideIfSame" fixed="true"></seal>
                                 </div>
                                 <div  style="position: absolute; right: 6px; top: 20px">

@@ -99,6 +99,7 @@
                 <tr>
                     <td>
                         <p>腹膜透析類別：{{$ctrl.treatitem.Dialysis_Type}}</p>
+                        <p>換液系統：{{$ctrl.treatitem.Liquid_Exchange_System}}</p>
                         <p>透析液系統：{{$ctrl.treatitem.Dialysis_System}}</p>
                         <p>兼做血液透析：{{$ctrl.treatitem.Is_With_Hemodialysis === 'Y' ? '是' : '否'}}</p>
                         <p>主要換袋者：{{$ctrl.treatitem.Major_Bag_Changers}}</p>
@@ -126,12 +127,21 @@
                             </tr>
                         </table>
                         <br>
-                        <h2 style="padding-left: 2px">換液處方</h2>
-                        <h2 ng-hide="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Dianeal'}).length > 0">Dianeal：-</h2>
+                        <h2 style="padding-left: 2px">
+                            機器處方
+                            <span>每次注入量：
+                                {{($ctrl.treatitem.Pd_Injection_Volume == '-999')? $ctrl.PdInjectionVolumeOther : $ctrl.treatitem.Pd_Injection_Volume }}
+                            </span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span style="padding-left: 2px">週期數：
+                                {{($ctrl.treatitem.Pd_Period_Number == '-999')? $ctrl.PdPeriodNumberOther : $ctrl.treatitem.Pd_Period_Number }}
+                            </span>
+                        </h2>
+                        <h2 ng-hide="($ctrl.treatDetailTypes.APD.Machine | filter:{ Potiontypes:'Dianeal',Esa_Dose_Ug:'false'}).length > 0">Dianeal：-</h2>
                         <h2 style="padding-left: 2px"
-                            ng-show="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Dianeal'}).length > 0">Dianeal</h2>
+                            ng-show="($ctrl.treatDetailTypes.APD.Machine | filter:{ Potiontypes:'Dianeal',Esa_Dose_Ug:'false'}).length > 0">Dianeal</h2>
                         <table border="0" cellpadding="0" cellspacing="0" class="table_in_table" width="100%"
-                            ng-show="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Dianeal'}).length > 0">
+                            ng-show="($ctrl.treatDetailTypes.APD.Machine | filter:{ Potiontypes:'Dianeal',Esa_Dose_Ug:'false'}).length > 0">
                             <tr>
                                 <td width="5%" style="border-left: 0">序</td>
                                 <td width="19%">葡萄糖濃度（%）</td>
@@ -140,7 +150,112 @@
                                 <td width="19%">袋數</td>
                                 <td width="19%" style="border-right: 0">備註</td>
                             </tr>
-                            <tr ng-repeat="item in $ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Dianeal'}">
+                            <tr ng-repeat="item in $ctrl.treatDetailTypes.APD.Machine | filter:{ Potiontypes:'Dianeal',Esa_Dose_Ug:'false'}">
+                                <td style="border-left: 0">{{($index + 1)}}</td>
+                                <td>{{item.Glucoseconcentration}}</td>
+                                <td>{{item.Calciumconcentration}}</td>
+                                <td>{{(item.Baglitre =='其他') ? item.BaglitreOther : item.Baglitre}}</td>
+                                <td>{{item.Bagnumber}}</td>
+                                <td>
+                                    <div  class="word-break--break-all">
+                                        {{item.Remark}}
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
+                        <h2 style="padding-left: 2px" ng-show="($ctrl.treatDetailTypes.APD.ListBage | filter:{ Esa_Dose_Ug:'false'}).length > 0">
+                            最末袋處方
+                            <span ng-show="$ctrl.Pd_Ismatch_Last_Bag_Concn =='Y'">
+                                濃度：相同&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注入量：{{$ctrl.treatDetailTypes.APD.ListBage[0].Esa_Dose_U}}
+                            </span>
+                            <span ng-show="$ctrl.Pd_Ismatch_Last_Bag_Concn =='N'">
+                                濃度：不同
+                            </span>
+                        </h2>
+                        <div ng-show="$ctrl.Pd_Ismatch_Last_Bag_Concn =='N'">
+                            <h2 style="padding-left: 2px" ng-show="($ctrl.treatDetailTypes.APD.ListBage | filter:{ Potiontypes:'Dianeal',Esa_Dose_Ug:'false'}).length > 0">
+                            Dianeal</h2>
+                            <table style="width: 100%;border-spacing: 0;"
+                                ng-show="($ctrl.treatDetailTypes.APD.ListBage | filter:{ Potiontypes:'Dianeal',Esa_Dose_Ug:'false'}).length > 0">
+                                <tr>
+                                    <th  style="border-left: 0">序</th>
+                                    <th >葡萄糖(%)</th>
+                                    <th >鈣離子濃度(mEq/L)</th>
+                                    <th >藥水體積(L)</th>
+                                    <th >注入量(L)</th>
+                                    <td width="19%" style="border-right: 0">備註</td>
+                                </tr>
+                                <tbody >
+                                    <tr ng-repeat="do in $ctrl.treatDetailTypes.APD.ListBage | filter:{ Potiontypes:'Dianeal',Esa_Dose_Ug:'false'}">
+                                        <td  style="border-left: 0">{{$index +1}}</td>
+                                        <td >{{do.Potiontypes}}</td>
+                                        <td >{{do.Glucoseconcentration}}</td>
+                                        <td >{{do.Calciumconcentration}}</td>
+                                        <td >{{do.Baglitre}}</td>
+                                        <td >{{do.Esa_Dose_U}}</td>
+                                        <td style="border-right: 0">
+                                            <div  class="word-break--break-all">
+                                                {{do.Remark}}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h2 ng-show="($ctrl.treatDetailTypes.APD.ListBage | filter:{ Potiontypes:'Extraneal',Esa_Dose_Ug:'false'}).length > 0" layout="row">Extraneal&nbsp;&nbsp;&nbsp;給付條件：
+                                <ul style="margin-left: 5px;padding-left: 0px;padding-top: 2px;font-size: 12px;">
+                                    <li style="margin-left: 0px; list-style-type:none; display:inline;" ng-repeat="(key, value) in $ctrl.ListBage_PaymentconditionsCheck" ng-show="value.Type=='Extraneal'">
+                                            <img ng-src="static/img/blank.png" alt="" class="tick"
+                                            ng-hide="value.Check">
+                                            <img ng-src="static/img/tick.png" alt="" class="tick"
+                                            ng-show="value.Check">
+                                        {{value.Text}}
+                                    </li>
+                                </ul>
+                            </h2>
+                            <table border="0" cellpadding="0" cellspacing="0" class="table_in_table" width="100%"
+                            ng-show="($ctrl.treatDetailTypes.APD.ListBage | filter:{ Potiontypes:'Extraneal',Esa_Dose_Ug:'false'}).length > 0">
+                                <tr>
+                                    <th width="5%" style="border-left: 0">序</th>
+                                    <th width="19%">Icodextrin</th>
+                                    <th width="19%">鈣離子濃度(mEq/L)</th>
+                                    <th width="19%">藥水體積(L)</th>
+                                    <th width="19%">注入量(L)</th>
+                                    <td width="19%" style="border-right: 0">備註</td>
+                                </tr>
+                                <tr>
+                                    <tr ng-repeat="eo in $ctrl.treatDetailTypes.APD.ListBage | filter:{ Potiontypes:'Extraneal',Esa_Dose_Ug:'false'}">
+                                        <td style="border-left: 0">{{$index +1}}</td>
+                                        <td>{{eo.Glucoseconcentration}}</td>
+                                        <td>{{eo.Calciumconcentration}}</td>
+                                        <td>{{eo.Baglitre}}</td>
+                                        <td>{{eo.Esa_Dose_U}}</td>
+                                        <td style="border-right: 0">
+                                            <div  class="word-break--break-all">
+                                                {{eo.Remark}}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tr>
+                            </table>
+                        </div>
+                        <p style="padding-left: 2px ;padding-top:2px ">機器總治療量(L) : {{$ctrl.APD_Total_Treatment}} 機器總處方量(L) : {{$ctrl.APD_Total_Prescription}}</p>
+                        <br/>
+                        <h2 style="padding-left: 2px">白天換液處方</h2>
+                        <h2 ng-hide="($ctrl.treatDetailTypes.APD.TwinBage | filter:{ Potiontypes:'Dianeal',Esa_Dose_Ug:'false'}).length > 0">Dianeal：-</h2>
+                        <h2 style="padding-left: 2px"
+                            ng-show="($ctrl.treatDetailTypes.APD.TwinBage | filter:{ Potiontypes:'Dianeal',Esa_Dose_Ug:'false'}).length > 0">Dianeal</h2>
+                        <table border="0" cellpadding="0" cellspacing="0" class="table_in_table" width="100%"
+                            ng-show="($ctrl.treatDetailTypes.APD.TwinBage | filter:{ Potiontypes:'Dianeal',Esa_Dose_Ug:'false'}).length > 0">
+                            <tr>
+                                <td width="5%" style="border-left: 0">序</td>
+                                <td width="19%">葡萄糖濃度（%）</td>
+                                <td width="19%">鈣離子濃度(mEq/L)</td>
+                                <td width="19%">藥水體積（L） </td>
+                                <td width="19%">袋數</td>
+                                <td width="19%" style="border-right: 0">備註</td>
+                            </tr>
+                            <tr ng-repeat="item in $ctrl.treatDetailTypes.APD.TwinBage | filter:{ Potiontypes:'Dianeal',Esa_Dose_Ug:'false'}">
                                 <td style="border-left: 0">{{($index + 1)}}</td>
                                 <td>{{item.Glucoseconcentration}}</td>
                                 <td>{{item.Calciumconcentration}}</td>
@@ -149,24 +264,24 @@
                                 <td style="border-right: 0"></td>
                             </tr>
                         </table>
-                        <h2 ng-hide="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Nutrineal'}).length > 0">Nutrineal：-</h2>
+                        <h2 ng-hide="($ctrl.treatDetailTypes.APD.TwinBage | filter:{ Potiontypes:'Nutrineal',Esa_Dose_Ug:'false'}).length > 0">Nutrineal：-</h2>
                         <h2 style="padding-left: 2px"
-                            ng-show="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Nutrineal'}).length > 0" layout="row"
+                            ng-show="($ctrl.treatDetailTypes.APD.TwinBage | filter:{ Potiontypes:'Nutrineal',Esa_Dose_Ug:'false'}).length > 0" layout="row"
                         >Nutrineal 給付條件：
-                        <ul layout="row">
-                            <li ng-repeat=" ii in $ctrl.PaymentconditionsCheck | filter:{ Type:'Nutrineal'}">
+                        <ul layout="row" style="margin-left: 5px;padding-left: 0px;padding-top: 2px;font-size: 12px;">
+                            <li style="margin-left: 0px; list-style-type:none; display:inline;" ng-repeat="(key, value) in $ctrl.TwinBage_PaymentconditionsCheck" ng-show="value.Type=='Nutrineal'">
                                     <img ng-src="static/img/blank.png" alt="" class="tick"
-                                    ng-hide="ii.Check">
+                                    ng-hide="value.Check">
                                     <img ng-src="static/img/tick.png" alt="" class="tick"
-                                    ng-show="ii.Check">
-                                {{ii.Text}}
+                                    ng-show="value.Check">
+                                {{value.Text}}
                             </li>
                         </ul>
                             <!-- <img src="blank.png" alt="" class="tick">Alb≦3.5  -->
                             <!-- <img src="tick.png" alt="" class="tick">nPCA＜0.9 -->
                         </h2>
                         <table border="0" cellpadding="0" cellspacing="0" class="table_in_table" width="100%"
-                        ng-show="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Nutrineal'}).length > 0">
+                        ng-show="($ctrl.treatDetailTypes.APD.TwinBage | filter:{ Potiontypes:'Nutrineal',Esa_Dose_Ug:'false'}).length > 0">
                             <tr>
                                 <td width="5%" style="border-left: 0">序</td>
                                 <td width="19%">胺基酸濃度</td>
@@ -175,7 +290,7 @@
                                 <td width="19%">袋數</td>
                                 <td width="19%" style="border-right: 0">備註</td>
                             </tr>
-                            <tr ng-repeat="item in $ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Nutrineal'}">
+                            <tr ng-repeat="item in $ctrl.treatDetailTypes.APD.TwinBage | filter:{ Potiontypes:'Nutrineal',Esa_Dose_Ug:'false'}">
                                 <td style="border-left: 0">1</td>
                                 <td>1.10</td>
                                 <td>2.5</td>
@@ -184,35 +299,35 @@
                                 <td style="border-right: 0"></td>
                             </tr>
                         </table>
-                        <h2 ng-hide="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Extraneal'}).length > 0">Extraneal：-</h2>
+                        <h2 ng-hide="($ctrl.treatDetailTypes.APD.TwinBage | filter:{ Potiontypes:'Extraneal',Esa_Dose_Ug:'false'}).length > 0">Extraneal：-</h2>
                         <h2 style="padding-left: 2px"
-                            ng-show="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Extraneal'}).length > 0" layout="row"
+                            ng-show="($ctrl.treatDetailTypes.APD.TwinBage | filter:{ Potiontypes:'Extraneal',Esa_Dose_Ug:'false'}).length > 0" layout="row"
                         >Extraneal 給付條件：
-                            <ul layout="row">
-                                <li ng-repeat=" ii in $ctrl.PaymentconditionsCheck | filter:{ Type:'Extraneal'}">
+                        <ul layout="row" style="margin-left: 5px;padding-left: 0px;padding-top: 2px;font-size: 12px;">
+                            <li style="margin-left: 0px; list-style-type:none; display:inline;" ng-repeat="(key, value) in $ctrl.TwinBage_PaymentconditionsCheck" ng-show="value.Type=='Extraneal'">
                                     <img ng-src="static/img/blank.png" alt="" class="tick"
-                                    ng-hide="ii.Check">
+                                    ng-hide="value.Check">
                                     <img ng-src="static/img/tick.png" alt="" class="tick"
-                                    ng-show="ii.Check">
-                                    {{ii.Text}}
-                                </li>
-                            </ul>
+                                    ng-show="value.Check">
+                                {{value.Text}}
+                            </li>
+                        </ul>
                             <!-- <img src="blank.png" alt="" class="tick">High PET  -->
                             <!-- <img src="tick.png" alt="" class="tick">High Conc.＞1/2 □UF Failure  -->
                             <!-- <img src="tick.png" alt="" class="tick">A1c＞7%  -->
                             <!-- <img src="tick.png" alt="" class="tick">Peritonitis -->
                         </h2>
                         <table border="0" cellpadding="0" cellspacing="0" class="table_in_table" width="100%"
-                        ng-show="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Extraneal'}).length > 0">
+                        ng-show="($ctrl.treatDetailTypes.APD.TwinBage | filter:{ Potiontypes:'Extraneal',Esa_Dose_Ug:'false'}).length > 0">
                             <tr>
                                 <td width="5%" style="border-left: 0">序</td>
-                                <td width="19%">胺基酸濃度</td>
+                                <td width="19%">lcodextrin</td>
                                 <td width="19%">鈣離子濃度(mEq/L)</td>
                                 <td width="19%">藥水體積（L） </td>
                                 <td width="19%">袋數</td>
                                 <td width="19%" style="border-right: 0">備註</td>
                             </tr>
-                            <tr ng-repeat="item in $ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Extraneal'}">
+                            <tr ng-repeat="item in $ctrl.treatDetailTypes.APD.TwinBage | filter:{ Potiontypes:'Extraneal',Esa_Dose_Ug:'false'}">
                                 <td style="border-left: 0">1</td>
                                 <td>7.5</td>
                                 <td>3.5</td>
@@ -221,7 +336,6 @@
                                 <td style="border-right: 0"></td>
                             </tr>
                         </table>
-                        <p style="padding-left: 2px ;padding-top:2px ">每日換袋次數（袋）：{{$ctrl.Daily_Changed_Bag_Times}} 每日換液量（L）：{{$ctrl.CAPD_Total_Prescription}}</p>
                         <br>
                     </td>
                 </tr>

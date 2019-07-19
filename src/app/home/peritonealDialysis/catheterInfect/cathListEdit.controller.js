@@ -159,7 +159,20 @@ function cathListEditController(
     };
 
     // save
-    self.ok = function ok() {
+    self.ok = function ok(event) {
+        if (event) {
+            event.currentTarget.disabled = true;
+        }
+
+        let ct = parseInt(self.cathItem.Times);
+        
+        if(_.isEmpty(String(self.cathItem.Times)) ||  self.cathItem.Times == 0 ||
+            isNaN(ct)
+        ){
+            showMessage('感染記錄次數，請輸入數字。',800);
+            event.currentTarget.disabled = false;
+            return;
+        }
         let toDay = new Date(moment(new Date()).format('YYYY-MM-DD HH:mm:ss'));
         // 整理畫面資料
         self.sortoutData("CatheterOutletEvaluate");
@@ -204,7 +217,7 @@ function cathListEditController(
                         e.Infection_Record_Id = res.data.Id;
                         e.Infection_Category ="CATHETER"
                         promises.push(
-                            peritonitisService.postGerm(e).then((res) => {
+                            catheterInfectService.postGerm(e).then((res) => {
                                 //console.log("treatRecord Detail createOne success", res);
                             }, (res) => {
                                 //console.log("treatRecord Detail createOne fail", res);
@@ -1586,10 +1599,14 @@ function cathListEditController(
             let temptitle2 = `|抗生素                 |      1      |抗生素                 |      1      |`;
 
             //篩選體液、微生物
+            let perData = [];
             if(res.data.length > 0 && self.mrClass != 'ALL'){
-                res.data = res.data.filter(e =>{
-                    e.REP_TYPE_CODE == String(self.mrClass);
-                })
+                for(let i=0,j=res.data.length ;i<j;i++){
+                    if(res.data[i].REP_TYPE_CODE == String(self.mrClass)){
+                        perData.push(res.data[i]);
+                    }
+                }
+                res.data = perData;
             }
             
             for(let resItem in res.data){

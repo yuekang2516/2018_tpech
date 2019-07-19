@@ -148,13 +148,16 @@ tpech-report {
     //         // padding: 0 3px!important;
     //     }
     // } 
+    .pagebreak {
+        page-break-after: always;
+    }
 
     @media print {
         .w23{ width: 22cm!important; padding-left: 1cm!important}
         font-size: 11px!important;
         // font-family: "Microsoft JhengHei", "Times New Roman";
-        .table{width: 100%;}
-        .table_in_table {width: 100%;}
+        .table{width: 100%!important}
+        .table_in_table {width: 100%!important}
         .table_in tr td {
             padding: 1px!important
         }
@@ -166,7 +169,7 @@ tpech-report {
             padding: 1px!important
         }
     }
-    @page {
-        size: letter;
-    }
+    // @page {
+    //     size: letter;
+    // }
 }

@@ -1,16 +1,16 @@
-import tpl_CAPD from './printCAPDtreat.html';
+import tpl_APD from './printAPDtreat.html';
 
 angular
 .module('app')
-.component('printTreat', {
-    template: tpl_CAPD,
-    controller: printTreatController
+.component('printTreatAPD', {
+    template: tpl_APD,
+    controller: printTreatAPDController
 });
 
-printTreatController.$inject = [
+printTreatAPDController.$inject = [
     '$stateParams','PatientService',
     'SettingService', 'selfCareService', '$filter','$state','pdTreatService','epoService'];
-function printTreatController(
+function printTreatAPDController(
     $stateParams, PatientService,
     SettingService, selfCareService, $filter,$state,pdTreatService,epoService
     ) {
@@ -27,9 +27,12 @@ function printTreatController(
             { "Value":"F","Text":"仁愛院區"}, //F
             { "Value":"M","Text":"陽明院區"}  //M
         ];
+        
         self.treatDetailTypes = {
-            CAPD:{
-                Treat:[], //換液處方
+            APD:{
+                Machine:[], //機器處方
+                ListBage:[], //最末袋處方
+                TwinBage:[], //雙連袋
             },
             ESA:[] //ESA清單
         };
@@ -56,23 +59,27 @@ function printTreatController(
                 // tempEsa.esaUnit = "mg";
                 // tempEsa.Frequency = ["QDPC"];
                 // self.ESATypesByEpo.push(tempEsa);
-                console.log("self.ESATypesByEpo--", self.ESATypesByEpo);        
-                console.log("epoService getList success", res); 
+                console.log("self.ESATypesByEpo--", self.ESATypesByEpo);
+                console.log("epoService getList success", res);
             }, (res) => {
                 console.log("epoService getList Fail", res);
             });
         }
         //給付條件
-        self.PaymentconditionsCheck = [
-            { Value: "HighPET", Text: "High PET", Check: false, Type: "Extraneal" },
-            { Value: "HighConc", Text: "High Conc. > 1/2", Check: false, Type: "Extraneal" },
-            { Value: "UFFailure", Text: "UF Failure", Check: false, Type: "Extraneal" },
-            { Value: "DMwithA1C", Text: "A1c > 7%", Check: false, Type: "Extraneal" },
-            { Value: "Peritonitis", Text: "Peritonitis", Check: false, Type: "Extraneal" },
-            { Value: "HA25", Text: "HA + 2.5%", Check: false, Type: "Extraneal" },
-            { Value: "Alb", Text: "Alb ≦ 3.5", Check: false, Type: "Nutrineal" }, //Alb &lt;= 3.5
-            { Value: "nPNA", Text: "nPNA < 0.9", Check: false, Type: "Nutrineal" } //nPNA &lt; 0.9
-        ];
+
+        self.Treat_PaymentconditionsCheck = {
+            "HighPET" : { Text: "High PET", Check: false, Type: "Extraneal" },
+            "HighConc" : {Text: "High Conc. > 1/2", Check: false, Type: "Extraneal" },
+            "UFFailure": { Text: "UF Failure", Check: false, Type: "Extraneal" },
+            "DMwithA1C": {Text: "A1c > 7%", Check: false, Type: "Extraneal" },
+            "Peritonitis": { Text: "Peritonitis", Check: false, Type: "Extraneal" },
+            "HA25": { Text: "HA + 2.5%", Check: false, Type: "Extraneal" },
+            "Alb": { Text: "Alb ≦ 3.5", Check: false, Type: "Nutrineal" },
+            "nPNA": { Text: "nPNA < 0.9", Check: false, Type: "Nutrineal" },
+        }
+        
+        self.ListBage_PaymentconditionsCheck = angular.copy(self.Treat_PaymentconditionsCheck);
+        self.TwinBage_PaymentconditionsCheck = angular.copy(self.Treat_PaymentconditionsCheck);
         self.$onInit = function onInit() {
             if(_.isEmpty(_treatitem)) {
                 history.go(-1);
@@ -100,6 +107,25 @@ function printTreatController(
         }
 
         function getDetailList() {
+            //每次注入量
+            self.treatitem.Pd_Injection_Volume = String(self.treatitem.Pd_Injection_Volume);
+
+            if(self.treatitem.Pd_Injection_Volume.indexOf(-999) > -1 ){
+                console.log('Pd_Injection_Volume',self.treatitem.Pd_Injection_Volume);
+                self.PdInjectionVolumeOther = _.toNumber(self.treatitem.Pd_Injection_Volume.replace('-999',''))/1000;
+                self.treatitem.Pd_Injection_Volume = -999;
+            }else{
+                self.treatitem.Pd_Injection_Volume = _.toNumber(self.treatitem.Pd_Injection_Volume)/1000;
+            }
+            //週期數
+            self.treatitem.Pd_Period_Number = String(self.treatitem.Pd_Period_Number);
+
+            if(self.treatitem.Pd_Period_Number.indexOf(-999) > -1 ){
+                self.PdPeriodNumberOther = _.toNumber(self.treatitem.Pd_Period_Number.replace('-999',''));
+                self.treatitem.Pd_Period_Number = -999;
+            }
+
+
             self.treatDetailList = [];
             pdTreatService.getDetailList(_treatitem.Id,"Normal").then((res) => {
                 console.log("pdTreatService getDetailList SUCCESS", res);
@@ -112,14 +138,26 @@ function printTreatController(
                 });
                 //整理ESA
                 arrangeESAData();
+                clearChecklist();
                 console.log('self.treatDetailTypes.ESA',self.treatDetailTypes.ESA);
-                if(_treatitem.Dialysis_Type == "CAPD"){
-                    self.treatDetailTypes.CAPD.Treat = treatDetailList.filter(e =>{
-                        return e.Fluidchangetime == "Treat";
+                if(_treatitem.Dialysis_Type == "APD"){
+                    console.log(self.treatDetailTypes);
+                    self.treatDetailTypes.APD.Machine = treatDetailList.filter(e =>{
+                        return e.Fluidchangetime == "Machine";
+                    });
+                    self.treatDetailTypes.APD.ListBage = treatDetailList.filter(e =>{
+                        return e.Fluidchangetime == "ListBage";
+                    });
+                    self.treatDetailTypes.APD.TwinBage = treatDetailList.filter(e =>{
+                        return e.Fluidchangetime == "TwinBage";
                     });
                     //整理Dianeal
-                    arrangeDianealata('Treat');
-                    self.CalculationCAPDTreat();
+                    arrangeDianealata('Machine');
+                    arrangeDianealata('ListBage');
+                    arrangeDianealata('TwinBage');
+                    //判定濃度是否相同
+                    self.Pd_Ismatch_Last_Bag_Concn = self.treatitem.Pd_Ismatch_Last_Bag_Concn;
+                    self.CalculationAPDTreat();
                 }
             }, (res) => {
                 console.log("pdTreatService getDetailList FAIL", res);
@@ -133,36 +171,45 @@ function printTreatController(
         }
         //整理Dianeal
         function arrangeDianealata(TreatType){
-                let templist = self.treatDetailTypes.CAPD['Treat'];
-                let p = self.PaymentconditionsCheck;
-
+                let templist = self.treatDetailTypes.APD[TreatType];
+                let PaymentconditionsItem = self[TreatType + '_PaymentconditionsCheck'];
                 templist.forEach(e =>{
                     e.BaglitreOther = "";
-                    e.Esa_Dose_U = _.toNumber(e.Esa_Dose_U);
                     e.Glucoseconcentration = _.toNumber(e.Glucoseconcentration);
                     e.Calciumconcentration = _.toNumber(e.Calciumconcentration);
-                    if(e.Baglitre.indexOf('其他|') > -1){
+                    e.Esa_Dose_U = _.toNumber(e.Esa_Dose_U);
+                    console.log('e.Baglitre',e.Baglitre);
+                    if(String(e.Baglitre).indexOf('其他|') > -1){
                         let tempVal = e.Baglitre.split('|');
                         e.BaglitreOther = _.toNumber(tempVal[1]);
                         e.Baglitre = tempVal[0];
                     }
                     e.Esa_Dose_Ug = e.Esa_Dose_Ug == "false" ? false : true;
-                    if(e.Paymentconditions != null){
-                        e.Paymentconditions.split(',').forEach( x =>{
-                            p.forEach( element =>{
-                                if(element.Value == x){
-                                    element.Check = true;
-                                }
+                    //勾選給付方式
+                    if(typeof PaymentconditionsItem != 'undefined'){
+                        if(e.Paymentconditions != null){
+                            e.Paymentconditions.split(',').forEach(x =>{
+                                PaymentconditionsItem[x].Check = true;
                             });
-                        })
+                        }
                     }
+
                 });
                 if(templist.length > 0){
-                    self.treatDetailTypes.CAPD[TreatType] = _.orderBy(templist, ['Sequence'], ['asc']);
+                    self.treatDetailTypes.APD[TreatType] = _.orderBy(templist, ['Sequence'], ['asc']);
                 }
             //}
         }
-
+        //
+        function clearChecklist(){
+            ['Treat','ListBage','TwinBage'].forEach( e =>{
+                let item = self[e +'_PaymentconditionsCheck'];
+                for(let  key in item){
+                    item[key].Check = false;
+                }
+                self[e + '_PaymentconditionsCheck'] = angular.copy(item);
+            })
+        }
         self.setESAType = function setESAType(Value,index) {
 
             let filterEsaItem = _.filter(self.ESATypesByEpo, { 'Value': Value});
@@ -441,34 +488,58 @@ function printTreatController(
             }
             item.Total_Dose = medicationtotal;
         };
-            //CAPD 計算換液處方
-        self.CalculationCAPDTreat = function(CalType ='',_item =''){
-            self.Daily_Changed_Bag_Times = 0; //每日換袋次數
-            self.CAPD_Total_Treatment = 0;
-            self.CAPD_Total_Prescription = 0;
-            //每日換袋次數
-            //所有處方袋數加總，PRN不計入
-            //總治療量
-            //每次注入量(L)*袋數加總，PRN不計入
+        //APD計算
+        self.CalculationAPDTreat = function(CalType ='',_item ='',Source=''){
+            self.APD_Total_Treatment = 0;
+            self.APD_Total_Prescription = 0;
+            //Machine:[], //機器處方
+            //ListBage:[], //最末袋處方
+            //TwinBage:[], //雙連袋
             //總處方量
             //藥水體積*袋數的總計，不含PRN
-            self.treatDetailTypes.CAPD.Treat.forEach( e=>{
+            self.treatDetailTypes.APD.Machine.forEach( e=>{
                 if(!e.Esa_Dose_Ug){
                     //每日換袋次數
                     let Bagnumber = _.toNumber(e.Bagnumber);
-                    if(_.isNumber(Bagnumber)){
-                        self.Daily_Changed_Bag_Times += Bagnumber;
-                    }
-                    //總治療量
-                    let Esa_Dose_U = _.toNumber(e.Esa_Dose_U);
-
+                    //總處方量
                     let Baglitre = (e.Baglitre == '其他') ? _.toNumber(e.BaglitreOther) : _.toNumber(e.Baglitre) ;
-                    if(_.isNumber(Esa_Dose_U)){
-                        self.CAPD_Total_Treatment += (Bagnumber * Esa_Dose_U);
-                    }
+                    // if(_.isNumber(Baglitre)){
+                    //     self.APD_Total_Prescription += (Bagnumber * Baglitre);
+                    // }
                     //總處方量
                     if(_.isNumber(Baglitre)){
-                        self.CAPD_Total_Prescription += (Bagnumber * Baglitre);
+                        self.APD_Total_Prescription = _.toNumber((self.APD_Total_Prescription + (Bagnumber * Baglitre)).toFixed(2));
+                        // self.CAPD_Total_Prescription += (Bagnumber * Baglitre);
+                    }
+    
+                }
+                
+            });
+            //總治療量
+            //藥水體積(L) * 週期數
+            let Pd_Injection_Volume = (self.treatitem.Pd_Injection_Volume == -999) ? _.toNumber(self.PdInjectionVolumeOther) : _.toNumber(self.treatitem.Pd_Injection_Volume); 
+    
+            let Pd_Period_Number = (self.treatitem.Pd_Period_Number == -999) ? _.toNumber(self.PdPeriodNumberOther) : _.toNumber(self.treatitem.Pd_Period_Number);
+    
+            if(_.isNumber(Pd_Injection_Volume) && _.isNumber(Pd_Period_Number)){
+                self.APD_Total_Treatment = Pd_Injection_Volume * Pd_Period_Number;
+            }
+    
+            self.treatDetailTypes.APD.ListBage.forEach( e=>{
+                if(!e.Esa_Dose_Ug){
+                    let Esa_Dose_U = _.toNumber(e.Esa_Dose_U);
+                    if(_.isNumber(Esa_Dose_U) && !isNaN(Esa_Dose_U)){
+                        self.APD_Total_Treatment += Esa_Dose_U;
+                    }
+    
+                    //每日換袋次數
+                    let Bagnumber = _.toNumber(e.Bagnumber);
+                    //總處方量
+                    let Baglitre = _.toNumber(e.Baglitre);
+                    
+                    //總處方量
+                    if(_.isNumber(Baglitre)){
+                        self.APD_Total_Prescription = _.toNumber((self.APD_Total_Prescription + (Bagnumber * Baglitre)).toFixed(2));
                     }
                 }
             });
@@ -481,95 +552,3 @@ function printTreatController(
         }
     
     }
-
-
-// printTreatCtrl.$inject = [
-//     '$stateParams', 'SettingService', 'PatientService', 'summaryReportService', '$mdMedia', '$filter', 'showMessage','$state'];
-// function printTreatCtrl(
-//     $stateParams, SettingService, PatientService, summaryReportService, $mdMedia, $filter, showMessage,$state) {
-//     //console.log('is item--',item);
-//     const self = this;
-    
-//     let _PrintData = $stateParams.item;
-//     self.sCareDataObj = _PrintData; //自我照護表資料
-//     let $translate = $filter('translate');
-//     self.patientId = $stateParams.patientId;
-//     self.loading = true;
-//     self.isBrowser = cordova.platformId === 'browser';
-//     self.reportHospitaArea = "";
-//     let Hospitalist = [
-//         { "Value":"G","Text":"中興院區"}, //G
-//         { "Value":"Q","Text":"忠孝院區"}, //Q
-//         { "Value":"H","Text":"和平院區"}, //H
-//         { "Value":"F","Text":"仁愛院區"}, //F
-//         { "Value":"M","Text":"陽明院區"}  //M
-//     ]
-//     self.$onInit = function onInit() {
-//         if(_.isEmpty($stateParams.item)) {
-//             history.go(-1);
-//         }
-//         self.getList();
-//         self.loading = false;
-    
-//     };
-    
-//     self.getList = function () {
-//         self.loading = true;
-//         PatientService.getById(self.sCareDataObj.Patientid).then((res) => {
-//             self.currentPatient = res.data;            
-//             console.log("self.currentPatient--",self.currentPatient);
-//         }, (res) => {
-//             console.log("complicationService getList Fail", res);
-//         });
-//         self.currentHospital = SettingService.getCurrentHospital();
-//         let filterHosp = Hospitalist.filter(e =>{
-//             return e.Value == self.currentHospital.SystemCode
-//         });
-//         if(filterHosp.length > 0){
-//             self.reportHospitaArea = filterHosp[0].Text;
-//         }
-//         ///患者基本資料
-//         // orderSTService.getListByPatientID(self.patientId).then((res) => {
-//         //     console.log("orderSTService getList Success", res);
-//         //     self.sCareList = res.data;
-//         //     console.log("orderSTList--",self.orderSTList);
-//         //     //self.print();
-//         //     self.loading = false;
-//         // }, (res) => {
-//         //     console.log("orderSTService getList Fail", res);
-
-//         // });
-//     };
-
-
-    
-//     self.$onDestroy = function () {
-
-//     };
-
-//     self.saveData = function () {
-
-//     };
-//     self.gotoState = function goto(routeName) {
-//         history.go(-1);
-//         // $state.go(routeName, null, {
-//         //     location: 'replace'
-//         // });
-//     };
-
-
-//     self.print = function(){    
-//         // window.onafterprint = function(e){
-//         //     $(window).off('mousemove', window.onafterprint);
-//         //     console.log('Print Dialog Closed..');
-//         //     //self.gotoState('selfCare');
-//         // };
-    
-//         window.print();
-    
-//         // setTimeout(function(){
-//         //     $(window).on('mousemove', window.onafterprint);
-//         // }, 1);       
-//     }
-
-// }

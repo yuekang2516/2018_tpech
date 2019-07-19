@@ -52,7 +52,7 @@ function peEditController(
     ];
     // 護理措施
     self.nursingMeasureCheck = [
-        { Text: "換液技術再回覆示教", Check: false },
+        { Text: "換藥技術再回覆示教", Check: false },
         { Text: "協商家屬介入協助", Check: false },
         { Text: "加強日常生活自我照顧指導", Check: false },
         { Text: "出口換藥技術再指導", Check: false },
@@ -69,7 +69,7 @@ function peEditController(
     ];
     // 評值結果
     self.evaluationResultCheck = [
-        { Text: "換液技術正確", Check: false },
+        { Text: "換藥技術正確", Check: false },
         { Text: "改由家屬換液", Check: false },
         { Text: "無法配合", Check: false },
         { Text: "可說出自我照顧注意事項至少5項", Check: false },
@@ -103,7 +103,12 @@ function peEditController(
     };
 
     // save
-    self.ok = function ok() {
+    self.ok = function ok(event) {
+        // 判斷有無event，避免其他隻 function 呼叫
+        if (event) {
+            event.currentTarget.disabled = true;
+        }
+
         let toDay = new Date(moment(new Date()).format('YYYY-MM-DD HH:mm:ss'));
         // 整理畫面資料
         self.sortoutData("sympton");
@@ -113,7 +118,16 @@ function peEditController(
         self.sortoutData("evaluationResult");
         self.peItem.Status = "Normal";
 
-        console.log("self.peItem----", self.peItem);
+        let pt = parseInt(self.peItem.Times);
+        
+        if(_.isEmpty(String(self.peItem.Times)) ||  self.peItem.Times == 0 ||
+            isNaN(pt)
+        ){
+            showMessage('感染記錄次數，請輸入數字。',800);
+            event.currentTarget.disabled = false;
+            return;
+        }
+
 
         if (self.isCreate) {
             self.peItem.PatientId = ptId;
@@ -153,10 +167,11 @@ function peEditController(
                     Promise.all(promises).then(() => {});
                     showMessage($translate('peritonitis.dialog.createSuccess'));
                     $rootScope.$emit("peritonitisListRefreshEvent", "");
-
+                    event.currentTarget.disabled = false;
                 }, (res) => {
                     console.log("peritonitisService createOne fail", res);
                     showMessage($translate('peritonitis.dialog.createFail'));
+                    event.currentTarget.disabled = false;
                 });
             //}
         } else {
@@ -198,8 +213,10 @@ function peEditController(
                     );
                 });
                 Promise.all(promises).then(() => {});
+                event.currentTarget.disabled = false;
             }, (res) => {
                 console.log("peritonitisService update fail", res);
+                event.currentTarget.disabled = false;
                 showMessage($translate('peritonitis.dialog.editFail'));
             });
         }
@@ -1442,10 +1459,14 @@ function peEditController(
             let temptitle2 = `|抗生素                 |      1      |抗生素                 |      1      |`;
 
             //篩選體液、微生物
+            let perData = [];
             if(res.data.length > 0 && self.mrClass != 'ALL'){
-                res.data = res.data.filter(e =>{
-                    e.REP_TYPE_CODE == String(self.mrClass);
-                })
+                for(let i=0,j=res.data.length ;i<j;i++){
+                    if(res.data[i].REP_TYPE_CODE == String(self.mrClass)){
+                        perData.push(res.data[i]);
+                    }
+                }
+                res.data = perData;
             }
 
             for(let resItem in res.data){

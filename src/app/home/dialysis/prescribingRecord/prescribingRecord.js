@@ -133,10 +133,9 @@ function prescribingRecordCtrl(
         });
       }
       // 處理有效/無效藥 顯示
-      let noDeletedItem = _.filter(q.data, function (o,k) {
+      let noDeletedItem = _.filter(q.data, function (o) {
         o.isValidDrug = 'deleted'; // 刪除用藥另給標記，前端辨識判斷
-        let endDate = moment(o.StartDate).add((o.Days - 1), 'day'); // 起始日 + (總共天數days - 1)
-          q.data[k].endDate = endDate._d;
+        calculateValidDrug(o, o.StartDate, o.Days, o.Name, time);
         return o.Status !== 'Deleted';
       });
       _.forEach(noDeletedItem, function (v, k) {
@@ -160,12 +159,10 @@ function prescribingRecordCtrl(
       PrescribingRecordService.getAllValidRecord($stateParams.patientId, moment(dialysisTime).format('YYYYMMDD')).then((res) => {
         // console.log('取得所有有效醫囑 res.data', res.data);
         vm.loading = false;
-        _.forEach(res.data, function (v,k) {
+        _.forEach(res.data, function (v, k) {
           // 都是效期內用藥
           v.isValidDrug = true;
-          let endDate = moment(v.StartDate).add((v.Days - 1), 'day'); // 起始日 + (總共天數days - 1)
-          res.data[k].endDate = endDate._d;
-          // calculateValidDrug(v, v.StartDate, v.Days, v.Name, moment(dialysisTime).format('YYYY-MM-DD'), k);
+          calculateValidDrug(v, v.StartDate, v.Days, v.Name, moment(dialysisTime).format('YYYY-MM-DD'), k);
         });
         // 處理有效/無效藥
         vm.serviceData = res.data;
@@ -193,16 +190,19 @@ function prescribingRecordCtrl(
       // 計算是否在效期內
       let dialysisMoment = moment(time); // 透析表單的日期
       let endDate = moment(startDate).add((days - 1), 'day'); // 起始日 + (總共天數days - 1)
-      vm.serviceData[key].endDate = endDate._d;
-      console.log('endDate', vm.serviceData.endDate,vm.serviceData);
+      console.log('endDate', vm.serviceData.endDate, vm.serviceData);
       // console.log('計算是否在效期內 不是無限 endDate', moment(startDate).format('YYYY-MM-DD'), days, moment(endDate).format('YYYY-MM-DD'), endDate.diff(dialysisMoment, 'days'));
       // 透析表單的日期 與 結束日期 相比
+      let endDateFormat = moment(startDate).format();
+      let duringDate = moment(endDateFormat).add((days - 1), 'day');
       if (endDate.diff(dialysisMoment, 'days') >= 0) {
         // 有效
         valueObj.isValidDrug = true;
+        valueObj.duringDate = duringDate.format('MM/DD');
       } else {
         // 無效
         valueObj.isValidDrug = false;
+        valueObj.duringDate = duringDate.format('MM/DD');
       }
     } else {
       // 無限期用藥 : 有效藥
@@ -509,7 +509,7 @@ function medicineRecordCtrl($window, PrescribingRecordService, $stateParams, $st
   // scroll 至底時呼叫
   self.loadMore = function () {
     if (dataEnd) {
-        return;
+      return;
     }
 
     let lastIndex = self.currentMedicine.length - 1;
@@ -538,31 +538,31 @@ function medicineRecordCtrl($window, PrescribingRecordService, $stateParams, $st
     self.loading = true;
     self.filteredMedicine = [];
     initForScroll();
-    
-    $timeout(() => {
-            // 若為全部且無搜尋字串則清單全 show
-            if (self.myCategoryName === 'All' && !self.searchText && self.searchText !== '0') {
-              self.filteredMedicine = angular.copy(originalMedicine);
-          } else {
-              self.filteredMedicine = _.filter(originalMedicine, (medicine) => {
-                  // 先處理類別，若類別不為全部，類別名不一樣就不一樣
-                  if (self.myCategoryName !== 'All') {
-                      if (medicine.CategoryName !== self.myCategoryName) {
-                          return false;
-                      }
-                  }
-                  // 再處理搜尋
-                  // 若有搜尋字串才篩
-                  if (self.searchText || self.searchText === '0') {
-                      // 模糊搜尋類別名稱或藥名，搜尋不分大小寫
-                      return (medicine.CategoryName && medicine.CategoryName.toLowerCase().indexOf(self.searchText.toLowerCase()) > -1) || (medicine.Name && medicine.Name.toLowerCase().indexOf(self.searchText.toLowerCase()) > -1);
-                  }
-                  return true;
-              });
-          }
 
-          self.loadMore();
-          self.loading = false;
+    $timeout(() => {
+      // 若為全部且無搜尋字串則清單全 show
+      if (self.myCategoryName === 'All' && !self.searchText && self.searchText !== '0') {
+        self.filteredMedicine = angular.copy(originalMedicine);
+      } else {
+        self.filteredMedicine = _.filter(originalMedicine, (medicine) => {
+          // 先處理類別，若類別不為全部，類別名不一樣就不一樣
+          if (self.myCategoryName !== 'All') {
+            if (medicine.CategoryName !== self.myCategoryName) {
+              return false;
+            }
+          }
+          // 再處理搜尋
+          // 若有搜尋字串才篩
+          if (self.searchText || self.searchText === '0') {
+            // 模糊搜尋類別名稱或藥名，搜尋不分大小寫
+            return (medicine.CategoryName && medicine.CategoryName.toLowerCase().indexOf(self.searchText.toLowerCase()) > -1) || (medicine.Name && medicine.Name.toLowerCase().indexOf(self.searchText.toLowerCase()) > -1);
+          }
+          return true;
+        });
+      }
+
+      self.loadMore();
+      self.loading = false;
     });
 
   };

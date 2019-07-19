@@ -165,6 +165,7 @@ function SummaryController(
         if (previousState !== $state.current.name) {
             document.removeEventListener("backbutton", backToHome);
             previousState = $state.current.name;
+            self.currentState = $state.current.name;
             $timeout(() => {
                 // 檢查是否要顯示 detail 頁及置換 toolbar 的字
                 if ($state.current.name !== 'summary') {
@@ -333,6 +334,7 @@ function SummaryController(
         self.loading = true;
         if (!$stateParams.headerId || $stateParams.headerId === 'last') {
 
+            // TODO: 病人本身就有帶 last headerId
             dialysisService.getLastHeaderId($stateParams.patientId, isForce).then((res) => {
                 self.serverErrorRecord = false;
                 // 若無表單 data 為 null from service.js
@@ -552,7 +554,7 @@ function SummaryController(
             return;
         }
         // 取最後一筆
-        dialysisService.getLast($stateParams.patientId).then((res) => {
+        dialysisService.getLast($stateParams.patientId, true).then((res) => {
             if (!res.data.DialysisHeader.EndTime && moment(res.data.DialysisHeader.StartTime).format('YYYYMMDD') === moment().format('YYYYMMDD')) {
                 self.canCreate = false;
             } else {

@@ -116,6 +116,8 @@ function orderCheckCtrl($q, $window, $stateParams, ReferralSheetService,
                     self.orderData[oi].Prescription_Startdate = moment(new Date(self.orderData[oi].Prescription_Startdate)).format("YYYY-MM-DD HH:mm"); 
                 }
 
+                self.orderData = _.orderBy(self.orderData, ['Prescription_Startdate'], ['desc']);
+
                 self.gridOptions.api.setRowData(self.orderData);
             } else {
                 self.gridOptions.api.showNoRowsOverlay();

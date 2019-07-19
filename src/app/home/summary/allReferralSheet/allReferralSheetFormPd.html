@@ -29,11 +29,7 @@
                 <div style="width: 21.4cm; clear: both;">
                     <!-- <img ng-src="{{'static/img/TV_logo.jpg'}}" width="250px" height="250px" alt="Hospital logo" /> -->
                     <!-- <img ng-src="{{'static/img/TV_logo.jpg'}}" alt="" style="float: left; width: 10%; margin-left: 15px"> -->
-                    <div ng-if="$ctrl.stateName.substr(0, 2) !== 'pd'" style="text-align: center;">
-                        <h3>血液透析病歷摘要</h3>
-                        <!-- <h4>Referral Sheet from Hemodialysis unit of Taipei Veterans General Hospital</h4> -->
-                    </div>
-                    <div ng-if="$ctrl.stateName.substr(0, 2) === 'pd'" style="text-align: center;">
+                    <div style="text-align: center;">
                         <h3>腹膜透析病歷摘要</h3>
                         <!-- <h4>Referral Sheet from Hemodialysis unit of Taipei Veterans General Hospital</h4> -->
                     </div>
@@ -107,90 +103,30 @@
                                     </ul>
                                 </td>
                             </tr>
-                            <tr ng-show="$ctrl.stateName.substr(0, 2) == 'pd'">
+                            <tr>
                                 <td colspan="3">
                                     <ul>
                                         <li>
                                             腹膜透析植管日期 Date of PD Catheter Insertion：
-                                            <input type="date"
+                                            <input type="date" ng-model="$ctrl.referralSheetForm.PDCIDate"
                                                 class="ng-pristine ng-valid ng-not-empty ng-touched"
                                                 aria-invalid="false">
                                         </li>
                                     </ul>
                                 </td>
                             </tr>
-                            <tr ng-show="$ctrl.stateName.substr(0, 2) == 'pd'">
+                            <tr>
                                 <td colspan="3">
                                     <ul>
                                         <li>
                                             首次腹膜透析日期 PD Initiation Date：
-                                            <input type="date"
+                                            <input type="date" ng-model="$ctrl.referralSheetForm.FirstPDDate"
                                                 class="ng-pristine ng-valid ng-not-empty ng-touched"
                                                 aria-invalid="false">
                                         </li>
                                     </ul>
                                 </td>
                             </tr>
-                            <tr ng-hide="$ctrl.stateName.substr(0, 2) == 'pd'">
-                                <td colspan="3">
-                                    <ul>
-                                        <li>
-                                            最後透析日期 Date of Last Dialysis (Last Dialysis Date)：
-                                            <input type="date" ng-model="$ctrl.referralSheetForm.LastDialysisDate"
-                                                class="ng-pristine ng-valid ng-not-empty ng-touched"
-                                                aria-invalid="false" style="">
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr ng-hide="$ctrl.stateName.substr(0, 2) == 'pd'">
-                                <td colspan="3">
-                                    <ul>
-                                        <li>
-                                            透析血管通路 Vascular Access Type / 建立日期 Date of Operation：
-                                            <!--  (Date of Operation - Vascular Access Type) -->
-                                            <span class="hideInScreen"
-                                                ng-class="{showInPrint: (!$ctrl.referralSheetForm.OverviewVessel1 || $ctrl.referralSheetForm.OverviewVessel1 == '-') && (!$ctrl.referralSheetForm.OverviewVessel2 || $ctrl.referralSheetForm.OverviewVessel2 == '-') }">
-                                                -
-                                            </span>
-                                            <div layout="row" layout-align="start center"
-                                                ng-class="{disablePrint: !$ctrl.referralSheetForm.OverviewVessel1 || $ctrl.referralSheetForm.OverviewVessel1 == '-'}">
-                                                <span class="arrow-symbol">&#8227;</span> <input
-                                                    ng-model="$ctrl.referralSheetForm.OverviewVessel1"
-                                                    style="width: 550px">
-                                            </div>
-                                            <div layout="row" layout-align="start center"
-                                                ng-class="{disablePrint: !$ctrl.referralSheetForm.OverviewVessel2 || $ctrl.referralSheetForm.OverviewVessel2 == '-'}">
-                                                <span class="arrow-symbol">&#8227;</span> <input
-                                                    ng-model="$ctrl.referralSheetForm.OverviewVessel2"
-                                                    style="width: 550px">
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr ng-hide="$ctrl.stateName.substr(0, 2) == 'pd'">
-                                <td colspan="3">
-                                    <div flex layout="column">
-                                        <ul class="spanGap">
-                                            <li>
-                                                <div layout="row" layout-align="start center">
-                                                    <span>手術記錄日期 - 手術發現：</span>
-                                                    <div class="disablePrint">
-                                                        <span class="checkBtn-span surgery-CheckBtn"
-                                                            ng-click="$ctrl.gotoSurgeryCheck()">手術歷程</span>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        <textarea name="surgery" class="sugery-textarea"
-                                            ng-model="$ctrl.referralSheetForm.SurgeryCheckedData" rows="2"
-                                            style="height: 25px;">&nbsp;</textarea>
-                                    </div>
-                                </td>
-                            </tr>
-
-
                             <tr>
                                 <td colspan="3">
                                     <ul>
@@ -310,221 +246,389 @@
 
                         </tbody>
                     </table>
-
                     <!-- <br> -->
-                    <table border="0" cellpadding="0" cellspacing="0" class="table_content" width="100%"
-                        ng-if="$ctrl.stateName.substr(0, 2) !== 'pd'">
-                        <tbody>
-                            <tr>
-                                <td colspan="2" style="font-weight: bold;">
-                                    <h5>透析醫囑 Dialysis Prescriptions</h5>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <ul>
-                                        <li>
-                                            透析頻率 Frequency of Dialysis：
-                                            <input ng-model="$ctrl.referralSheetForm.Frequency"
-                                                class="ng-pristine ng-untouched ng-valid ng-not-empty"
-                                                aria-invalid="false" style="">
-
-                                        </li>
-                                    </ul>
-                                </td>
-                                <td>
-                                    <ul>
-                                        <li>透析時間 Duration of Dialysis：
-                                            <input ng-model="$ctrl.referralSheetForm.Duration" aria-invalid="false"
-                                                style="">
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <ul>
-                                        <li>
-                                            乾體重 Ideal Dry Weight：
-                                            <input ng-model="$ctrl.referralSheetForm.DryWeight"
-                                                class="ng-pristine ng-untouched ng-valid ng-not-empty"
-                                                aria-invalid="false" style="">
-
-                                        </li>
-                                    </ul>
-                                </td>
-                                <td>
-                                    <ul>
-                                        <li>脫⽔量 Usual Ultrafiltration：
-                                            <input ng-model="$ctrl.referralSheetForm.UltraFiltration"
-                                                aria-invalid="false" style="">
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <ul>
-                                        <li>
-                                            人工腎臟 Dialyzer：
-                                            <input ng-model="$ctrl.referralSheetForm.Dialyzer"
-                                                class="ng-pristine ng-untouched ng-valid ng-not-empty"
-                                                aria-invalid="false" style="">
-
-                                        </li>
-                                    </ul>
-                                </td>
-                                <td>
-                                    <ul>
-                                        <li>透析液 Dialysate Potassium：
-                                            <input ng-model="$ctrl.referralSheetForm.Dialysate" aria-invalid="false"
-                                                style="">
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <ul>
-                                        <li>
-                                            血液流速 Blood Flow Rate：
-                                            <input ng-model="$ctrl.referralSheetForm.BloodFlow"
-                                                class="ng-pristine ng-untouched ng-valid ng-not-empty"
-                                                aria-invalid="false" style="">
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <ul>
-                                        <li>
-                                            肝素量 Heparin Dosage Loading / Maintain：
-                                            <input ng-model="$ctrl.referralSheetForm.HeparinLoading"
-                                                class="ng-pristine ng-untouched ng-valid ng-not-empty"
-                                                aria-invalid="false" style="width: 500px">
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <ul>
-                                        <li>
-                                            透析前血壓 Pre-dialysis BP：
-                                            <input ng-model="$ctrl.referralSheetForm.PreBloodPressure"
-                                                class="ng-pristine ng-untouched ng-valid ng-not-empty"
-                                                aria-invalid="false" style="">
-                                        </li>
-                                    </ul>
-                                </td>
-                                <td>
-                                    <ul>
-                                        <li>
-                                            透析後血壓 Post-dialysis BP：
-                                            <input ng-model="$ctrl.referralSheetForm.PostBloodPressure"
-                                                class="ng-pristine ng-untouched ng-valid ng-not-empty"
-                                                aria-invalid="false" style="">
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
                     <br />
                     <div layout="column" layout-align="start start" ng-if="$ctrl.stateName.substr(0, 2) === 'pd'">
                         <div layout="row" layout-align="start start">
-                            <h5>透析醫囑 : </h5>
+                            <h5>治療處方 Treatment Prescription：</h5>
                             <div class="disablePrint">
                                 <span class="checkBtn-span drug-CheckBtn" ng-click="$ctrl.gotoOrderCheck()">查詢處方</span>
                             </div>
+                            <div class="disablePrint"
+                            ng-if="$ctrl.orderDatalength > 0">
+                                <span class="checkBtn-span labDelete-CheckBtn" ng-click="$ctrl.deleteOrder()">刪除處方</span>
+                            </div>
                         </div>
-                        <span>ESA</span>
-                        <table style="width: 100%;border-spacing: 0;">
-                            <thead style="text-align: left">
-                                <th style="border-width: 1px;border-style: solid;">序</th>
-                                <th style="border-width: 1px;border-style: solid;">種類</th>
-                                <th style="border-width: 1px;border-style: solid;">頻率</th>
-                                <th style="border-width: 1px;border-style: solid;">劑量</th>
-                                <th style="border-width: 1px;border-style: solid;">使用天數</th>
-                                <th style="border-width: 1px;border-style: solid;">總劑量</th>
-                            </thead>
-                            <tbody style="text-align: left">
-                                <tr ng-repeat="eo in $ctrl.pdEsaAry">
-                                    <td style="border-width: 1px;border-style: solid;">{{$index+1}}</td>
-                                    <td style="border-width: 1px;border-style: solid;">{{eo.Esa_Types}}</td>
-                                    <td style="border-width: 1px;border-style: solid;">{{eo.Frequency}}</td>
-                                    <td style="border-width: 1px;border-style: solid;">{{eo.Esa_Dose_U}}</td>
-                                    <td style="border-width: 1px;border-style: solid;">{{eo.Used_Days}}</td>
-                                    <td style="border-width: 1px;border-style: solid;">{{eo.Total_Dose}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <span>換液處方<br>Dianeal</span>
-                        <table style="width: 100%;border-spacing: 0;">
-                            <thead style="text-align: left">
-                                <th style="border-width: 1px;border-style: solid;">序</th>
-                                <th style="border-width: 1px;border-style: solid;">透析液藥水</th>
-                                <th style="border-width: 1px;border-style: solid;">葡萄糖(%)</th>
-                                <th style="border-width: 1px;border-style: solid;">鈣離子濃度(mEq/L)</th>
-                                <th style="border-width: 1px;border-style: solid;">每日袋數</th>
-                                <th style="border-width: 1px;border-style: solid;">注入量(L)</th>
-                            </thead>
-                            <tbody style="text-align: left">
-                                <tr ng-repeat="do in $ctrl.pdDianealAry">
-                                    <td style="border-width: 1px;border-style: solid;">{{$index +1}}</td>
-                                    <td style="border-width: 1px;border-style: solid;">{{do.Potiontypes}}</td>
-                                    <td style="border-width: 1px;border-style: solid;">{{do.Glucoseconcentration}}</td>
-                                    <td style="border-width: 1px;border-style: solid;">{{do.Calciumconcentration}}</td>
-                                    <td style="border-width: 1px;border-style: solid;">{{do.Bagnumber}}</td>
-                                    <td style="border-width: 1px;border-style: solid;">{{do.Esa_Dose_U}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <span>Nutrineal&nbsp;給付條件</span>
-                        <table style="width: 100%;border-spacing: 0;">
-                            <thead style="text-align: left">
-                                <th style="border-width: 1px;border-style: solid;">序</th>
-                                <th style="border-width: 1px;border-style: solid;">腹膜透析液</th>
-                                <th style="border-width: 1px;border-style: solid;">胺基酸濃度</th>
-                                <th style="border-width: 1px;border-style: solid;">鈣離子濃度(mEq/L)</th>
-                                <th style="border-width: 1px;border-style: solid;">每日袋數</th>
-                                <th style="border-width: 1px;border-style: solid;">注入量(L)</th>
-                            </thead>
-                            <tbody style="text-align: left">
-                                <tr ng-repeat="no in $ctrl.pdNutrinealAry">
-                                    <td style="border-width: 1px;border-style: solid;">{{$index +1}}</td>
-                                    <td style="border-width: 1px;border-style: solid;">{{no.Potiontypes}}</td>
-                                    <td style="border-width: 1px;border-style: solid;">{{no.Glucoseconcentration}}</td>
-                                    <td style="border-width: 1px;border-style: solid;">{{no.Calciumconcentration}}</td>
-                                    <td style="border-width: 1px;border-style: solid;">{{no.Bagnumber}}</td>
-                                    <td style="border-width: 1px;border-style: solid;">{{no.Esa_Dose_U}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <span>Extraneal&nbsp;給付條件</span>
-                        <table style="width: 100%;border-spacing: 0;">
-                            <thead style="text-align: left">
-                                <th style="border-width: 1px;border-style: solid;">序</th>
-                                <th style="border-width: 1px;border-style: solid;">腹膜透析液</th>
-                                <th style="border-width: 1px;border-style: solid;">Icodextrin</th>
-                                <th style="border-width: 1px;border-style: solid;">鈣離子濃度(mEq/L)</th>
-                                <th style="border-width: 1px;border-style: solid;">每日袋數</th>
-                                <th style="border-width: 1px;border-style: solid;">注入量(L)</th>
-                            </thead>
-                            <tbody style="text-align: left">
-                                <tr ng-repeat="eo in $ctrl.pdExtranealAry">
-                                    <td style="border-width: 1px;border-style: solid;">{{$index +1}}</td>
-                                    <td style="border-width: 1px;border-style: solid;">{{eo.Potiontypes}}</td>
-                                    <td style="border-width: 1px;border-style: solid;">{{eo.Glucoseconcentration}}</td>
-                                    <td style="border-width: 1px;border-style: solid;">{{eo.Calciumconcentration}}</td>
-                                    <td style="border-width: 1px;border-style: solid;">{{eo.Bagnumber}}</td>
-                                    <td style="border-width: 1px;border-style: solid;">{{eo.Esa_Dose_U}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <span>每日換袋次數 ( 袋 ) : {{$ctrl.Daily_Changed_Bag_Times}} 每日換液量 ( L ) : {{$ctrl.CAPD_Total_Prescription}}</span>
+                        <div ng-if="$ctrl.orderDatalength == 0">
+                            <ul>
+                                <li>
+                                    無治療處方資料
+                                </li>
+                            </ul>
+                        </div>
+                        <div style="width: 93%;margin-left: 20px;" ng-show="$ctrl.orderDatalength > 0">
+                            <table class="table_content" style=" margin-top: 0px" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <ul>
+                                                <li>
+                                                    處方日期：{{$ctrl.Prescription_Startdate}}
+                                                </li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <ul>
+                                                <li>
+                                                    腹膜透析類別：{{$ctrl.Dialysis_Type}}
+                                                </li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <ul ng-show="$ctrl.Dialysis_Type =='APD'">
+                                                <li>
+                                                    換液系統：{{$ctrl.Liquid_Exchange_System}}
+                                                </li>
+                                            </ul>
+                                            &nbsp;
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <ul>
+                                                <li>
+                                                    透析液系統：{{$ctrl.Dialysis_System}}
+                                                </li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <ul>
+                                                <li>
+                                                    兼做血液透析：{{$ctrl.Is_With_Hemodialysis}}
+                                                </li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <ul>
+                                                <li>
+                                                    主要換袋者：{{$ctrl.Major_Bag_Changers}}
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <span>ESA</span>
+                            <table style="width: 100%;border-spacing: 0;">
+                                <thead style="text-align: left">
+                                    <th style="border-width: 1px;border-style: solid;width:4.5%;">序</th>
+                                    <th style="border-width: 1px;border-style: solid;">種類</th>
+                                    <th style="border-width: 1px;border-style: solid;">頻率</th>
+                                    <th style="border-width: 1px;border-style: solid;">劑量</th>
+                                    <th style="border-width: 1px;border-style: solid;">使用天數</th>
+                                    <th style="border-width: 1px;border-style: solid;">總劑量</th>
+                                </thead>
+                                <tbody style="text-align: left">
+                                    <tr ng-repeat="eo in $ctrl.pdEsaAry">
+                                        <td style="border-width: 1px;border-style: solid;">{{$index+1}}</td>
+                                        <td style="border-width: 1px;border-style: solid;">{{eo.Esa_Types}}</td>
+                                        <td style="border-width: 1px;border-style: solid;">{{eo.FrequencyName}}</td>
+                                        <td style="border-width: 1px;border-style: solid;">{{eo.Esa_Dose_U}} {{eo.Unit}}</td>
+                                        <td style="border-width: 1px;border-style: solid;">{{eo.Used_Days}}</td>
+                                        <td style="border-width: 1px;border-style: solid;">{{eo.Total_Dose}} {{eo.Unit}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div ng-show="$ctrl.Dialysis_Type =='CAPD'">
+                                <span >換液處方<br>Dianeal</span>
+                                <table style="width: 100%;border-spacing: 0;">
+                                    <thead style="text-align: left">
+                                        <th style="border-width: 1px;border-style: solid;">序</th>
+                                        <th style="border-width: 1px;border-style: solid;">透析液藥水</th>
+                                        <th style="border-width: 1px;border-style: solid;">葡萄糖(%)</th>
+                                        <th style="border-width: 1px;border-style: solid;">鈣離子濃度(mEq/L)</th>
+                                        <th style="border-width: 1px;border-style: solid;">每日袋數</th>
+                                        <th style="border-width: 1px;border-style: solid;">注入量(L)</th>
+                                        <th style="border-width: 1px;border-style: solid;">PRN</th>
+                                    </thead>
+                                    <tbody style="text-align: left">
+                                        <tr ng-repeat="do in $ctrl.pdDianealAry">
+                                            <td style="border-width: 1px;border-style: solid;">{{$index +1}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{do.Potiontypes}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{do.Glucoseconcentration}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{do.Calciumconcentration}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{do.Bagnumber}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{do.Esa_Dose_U}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{(do.Esa_Dose_Ug == 'false') ? 'N' : 'Y'}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <span layout="row">Nutrineal&nbsp;&nbsp;&nbsp;給付條件
+                                    <ul style="margin-left: 5px;padding-left: 0px;padding-top: 2px;">
+                                        <li style="margin-left: 0px; list-style-type:none; display:inline;" ng-repeat="(key, value) in $ctrl.Treat_PaymentconditionsCheck" ng-show="value.Type=='Nutrineal'">
+                                                <img ng-src="static/img/blank.png" alt="" class="tick"
+                                                ng-hide="value.Check">
+                                                <img ng-src="static/img/tick.png" alt="" class="tick"
+                                                ng-show="value.Check">
+                                            {{value.Text}}
+                                        </li>
+                                    </ul>
+                                </span>
+                                <table style="width: 100%;border-spacing: 0;">
+                                    <thead style="text-align: left">
+                                        <th style="border-width: 1px;border-style: solid;">序</th>
+                                        <th style="border-width: 1px;border-style: solid;">腹膜透析液</th>
+                                        <th style="border-width: 1px;border-style: solid;">胺基酸濃度</th>
+                                        <th style="border-width: 1px;border-style: solid;">鈣離子濃度(mEq/L)</th>
+                                        <th style="border-width: 1px;border-style: solid;">每日袋數</th>
+                                        <th style="border-width: 1px;border-style: solid;">注入量(L)</th>
+                                        <th style="border-width: 1px;border-style: solid;">PRN</th>
+                                    </thead>
+                                    <tbody style="text-align: left">
+                                        <tr ng-repeat="no in $ctrl.pdNutrinealAry">
+                                            <td style="border-width: 1px;border-style: solid;">{{$index +1}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{no.Potiontypes}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{no.Glucoseconcentration}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{no.Calciumconcentration}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{no.Bagnumber}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{no.Esa_Dose_U}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{(no.Esa_Dose_Ug == 'false') ? 'N' : 'Y'}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <span layout="row">Extraneal&nbsp;&nbsp;&nbsp;給付條件
+                                    <ul style="margin-left: 5px;padding-left: 0px;padding-top: 2px;">
+                                        <li style="margin-left: 0px; list-style-type:none; display:inline;" ng-repeat="(key, value) in $ctrl.Treat_PaymentconditionsCheck" ng-show="value.Type=='Extraneal'">
+                                                <img ng-src="static/img/blank.png" alt="" class="tick"
+                                                ng-hide="value.Check">
+                                                <img ng-src="static/img/tick.png" alt="" class="tick"
+                                                ng-show="value.Check">
+                                            {{value.Text}}
+                                        </li>
+                                    </ul>
+                                </span>
+                                <!-- <span>Extraneal&nbsp;給付條件</span> -->
+                                <table style="width: 100%;border-spacing: 0;">
+                                    <thead style="text-align: left">
+                                        <th style="border-width: 1px;border-style: solid;">序</th>
+                                        <th style="border-width: 1px;border-style: solid;">腹膜透析液</th>
+                                        <th style="border-width: 1px;border-style: solid;">Icodextrin</th>
+                                        <th style="border-width: 1px;border-style: solid;">鈣離子濃度(mEq/L)</th>
+                                        <th style="border-width: 1px;border-style: solid;">每日袋數</th>
+                                        <th style="border-width: 1px;border-style: solid;">注入量(L)</th>
+                                        <th style="border-width: 1px;border-style: solid;">PRN</th>
+                                    </thead>
+                                    <tbody style="text-align: left">
+                                        <tr ng-repeat="eo in $ctrl.pdExtranealAry">
+                                            <td style="border-width: 1px;border-style: solid;">{{$index +1}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{eo.Potiontypes}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{eo.Glucoseconcentration}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{eo.Calciumconcentration}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{eo.Bagnumber}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{eo.Esa_Dose_U}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{(eo.Esa_Dose_Ug == 'false') ? 'N' : 'Y'}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div style="text-align:right;">
+                                    <span>每日換袋次數 ( 袋 ) : {{$ctrl.Daily_Changed_Bag_Times}} 每日換液量 ( L ) : {{$ctrl.CAPD_Total_Prescription}}</span>
+                                </div>
+                            </div>
+                            <div ng-show="$ctrl.Dialysis_Type =='APD'">
+                                <table>
+                                    <tr>
+                                        <td style="padding:0px;margin:0px;border-width: 0px;">機器處方</tdｓ>
+                                        <td style="padding:0px;margin:0px;border-width: 0px;">每次注入量：{{$ctrl.Pd_Injection_Volume}}</td>
+                                        <td style="padding:0px;margin:0px;border-width: 0px;">週期數：{{$ctrl.Pd_Period_Number}}</td>
+                                    </tr>
+                                </table>
+                                <span>Dianeal</span>
+                                <table style="width: 100%;border-spacing: 0;">
+                                    <thead style="text-align: left">
+                                        <th style="border-width: 1px;border-style: solid;width: 4.5%;">序</th>
+                                        <th style="border-width: 1px;border-style: solid;width: 17.5%;">透析液藥水</th>
+                                        <th style="border-width: 1px;border-style: solid;width: 15.8%;">葡萄糖(%)</th>
+                                        <th style="border-width: 1px;border-style: solid;width: 30%;">鈣離子濃度(mEq/L)</th>
+                                        <th style="border-width: 1px;border-style: solid;width: 14%;">每日袋數</th>
+                                        <th style="border-width: 1px;border-style: solid;">藥水體積(L)</th>
+                                        <th style="border-width: 1px;border-style: solid;">PRN</th>
+                                    </thead>
+                                    <tbody style="text-align: left">
+                                        <tr ng-repeat="do in $ctrl.pdMachineAry">
+                                            <td style="border-width: 1px;border-style: solid;">{{$index +1}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{do.Potiontypes}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{do.Glucoseconcentration}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{do.Calciumconcentration}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{do.Bagnumber}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{do.Baglitre}}</td>
+                                            <td style="border-width: 1px;border-style: solid;">{{(do.Esa_Dose_Ug == 'false') ? 'N' : 'Y'}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table ng-show=" $ctrl.Pd_Ismatch_Last_Bag_Concn != null">
+                                    <tr>
+                                        <td>最末袋處方</td>
+                                        <td>濃度：{{$ctrl.Pd_Ismatch_Last_Bag_Concn}}</td>
+                                        <td ng-repeat="do in $ctrl.pdlastAry" ng-show="$ctrl.Pd_Ismatch_Last_Bag_Concn =='相同'">注入量：{{do.Esa_Dose_U}}</td>
+                                    </tr>
+                                </table>
+                                <div ng-show="$ctrl.Pd_Ismatch_Last_Bag_Concn =='不同'">
+                                    <span ng-show="$ctrl.LastDianeal > 0">Dianeal</span>
+                                    <table style="width: 100%;border-spacing: 0;" ng-show="$ctrl.LastDianeal > 0">
+                                        <thead style="text-align: left">
+                                            <th style="border-width: 1px;border-style: solid;width: 4.5%;">序</th>
+                                            <th style="border-width: 1px;border-style: solid;width: 17.5%;">透析液藥水</th>
+                                            <th style="border-width: 1px;border-style: solid;width: 15.8%;">葡萄糖(%)</th>
+                                            <th style="border-width: 1px;border-style: solid;width: 30%;">鈣離子濃度(mEq/L)</th>
+                                            <th style="border-width: 1px;border-style: solid;width: 14%;">每日袋數</th>
+                                            <th style="border-width: 1px;border-style: solid;">注入量(L)</th>
+                                            <th style="border-width: 1px;border-style: solid;">PRN</th>
+                                        </thead>
+                                        <tbody style="text-align: left">
+                                            <tr ng-repeat="do in $ctrl.pdlastAry | filter:{ Potiontypes:'Dianeal'}">
+                                                <td style="border-width: 1px;border-style: solid;">{{$index +1}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{do.Potiontypes}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{do.Glucoseconcentration}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{do.Calciumconcentration}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{do.Bagnumber}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{do.Esa_Dose_U}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{(do.Esa_Dose_Ug == 'false') ? 'N' : 'Y'}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <span ng-show="$ctrl.LastExtraneal > 0" layout="row">Extraneal&nbsp;&nbsp;&nbsp;給付條件
+                                        <ul style="margin-left: 5px;padding-left: 0px;padding-top: 2px;">
+                                            <li style="margin-left: 0px; list-style-type:none; display:inline;" ng-repeat="(key, value) in $ctrl.ListBage_PaymentconditionsCheck" ng-show="value.Type=='Extraneal'">
+                                                    <img ng-src="static/img/blank.png" alt="" class="tick"
+                                                    ng-hide="value.Check">
+                                                    <img ng-src="static/img/tick.png" alt="" class="tick"
+                                                    ng-show="value.Check">
+                                                {{value.Text}}
+                                            </li>
+                                        </ul>
+                                    </span>
+                                    <!-- <span >Extraneal&nbsp;給付條件</span> -->
+                                    <table ng-show="$ctrl.LastExtraneal > 0" style="width: 100%;border-spacing: 0;">
+                                        <thead style="text-align: left">
+                                            <th style="border-width: 1px;border-style: solid;width: 4.5%;">序</th>
+                                            <th style="border-width: 1px;border-style: solid;width: 17.5%;">腹膜透析液</th>
+                                            <th style="border-width: 1px;border-style: solid;width: 15.8%;">Icodextrin</th>
+                                            <th style="border-width: 1px;border-style: solid;width: 30%;">鈣離子濃度(mEq/L)</th>
+                                            <th style="border-width: 1px;border-style: solid;width: 14%;">每日袋數</th>
+                                            <th style="border-width: 1px;border-style: solid;">注入量(L)</th>
+                                            <th style="border-width: 1px;border-style: solid;">PRN</th>
+                                        </thead>
+                                        <tbody style="text-align: left">
+                                            <tr ng-repeat="eo in $ctrl.pdlastAry | filter:{ Potiontypes:'Extraneal'}">
+                                                <td style="border-width: 1px;border-style: solid;">{{$index +1}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{eo.Potiontypes}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{eo.Glucoseconcentration}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{eo.Calciumconcentration}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{eo.Bagnumber}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{eo.Esa_Dose_U}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{(eo.Esa_Dose_Ug == 'false') ? 'N' : 'Y'}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div style="text-align:right;">
+                                    <span>機器總治療量(L) : {{$ctrl.APD_Total_Treatment}} 機器總處方量(L) : {{$ctrl.APD_Total_Prescription}}</span>
+                                </div>
+                                <div>
+                                    <span >白天換液處方<br>Dianeal</span>
+                                    <table style="width: 100%;border-spacing: 0;">
+                                        <thead style="text-align: left">
+                                            <th style="border-width: 1px;border-style: solid;width: 4.5%;">序</th>
+                                            <th style="border-width: 1px;border-style: solid;width: 17.5%;">透析液藥水</th>
+                                            <th style="border-width: 1px;border-style: solid;width:15.8%;">葡萄糖(%)</th>
+                                            <th style="border-width: 1px;border-style: solid;width:30%;">鈣離子濃度(mEq/L)</th>
+                                            <th style="border-width: 1px;border-style: solid;width:14%;">每日袋數</th>
+                                            <th style="border-width: 1px;border-style: solid;">注入量(L)</th>
+                                            <th style="border-width: 1px;border-style: solid;">PRN</th>
+                                        </thead>
+                                        <tbody style="text-align: left">
+                                            <tr ng-repeat="do in $ctrl.pdDianealAry">
+                                                <td style="border-width: 1px;border-style: solid;">{{$index +1}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{do.Potiontypes}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{do.Glucoseconcentration}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{do.Calciumconcentration}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{do.Bagnumber}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{do.Esa_Dose_U}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{(do.Esa_Dose_Ug == 'false') ? 'N' : 'Y'}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!-- <span>Nutrineal&nbsp;給付條件</span> -->
+                                    <span layout="row">Nutrineal&nbsp;&nbsp;&nbsp;給付條件
+                                        <ul style="margin-left: 5px;padding-left: 0px;padding-top: 2px;">
+                                            <li style="margin-left: 0px; list-style-type:none; display:inline;" ng-repeat="(key, value) in $ctrl.TwinBage_PaymentconditionsCheck" ng-show="value.Type=='Nutrineal'">
+                                                    <img ng-src="static/img/blank.png" alt="" class="tick"
+                                                    ng-hide="value.Check">
+                                                    <img ng-src="static/img/tick.png" alt="" class="tick"
+                                                    ng-show="value.Check">
+                                                {{value.Text}}
+                                            </li>
+                                        </ul>
+                                    </span>
+                                    <table style="width: 100%;border-spacing: 0;">
+                                        <thead style="text-align: left">
+                                            <th style="border-width: 1px;border-style: solid;width: 4.5%;">序</th>
+                                            <th style="border-width: 1px;border-style: solid;width: 17.5%;">腹膜透析液</th>
+                                            <th style="border-width: 1px;border-style: solid;width:15.8%;">胺基酸濃度</th>
+                                            <th style="border-width: 1px;border-style: solid;width:30%;">鈣離子濃度(mEq/L)</th>
+                                            <th style="border-width: 1px;border-style: solid;width:14%;">每日袋數</th>
+                                            <th style="border-width: 1px;border-style: solid;">注入量(L)</th>
+                                            <th style="border-width: 1px;border-style: solid;">PRN</th>
+                                        </thead>
+                                        <tbody style="text-align: left">
+                                            <tr ng-repeat="no in $ctrl.pdNutrinealAry">
+                                                <td style="border-width: 1px;border-style: solid;">{{$index +1}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{no.Potiontypes}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{no.Glucoseconcentration}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{no.Calciumconcentration}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{no.Bagnumber}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{no.Esa_Dose_U}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{(no.Esa_Dose_Ug == 'false') ? 'N' : 'Y'}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <span layout="row">Extraneal&nbsp;&nbsp;&nbsp;給付條件
+                                        <ul style="margin-left: 5px;padding-left: 0px;padding-top: 2px;">
+                                            <li style="margin-left: 0px; list-style-type:none; display:inline;" ng-repeat="(key, value) in $ctrl.TwinBage_PaymentconditionsCheck" ng-show="value.Type=='Extraneal'">
+                                                    <img ng-src="static/img/blank.png" alt="" class="tick"
+                                                    ng-hide="value.Check">
+                                                    <img ng-src="static/img/tick.png" alt="" class="tick"
+                                                    ng-show="value.Check">
+                                                {{value.Text}}
+                                            </li>
+                                        </ul>
+                                    </span>
+                                    <!-- <span>Extraneal&nbsp;給付條件</span> -->
+                                    <table style="width: 100%;border-spacing: 0;">
+                                        <thead style="text-align: left">
+                                            <th style="border-width: 1px;border-style: solid;width:4.5%;">序</th>
+                                            <th style="border-width: 1px;border-style: solid;width:17.5%;">腹膜透析液</th>
+                                            <th style="border-width: 1px;border-style: solid;width:15.8%;">Icodextrin</th>
+                                            <th style="border-width: 1px;border-style: solid;width:30%;">鈣離子濃度(mEq/L)</th>
+                                            <th style="border-width: 1px;border-style: solid;width:14%;">每日袋數</th>
+                                            <th style="border-width: 1px;border-style: solid;">注入量(L)</th>
+                                            <th style="border-width: 1px;border-style: solid;">PRN</th>
+                                        </thead>
+                                        <tbody style="text-align: left">
+                                            <tr ng-repeat="eo in $ctrl.pdExtranealAry">
+                                                <td style="border-width: 1px;border-style: solid;">{{$index +1}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{eo.Potiontypes}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{eo.Glucoseconcentration}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{eo.Calciumconcentration}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{eo.Bagnumber}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{eo.Esa_Dose_U}}</td>
+                                                <td style="border-width: 1px;border-style: solid;">{{(eo.Esa_Dose_Ug == 'false') ? 'N' : 'Y'}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <br />

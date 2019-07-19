@@ -8,10 +8,10 @@ angular.module('app')
         controllerAs: '$ctrl'
     });
 
-allReferralSheetFormCtrl.$inject = ['$q', '$window', '$stateParams', 'ReferralSheetService', '$scope', '$state', 'moment',
+allReferralSheetFormCtrl.$inject = ['$timeout', '$document', '$q', '$window', '$stateParams', 'ReferralSheetService', '$scope', '$state', 'moment',
     '$rootScope', '$mdToast', '$mdSidenav', 'SettingService', 'showMessage', 'PatientService', 'infoService', 'cursorInput', '$sessionStorage', '$mdDialog', 'tpechService', 'DoctorNoteService', 'userService', 'pdTreatService'];
 
-function allReferralSheetFormCtrl($q, $window, $stateParams, ReferralSheetService,
+function allReferralSheetFormCtrl($timeout, $document, $q, $window, $stateParams, ReferralSheetService,
     $scope, $state, moment, $rootScope, $mdToast, $mdSidenav, SettingService, showMessage, PatientService, infoService, cursorInput, $sessionStorage, $mdDialog, tpechService, DoctorNoteService, userService, pdTreatService) {
     const self = this;
     self.referralSheetId = $stateParams.referralSheetId;
@@ -130,9 +130,13 @@ function allReferralSheetFormCtrl($q, $window, $stateParams, ReferralSheetServic
 
         // 新增修改共用資料：$q.all執行的陣列
         let executeArray = [];
-        executeArray.push(getDoctorList()); // 0. 醫生資料
-        // 1. 病患相關資料 病摘不會存，所以修改時也需要
+        // 1. 取得醫院名稱
+        executeArray.push(getHospitalInfo());
+        // 2. 醫生資料
+        executeArray.push(getDoctorList()); 
+        // 3. 病患相關資料 病摘不會存，所以修改時也需要
         executeArray.push(getPatientData());
+        
 
         // load 已存在表單
         if ($stateParams.referralSheetId) {
@@ -184,6 +188,8 @@ function allReferralSheetFormCtrl($q, $window, $stateParams, ReferralSheetServic
             // 設定初始值
             // 2. 透析相關資料
             executeArray.push(getDialysisData());
+            // 5. 透析前後血壓 (30天平均值)
+            executeArray.push(getAverageBloodPressure());
             $q.all(executeArray).then(() => {
                 if ($sessionStorage.referralSheetData) {
                     // 從複製鈕過來的
@@ -245,36 +251,89 @@ function allReferralSheetFormCtrl($q, $window, $stateParams, ReferralSheetServic
         console.log('接收從勾選單回來的資料 event', event);
         console.log('接收從勾選單回來的資料 o', o);
         console.log('接收從勾選單回來的資料 o.fromStateName', o.fromStateName);
-        // 手術歷程：從勾選頁回來
-        if (o.fromStateName === SURGERY_CHECK) {
-            // 有勾選資料才需要 append
-            appendSurgeryCheckedData();
-        }
-        // 治療處方 : 從勾選頁回來
-        if (o.fromStateName === ORDER_CHECK) {
-            // 有勾選資料才需要呈現
-            appendOrderCheckedData();
-        }
-        // 其他共病：從勾選頁回來
-        if (o.fromStateName === DISEASE_CHECK) {
-            // 有勾選資料才需要 append
-            appendDiseaseCheckedData();
-        }
-        // 檢驗報告
-        if (o.fromStateName === LABEXAM_CHECK) {
-            // 有勾選資料才需要 append
-            appendLabexamCheckedData();
-            // 組出符合檢驗表格的資料 self.finalTableCheckData
-            setLabTableFinalCheckData();
-        }
-        // 用藥明細
-        if (o.fromStateName === DRUG_CHECK) {
-            // 有勾選資料才需要 append
-            appendDrugCheckedData();
+        switch(o.fromStateName) {
+            case SURGERY_CHECK: // 手術歷程
+                // 有勾選資料才需要 append
+                appendSurgeryCheckedData();
+                break;
+            case ORDER_CHECK: // 治療處方
+                appendOrderCheckedData();
+                break;
+            case DISEASE_CHECK: // 其他共病
+                appendDiseaseCheckedData();
+                break;
+            case LABEXAM_CHECK: // 檢驗報告
+                appendLabexamCheckedData();
+                // 組出符合檢驗表格的資料 self.finalTableCheckData
+                setLabTableFinalCheckData();
+                break;
+            case DRUG_CHECK: // 用藥明細
+                appendDrugCheckedData();
+                break;
+            default:
+                break;
         }
         // 刷新時不要幫他暫留資料
         delete $sessionStorage.referralCheckedData;
     });
+
+
+    // textarea 自動延長
+    self.autogrow = function (elementId) {
+        setTimeout(function(){
+            $('#' + elementId).get(0).style.cssText = 'height:auto; padding:0';
+            $('#' + elementId).get(0).style.cssText = 'height:' + $('#' + elementId).get(0).scrollHeight + 'px';
+            console.log('autogrow 增高！！！', elementId, $('#' + elementId).get(0).scrollHeight);
+
+        },0);
+       
+        // console.log('1 增高！！！', $("#Surgery").get(0).clientHeight);
+        // var scroll_height = $("#Surgery").get(0).scrollHeight;
+        // console.log('2 增高！！！', scroll_height);
+        // $("#Surgery").css('height', scroll_height + 'px');
+
+        // var adjustedHeight = $("#Surgery").get(0).clientHeight;
+        // adjustedHeight = Math.max($("#Surgery").get(0).scrollHeight, adjustedHeight);
+        // console.log('1 增高！！！', adjustedHeight);
+        // if (adjustedHeight > $("#Surgery").get(0).clientHeight){
+    
+        //     $("#Surgery").get(0).style.height = adjustedHeight + 'px';
+        // }
+    };
+    // 限制字數行數：限制一行最多字數，限制最多幾行
+    // charNumber: 一行最多字數, lineNumber: 最多幾行
+    // self.limitedTextareaCharAndLine = (elementId, charNumber, lineNumber) => {
+    //     console.log('elementId', elementId, charNumber, lineNumber);
+    //     $timeout(() => {
+    //         let str = $('#' + elementId).val();
+    //         // let str = self.referralSheetForm.SurgeryCheckedData;
+    //         console.log('0 lines', str);
+           
+    //         var lines = str.split("\n");
+    //         // console.log('1 lines', lines);
+    //         // console.log('2 行數 lines', lines.length);
+    //         for (var i = 0; i < lines.length; i++) {
+    //             if (lines[i].length <= charNumber) {
+    //                 console.log('1 lines[i]', lines[i]);
+    //                 continue;
+    //             }
+    //             var j = 0; 
+    //             var space = charNumber;
+    //             while (j++ <= charNumber) {
+    //                 console.log('2 space', space);
+    //                 if (lines[i].charAt(j) === " ") space = j;
+    //             }
+    //             console.log('3 space', space);
+    //             lines[i + 1] = lines[i].substring(space + 1) + (lines[i + 1] || "");
+    //             // console.log('2 lines[i + 1]', lines[i + 1]);
+    //             lines[i] = lines[i].substring(0, space);
+    //             // console.log('3 lines[i]', lines[i]);
+    //         }
+    //         console.log('4 lines', lines.slice(0, lineNumber).join("\n"));
+    //         $('#' + elementId).val(lines.slice(0, lineNumber).join("\n"));
+    //         // self.referralSheetForm.SurgeryCheckedData = lines.slice(0, 2).join("\n");
+    //     }, 0);
+    // };
 
 
     // 手術歷程
@@ -411,7 +470,25 @@ function allReferralSheetFormCtrl($q, $window, $stateParams, ReferralSheetServic
         }
     };
 
-    // 0. 取得醫生選項
+    // 1. 取表單標題
+    function getHospitalInfo() {
+        const defer = $q.defer();
+        if (SettingService.getCurrentHospital()) {
+            self.formTitle = SettingService.getCurrentHospital().FormTitle;
+            defer.resolve();
+        } else {
+            // 重新從 server 撈
+            basicSettingService.getHospitalInfo().then((res) => {
+                self.formTitle = res.data.FormTitle;
+                defer.resolve();
+            }).catch(() => {
+                defer.reject();
+            });
+        }
+        return defer.promise;
+    }
+
+    // 2. 取得醫生選項
     function getDoctorList() {
         const deferred = $q.defer();
         userService.get().then((q) => {
@@ -427,7 +504,7 @@ function allReferralSheetFormCtrl($q, $window, $stateParams, ReferralSheetServic
         return deferred.promise;
     }
 
-    // 1. 病患相關資料
+    // 3. 病患相關資料
     function getPatientData() {
         const deferred = $q.defer();
 
@@ -471,7 +548,7 @@ function allReferralSheetFormCtrl($q, $window, $stateParams, ReferralSheetServic
     }
 
 
-    // 2. 透析相關資料
+    // 4. 透析相關資料
     function getDialysisData() {
         const deferred = $q.defer();
 
@@ -482,11 +559,11 @@ function allReferralSheetFormCtrl($q, $window, $stateParams, ReferralSheetServic
             self.dialysisRecord = angular.copy(q.data);
             // 總覽 overview ------------
             // BPs (PreBloodPressure)
-            let preBloodPressureBPSstr = self.dialysisRecord.DialysisHeader && self.dialysisRecord.DialysisHeader.PreVitalSign && self.dialysisRecord.DialysisHeader.PreVitalSign.length > 0 && self.dialysisRecord.DialysisHeader.PreVitalSign[0].BPS ? self.dialysisRecord.DialysisHeader.PreVitalSign[0].BPS.toString() : '-';
-            let preBloodPressureBPDstr = self.dialysisRecord.DialysisHeader && self.dialysisRecord.DialysisHeader.PreVitalSign && self.dialysisRecord.DialysisHeader.PreVitalSign.length > 0 && self.dialysisRecord.DialysisHeader.PreVitalSign[0].BPD ? self.dialysisRecord.DialysisHeader.PreVitalSign[0].BPD.toString() : '-';
-            let postBloodPressureBPSstr = self.dialysisRecord.DialysisHeader && self.dialysisRecord.DialysisHeader.PostVitalSign && self.dialysisRecord.DialysisHeader.PostVitalSign.length > 0 && self.dialysisRecord.DialysisHeader.PostVitalSign[0].BPS ? self.dialysisRecord.DialysisHeader.PostVitalSign[0].BPS.toString() : '-';
-            let postBloodPressureBPDstr = self.dialysisRecord.DialysisHeader && self.dialysisRecord.DialysisHeader.PostVitalSign && self.dialysisRecord.DialysisHeader.PostVitalSign.length > 0 && self.dialysisRecord.DialysisHeader.PostVitalSign[0].BPD ? self.dialysisRecord.DialysisHeader.PostVitalSign[0].BPD.toString() : '-';
-            let beforePulseStr = self.dialysisRecord.DialysisHeader && self.dialysisRecord.DialysisHeader.Pulse && self.dialysisRecord.DialysisHeader.Pulse[0] ? self.dialysisRecord.DialysisHeader.Pulse[0].toString() : '-';
+            // let preBloodPressureBPSstr = self.dialysisRecord.DialysisHeader && self.dialysisRecord.DialysisHeader.PreVitalSign && self.dialysisRecord.DialysisHeader.PreVitalSign.length > 0 && self.dialysisRecord.DialysisHeader.PreVitalSign[0].BPS ? self.dialysisRecord.DialysisHeader.PreVitalSign[0].BPS.toString() : '-';
+            // let preBloodPressureBPDstr = self.dialysisRecord.DialysisHeader && self.dialysisRecord.DialysisHeader.PreVitalSign && self.dialysisRecord.DialysisHeader.PreVitalSign.length > 0 && self.dialysisRecord.DialysisHeader.PreVitalSign[0].BPD ? self.dialysisRecord.DialysisHeader.PreVitalSign[0].BPD.toString() : '-';
+            // let postBloodPressureBPSstr = self.dialysisRecord.DialysisHeader && self.dialysisRecord.DialysisHeader.PostVitalSign && self.dialysisRecord.DialysisHeader.PostVitalSign.length > 0 && self.dialysisRecord.DialysisHeader.PostVitalSign[0].BPS ? self.dialysisRecord.DialysisHeader.PostVitalSign[0].BPS.toString() : '-';
+            // let postBloodPressureBPDstr = self.dialysisRecord.DialysisHeader && self.dialysisRecord.DialysisHeader.PostVitalSign && self.dialysisRecord.DialysisHeader.PostVitalSign.length > 0 && self.dialysisRecord.DialysisHeader.PostVitalSign[0].BPD ? self.dialysisRecord.DialysisHeader.PostVitalSign[0].BPD.toString() : '-';
+            // let beforePulseStr = self.dialysisRecord.DialysisHeader && self.dialysisRecord.DialysisHeader.Pulse && self.dialysisRecord.DialysisHeader.Pulse[0] ? self.dialysisRecord.DialysisHeader.Pulse[0].toString() : '-';
             // 透析血管通路/建立日期：造管手術日：要寫在 "overview 血管通路" 之前，因為血管通路會將日期拆出即是"造管手術日"
             // self.vesselAccessCreationDate = null; // AVFistula, AVGraft
             // self.venousCatheterInsertionDate = null; // Permanent, DoubleLumen
@@ -554,8 +631,8 @@ function allReferralSheetFormCtrl($q, $window, $stateParams, ReferralSheetServic
                 // 總覽 overview ------------
                 OverviewVessel1: self.vesselAessessmentsStr1 ? self.vesselAessessmentsStr1 : '-', // overview 血管通路1
                 OverviewVessel2: self.vesselAessessmentsStr2 ? self.vesselAessessmentsStr2 : '-', // overview 血管通路2
-                PreBloodPressure: preBloodPressureBPSstr === '-' && preBloodPressureBPDstr === '-' ? '-' : preBloodPressureBPSstr.concat('/', preBloodPressureBPDstr, ' mmHg'), // 透析前血壓
-                PostBloodPressure: postBloodPressureBPSstr === '-' && postBloodPressureBPDstr === '-' ? '-' : postBloodPressureBPSstr.concat('/', postBloodPressureBPDstr, ' mmHg'), // 透析後血壓
+                // PreBloodPressure: preBloodPressureBPSstr === '-' && preBloodPressureBPDstr === '-' ? '-' : preBloodPressureBPSstr.concat('/', preBloodPressureBPDstr, ' mmHg'), // 透析前血壓
+                // PostBloodPressure: postBloodPressureBPSstr === '-' && postBloodPressureBPDstr === '-' ? '-' : postBloodPressureBPSstr.concat('/', postBloodPressureBPDstr, ' mmHg'), // 透析後血壓
                 // BeforePulse: beforePulseStr === '-' ? '-' : beforePulseStr.concat(' beats/min'), // 脈搏
                 // VesselAccessCreationDate: self.vesselAccessCreationDate ? new Date(self.vesselAccessCreationDate) : null, // AVFistula, AVGraft 造管日
                 // VenousCatheterInsertionDate: self.venousCatheterInsertionDate ? new Date(self.venousCatheterInsertionDate) : null, // Permanent, DoubleLumen 造管日
@@ -606,7 +683,44 @@ function allReferralSheetFormCtrl($q, $window, $stateParams, ReferralSheetServic
     }
 
 
-    // 3. 現況問題 -> 預帶 最後一筆病情摘要 doctorNote
+    // 5. 透析前後血壓 (30天平均值)
+    function getAverageBloodPressure() {
+        const deferred = $q.defer();
+        ReferralSheetService.getAverageBloodPressure($stateParams.patientId, moment().format('YYYY-MM-DD'), 30).then((q) => {
+            console.log('透析前後血壓(30天平均值) q', angular.copy(q.data));
+
+            if(q.data && Array.isArray(q.data) && q.data.length > 0) {
+                // 有平均值
+                // 0: pre
+                let preBPSstr = q.data[0]['AVERAGE_BPS'] ? q.data[0]['AVERAGE_BPS'] : '-';
+                let preBPDstr = q.data[0]['AVERAGE_BPD'] ? q.data[0]['AVERAGE_BPD'] : '-';
+                // 1: post
+                let postBPSstr = q.data[1]['AVERAGE_BPS'] ? q.data[1]['AVERAGE_BPS'] : '-';
+                let postBPDstr = q.data[1]['AVERAGE_BPD'] ? q.data[1]['AVERAGE_BPD'] : '-';
+
+                angular.extend(self.referralSheetForm, {
+                    // BPs (PreBloodPressure)
+                    PreBloodPressure: preBPSstr === '-' && preBPDstr === '-' ? '-' : preBPSstr.concat('/', preBPDstr, ' mmHg'), // 透析前血壓
+                    PostBloodPressure: postBPSstr === '-' && postBPDstr === '-' ? '-' : postBPSstr.concat('/', postBPDstr, ' mmHg'), // 透析後血壓
+                });
+            } else {
+                // 沒有平均值
+                angular.extend(self.referralSheetForm, {
+                    // BPs (PreBloodPressure)
+                    PreBloodPressure: '-', // 透析前血壓
+                    PostBloodPressure: '-', // 透析後血壓
+                });
+            }
+            deferred.resolve();
+        }, (err) => {
+            console.log('透析前後血壓(30天平均值) err', err);
+            deferred.reject();
+        });
+        return deferred.promise;
+    }
+
+
+    // 6. 現況問題 -> 預帶 最後一筆病情摘要 doctorNote
     function getProblemsDoctorNote(headerId) {
         const deferred = $q.defer();
         DoctorNoteService.getByHeaderId(headerId).then((q) => {
@@ -724,6 +838,7 @@ function allReferralSheetFormCtrl($q, $window, $stateParams, ReferralSheetServic
         }
     }
     // 處理血管通路
+    // 20190715 評估項目不需顯示
     function setOverviewVesselStr(vesselAessessmentsArray) {
         if (vesselAessessmentsArray) {
             _.forEach(vesselAessessmentsArray, (value, key) => {
@@ -743,18 +858,19 @@ function allReferralSheetFormCtrl($q, $window, $stateParams, ReferralSheetServic
                 let artery = value.ArteryPosition ? translateNeedlePosition(value.ArteryPosition) : '-';
                 // 靜脈端上針位置
                 let vein = value.VeinPosition ? translateNeedlePosition(value.VeinPosition) : '-';
-                // 通路功能評估－Thrill
-                let thrill = value.Thrill ? translateThrill(value.Thrill) : '-';
-                // 通路功能評估－順暢
-                let favorable = value.Favorable ? translateFavorable(value.Favorable) : '-';
+                // // 通路功能評估－Thrill
+                // let thrill = value.Thrill ? translateThrill(value.Thrill) : '-';
+                // // 通路功能評估－順暢
+                // let favorable = value.Favorable ? translateFavorable(value.Favorable) : '-';
 
                 if (key === 0) {
                     // 第一組管路
-                    self.vesselAessessmentsStr1 = self.vesselAessessmentsStr1.concat(startDate, catheterType, '/', side, position, '/動脈:', artery, '/靜脈:', vein, '/Thrill:', thrill, '/順暢:', favorable);
+                    self.vesselAessessmentsStr1 = self.vesselAessessmentsStr1.concat(startDate, catheterType, '/', side, position, '/動脈:', artery, '/靜脈:', vein);
+                    // '/動脈:', artery, '/靜脈:', vein, '/Thrill:', thrill, '/順暢:', favorable
                 } else {
                     // 第二組管路
                     // console.log('第二組管路 permCath', permCath);
-                    self.vesselAessessmentsStr2 = self.vesselAessessmentsStr2.concat(startDate, catheterType, '/', side, position, '/動脈:', artery, '/靜脈:', vein, '/Thrill:', thrill, '/順暢:', favorable);
+                    self.vesselAessessmentsStr2 = self.vesselAessessmentsStr2.concat(startDate, catheterType, '/', side, position, '/動脈:', artery, '/靜脈:', vein);
                 }
             });
         }
@@ -870,7 +986,7 @@ function allReferralSheetFormCtrl($q, $window, $stateParams, ReferralSheetServic
                 showMessage('修改失敗，請重新儲存');
             });
         } else {
-            // TODO: 假資料
+            // 假資料
             // self.referralSheetForm.LabCheckedData = [
             //     {"PAT_NO":"61171874","ODR_CODE":"09038","LAB_CODE":"9038","LAB_NAME":"Alb","RESULT":"2.9","UNIT":"g/dL","HIGH_LIMIT":"5.2","LOW_LIMIT":"3.5","RES_SW":"L","REP_TYPE_CODE":"44","REP_TYPE_NAME":"聯檢化","REPORT_DATE":"1080518","REPORT_TIME":"0912","HDEPT_NAME":"洗腎","DateTime":"2019/05/18 09:12","Date":"1080518","Time":"09:12","TaiwanDate":"1080518 09:12","ResultUnit":"2.9 g/dL"},
             //     {"PAT_NO":"61171874","ODR_CODE":"09015","LAB_CODE":"9002X","LAB_NAME":"B/C","RESULT":"10.58","UNIT":null,"HIGH_LIMIT":null,"LOW_LIMIT":null,"RES_SW":null,"REP_TYPE_CODE":"44","REP_TYPE_NAME":"聯檢化","REPORT_DATE":"1080518","REPORT_TIME":"0912","HDEPT_NAME":"洗腎","DateTime":"2019/05/18 09:12","Date":"1080518","Time":"09:12","TaiwanDate":"1080518 09:12","ResultUnit":"10.58"},
@@ -907,8 +1023,6 @@ function allReferralSheetFormCtrl($q, $window, $stateParams, ReferralSheetServic
         // 刪掉從勾選單回來的資料
         // delete $sessionStorage.checkedLabexamData;
     };
-
-
 
     self.isBrowser = cordova.platformId === 'browser';
     // Todo 無法吃到相對路徑的 CSS
@@ -1007,7 +1121,9 @@ function allReferralSheetFormCtrl($q, $window, $stateParams, ReferralSheetServic
         return $mdSidenav('rightPhrase').toggle();
     };
     self.phraseInsertCallback = function phraseInsertCallback(e) {
-        cursorInput($('#Content'), e);
+        // 插入片語時也要重新計算textarea個高度
+        cursorInput($('#Problems'), e);
+        self.autogrow('Problems');
         console.log('machineData Probldms', self.referralSheetForm.Probldms);
         //$mdSidenav('rightPhrase').close();
     };

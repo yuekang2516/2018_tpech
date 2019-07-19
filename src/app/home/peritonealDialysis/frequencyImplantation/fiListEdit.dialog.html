@@ -46,8 +46,9 @@
                                 <label>腹透植管次數:</label>
                             </div>
                             <div class="inputboxflex itemList autoWidth">
-                                第<input type="text" class="txtSS" ng-model="$ctrl.fiDataObj.Frequency_Implantation"
-                                    readonly />次
+                                第<input type="text" style="width:50px;"
+                                onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                ng-model="$ctrl.fiDataObj.Frequency_Implantation" />次
                             </div>
                         </div>
                         <div class="inputbox">

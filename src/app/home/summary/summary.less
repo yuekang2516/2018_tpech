@@ -482,10 +482,15 @@ summary {
             left: 0;
             right: 0;
             margin: auto;
-            height: 80%;
-            width: 80%;
+            height: calc(~"100% - 55px");
+            width: 95%;
             #phrase {
                 position: absolute;
+            }
+            &.fullscreen {
+                top: 0;
+                height: 100%;
+                width: 100%;
             }
         }
     }

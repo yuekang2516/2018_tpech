@@ -9,10 +9,13 @@ angular.module('app')
     });
 
 allReferralSheetFormPDCtrl.$inject = ['$q', '$window', '$stateParams', 'ReferralSheetService', '$scope', '$state', 'moment',
-    '$rootScope', '$mdToast', '$mdSidenav', 'SettingService', 'showMessage', 'PatientService', 'infoService', 'cursorInput', '$sessionStorage', '$mdDialog', 'tpechService', 'DoctorNoteService', 'userService', 'pdTreatService'];
+    '$rootScope', '$mdToast', '$mdSidenav', 'SettingService', 'showMessage', 'PatientService', 'infoService', 'cursorInput', '$sessionStorage', '$mdDialog', 'tpechService', 'DoctorNoteService', 'userService', 'pdTreatService',
+    'epoService'
+];
 
 function allReferralSheetFormPDCtrl($q, $window, $stateParams, ReferralSheetService,
-    $scope, $state, moment, $rootScope, $mdToast, $mdSidenav, SettingService, showMessage, PatientService, infoService, cursorInput, $sessionStorage, $mdDialog, tpechService, DoctorNoteService, userService, pdTreatService) {
+    $scope, $state, moment, $rootScope, $mdToast, $mdSidenav, SettingService, showMessage, PatientService, infoService, cursorInput, $sessionStorage, $mdDialog, tpechService, DoctorNoteService, userService, pdTreatService,
+    epoService) {
     const self = this;
     self.referralSheetId = $stateParams.referralSheetId;
     self.user = SettingService.getCurrentUser();
@@ -51,6 +54,43 @@ function allReferralSheetFormPDCtrl($q, $window, $stateParams, ReferralSheetServ
         G: 'G 不明原因之腎衰竭',
         H: 'H 中毒',
         I: 'I 其他'
+    };
+    //頻率
+    self.FrequencyBaseData = {
+        "QDPC": "QDPC-每日1次(餐後)",
+        "QN": "QN-每晚1次" ,
+        "QOD": "QOD-每隔1日1次" ,
+        "HS": "HS-每晚睡前半小時1次" ,
+        "TID": "TID-每日3次(早、午、晚)" ,
+        "TIDAC": "TIDAC-每日3餐半小時前" ,
+        "TIDPC": "TIDPC-每日3餐後" ,
+        "BID": "BID-每日2次(早上、晚上)" ,
+        "BIDACBefore": "BIDAC-每日早晚(用餐半小時前)" ,
+        "BIDPCAfter": "BIDPC-每日早晚(餐後)" ,
+        "STAT": "ST-立刻使用" ,
+        "QID": "QID-每日4次" ,
+        "Q2W": "Q2W-每2週1次" ,
+        "QD": "QD-每日1次(每日固定時間)" ,
+        "QW1": "QW1-每週1次(星期一)" ,
+        "QW2": "QW2-每週1次(星期二)" ,
+        "QW3": "QW3-每週1次（星期三)" ,
+        "QW4": "QW4-每週1次(星期四)" ,
+        "QW5": "QW5-每週1次(星期五)" ,
+        "QW6": "QW6-每週1次(星期六)" ,
+        "QW7": "QW7-每週1次(星期日)" ,
+        "QW135": "QW135-每週3次(一、三、五)" ,
+        "QW1357": "QW1357-每週4次(一、三、五、日)" ,
+        "QW246": "QW246-每週3次(二、四、六)" ,
+        "QW2467": "QW2467-每週4次(二、四、六、日)" ,
+        "PRN": "PRN-需要時使用" ,
+        "BIW15": "BIW15-每週2次(一、五)" ,
+        "BIW26": "BIW26-每週2次(二、六)" ,
+        "QW136": "QW136-每週3次(一、三、六)" ,
+        "QW146": "QW146-每週3次(一、四、六)" ,
+        "TIW": "TIW-每週3次" ,
+        "BIW": "BIW-每週2次" ,
+        "QW": "QW- 每週1次" ,
+        "QM": "QM- 一個月一次"
     };
 
     // 原發病細類 primaryDiseaseDetail
@@ -116,6 +156,24 @@ function allReferralSheetFormPDCtrl($q, $window, $stateParams, ReferralSheetServ
         'I-01': 'I-01 其他'
     };
 
+    //給付條件
+    self.Treat_PaymentconditionsCheck = {
+        "HighPET" : { Text: "High PET", Check: false, Type: "Extraneal" },
+        "HighConc" : {Text: "High Conc. > 1/2", Check: false, Type: "Extraneal" },
+        "UFFailure": { Text: "UF Failure", Check: false, Type: "Extraneal" },
+        "DMwithA1C": {Text: "A1c > 7%", Check: false, Type: "Extraneal" },
+        "Peritonitis": { Text: "Peritonitis", Check: false, Type: "Extraneal" },
+        "HA25": { Text: "HA + 2.5%", Check: false, Type: "Extraneal" },
+        "Alb": { Text: "Alb ≦ 3.5", Check: false, Type: "Nutrineal" },
+        "nPNA": { Text: "nPNA < 0.9", Check: false, Type: "Nutrineal" },
+    }
+    
+    self.ListBage_PaymentconditionsCheck = angular.copy(self.Treat_PaymentconditionsCheck);
+    self.TwinBage_PaymentconditionsCheck = angular.copy(self.Treat_PaymentconditionsCheck);
+    self.epolist = [];
+    epoService.getList().then((res) => {
+        self.epolist = res.data;
+    });
     // for 電子簽章，須繞掉取 localStorage 的部分
     self.isForPdf = $state.current.name === 'referralSheetFormForPdf';
 
@@ -152,6 +210,8 @@ function allReferralSheetFormPDCtrl($q, $window, $stateParams, ReferralSheetServ
                         Birthday: self.referralSheetForm.Birthday ? moment(self.referralSheetForm.Birthday).format('YYYY/MM/DD') : '-', // 生日 new Date(moment(self.referralSheetForm.Birthday).format('YYYY-MM-DD'))
                         FirstDialysisDate: self.referralSheetForm.FirstDialysisDate ? new Date(self.referralSheetForm.FirstDialysisDate) : null,  // 初次透析日
                         LastDialysisDate: self.referralSheetForm.LastDialysisDate ? new Date(self.referralSheetForm.LastDialysisDate) : null, // 最後透析日
+                        PDCIDate: self.referralSheetForm.PDCIDate ? new Date(self.referralSheetForm.PDCIDate) : null,  // 腹膜透析植管日期
+                        FirstPDDate: self.referralSheetForm.FirstPDDate ? new Date(self.referralSheetForm.FirstPDDate) : null,  // 首次腹膜透析日期
                         // VesselAccessCreationDate: self.referralSheetForm.VesselAccessCreationDate ? new Date(self.referralSheetForm.VesselAccessCreationDate) : null, // 瘻管 (人工血管) 手術日期
                         // VenousCatheterInsertionDate: self.referralSheetForm.VenousCatheterInsertionDate ? new Date(self.referralSheetForm.VenousCatheterInsertionDate) : null, // Permanent, DoubleLumen 造管日
                         LabexamDate: self.referralSheetForm.LabexamDate ? new Date(self.referralSheetForm.LabexamDate) : null, // 檢驗檢查日期 任意取一筆有日期的檢驗項目日期顯示
@@ -161,7 +221,11 @@ function allReferralSheetFormPDCtrl($q, $window, $stateParams, ReferralSheetServ
                     console.log('修改 init self.referralSheetForm' + self.referralSheetForm);
                     // 20190426 為了刷新時還可以有暫存sessionStorage的資料，目前先不開放，刷新時只有顯示最原始有的資料
                     // appendLabexamCheckedData(); // 確認是否有需要再append資料
-
+                    //讀取PD處方
+                    pdTreatService.getOne(self.referralSheetForm.Prescription_Id).then((res) => {
+                        console.log('pdTreatService list',res);
+                        appendOrderCheckedData(true,res.data);
+                    });
                     // 組出符合檢驗表格的資料 self.finalTableCheckData
                     setLabTableFinalCheckData();
 
@@ -194,7 +258,16 @@ function allReferralSheetFormPDCtrl($q, $window, $stateParams, ReferralSheetServ
                         // 處理日期
                         Birthday: self.referralSheetForm.Birthday ? moment(self.referralSheetForm.Birthday).format('YYYY/MM/DD') : '-', // 生日
                         FirstDialysisDate: self.referralSheetForm.FirstDialysisDate ? new Date(self.referralSheetForm.FirstDialysisDate) : null,  // 初次透析日
-                        LastDialysisDate: self.referralSheetForm.LastDialysisDate ? new Date(self.referralSheetForm.LastDialysisDate) : null // 最後透析日
+                        LastDialysisDate: self.referralSheetForm.LastDialysisDate ? new Date(self.referralSheetForm.LastDialysisDate) : null, // 最後透析日
+                        PDCIDate: self.referralSheetForm.PDCIDate ? new Date(self.referralSheetForm.PDCIDate) : null,  // 腹膜透析植管日期
+                        FirstPDDate: self.referralSheetForm.FirstPDDate ? new Date(self.referralSheetForm.FirstPDDate) : null,  // 首次腹膜透析日期
+                        PDCIDate: self.referralSheetForm.PDCIDate ? new Date(self.referralSheetForm.PDCIDate) : null,  // 腹膜透析植管日期
+                        FirstPDDate: self.referralSheetForm.FirstPDDate ? new Date(self.referralSheetForm.FirstPDDate) : null,  // 首次腹膜透析日期
+                    });
+                    //讀取PD處方
+                    pdTreatService.getOne(self.referralSheetForm.Prescription_Id).then((res) => {
+                        console.log('pdTreatService list',res);
+                        appendOrderCheckedData(true,res.data);
                     });
                     // 組出符合檢驗表格的資料 self.finalTableCheckData
                     setLabTableFinalCheckData();
@@ -291,27 +364,71 @@ function allReferralSheetFormPDCtrl($q, $window, $stateParams, ReferralSheetServ
             self.referralSheetForm.SurgeryCheckedData = self.referralSheetForm.SurgeryCheckedData.concat(surgeryData);
         }
     }
-
+    self.orderDatalength = 0;
     // PD 治療處方
-    function appendOrderCheckedData() {
+    function appendOrderCheckedData(editflg = false,Data ="") {
         let orderData = ReferralSheetService.getCheckedData() ? ReferralSheetService.getCheckedData().order[0] : null;
-
+        if(editflg){
+            orderData = Data;
+        }
         if (orderData && orderData != "") {
             console.log("ORDER DATA", orderData);
-
+            self.orderDatalength = 1;
+            self.Prescription_Startdate = moment(orderData.Prescription_Startdate).format('YYYY/MM/DD');//處方日期
+            self.Dialysis_Type = orderData.Dialysis_Type;//腹膜透析類別
+            self.Liquid_Exchange_System = orderData.Liquid_Exchange_System;//換液系統
+            self.Dialysis_System  = orderData.Dialysis_System;//透析系統
+            if(orderData.Is_With_Hemodialysis == 'Y'){
+                orderData.Is_With_Hemodialysis = '是';
+            }else if(orderData.Is_With_Hemodialysis == 'N'){
+                orderData.Is_With_Hemodialysis = '否';
+            }
+            self.Is_With_Hemodialysis = orderData.Is_With_Hemodialysis;//兼作血液透析
+            self.Major_Bag_Changers = orderData.Major_Bag_Changers;//主要換袋者
+            //APD
+            if(orderData.Pd_Ismatch_Last_Bag_Concn == 'Y'){
+                self.Pd_Ismatch_Last_Bag_Concn = '相同';
+            }else if(orderData.Pd_Ismatch_Last_Bag_Concn == 'N'){
+                self.Pd_Ismatch_Last_Bag_Concn = '不同'
+            }
             pdTreatService.getDetailList(orderData.Id, "Normal").then((res) => {
                 console.log("pdTreatService.getDetailList", res);
                 self.pdEsaAry = [];
+                self.pdlastAry = [];
+                self.pdMachineAry =[];
                 self.pdDianealAry = [];
                 self.pdNutrinealAry = [];
                 self.pdExtranealAry = [];
-                self.Daily_Changed_Bag_Times = 0; //每日換袋次數
-                self.CAPD_Total_Treatment = 0; //總治療量(L)
-                self.CAPD_Total_Prescription = 0; //總處方量(L)
-
+                self.LastDianeal = 0;
+                self.LastExtraneal = 0;
+                clearChecklist();
                 for (var oi in res.data) {
+                    res.data[oi].Glucoseconcentration = _.toNumber(res.data[oi].Glucoseconcentration);
+                    res.data[oi].Calciumconcentration = _.toNumber(res.data[oi].Calciumconcentration);
+                    res.data[oi].Esa_Dose_U = _.toNumber(res.data[oi].Esa_Dose_U);
+                    //勾選給付方式
+                    let PaymentconditionsItem = self[res.data[oi].Fluidchangetime + '_PaymentconditionsCheck'];
+                    if(typeof PaymentconditionsItem != 'undefined'){
+
+                        if(res.data[oi].Paymentconditions != null){
+                            res.data[oi].Paymentconditions.split(',').forEach(e =>{
+                                PaymentconditionsItem[e].Check = true;
+                            });
+                        }
+                    }
+
                     if (res.data[oi].Fluidchangetime === "ESA") {
+                        res.data[oi].FrequencyName = self.FrequencyBaseData[res.data[oi].Frequency];
+                        let tempUnit = self.epolist.filter(e=>{
+                            return e.Name == res.data[oi].Esa_Types;
+                        })
+                        if(tempUnit.length > 0){
+                            res.data[oi].Unit = tempUnit[0].DoseUnit;
+                        }else{
+                            res.data[oi].Unit ="";
+                        }
                         self.pdEsaAry.push(angular.copy(res.data[oi]));
+
                     } else if (res.data[oi].Fluidchangetime === "Treat") {
                         if (res.data[oi].Potiontypes === "Dianeal") {
                             self.pdDianealAry.push(angular.copy(res.data[oi]));
@@ -320,29 +437,171 @@ function allReferralSheetFormPDCtrl($q, $window, $stateParams, ReferralSheetServ
                         } else if (res.data[oi].Potiontypes === "Extraneal") {
                             self.pdExtranealAry.push(angular.copy(res.data[oi]));
                         }
-                    }
-
-                    //每日換袋次數
-                    let Bagnumber = _.toNumber(res.data[oi].Bagnumber);
-                    if (_.isNumber(Bagnumber)) {
-                        self.Daily_Changed_Bag_Times += Bagnumber;
-                    }
-                    //總治療量
-                    let Esa_Dose_U = _.toNumber(res.data[oi].Esa_Dose_U);
-
-                    let Baglitre = (res.data[oi].Baglitre == '其他') ? _.toNumber(res.data[oi].BaglitreOther) : _.toNumber(res.data[oi].Baglitre);
-                    if (_.isNumber(Esa_Dose_U)) {
-                        self.CAPD_Total_Treatment += (Bagnumber * Esa_Dose_U);
-                    }
-                    //總處方量
-                    if (_.isNumber(Baglitre)) {
-                        self.CAPD_Total_Prescription += (Bagnumber * Baglitre);
+                    }else if (res.data[oi].Fluidchangetime === "Machine") {
+                        self.pdMachineAry.push(angular.copy(res.data[oi]));
+                    }else if (res.data[oi].Fluidchangetime === "ListBage") {
+                        self.pdlastAry.push(angular.copy(res.data[oi]));
+                        if(res.data[oi].Potiontypes =="Dianeal"){
+                            self.LastDianeal = 1;
+                        }
+                        if(res.data[oi].Potiontypes =="Extraneal"){
+                            self.LastExtraneal = 1;
+                        }
+                    }else if (res.data[oi].Fluidchangetime === "TwinBage"){
+                        if (res.data[oi].Potiontypes === "Dianeal") {
+                            self.pdDianealAry.push(angular.copy(res.data[oi]));
+                        } else if (res.data[oi].Potiontypes === "Nutrineal") {
+                            self.pdNutrinealAry.push(angular.copy(res.data[oi]));
+                        } else if (res.data[oi].Potiontypes === "Extraneal") {
+                            self.pdExtranealAry.push(angular.copy(res.data[oi]));
+                        }
                     }
                 }
+                if(self.pdlastAry.length == 0){
+                    self.Pd_Ismatch_Last_Bag_Concn = null;
+                }
+
+                switch(orderData.Dialysis_Type){
+                    case 'CAPD':
+                            CalculationCAPDTreat(res.data);
+                        break;
+                    case 'APD':
+                            CalculationAPDTreat(orderData);
+                        break;
+                }
+                self.referralSheetForm.Prescription_Id = orderData.Id;
             });
         }
     }
+    function clearChecklist(){
+        ['Treat','ListBage','TwinBage'].forEach( e =>{
+            let item = self[e +'_PaymentconditionsCheck'];
+            for(let  key in item){
+                item[key].Check = false;
+            }
+            self[e + '_PaymentconditionsCheck'] = angular.copy(item);
+        })
+    }
+//CAPD 計算換液處方
+function CalculationCAPDTreat(data){
+    self.Daily_Changed_Bag_Times = 0; //每日換袋次數
+    self.CAPD_Total_Treatment = 0; //總治療量(L)
+    self.CAPD_Total_Prescription = 0; //總處方量(L)
 
+    data.forEach(e =>{
+        //每日換袋次數
+        let Bagnumber = _.toNumber(e.Bagnumber);
+        if (_.isNumber(Bagnumber)) {
+            self.Daily_Changed_Bag_Times += Bagnumber;
+        }
+        //總治療量
+        let Esa_Dose_U = _.toNumber(e.Esa_Dose_U);
+
+        let Baglitre = (e.Baglitre == '其他') ? _.toNumber(e.BaglitreOther) : _.toNumber(e.Baglitre);
+        if (_.isNumber(Esa_Dose_U)) {
+            self.CAPD_Total_Treatment += (Bagnumber * Esa_Dose_U);
+        }
+        //總處方量
+        if (_.isNumber(Baglitre)) {
+            self.CAPD_Total_Prescription += (Bagnumber * Baglitre);
+        }
+    })
+}
+function CalculationAPDTreat(orderData){
+    self.APD_Total_Treatment = 0;
+    self.APD_Total_Prescription = 0;
+    let DialysisOsmotic = [];
+    //Machine:[], //機器處方
+    //ListBage:[], //最末袋處方
+    //TwinBage:[], //雙連袋
+    //總處方量
+    //藥水體積*袋數的總計，不含PRN
+    // let DialysisOsmoticSubstanceCheck = angular.copy(self.DialysisOsmoticSubstanceCheck);
+    // DialysisOsmoticSubstanceCheck.forEach( dos =>{
+    //     dos.Check = false;
+    // });
+    ['pdMachineAry','pdlastAry'].forEach(x =>{
+        self[x].forEach( e=>{
+            e.BaglitreOther = "";
+            e.Esa_Dose_U = _.toNumber(e.Esa_Dose_U);
+            if(e.Baglitre != null){
+                if(e.Baglitre.indexOf('其他|') > -1){
+                    let tempVal = e.Baglitre.split('|');
+                    e.BaglitreOther = _.toNumber(tempVal[1]);
+                    e.Baglitre = tempVal[0];
+                }
+            }
+            e.Esa_Dose_Ug = e.Esa_Dose_Ug == "false" ? false : true;
+            if(!e.Esa_Dose_Ug){
+                //每日換袋次數
+                let Bagnumber = _.toNumber(e.Bagnumber);
+                //總處方量
+                let Baglitre = (e.Baglitre == '其他') ? _.toNumber(e.BaglitreOther) : _.toNumber(e.Baglitre) ;
+                // if(_.isNumber(Baglitre)){
+                //     self.APD_Total_Prescription += (Bagnumber * Baglitre);
+                // }
+                //總處方量
+                if(_.isNumber(Baglitre)){
+                    self.APD_Total_Prescription = _.toNumber((self.APD_Total_Prescription + (Bagnumber * Baglitre)).toFixed(2));
+                    // self.CAPD_Total_Prescription += (Bagnumber * Baglitre);
+                }
+
+            }
+        });
+    });
+    //總治療量
+    //藥水體積(L) * 週期數
+    //每次注入量
+    self.Pd_Injection_Volume = String(orderData.Pd_Injection_Volume);
+
+    if(self.Pd_Injection_Volume.indexOf(-999) > -1 ){
+        self.Pd_Injection_Volume = _.toNumber(self.Pd_Injection_Volume.replace('-999',''))/1000;
+    }else{
+        self.Pd_Injection_Volume = _.toNumber(orderData.Pd_Injection_Volume)/1000;
+    }
+    //週期數
+    self.Pd_Period_Number = String(orderData.Pd_Period_Number);
+
+    if(self.Pd_Period_Number.indexOf(-999) > -1 ){
+        self.Pd_Period_Number = _.toNumber(self.Pd_Period_Number.replace('-999',''));
+    }else{
+        self.Pd_Period_Number = _.toNumber(orderData.Pd_Period_Number);
+    }
+
+    if(_.isNumber(self.Pd_Injection_Volume) && _.isNumber(self.Pd_Period_Number)){
+        self.APD_Total_Treatment = self.Pd_Injection_Volume * self.Pd_Period_Number;
+    }
+    
+    if(self.Pd_Ismatch_Last_Bag_Concn =='相同'){
+        if(self.pdlastAry.length > 0){
+            if(_.isNumber(self.pdlastAry[0].Esa_Dose_U)){
+                console.log(self.pdlastAry[0].Esa_Dose_U,self.APD_Total_Treatment)
+                self.APD_Total_Treatment = _.toNumber(self.APD_Total_Treatment) + _.toNumber(self.pdlastAry[0].Esa_Dose_U);
+            }
+            
+        }
+        
+    }
+}
+//清空處方
+self.deleteOrder = function(){
+        self.orderDatalength = 0;
+        self.Prescription_Startdate = "";//處方日期
+        self.Dialysis_Type = "";//腹膜透析類別
+        self.Liquid_Exchange_System = "";//換液系統
+        self.Dialysis_System  = "";//透析系統
+        self.Is_With_Hemodialysis = "";//兼作血液透析
+        self.Major_Bag_Changers = "";//主要換袋者
+        self.pdEsaAry = [];
+        self.pdlastAry = [];
+        self.pdMachineAry =[];
+        self.pdDianealAry = [];
+        self.pdNutrinealAry = [];
+        self.pdExtranealAry = [];
+        self.LastDianeal = 0;
+        self.LastExtraneal = 0;
+        self.referralSheetForm.Prescription_Id = "";
+}
     // 其他共病
     // 如果 $sessionStorage 有值，要 append 到 self.referralSheetForm.DiseaseCheckedData 裡
     function appendDiseaseCheckedData() {
@@ -949,12 +1208,21 @@ function allReferralSheetFormPDCtrl($q, $window, $stateParams, ReferralSheetServ
 
     // 其他共病勾選單
     self.gotoDiseaseCheck = function () {
-        $state.go('diseaseCheck', {
-            patientId: $stateParams.patientId,
-            referralSheetId: $stateParams.referralSheetId,
-            medicalId: self.currentPatient.MedicalId,
-            patientName: self.currentPatient.Name
-        });
+        if ($state.current.name.substr(0, 2) === "pd") {
+            $state.go('pddiseaseCheck', {
+                patientId: $stateParams.patientId,
+                referralSheetId: $stateParams.referralSheetId,
+                medicalId: self.currentPatient.MedicalId,
+                patientName: self.currentPatient.Name
+            });
+        } else {
+            $state.go('diseaseCheck', {
+                patientId: $stateParams.patientId,
+                referralSheetId: $stateParams.referralSheetId,
+                medicalId: self.currentPatient.MedicalId,
+                patientName: self.currentPatient.Name
+            });
+        }
     };
 
     // PD 治療處方勾選單

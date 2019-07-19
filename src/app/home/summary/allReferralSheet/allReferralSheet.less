@@ -19,6 +19,13 @@ all-referral-sheet-form {
     .all-referral-sheet-form-container {
         padding-left: 1cm!important;
         .out-form{ font-size: 9pt;}
+        h1 {
+            font-size: 24px;
+            margin:2px 0 ;
+            line-height: 30px;
+            letter-spacing: 5px
+        }
+
         h3 {
             font-size: 28px;
             margin:5px 0 ;
@@ -28,13 +35,108 @@ all-referral-sheet-form {
         h4{  margin:5px 0; font-size: 18px ; line-height: 30px; white-space: nowrap; }
         h5{  margin:0; font-size: 15px ; line-height: 24px;  }
         ul li{list-style-type: square; line-height: 15px }
-        textarea{ width: 95%; }
+        textarea{ width: 100%!important; }
 
-        .sugery-textarea {
-            width: 93%!important;
-            margin-left: 20px;
+        .sugery-container {
+            width: 95%!important;
+            padding: 0px;
+            margin: 0px;
+            box-sizing: border-box;
+            .md-errors-spacer {
+                min-height: 0px;
+            } 
+            // .md-char-counter {
+            //     width: 50px;    
+            //     float: right;
+            //     margin-right: 35px;
+            // }
         }
-        
+        .sugery-textarea {
+            // width: 100%!important;
+            // min-height: 25px;
+            margin-left: 20px;
+            // resize: none!important;
+            overflow:hidden!important;
+            line-height: 14px;
+            // box-sizing: border-box;
+            max-height: none!important;
+           
+        }
+
+        .comorbidity-container {
+            width: 95%!important;
+            padding: 0px;
+            margin: 0px;
+            box-sizing: border-box;
+            .md-errors-spacer {
+                min-height: 0px;
+            } 
+        }
+        .comorbidity-textarea {
+            // width: 100%!important;
+            margin-left: 20px;
+            overflow:hidden!important;
+            line-height: 14px;
+            max-height: none!important;
+        }
+
+        .drug-container {
+            width: 96%!important;
+            min-height: 40px!important;
+            padding: 0px;
+            margin: 0px;
+            box-sizing: border-box;
+            .md-errors-spacer {
+                min-height: 0px;
+            } 
+        }
+        .drug-textarea {
+            // width: 100%!important;
+            min-height: 40px!important;
+            // margin-left: 20px;
+            overflow:hidden!important;
+            line-height: 14px;
+            max-height: none!important;
+        }
+
+        .problems-container {
+            width: 96%!important;
+            min-height: 40px!important;
+            padding: 0px;
+            margin: 0px;
+            box-sizing: border-box;
+            .md-errors-spacer {
+                min-height: 0px;
+            } 
+        }
+        .problems-textarea {
+            // width: 100%!important;
+            min-height: 40px!important;
+            // margin-left: 20px;
+            overflow:hidden!important;
+            line-height: 14px;
+            max-height: none!important;
+        }
+
+        .specialNotes-container {
+            width: 96%!important;
+            min-height: 40px!important;
+            padding: 0px;
+            margin: 0px;
+            box-sizing: border-box;
+            .md-errors-spacer {
+                min-height: 0px;
+            } 
+        }
+        .specialNotes-textarea {
+            // width: 100%!important;
+            min-height: 40px!important;
+            // margin-left: 20px;
+            overflow:hidden!important;
+            line-height: 14px;
+            max-height: none!important;
+        }
+
         .labexam-text { height: 130px!important; }
 
         table tr td {
@@ -197,9 +299,10 @@ all-referral-sheet-form {
             input, md-select { padding:0; border:none!important; width: auto; height: 15px; background: transparent!important;}
             // textarea { padding:0 ; border:none!important; }
             h4{   font-size: 15px ; }
-            textarea {height: auto!important;}
 
-         
+            // textarea {height: auto!important;}
+            textarea {width: 100%!important;}
+
             .md-select-value .md-select-icon {
                 // background: transparent;
                 color: transparent;

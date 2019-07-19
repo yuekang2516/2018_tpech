@@ -16,7 +16,7 @@
     </div>
   </md-toolbar>
 
-  <div class="list-header" layout="row" layout-align="center center" ng-show="!$ctrl.loading && $ctrl.serviceData.length > 0">
+  <div class="list-header" layout="row" layout-align="center center" ng-show="!$ctrl.loading">
       <h6 translate="notifications.totalRecord" translate-values='{total: $ctrl.serviceData.length}'></h6>
       <span flex></span>
       <last-refresh-time accesstime='$ctrl.lastAccessTime' refresh='$ctrl.refresh()'></last-refresh-time>
@@ -24,7 +24,7 @@
   
   <md-content flex layout="column" layout-fill>
     <loading ng-show="$ctrl.loading">loading...</loading>
-    <div flex ng-show="$ctrl.serviceData.length === 0" layout="column" layout-fill layout-align="center center">
+    <div flex ng-show="$ctrl.serviceData.length === 0 && !$ctrl.loading" layout="column" layout-fill layout-align="center center">
       <h3 translate>{{'notifications.noData'}}</h3>
     </div>
     

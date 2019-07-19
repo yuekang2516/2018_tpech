@@ -136,15 +136,21 @@ $mdMedia, peritonitisService, PatientService, $rootScope) {
     };
 
     function findNewTimes(){
-        let maxTimes = 0;
+        let max = 0;
+        if(self.peritonitisList.length == 0){
 
-        for(let i = 0; i< self.peritonitisList.length; i++){
-            if( maxTimes < self.peritonitisList[i].Times){
-                maxTimes = self.peritonitisList[i].Times;
+        }else{
+            let notDelfiList = self.peritonitisList.filter( e=>{
+                return e.Status != 'Deleted'
+            });
+            if(notDelfiList.length > 0){
+                max = Math.max.apply(null, notDelfiList.map(function (o) {
+                    return o.Times;
+                }));
             }
         }
-        
-        return maxTimes;
+
+        return max;
     }
 
     self.openEditDialog = function (peItem) {
