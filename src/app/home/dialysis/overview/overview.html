@@ -180,7 +180,7 @@
                         </md-input-container-flat>
                         <md-input-container class="md-block">
                             <label htmlFor="chiefComplaint" translate>{{'overview.chiefComplaint'}}</label>
-                            <textarea name="chiefComplaint" ng-model="$ctrl.dialysisHeader.ChiefComplaint" md-maxlength="5000" md-detect-hidden="true" rows="3"></textarea>
+                            <textarea name="chiefComplaint" ng-model="$ctrl.dialysisHeader.ChiefComplaint" md-maxlength="50" md-detect-hidden="true" rows="2"></textarea>
                         </md-input-container>
                     </md-card-content>
                 </md-card>
@@ -817,7 +817,11 @@
                 {{'overview.finishRecord' | translate}}</md-button>
         </footer>
         <span ng-if="$ctrl.dialysisHeader.UploadTime" style="float:right;font-size:10px;color:#616161">電子病歷上傳時間：{{$ctrl.dialysisHeader.UploadTime | moment:'YYYY/MM/DD HH:mm:ss'}}</span>
-        <div style="clear:both" ng-if="$ctrl.dialysisHeader.EndTime !== null" translate="overview.finishRecordTime" translate-values='{EndTime: $ctrl.dialysisHeader.EndTime}'></div>
+        <div ng-if="$ctrl.dialysisHeader.EndTime !== null" style="clear:both">
+            <span ng-if="$ctrl.dialysisHeader.EndTime !== null" translate="overview.finishRecordTime" translate-values='{EndTime: $ctrl.dialysisHeader.EndTime}'></span>
+            <seal created="none" modified="none" label="{{$ctrl.dialysisHeader.OffUserName}}"></seal>
+        </div>
+
     </md-content>
 </div>
 

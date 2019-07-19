@@ -118,8 +118,9 @@
                 <div layout="column">
                     <div layout="row" style="margin-bottom:10px;margin-top:10px;vertical-align:middle;">
                         <label class="lightblue">感染記錄次數:</label>
-                        <input type="text" style="width:100px;margin-left:10px;" ng-model="$ctrl.peItem.Times"
-                            readonly />
+                        <input type="text" style="width:100px;margin-left:10px;"
+                        onkeydown="if(event.keyCode==13)event.keyCode=9" onkeypress="if ((event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                        ng-model="$ctrl.peItem.Times" />
                     </div>
                     <div class="cardContent">
                         <div class="cardTit">
@@ -401,7 +402,7 @@
             <md-button class="md-raised" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.cancel()">
                 {{'peritonitis.dialog.cancel' | translate}}
             </md-button>
-            <md-button class="md-raised md-primary" ng-click="$ctrl.ok()">
+            <md-button class="md-raised md-primary" ng-click="$ctrl.ok($event)">
                 {{$ctrl.isCreate ? 'peritonitis.dialog.create' : 'peritonitis.dialog.edit' | translate}}
             </md-button>
         </md-dialog-actions>

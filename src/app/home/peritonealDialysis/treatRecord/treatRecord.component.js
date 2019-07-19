@@ -23,12 +23,12 @@ function treatRecordCtrl(
     let maxpage = 0;
     let limit = 50;
     self.myStyle = { right: '120px'}
-    // self.isBrowser = cordova.platformId === 'browser';
-    // if(self.isBrowser){
-    //     self.myStyle = { right: '180px'}
-    // }else{
-    //     self.myStyle = { right: '120px'}
-    // }
+    self.isBrowser = cordova.platformId === 'browser';
+    if(self.isBrowser){
+        self.myStyle = { right: '180px'}
+    }else{
+        self.myStyle = { right: '120px'}
+    }
     //刪除狀態
     self.showDeleted = false;
 
@@ -320,7 +320,15 @@ function treatRecordCtrl(
     self.printPaper = function(item){ 
         console.log('is item',item);
         //$state.go("auctions", {"product": auction.product, "id": auction.id}); 
-        $state.go('printTreat',{"item":item});
+        switch(item.Dialysis_Type){
+            case "APD":
+                    $state.go('printTreatAPD',{"item":item});
+                break;
+            case "CAPD":
+                    $state.go('printTreat',{"item":item});
+                break;
+        }
+        
     }
 
 }

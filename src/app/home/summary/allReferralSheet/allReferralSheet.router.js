@@ -54,6 +54,12 @@ angular.module('app').config([
             component: 'allReferralSheetFormPd'
         }, { keepOriginalNames: true }).state({
             parent: 'pdAllReferralSheetForm',
+            name: 'pddiseaseCheck',
+            url: '/:patientId/:referralSheetId/:medicalId/:patientName/allReferralSheetForm/diseaseCheck',
+            //url: '/:patientId/:referralSheetId/allReferralSheetForm/labexamCheck',
+            component: 'diseaseCheck'
+        },{ keepOriginalNames: true }).state({
+            parent: 'pdAllReferralSheetForm',
             name: 'pdLabexamCheck',
             url: '/:patientId/:referralSheetId/:medicalId/:patientName/allReferralSheetForm/labexamCheck',
             //url: '/:patientId/:referralSheetId/allReferralSheetForm/labexamCheck',

@@ -13,5 +13,12 @@ angular.module('app').config([
                 item: null
             },
             component: 'printTreat'
+        }, { keepOriginalNames: true }).state({
+            name: 'printTreatAPD',
+            url: '/printTreatAPD',
+            params: {
+                item: null
+            },
+            component: 'printTreatAPD'
         }, { keepOriginalNames: true });
     }]);

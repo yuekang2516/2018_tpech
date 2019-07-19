@@ -323,8 +323,8 @@ function machineDataCtrl(
 
 }
 
-machineDataDetailCtrl.$inject = ['$mdToast', 'SettingService', 'machineDataService', 'bleService', 'raspberryPiService', 'machineService', 'dialysisService', '$stateParams', '$state', 'showMessage', '$timeout', '$mdDialog', 'nfcService', '$filter', '$mdSidenav', 'cursorInput', 'PatientService', 'assessmentService', '$q', 'OverViewService'];
-function machineDataDetailCtrl($mdToast, SettingService, machineDataService, bleService, raspberryPiService, machineService, dialysisService, $stateParams, $state, showMessage, $timeout, $mdDialog, nfcService, $filter, $mdSidenav, cursorInput, PatientService, assessmentService, $q, OverViewService) {
+machineDataDetailCtrl.$inject = ['$mdToast', 'SettingService', 'machineDataService', 'bleService', 'raspberryPiService', 'machineService', 'dialysisService', '$stateParams', '$state', 'showMessage', '$timeout', '$mdDialog', 'nfcService', '$filter', '$mdSidenav', 'cursorInput', 'PatientService', 'assessmentService', '$q', 'OverViewService', '$scope', '$rootScope'];
+function machineDataDetailCtrl($mdToast, SettingService, machineDataService, bleService, raspberryPiService, machineService, dialysisService, $stateParams, $state, showMessage, $timeout, $mdDialog, nfcService, $filter, $mdSidenav, cursorInput, PatientService, assessmentService, $q, OverViewService, $scope, $rootScope) {
 
 
     const self = this;
@@ -1001,6 +1001,9 @@ function machineDataDetailCtrl($mdToast, SettingService, machineDataService, ble
                 if (res.status === 200) {
                     showMessage($translate('machineData.machineDataDetail.component.createSuccess'));
                     self.gotoList();
+                    $timeout(() => {
+                        $rootScope.$broadcast('machineDataRefresh');
+                    }, 0);
                     self.isSaving = false;
                 } else {
                     showMessage($translate('machineData.machineDataDetail.component.createFail'));
@@ -1009,9 +1012,13 @@ function machineDataDetailCtrl($mdToast, SettingService, machineDataService, ble
                 // 儲存至 localStorage
                 showMessage($translate('machineData.machineDataDetail.component.serverError'));
                 self.gotoList();
+                $timeout(() => {
+                    $rootScope.$broadcast('machineDataRefresh');
+                }, 0);
             });
 
         }
+
     };
 
     // 回列表

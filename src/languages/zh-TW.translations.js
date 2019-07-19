@@ -1750,13 +1750,13 @@ window.zh_tw_translations = {
             checkWholeMedicine: "匯入全院",
             showDeleted: "顯示已刪除（{{deletedItemsLength}}筆）",
             totalRecord: "共 {{length}} 筆",
-            totalDays: "{{StartDate | date: 'MM/dd' }} {{ Days > 1 ? vm.getEndDate(StartDate, Days): '' }} ~ {{endDate | date: 'MM/dd' }} 共 {{Days }} 天", // TODO:
-            totalQuantity: "{{Route}} {{Frequency }} 每次 {{Quantity }} {{QuantityUnit }}",
+            totalDays: "{{StartDate | date: 'MM/dd' }} {{ Days > 1 ? vm.getEndDate(StartDate, Days): '' }} ~ {{duringDate | date: 'MM/dd' }} 共 {{Days }} 天", // TODO:
+            totalQuantity: "{{Route}} {{Frequency}} 每次 {{Quantity }} {{QuantityUnit }}",
             noData: "{{showDate}}目前沒有資料",
             clickBottomRight: "您可以按右下角新增按鈕來新增用藥資料",
             serverError: "伺服器資料讀取失敗",
             Infinity: "無截止日",
-            quantity: "每次 {{Quantity}} {{QuantityUnit}}",
+            quantity: "{{Route}} {{Frequency}} 每次 {{Quantity}} {{QuantityUnit}}",
             IsOtherDrug: "外院用藥",
             // component
             component: {
@@ -3275,8 +3275,7 @@ window.zh_tw_translations = {
             createDetailFail: "新增感染菌種記錄失敗",
             editDetailSuccess: "修改感染菌種記錄成功",
             editDetailFail: "修改感染菌種記錄失敗",
-            createDetailFail: "修改失敗,尚未建立處方資料!",
-            saveSuccess:"儲存成功"
+            saveSuccess: "儲存成功"
         },
         treat: {
             createTitle: "腹膜炎感染－新增",

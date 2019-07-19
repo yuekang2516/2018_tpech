@@ -222,6 +222,12 @@ function UserDetailCtrl($scope, $state, $stateParams,
         if (vm.isSmartEcare ) {
             // SmartEcare
             // 確認密碼
+            if (vm.password == undefined) {
+                vm.password = "";
+            }
+            if (vm.passwordConfirm == undefined) {
+                vm.passwordConfirm = "";
+            }
             if ($scope.editForm.$valid && (validation && vm.passwordConfirm === vm.password)) { //  && vm.formData.Modules.length !== 0
                 if ((vm.type === 'create' && vm.password) || vm.type === 'edit') {
                     vm.save();

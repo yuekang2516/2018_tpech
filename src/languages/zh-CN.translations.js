@@ -1764,7 +1764,7 @@ window.zh_cn_translations = {
             clickBottomRight: "您可以按右下角新增按钮来新增用药资料",
             serverError: "伺服器资料读取失败",
             Infinity: "无截止日",
-            quantity: "每次 {{Quantity}} {{QuantityUnit}}",
+            quantity: "{{Route}} {{Frequency}} 每次 {{Quantity}} {{QuantityUnit}}",
             IsOtherDrug: "外院用药",
             // component
             component: {

@@ -206,6 +206,7 @@ function medicationImportCtrl($mdSidenav, Upload, $http, $timeout, PatientServic
                 angular.forEach(xlsarray, function (record, ind) {
                     // Name = ''; // 藥品名稱
                     // MedicineCode = ''; // 代碼
+                    Medication.Quantity = 0;
                     angular.forEach(record, function (item, fname) {
 
                         if (fname.trim() === $translate('medicationImport.excel.name')) { // '藥品名稱'
@@ -290,14 +291,18 @@ function medicationImportCtrl($mdSidenav, Upload, $http, $timeout, PatientServic
             let rstarray = rst.data.split('|');
            angular.forEach(rstarray, function (rstone, ind2) {
                if (rstone !== '') {
-                    let rstonearray = rstone.split(' ');
+                    let rstonearray = rstone.split(': ');
                     let keepGoing = true;
                     angular.forEach(vm.MedicationResult, function (Med, ind3) {
                         if (keepGoing) {
-                            let codeNameStr = rstonearray[1].replace('。', '');
-                            let namex = codeNameStr.substring(0, codeNameStr.indexOf('('));
-                            let codex = codeNameStr.substring(codeNameStr.indexOf('(') + 1);
+                            let codeNameStr = rstonearray[1]; // Calcium Acetate 667mg(井田)(22)。
+                            let namex = codeNameStr.substring(0, codeNameStr.lastIndexOf('('));
+                            let codex = codeNameStr.substring(codeNameStr.lastIndexOf('(') + 1);
                             codex = codex.substring(0, codex.indexOf(')'));
+                            // let codeNameStr = rstonearray[1].replace('。', '');
+                            // let namex = codeNameStr.substring(0, codeNameStr.indexOf('('));
+                            // let codex = codeNameStr.substring(codeNameStr.indexOf('(') + 1);
+                            // codex = codex.substring(0, codex.indexOf(')'));
                             if (Med.Name === namex && Med.MedicineCode.toString() === codex) {
                                 if (rstonearray[0].substring(rstonearray[0].indexOf('_') + 1).replace(':', '') === 'SUCCESSFULLY' || rstonearray[0].substring(rstonearray[0].indexOf('_') + 1).replace(':', '') === 'COMPLETED') {
                                     Med.CheckStatus = rstonearray[0].substring(0, rstonearray[0].indexOf('_'));

@@ -157,7 +157,7 @@ function labTableCtrl($q, $timeout, $scope, $state, $stateParams, $mdDialog, Set
         }
 
         return `<div class="cell" title="正常範圍 ${itemNormalDown}~${itemNormaUpper}&#013;
-        ${itemCheckTime}">
+        ${value}">
         <span hm-tap="cellClicked('${itemId}')" hm-press="cellPressed('${itemId}')">${value}</span>
         <i class="material-icons" ng-if="${itemIsAbnormal}" hm-tap="showMemo('${itemName}')">info_outline</i>
         </div>

@@ -332,8 +332,20 @@ function frequencyImplantationCtrl(
         let notDelfiList = self.fiList.filter( e=>{
             return e.Status != 'Deleted'
         });
-        tmpFiData.Frequency_Implantation = Object.keys(notDelfiList).length + 1;    
-        
+
+        console.log('notDelfiList',notDelfiList);
+        let max  = 0;
+
+        if(notDelfiList.length == 0){
+            max = 1;
+        }else{
+            max = Math.max.apply(null, notDelfiList.map(function (o) {
+                return o.Frequency_Implantation;
+            }));
+            max = max + 1;
+        }
+        tmpFiData.Frequency_Implantation = max;
+
         tmpFiData.isCreate = true;
         fiDataAry.push(tmpFiData);
 

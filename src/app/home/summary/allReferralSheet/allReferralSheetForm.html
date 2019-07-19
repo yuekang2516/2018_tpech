@@ -29,12 +29,13 @@
                 <div style="width: 21.4cm; clear: both;">
                     <!-- <img ng-src="{{'static/img/TV_logo.jpg'}}" width="250px" height="250px" alt="Hospital logo" /> -->
                     <!-- <img ng-src="{{'static/img/TV_logo.jpg'}}" alt="" style="float: left; width: 10%; margin-left: 15px"> -->
+                    <h1 style="text-align: center;">{{::$ctrl.formTitle}}</h1>
                     <div ng-if="$ctrl.stateName.substr(0, 2) !== 'pd'" style="text-align: center;">
-                        <h3>血液透析病歷摘要</h3>
+                        <h1>血液透析病歷摘要</h1>
                         <!-- <h4>Referral Sheet from Hemodialysis unit of Taipei Veterans General Hospital</h4> -->
                     </div>
                     <div ng-if="$ctrl.stateName.substr(0, 2) === 'pd'" style="text-align: center;">
-                        <h3>腹膜透析病歷摘要</h3>
+                        <h1>腹膜透析病歷摘要</h1>
                         <!-- <h4>Referral Sheet from Hemodialysis unit of Taipei Veterans General Hospital</h4> -->
                     </div>
                     <div style="clear: both;"></div>
@@ -183,9 +184,19 @@
                                                 </div>
                                             </li>
                                         </ul>
-                                        <textarea name="surgery" class="sugery-textarea"
-                                            ng-model="$ctrl.referralSheetForm.SurgeryCheckedData" rows="2"
-                                            style="height: 25px;">&nbsp;</textarea>
+                                        <md-input-container class="sugery-container" >
+                                            <textarea id="Surgery" name="surgery" class="sugery-textarea"
+                                                ng-model="$ctrl.referralSheetForm.SurgeryCheckedData" 
+                                                ng-keypress="$ctrl.autogrow('Surgery')"
+                                                rows="1">
+                                                &nbsp;
+                                            </textarea>
+                                            <!-- md-maxlength="10" 
+                                                maxlength="10" -->
+                                            <!-- <div ng-messages="referralSheetForm.surgery.$error" >
+                                                <div ng-message="md-maxlength">字數超過</div>
+                                            </div> -->
+                                        </md-input-container>
                                     </div>
                                 </td>
                             </tr>
@@ -300,9 +311,17 @@
                                                 </div>
                                             </li>
                                         </ul>
-                                        <textarea name="Comorbidity" class="sugery-textarea"
+                                        <md-input-container class="comorbidity-container" >
+                                            <textarea id="Comorbidity" name="comorbidity" class="comorbidity-textarea"
+                                                ng-model="$ctrl.referralSheetForm.Comorbidity" 
+                                                ng-keypress="$ctrl.autogrow('Comorbidity')"
+                                                rows="1">
+                                                &nbsp;
+                                            </textarea>
+                                        </md-input-container>
+                                        <!-- <textarea name="Comorbidity" class="comorbidity-textarea"
                                             ng-model="$ctrl.referralSheetForm.Comorbidity" rows="2"
-                                            style="height: 25px;">&nbsp;</textarea>
+                                            style="height: 25px;">&nbsp;</textarea> -->
                                     </div>
                                 </td>
                             </tr>
@@ -414,7 +433,7 @@
                                             透析前血壓 Pre-dialysis BP：
                                             <input ng-model="$ctrl.referralSheetForm.PreBloodPressure"
                                                 class="ng-pristine ng-untouched ng-valid ng-not-empty"
-                                                aria-invalid="false" style="">
+                                                aria-invalid="false">
                                         </li>
                                     </ul>
                                 </td>
@@ -424,7 +443,7 @@
                                             透析後血壓 Post-dialysis BP：
                                             <input ng-model="$ctrl.referralSheetForm.PostBloodPressure"
                                                 class="ng-pristine ng-untouched ng-valid ng-not-empty"
-                                                aria-invalid="false" style="">
+                                                aria-invalid="false">
                                         </li>
                                     </ul>
                                 </td>
@@ -606,10 +625,18 @@
                             <span class="checkBtn-span drug-CheckBtn" ng-click="$ctrl.gotoDrugCheck()">用藥明細</span>
                         </div>
                     </div>
+                    <md-input-container class="drug-container" >
+                        <textarea id="Drug" name="drug" class="drug-textarea"
+                            ng-model="$ctrl.referralSheetForm.DrugCheckedData" 
+                            ng-keypress="$ctrl.autogrow('Drug')"
+                           >
+                            &nbsp;
+                        </textarea>
+                    </md-input-container>
+                    <!-- <textarea width="90%" name="drug" ng-model="$ctrl.referralSheetForm.DrugCheckedData" rows="4"
+                        style="height: 40px;">&nbsp;</textarea> -->
 
-                    <textarea width="90%" name="drug" ng-model="$ctrl.referralSheetForm.DrugCheckedData" rows="4"
-                        style="height: 40px;">&nbsp;</textarea>
-
+                    
                     <!-- <div flex layout="column" >
                         <ul class="spanGap">
                             <li>
@@ -642,15 +669,31 @@
                             <span class="phrase-span" ng-click="$ctrl.isOpenRight()">插入片語</span>
                         </div>
                     </div>
-                    <textarea id="Content" name="Content" width="100%" name="Problems"
-                        ng-model="$ctrl.referralSheetForm.Problems" rows="4" style="height: 40px;">&nbsp;</textarea>
+                    <md-input-container class="problems-container" >
+                        <textarea id="Problems" name="problems" class="problems-textarea"
+                            ng-model="$ctrl.referralSheetForm.Problems" 
+                            ng-keypress="$ctrl.autogrow('Problems')"
+                           >
+                            &nbsp;
+                        </textarea>
+                    </md-input-container>
+                    <!-- <textarea id="Content" name="Content" width="100%" name="Problems"
+                        ng-model="$ctrl.referralSheetForm.Problems" rows="4" style="height: 40px;">&nbsp;</textarea> -->
 
                     <br>
                     <h5 style="margin-top: 10px;">特別注意事項 Special Notes：</h5>
-                    <textarea width="100%" name="specialnotes" ng-model="$ctrl.referralSheetForm.SpecialNotes" rows="4"
-                        style="height: 40px;">&nbsp;</textarea>
+                    <md-input-container class="specialNotes-container" >
+                        <textarea id="SpecialNotes" name="problems" class="specialNotes-textarea"
+                            ng-model="$ctrl.referralSheetForm.SpecialNotes" 
+                            ng-keypress="$ctrl.autogrow('SpecialNotes')"
+                           >
+                            &nbsp;
+                        </textarea>
+                    </md-input-container>
+                    <!-- <textarea width="100%" name="specialnotes" ng-model="$ctrl.referralSheetForm.SpecialNotes" rows="4"
+                        style="height: 40px;">&nbsp;</textarea> -->
 
-                    <table class="table_content" style=" margin-top: 8px" width="100%">
+                    <table class="table_content" style=" margin-top: 8px" width="96%" >
                         <tr>
                             <td>
                                 主治醫生：
@@ -660,9 +703,12 @@
                             <td>
                                 記錄日期：
                                 <input type="date" ng-model="$ctrl.referralSheetForm.RecordDate"
-                                    class="ng-pristine ng-untouched ng-valid ng-not-empty" aria-invalid="false"
-                                    style="">
+                                    class="ng-pristine ng-untouched ng-valid ng-not-empty" aria-invalid="false">
                             </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2" height="60px"></td>
                         </tr>
                         <!-- <tr>
                             <td>

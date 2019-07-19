@@ -1,22 +1,19 @@
-<div layout="row" class="summary w23" layout-padding layout-wrap layout-fill
-    style="padding-bottom:18px; margin-top: 8px" ng-cloak>
-    <loading ng-show="$ctrl.loading"></loading>
-    <server-error-page id="serverError" flex ng-if="!$ctrl.loading && $ctrl.isError" refresh="$ctrl.refresh()"></server-error-page>
-    <md-whiteframe ng-show="!$ctrl.loading && !$ctrl.isError" class="md-whiteframe-10dp pad0"
-        layout-align="start center" flex>
+<loading ng-show="$ctrl.loading"></loading>
+<server-error-page id="serverError" flex ng-if="!$ctrl.loading && $ctrl.isError" refresh="$ctrl.refresh()"></server-error-page>
+<div layout="row" class="summary w23 pagebreak" layout-padding layout-wrap layout-fill style="padding-bottom:18px; margin-top: 8px" ng-cloak>
+    <md-whiteframe ng-show="!$ctrl.loading && !$ctrl.isError" class="md-whiteframe-10dp pad0 pagebreak" layout-align="start center" style="width: 100%">
         <div class="table" style="text-align: center; margin:0 auto;">
             <h1>{{::$ctrl.formTitle}}</h1>
             <h1>血液透析紀錄表</h1>
             <span style="float: right;">
                 {{$ctrl.data.DialysisHeader.StartTime | moment: 'YYYY 年 MM 月 DD 日 (dd)'}} 第
-                {{$ctrl.data.DialysisHeader.Numbers.month}} 次
+                {{$ctrl.data.DialysisHeader.Numbers.month}} 次 &nbsp;&nbsp;第 1/2 頁
             </span>
             <div style="clear: both;"></div>
         </div>
-        <table border="0" cellpadding="0" cellspacing="0" class="table"
-            style="border: #000 solid 2px; border-bottom: none" align="center">
+        <table border="0" cellpadding="0" cellspacing="0" class="table" style="border: #000 solid 2px; border-bottom: none" align="center">
             <tr>
-                <td colspan="6" style="padding: 0; border-bottom:#000 solid 2px ">
+                <td colspan="6" style="padding: 0; ">
                     <table border="0" cellpadding="0" cellspacing="0" class="table_basedata" width="100%">
                         <tr>
                             <td>床號：{{$ctrl.data.DialysisHeader.BedNo}}<span style="font-size: 12pt"
@@ -30,6 +27,9 @@
                     </table>
                 </td>
             </tr>
+        </table>
+        <table border="0" cellpadding="0" cellspacing="0" class="table" style="border: #000 solid 2px; border-bottom: none; border-top: none;" align="center">
+            
             <tr>
                 <td width="17%">透析時間</td>
                 <td width="14%">開始：{{$ctrl.data.DialysisHeader.DialysisDataFirstTime | moment: 'HH:mm'}}</td>
@@ -105,7 +105,7 @@
                 </td>
             </tr>
             <tr>
-
+    
                 <td style="border-left: #000 solid 2px;">Mode：{{$ctrl.data.DialysisHeader.Prescription.Mode.Name}}</td>
                 <td>補充液量：{{$ctrl.data.DialysisHeader.Prescription.SupplementVolume}}</td>
                 <td></td>
@@ -137,7 +137,7 @@
                                 實際脫水量：{{$ctrl.data.DialysisHeader.Dehydration}}kg
                             </td>
                             <td style="border-right: 0">
-
+    
                             </td>
                         </tr>
                     </table>
@@ -192,7 +192,7 @@
                     <p>動脈端上針部位：{{ $ctrl.ArteryPosition }}</p>
                     <p>靜脈端上針部位：{{ $ctrl.VeinPosition }}</p>
                     <p>通路功能評估：Thrill：{{ $ctrl.Thrill }}　順暢：{{ $ctrl.Favorable }}</p>
-
+    
                 </td>
                 <td colspan="3" style="border-left: #000 solid 2px;">備註：{{$ctrl.data.DialysisHeader.Prescription.Memo}}
                 </td>
@@ -209,10 +209,10 @@
                                 血型：{{$ctrl.bloodData[0].BloodBags[0].BloodType}}{{$ctrl.bloodData[0].BloodBags[0].RH}}
                             </td>
                             <td>輸血反應：<img ng-src="./static/img/tick.png" alt="" class="tick"
-                                    ng-show="$ctrl.bloodData.length > 0 && $ctrl.bloodData[0].TransfusionReaction === ''">{{$ctrl.bloodData.length > 0 && $ctrl.bloodData[0].TransfusionReaction === '' ? '' : '口'}}
-                                無 　<img ng-src="./static/img/tick.png" alt="" class="tick"
-                                    ng-show="$ctrl.bloodData.length > 0 && $ctrl.bloodData[0].TransfusionReaction !== ''">{{$ctrl.bloodData.length > 0 && $ctrl.bloodData[0].TransfusionReaction !== '' ? '' : '口'}}
-                                有 : {{$ctrl.bloodData[0].TransfusionReaction}}</td>
+                                ng-show="$ctrl.bloodData.length > 0 && $ctrl.bloodData[0].TransfusionReaction == '' || $ctrl.bloodData[0].TransfusionReaction == null">{{$ctrl.bloodData.length > 0 && $ctrl.bloodData[0].TransfusionReaction === '' || $ctrl.bloodData[0].TransfusionReaction == null ? '' : '口'}}
+                            無 　<img ng-src="./static/img/tick.png" alt="" class="tick"
+                                ng-show="$ctrl.bloodData.length > 0 && $ctrl.bloodData[0].TransfusionReaction != '' && $ctrl.bloodData[0].TransfusionReaction != null">{{$ctrl.bloodData.length > 0 && $ctrl.bloodData[0].TransfusionReaction !== '' && $ctrl.bloodData[0].TransfusionReaction != null ? '' : '口'}}
+                            有 : {{$ctrl.bloodData[0].TransfusionReaction}}</td>
                         </tr>
                         <tr>
                             <td colspan="2">
@@ -237,11 +237,11 @@
                         </tr>
                     </table>
                 </td>
-
+    
             </tr>
-
+    
         </table>
-
+    
         <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" class="table_in_table"
             style="border: #000 solid 2px; border-top: none">
             <tr>
@@ -402,21 +402,41 @@
                     </span>
                 </td>
             </tr>
-            <!-- <tr>
-                <th>上次透析返家主訴</th>
-                <td colspan="11" style="text-align: left;">
-                    {{$ctrl.data.DialysisHeader.ChiefComplaint}}
+        </table>
+    </md-whiteframe>
+</div>
+<div layout="row" class="summary w23 pagebreak" layout-padding layout-wrap layout-fill style="padding-bottom:18px; margin-top: 8px" ng-cloak> 
+    <md-whiteframe ng-show="!$ctrl.loading && !$ctrl.isError" class="md-whiteframe-10dp pad0 pagebreak" layout-align="start center" style="width: 100%" >
+        <div class="table" style="text-align: center; margin:0 auto;">
+            <h1>{{::$ctrl.formTitle}}</h1>
+            <h1>血液透析紀錄表</h1>
+            <span style="float: right;">
+                {{$ctrl.data.DialysisHeader.StartTime | moment: 'YYYY 年 MM 月 DD 日 (dd)'}} 第
+                {{$ctrl.data.DialysisHeader.Numbers.month}} 次&nbsp;&nbsp;第 2/2 頁
+            </span>
+            <div style="clear: both;"></div>
+        </div>
+        <table border="0" cellpadding="0" cellspacing="0" class="table" style="border: #000 solid 2px; border-bottom: none" align="center">
+            <tr>
+                <td colspan="6" style="padding: 0; ">
+                    <table border="0" cellpadding="0" cellspacing="0" class="table_basedata" width="100%">
+                        <tr>
+                            <td>床號：{{$ctrl.data.DialysisHeader.BedNo}}<span style="font-size: 12pt"
+                                    ng-if="$ctrl.data.DialysisHeader.SourceBedNo">({{$ctrl.data.DialysisHeader.SourceBedNo}})</span>
+                            </td>
+                            <td>姓名：{{$ctrl.patient.Name}}</td>
+                            <td>病歷號：{{$ctrl.patient.MedicalId}}</td>
+                            <td>年齡：{{$ctrl.patient.Birthday | age}}</td>
+                            <td>性別：{{$ctrl.patient.Gender === 'M' ? '男' : '女'}}</td>
+                        </tr>
+                    </table>
                 </td>
-            </tr> -->
+            </tr>
+        </table>
+        <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" class="table_in_table" style="border: #000 solid 2px; border-top: none">
             <tr>
                 <th>護理紀錄</th>
                 <td colspan="11" style="text-align: left;">
-                    <!--<span>
-                        {{$ctrl.data.NursingRecord[0].NursingTime | date: 'HH:mm'}} {{$ctrl.data.NursingRecord[0].Content}} 
-                        <seal model="$ctrl.data.NursingRecord[0]" ng-if="$ctrl.data.NursingRecord[0].CreatedUserName && $ctrl.data.NursingRecord[0].ModifiedUserName === null" modified="none"></seal>
-                        <seal model="$ctrl.data.NursingRecord[0]" ng-if="$ctrl.data.NursingRecord[0].ModifiedUserName" created="none"></seal>
-                        <br>
-                    </span>-->
                     <span ng-repeat="ns in $ctrl.data.NursingRecord | orderBy:'NursingTime'"
                         style="white-space: initial">
                         {{ns.NursingTime | date: 'HH:mm'}} {{ns.Content}}
@@ -435,7 +455,7 @@
                             
                         </span>  -->
                         {{ng.RecordTime | date:'HH:mm'}}
-
+    
                         <seal model="ng" ng-if="ng.CreatedUserName && ng.ModifiedUserName === null" modified="none">
                         </seal>
                         <seal model="ng" ng-if="ng.ModifiedUserName" created="none"></seal>
@@ -468,12 +488,6 @@
                     <img ng-src="static/img/tick.png" alt="" class="tick"
                         ng-show="$ctrl.data.DialysisHeader.EndHollowFiber === 'allClot'">{{$ctrl.data.DialysisHeader.EndHollowFiber === 'allClot' ? '' : '口'}}
                     全部Clot　
-                    <!--<img ng-src="static/img/tick.png" alt="" class="tick" ng-show="$ctrl.data.DialysisHeader.EndHollowFiber === '-'">{{$ctrl.data.DialysisHeader.EndHollowFiber === '-' ? '' : '口'}} - 
-                    <img ng-src="static/img/tick.png" alt="" class="tick" ng-show="$ctrl.data.DialysisHeader.EndHollowFiber === '+-'">{{$ctrl.data.DialysisHeader.EndHollowFiber === '+-' ? '' : '口'}} &#177; 
-                    <img ng-src="static/img/tick.png" alt="" class="tick" ng-show="$ctrl.data.DialysisHeader.EndHollowFiber === '+'">{{$ctrl.data.DialysisHeader.EndHollowFiber === '+' ? '' : '口'}} + 
-                    <img ng-src="static/img/tick.png" alt="" class="tick" ng-show="$ctrl.data.DialysisHeader.EndHollowFiber === '++'">{{$ctrl.data.DialysisHeader.EndHollowFiber === '++' ? '' : '口'}} ++ 
-                    <img ng-src="static/img/tick.png" alt="" class="tick" ng-show="$ctrl.data.DialysisHeader.EndHollowFiber === '+++'">{{$ctrl.data.DialysisHeader.EndHollowFiber === '+++' ? '' : '口'}} +++ 
-                    <img ng-src="static/img/tick.png" alt="" class="tick" ng-show="$ctrl.data.DialysisHeader.EndHollowFiber === 'clot'">{{$ctrl.data.DialysisHeader.EndHollowFiber === 'clot' ? '' : '口'}} clot -->
                     Chamber：
                     <img ng-src="static/img/tick.png" alt="" class="tick"
                         ng-show="$ctrl.data.DialysisHeader.EndChamber === 'clear'">{{$ctrl.data.DialysisHeader.EndChamber === 'clear' ? '' : '口'}}
@@ -484,16 +498,6 @@
                     <img ng-src="static/img/tick.png" alt="" class="tick"
                         ng-show="$ctrl.data.DialysisHeader.EndChamber === 'allClot'">{{$ctrl.data.DialysisHeader.EndChamber === 'allClot' ? '' : '口'}}
                     全部Clot　
-                    <!--<img ng-src="static/img/tick.png" alt="" class="tick" ng-show="$ctrl.data.DialysisHeader.EndChamber === '-'">{{$ctrl.data.DialysisHeader.EndChamber === '-' ? '' : '口'}} - 
-                    <img ng-src="static/img/tick.png" alt="" class="tick" ng-show="$ctrl.data.DialysisHeader.EndChamber === '+-'">{{$ctrl.data.DialysisHeader.EndChamber === '+-' ? '' : '口'}} &#177; 
-                    <img ng-src="static/img/tick.png" alt="" class="tick" ng-show="$ctrl.data.DialysisHeader.EndChamber === '+'">{{$ctrl.data.DialysisHeader.EndChamber === '+' ? '' : '口'}} + 
-                    <img ng-src="static/img/tick.png" alt="" class="tick" ng-show="$ctrl.data.DialysisHeader.EndChamber === '++'">{{$ctrl.data.DialysisHeader.EndChamber === '++' ? '' : '口'}} ++ 
-                    <img ng-src="static/img/tick.png" alt="" class="tick" ng-show="$ctrl.data.DialysisHeader.EndChamber === '+++'">{{$ctrl.data.DialysisHeader.EndChamber === '+++' ? '' : '口'}} +++ 
-                    <img ng-src="static/img/tick.png" alt="" class="tick" ng-show="$ctrl.data.DialysisHeader.EndChamber === 'clot'">{{$ctrl.data.DialysisHeader.EndChamber === 'clot' ? '' : '口'}} clot -->
-                    <!--AK結束：
-                    <img ng-src="static/img/tick.png" alt="" class="tick">Clear
-                    <img ng-src="static/img/blank.png" alt="" class="tick">部分Clot
-                    <img ng-src="static/img/blank.png" alt="" class="tick">全部Clot-->
                 </td>
             </tr>
             <tr>
@@ -546,7 +550,6 @@
                         <li ng-repeat="item in $ctrl.postAssessmentRecords track by $index"
                             style="word-break: break-word">{{::item}}</li>
                     </ul>
-                    <!-- <p style="padding: 0 0 0 10pt" ng-repeat="item in $ctrl.postAssessmentRecords track by $index">{{::item}}</p> -->
                 </td>
             </tr>
         </table>

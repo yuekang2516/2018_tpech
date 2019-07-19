@@ -26,9 +26,9 @@ angular.module('app').component('login', {
     controllerAs: 'vm'
 });
 
-LoginCtrl.$inject = ['$document', '$http', '$mdSidenav', 'showMessage', '$state', '$sessionStorage', 'LoginService', 'SettingService', '$mdDialog', 'basicSettingService', 'nfcService', '$timeout', '$filter', '$scope'];
+LoginCtrl.$inject = ['$document', '$http', '$mdSidenav', 'showMessage', '$state', '$sessionStorage', 'LoginService', 'SettingService', '$mdDialog', 'basicSettingService', 'nfcService', '$timeout', '$filter', '$scope', '$window'];
 
-function LoginCtrl($document, $http, $mdSidenav, showMessage, $state, $sessionStorage, LoginService, SettingService, $mdDialog, basicSettingService, nfcService, $timeout, $filter, $scope) {
+function LoginCtrl($document, $http, $mdSidenav, showMessage, $state, $sessionStorage, LoginService, SettingService, $mdDialog, basicSettingService, nfcService, $timeout, $filter, $scope, $window) {
     const vm = this;
 
     let $translate = $filter('translate');
@@ -159,6 +159,23 @@ function LoginCtrl($document, $http, $mdSidenav, showMessage, $state, $sessionSt
             });
         }
 
+    };
+    vm.openChangeLog = function () {
+        const url = SettingService.getServerUrl() + '/changeLog.txt';
+        if (cordova.InAppBrowser) {
+            // cordova
+            if (cordova.platformId === 'browser') {
+                cordova.InAppBrowser.open(url, '_system', 'location=yes');
+            } else {
+                cordova.InAppBrowser.open(url, '_blank', 'location=yes');
+            }
+            // $window.open(url, '_system', 'location=yes'); // 寫這樣也可以，應該是_blank會衝突
+            console.log('cordova browser');
+        } else {
+            // browser
+            $window.open(url, '_blank');
+            console.log('一般browser');
+        }
     };
 
     vm.clearForm = function () {

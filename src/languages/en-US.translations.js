@@ -1742,12 +1742,12 @@ window.en_us_translations = {
             showDeleted: "Deleted: ({{deletedItemsLength}})",
             totalRecord: "Total: {{length}}",
             totalDays: "{{StartDate | date: 'yyyy-MM-dd' }} {{ Days > 1 ? vm.getEndDate(StartDate, Days): '' }} {{Days }} Day(s)",
-            totalQuantity: "{{Route}} {{Frequency }} every time {{Quantity }} {{QuantityUnit }}, total: {{TotalQuantity}} {{QuantityUnit}}",
+            totalQuantity: "{{Route}} {{Frequency}}, {{Quantity}} {{QuantityUnit}} / times, total: {{TotalQuantity}} {{QuantityUnit}}",
             noData: "{{showDate}} No data to display",
             clickBottomRight: "Please click \"+\" to create new Medication Record",
             serverError: "Server Access Failed",
             Infinity: "Non-expired",
-            quantity: " {{Quantity}} {{QuantityUnit}} / times",
+            quantity: " {{Route}} {{Frequency}}, {{Quantity}} {{QuantityUnit}} / times",
             IsOtherDrug: "Medication of other hospital",
             // component
             component: {

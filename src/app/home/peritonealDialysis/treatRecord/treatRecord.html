@@ -49,12 +49,12 @@
                         </p>
                         <seal my-style="$ctrl.myStyle" model="ti" modified="hideIfSame" fixed="true"></seal>
                         <div  style="position: absolute; right: 6px; top: 20px" ng-hide="ti.Status == 'Deleted'">
-                            <!-- <button class="md-icon-button md-button no-print" ng-click="$ctrl.printPaper(ti)" ng-show="$ctrl.isBrowser">
+                            <button class="md-icon-button md-button no-print" ng-click="$ctrl.printPaper(ti)" ng-show="$ctrl.isBrowser">
                                 <i class="material-icons ng-scope">print</i>
                                 <md-tooltip style="margin-top: -5px;">
                                         列印
                                 </md-tooltip>
-                            </button> -->
+                            </button>
                             <md-button class="md-icon-button" ng-click="$ctrl.openEditDialog(ti,true)">
                                 <i class="material-icons">
                                     content_copy

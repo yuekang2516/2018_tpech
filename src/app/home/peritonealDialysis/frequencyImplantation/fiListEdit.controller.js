@@ -205,34 +205,35 @@ function fiListEditController(
             //self.fiDataObj.Pd_Date = toDay;
         }
         console.log("self.currentPatient--", self.currentPatient);
-        frequencyImplantationService.GetLastOneByPatientid(self.patientId).then((res) => {
-            self.quantityEvaluateData = res.data;
-            //PET結果
-            if (self.quantityEvaluateData.Pet !== null) {
-                self.fiDataObj.Pet_Results = self.quantityEvaluateData.Pet;
-            } else {
-                self.fiDataObj.Pet_Results = "High";
-            }
-            //PET日期  
-            if (self.quantityEvaluateData.Pet_Date !== null) {
-                //self.fiDataObj.Pet_Date = new Date(moment(self.quantityEvaluateData.Recorddate).format("YYYY-MM-DD HH:mm:ss"));;
-            } else {
-                //self.fiDataObj.Pet_Date = toDay;
-            }
-            //    參數設定--'植管醫院(造管醫院)'         
-            frequencyImplantationService.GetDialysisInfo().then((res) => {
-                self.DialysisInfo = res.data;
-                self.fiHospital = res.data.DialysisSetting.Records.CatheterHospitals;
+        // frequencyImplantationService.GetLastOneByPatientid(self.patientId).then((res) => {
+        //     self.quantityEvaluateData = res.data;
+        //     console.log('self.quantityEvaluateData',self.quantityEvaluateData);
+        //     //PET結果
+        //     if (self.quantityEvaluateData.Pet !== null) {
+        //         self.fiDataObj.Pet_Results = self.quantityEvaluateData.Pet;
+        //     } else {
+        //         self.fiDataObj.Pet_Results = "High";
+        //     }
+        //     //PET日期  
+        //     if (self.quantityEvaluateData.Pet_Date !== null) {
+        //         //self.fiDataObj.Pet_Date = new Date(moment(self.quantityEvaluateData.Recorddate).format("YYYY-MM-DD HH:mm:ss"));;
+        //     } else {
+        //         //self.fiDataObj.Pet_Date = toDay;
+        //     }
+        //     //    參數設定--'植管醫院(造管醫院)'         
+        //     frequencyImplantationService.GetDialysisInfo().then((res) => {
+        //         self.DialysisInfo = res.data;
+        //         self.fiHospital = res.data.DialysisSetting.Records.CatheterHospitals;
 
-                console.log("self.DialysisInfo Success--", self.DialysisInfo);
-            }, (res) => {
-                console.log("self.DialysisInfo Fail--", self.DialysisInfo);
-            });
+        //         console.log("self.DialysisInfo Success--", self.DialysisInfo);
+        //     }, (res) => {
+        //         console.log("self.DialysisInfo Fail--", self.DialysisInfo);
+        //     });
 
-            console.log("self.quantityEvaluateData--", self.quantityEvaluateData);
-        }, (res) => {
-            console.log("self.quantityEvaluateData--", self.quantityEvaluateData);
-        });
+        //     console.log("self.quantityEvaluateData--", self.quantityEvaluateData);
+        // }, (res) => {
+        //     console.log("self.quantityEvaluateData--", self.quantityEvaluateData);
+        // });
 
     }, (res) => {
         console.log("complicationService getList Fail", res);
@@ -802,8 +803,16 @@ function fiListEditController(
         self.fiDataObj.Hospitalid = self.currentPatient.HospitalId;
         self.fiDataObj.Pat_Seq = self.currentPatient.PAT_SEQ;
         self.fiDataObj.Status = "Normal";
-        console.log("self.fiDataObj.Catheter_Implantation_Date create--", self.fiDataObj.Catheter_Implantation_Date);
-
+        
+        let fi = parseInt(self.fiDataObj.Frequency_Implantation);
+        
+        if(_.isEmpty(String(self.fiDataObj.Frequency_Implantation)) ||  self.fiDataObj.Frequency_Implantation == 0 ||
+            isNaN(fi)
+        ){
+            showMessage('腹透植管次數，請輸入數字。',800);
+            event.currentTarget.disabled = false;
+            return;
+        }
         // 整理畫面資料
 
         // //導管植入日期
@@ -882,6 +891,7 @@ function fiListEditController(
             });
 
         } else {
+            console.log('self.fiDataObj',self.fiDataObj);
             self.fiDataObj.ModifiedTime = toDay;
             self.fiDataObj.ModifiedUserId = SettingService.getCurrentUser().Id;
             self.fiDataObj.ModifiedUserName = SettingService.getCurrentUser().Name;

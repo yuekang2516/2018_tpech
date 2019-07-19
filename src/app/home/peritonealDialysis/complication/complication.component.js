@@ -61,8 +61,8 @@ function complicationCtrl(
         complicationService.getListByPatientID(self.patientId).then((res) => {
             console.log("complicationService getList Success", res);       
             self.loading = false; 
-            self.compList = res.data;        
-            self.compList = $filter('orderBy')(self.compList,'-Record_Date');              
+            self.compList = angular.copy(res.data);        
+            self.compList = $filter('orderBy')(self.compList,'-Record_Date');
             // self.compList = self.compList.filter(e =>{
             //     return e.Status != "Deleted";
             // });   
@@ -80,17 +80,17 @@ function complicationCtrl(
                 self.compList = [];
             }  
             if (self.compList.length > 0) {
-                self.compList.sort((a, b) => {
-                    if (a.Record_Date > b.Record_Date) {
-                        return 1;
-                    }
-                    if (a.Record_Date < b.Record_Date) {
-                        return -1;
-                    }
-                    if (a.Record_Date === b.Record_Date) {
-                        return 0;
-                    }
-                });
+                // self.compList.sort((a, b) => {
+                //     if (a.Record_Date > b.Record_Date) {
+                //         return 1;
+                //     }
+                //     if (a.Record_Date < b.Record_Date) {
+                //         return -1;
+                //     }
+                //     if (a.Record_Date === b.Record_Date) {
+                //         return 0;
+                //     }
+                // });
 
                 let i = 0;
 

@@ -131,11 +131,11 @@ font-size: 12px!important;
                         </table>
                         <br>
                         <h2 style="padding-left: 2px">換液處方</h2>
-                        <h2 ng-hide="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Dianeal'}).length > 0">Dianeal：-</h2>
+                        <h2 ng-hide="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Dianeal',Esa_Dose_Ug:'false'}).length > 0">Dianeal：-</h2>
                         <h2 style="padding-left: 2px"
-                            ng-show="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Dianeal'}).length > 0">Dianeal</h2>
+                            ng-show="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Dianeal',Esa_Dose_Ug:'false'}).length > 0">Dianeal</h2>
                         <table border="0" cellpadding="0" cellspacing="0" class="table_in_table" width="100%"
-                            ng-show="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Dianeal'}).length > 0">
+                            ng-show="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Dianeal',Esa_Dose_Ug:'false'}).length > 0">
                             <tr>
                                 <td width="5%" style="border-left: 0">序</td>
                                 <td width="19%">葡萄糖濃度（%）</td>
@@ -144,7 +144,7 @@ font-size: 12px!important;
                                 <td width="19%">袋數</td>
                                 <td width="19%" style="border-right: 0">備註</td>
                             </tr>
-                            <tr ng-repeat="item in $ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Dianeal'}">
+                            <tr ng-repeat="item in $ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Dianeal',Esa_Dose_Ug:'false'}">
                                 <td style="border-left: 0">{{($index + 1)}}</td>
                                 <td>{{item.Glucoseconcentration}}</td>
                                 <td>{{item.Calciumconcentration}}</td>
@@ -157,12 +157,12 @@ font-size: 12px!important;
                                 </td>
                             </tr>
                         </table>
-                        <h2 ng-hide="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Nutrineal'}).length > 0">Nutrineal：-</h2>
+                        <h2 ng-hide="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Nutrineal',Esa_Dose_Ug:'false'}).length > 0">Nutrineal：-</h2>
                         <h2 style="padding-left: 2px"
-                            ng-show="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Nutrineal'}).length > 0" layout="row"
+                            ng-show="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Nutrineal',Esa_Dose_Ug:'false'}).length > 0" layout="row"
                         >Nutrineal 給付條件：
-                        <ul layout="row">
-                            <li ng-repeat=" ii in $ctrl.PaymentconditionsCheck | filter:{ Type:'Nutrineal'}">
+                        <ul style="font-size: 12px;" layout="row">
+                            <li ng-repeat=" ii in $ctrl.PaymentconditionsCheck | filter:{ Type:'Nutrineal',Esa_Dose_Ug:'false'}">
                                     <img ng-src="static/img/blank.png" alt="" class="tick"
                                     ng-hide="ii.Check">
                                     <img ng-src="static/img/tick.png" alt="" class="tick"
@@ -174,7 +174,7 @@ font-size: 12px!important;
                             <!-- <img src="tick.png" alt="" class="tick">nPCA＜0.9 -->
                         </h2>
                         <table border="0" cellpadding="0" cellspacing="0" class="table_in_table" width="100%"
-                        ng-show="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Nutrineal'}).length > 0">
+                        ng-show="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Nutrineal',Esa_Dose_Ug:'false'}).length > 0">
                             <tr>
                                 <td width="5%" style="border-left: 0">序</td>
                                 <td width="19%">胺基酸濃度</td>
@@ -183,7 +183,7 @@ font-size: 12px!important;
                                 <td width="19%">袋數</td>
                                 <td width="19%" style="border-right: 0">備註</td>
                             </tr>
-                            <tr ng-repeat="item in $ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Nutrineal'}">
+                            <tr ng-repeat="item in $ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Nutrineal',Esa_Dose_Ug:'false'}">
                                 <td style="border-left: 0">1</td>
                                 <td>1.10</td>
                                 <td>2.5</td>
@@ -196,12 +196,12 @@ font-size: 12px!important;
                                 </td>
                             </tr>
                         </table>
-                        <h2 ng-hide="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Extraneal'}).length > 0">Extraneal：-</h2>
+                        <h2 ng-hide="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Extraneal',Esa_Dose_Ug:'false'}).length > 0">Extraneal：-</h2>
                         <h2 style="padding-left: 2px"
-                            ng-show="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Extraneal'}).length > 0" layout="row"
+                            ng-show="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Extraneal',Esa_Dose_Ug:'false'}).length > 0" layout="row"
                         >Extraneal 給付條件：
-                            <ul layout="row">
-                                <li ng-repeat=" ii in $ctrl.PaymentconditionsCheck | filter:{ Type:'Extraneal'}">
+                            <ul style="font-size: 12px;" layout="row">
+                                <li ng-repeat=" ii in $ctrl.PaymentconditionsCheck | filter:{ Type:'Extraneal',Esa_Dose_Ug:'false'}">
                                     <img ng-src="static/img/blank.png" alt="" class="tick"
                                     ng-hide="ii.Check">
                                     <img ng-src="static/img/tick.png" alt="" class="tick"
@@ -215,16 +215,16 @@ font-size: 12px!important;
                             <!-- <img src="tick.png" alt="" class="tick">Peritonitis -->
                         </h2>
                         <table border="0" cellpadding="0" cellspacing="0" class="table_in_table" width="100%"
-                        ng-show="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Extraneal'}).length > 0">
+                        ng-show="($ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Extraneal',Esa_Dose_Ug:'false'}).length > 0">
                             <tr>
                                 <td width="5%" style="border-left: 0">序</td>
-                                <td width="19%">胺基酸濃度</td>
+                                <td width="19%">lcodextrin</td>
                                 <td width="19%">鈣離子濃度(mEq/L)</td>
                                 <td width="19%">藥水體積（L） </td>
                                 <td width="19%">袋數</td>
                                 <td width="19%" style="border-right: 0">備註</td>
                             </tr>
-                            <tr ng-repeat="item in $ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Extraneal'}">
+                            <tr ng-repeat="item in $ctrl.treatDetailTypes.CAPD.Treat | filter:{ Potiontypes:'Extraneal',Esa_Dose_Ug:'false'}">
                                 <td style="border-left: 0">1</td>
                                 <td>7.5</td>
                                 <td>3.5</td>

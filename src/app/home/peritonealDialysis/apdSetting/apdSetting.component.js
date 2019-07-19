@@ -226,13 +226,13 @@ function apdSettingCtrl(
         });
         console.log("apdListNo", self.apdList.no);
 
-        PatientService.getById($stateParams.patientId).then((res) => {
-            self.currentPatient = res.data;
+        // PatientService.getById($stateParams.patientId).then((res) => {
+        //     self.currentPatient = res.data;
 
-            console.log("self.currentPatient--", self.currentPatient);
-        }, (res) => {
-            console.log("apdSettingService getList Fail", res);
-        });
+        //     console.log("self.currentPatient--", self.currentPatient);
+        // }, (res) => {
+        //     console.log("apdSettingService getList Fail", res);
+        // });
 
     };
 

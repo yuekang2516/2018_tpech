@@ -253,8 +253,8 @@ function labexamImportCtrl($mdSidenav, Upload, $http, $timeout, PatientService, 
                         });
                     }
                 } else if (fieldArray[i % arrayInt] === $translate('labexamImport.labexamdate')) { // '檢驗日期' .trim() .trim()
-                    CheckTime = (parseInt(dataArray[i].substr(0, 3)) + 1911).toString() + '-' + dataArray[i].substr(3, 2) + '-' + dataArray[i].substr(5, 2);
-                } else if (dataArray[i] !== null && dataArray[i] !== undefined && dataArray[i].trim() !== '') { // .trim()
+                    CheckTime = (parseInt(dataArray[i].toString().substr(0, 3)) + 1911).toString() + '-' + dataArray[i].toString().substr(3, 2) + '-' + dataArray[i].toString().substr(5, 2);
+                } else if (dataArray[i] !== null && dataArray[i] !== undefined && dataArray[i].toString().trim() !== '') { // .trim()
                         // 開始分析檢驗檢查資料
                         if (fieldArray[i % arrayInt].indexOf('(') > 0) {
                             Name = fieldArray[i % arrayInt].substring(0, fieldArray[i % arrayInt].indexOf('(')); // .trim()
@@ -306,7 +306,7 @@ function labexamImportCtrl($mdSidenav, Upload, $http, $timeout, PatientService, 
                     CheckTime = ''; // 檢驗日期
                     angular.forEach(record, function (item, fname) {
                         if (fname.trim() === $translate('labexamImport.idnumber')) { // '身份證號'
-                            IdentifierId = item.trim();
+                            IdentifierId = item.toString().trim();
                             if (IdentifierId !== '') {
                                 angular.forEach(Patients, function (Patient, ind1) {
                                     if (Patient.IdentifierId === IdentifierId) {
@@ -319,7 +319,7 @@ function labexamImportCtrl($mdSidenav, Upload, $http, $timeout, PatientService, 
                             }
                         } else if (fname.trim() === $translate('labexamImport.patientCode')) { // '病歷號'
                             if (MedicalId === '') {
-                                MedicalId = item.trim();
+                                MedicalId = item.toString().trim();
                             }
                             if (PatientId === '' && MedicalId !== '') {
                                 angular.forEach(Patients, function (Patient, ind1) {
@@ -332,8 +332,8 @@ function labexamImportCtrl($mdSidenav, Upload, $http, $timeout, PatientService, 
                                 });
                             }
                         } else if (fname.trim() === $translate('labexamImport.labexamdate')) { // '檢驗日期'
-                            CheckTime = (parseInt(item.substr(0, 3)) + 1911).toString() + '-' + item.substr(3, 2) + '-' + item.substr(5, 2);
-                        } else if (item.trim() !== '') {
+                            CheckTime = (parseInt(item.toString().substr(0, 3)) + 1911).toString() + '-' + item.toString().substr(3, 2) + '-' + item.toString().substr(5, 2);
+                        } else if (item.toString().trim() !== '') {
                             // 開始分析檢驗檢查資料
                             fname = fname.trim();
                             if (fname.indexOf('(') > 0) {
@@ -344,7 +344,7 @@ function labexamImportCtrl($mdSidenav, Upload, $http, $timeout, PatientService, 
                                 Unit = '';
                             }
                             LabExam.Name = Name;
-                            LabExam.Value = item.trim();
+                            LabExam.Value = item.toString().trim();
                             LabExam.Unit = Unit;
                             LabExam.CheckTime = CheckTime;
                             LabExam.PatientId = PatientId;

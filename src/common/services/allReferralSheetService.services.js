@@ -33,7 +33,8 @@ function ReferralSheetService($http, $q, $rootScope, SettingService, $timeout, $
         setCheckedData, // setCheckedLabexamData
         getSurgeryCheckItems,
         getLabCheckItems,
-        getDrugCheckItems
+        getDrugCheckItems,
+        getAverageBloodPressure
     };
     const serverApiUrl = SettingService.getServerUrl();
     // const user = SettingService.getCurrentUser();
@@ -389,5 +390,22 @@ function ReferralSheetService($http, $q, $rootScope, SettingService, $timeout, $
     //     return $sessionStorage.checkedLabexamData;
     // }
 
+    
+    // 取得透析前後血壓 xx天平均值
+    function getAverageBloodPressure(patientId, baseTime, days) {
+        const deferred = $q.defer();
+
+        $http({
+            method: 'GET',
+            url: `${serverApiUrl}/api/MedicalRecordSummary/getAverage/${patientId}/${baseTime}/${days}`
+        }).then((res) => {
+            deferred.resolve(res);
+        }, (res) => {
+            deferred.reject(res);
+        });
+        return deferred.promise;
+    }
+
+    
     return rest;
 }

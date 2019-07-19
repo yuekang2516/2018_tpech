@@ -212,7 +212,7 @@
             <md-button class="md-raised" ng-disabled="$ctrl.isSaving" ng-click="$ctrl.cancel()">
                 {{'complication.dialog.cancel' | translate}}
             </md-button>
-            <md-button class="md-raised md-primary" ng-click="$ctrl.ok()">
+            <md-button class="md-raised md-primary" ng-click="$ctrl.ok($event)">
                 {{$ctrl.compDataObj.isCreate ? 'complication.dialog.create' : 'complication.dialog.edit' | translate}}
             </md-button>
         </md-dialog-actions>
